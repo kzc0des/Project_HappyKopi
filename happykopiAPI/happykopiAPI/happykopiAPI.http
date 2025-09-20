@@ -1,0 +1,6 @@
+@happykopiAPI_HostAddress = http://localhost:5126
+
+GET {{happykopiAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
