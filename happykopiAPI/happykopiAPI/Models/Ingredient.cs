@@ -25,5 +25,7 @@ namespace happykopiAPI.Models
         public decimal AlertLevel { get; set; } 
 
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
+        public ICollection<ProductIngredient> Recipe { get; set; }
+        public ICollection<IngredientStockLog> StockLogs { get; set; }
     }
 }

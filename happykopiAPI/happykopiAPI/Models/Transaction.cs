@@ -25,7 +25,7 @@ namespace happykopiAPI.Models
         public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
 
         [MaxLength(100)]
-        public string ReferenceNumber { get; set; } 
+        public string? ReferenceNumber { get; set; } 
 
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
