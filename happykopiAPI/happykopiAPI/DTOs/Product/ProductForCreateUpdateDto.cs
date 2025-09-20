@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace happykopiAPI.DTOs.Inventory
+namespace happykopiAPI.DTOs.Product
 {
     public class ProductForCreateUpdateDto
     {
@@ -15,6 +15,7 @@ namespace happykopiAPI.DTOs.Inventory
         [Required]
         public int CategoryId { get; set; }
 
+        // Listahan ng mga ingredients para sa recipe
         public ICollection<ProductIngredientDto> Recipe { get; set; }
     }
 }

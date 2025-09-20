@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace happykopiAPI.DTOs.Inventory
+namespace happykopiAPI.DTOs.Product
 {
     public class ProductIngredientDto
     {

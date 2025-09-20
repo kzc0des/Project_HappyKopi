@@ -1,4 +1,4 @@
-﻿namespace happykopiAPI.DTOs.Inventory
+﻿namespace happykopiAPI.DTOs.Product
 {
     public class ProductDto
     {
