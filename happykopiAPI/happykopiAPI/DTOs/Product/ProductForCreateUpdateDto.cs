@@ -15,7 +15,6 @@ namespace happykopiAPI.DTOs.Product
         [Required]
         public int CategoryId { get; set; }
 
-        // Listahan ng mga ingredients para sa recipe
         public ICollection<ProductIngredientDto> Recipe { get; set; }
     }
 }

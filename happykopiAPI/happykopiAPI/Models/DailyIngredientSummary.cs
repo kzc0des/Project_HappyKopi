@@ -6,43 +6,42 @@ namespace happykopiAPI.Models
     public class DailyIngredientSummary
     {
         [Key]
-        public long Id { get; set; } // Gumamit tayo ng 'long' para sigurado kahit dumami pa ang logs over the years
+        public long Id { get; set; } 
 
         [Required]
-        public int IngredientId { get; set; } // Naka-link sa Ingredient
+        public int IngredientId { get; set; } 
 
         [Required]
-        public DateTime SummaryDate { get; set; } // Ang petsa kung para saan ang summary na ito (e.g., '2025-09-20')
-
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal OpeningStock { get; set; } // Dami ng stock sa simula ng araw
+        public DateTime SummaryDate { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TotalStockIn { get; set; } // Total na pumasok na stock (galing sa supplier)
+        public decimal OpeningStock { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TotalSold { get; set; } // Total na nabawas dahil sa benta
+        public decimal TotalStockIn { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TotalWastage { get; set; } // Total na nasayang
+        public decimal TotalSold { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TotalAdjusted { get; set; } // Total na in-adjust (manual count)
+        public decimal TotalWastage { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal ClosingStock { get; set; } // Dami ng stock sa dulo ng araw
+        public decimal TotalAdjusted { get; set; } 
+
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal ClosingStock { get; set; } 
 
         [Required]
         [MaxLength(20)]
-        public string UnitOfMeasure { get; set; } // Unit of measure para sa summary na ito
+        public string UnitOfMeasure { get; set; } 
 
-        // Navigation Property
         [ForeignKey("IngredientId")]
         public Ingredient Ingredient { get; set; }
     }

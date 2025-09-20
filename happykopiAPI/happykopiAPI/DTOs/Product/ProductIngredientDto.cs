@@ -6,7 +6,7 @@ namespace happykopiAPI.DTOs.Product
     {
         [Required]
         public int IngredientId { get; set; }
-        public string IngredientName { get; set; } // Para sa display
+        public string IngredientName { get; set; }
         [Required]
         [Range(0.01, double.MaxValue)]
         public decimal QuantityNeeded { get; set; }

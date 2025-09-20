@@ -10,7 +10,7 @@ namespace happykopiAPI.Models
 
         [Required]
         [MaxLength(150)]
-        public string Name { get; set; } // Hal. "Iced Caramel Macchiato"
+        public string Name { get; set; } 
 
         public string Description { get; set; }
 
@@ -18,19 +18,16 @@ namespace happykopiAPI.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
-        public string ImageUrl { get; set; } // Path ng image para sa POS display
+        public string ImageUrl { get; set; } 
 
-        public bool IsAvailable { get; set; } = true; // Para madaling i-on/off sa menu
+        public bool IsAvailable { get; set; } = true; 
 
-        // Foreign Key para sa Category
         [Required]
         public int CategoryId { get; set; }
 
-        // Navigation Properties
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-        // Ito ang link papunta sa recipe niya
         public ICollection<ProductIngredient> Recipe { get; set; }
     }
 }

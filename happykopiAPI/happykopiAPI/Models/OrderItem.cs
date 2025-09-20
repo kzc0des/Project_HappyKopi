@@ -9,23 +9,23 @@ namespace happykopiAPI.Models
         public int Id { get; set; }
 
         [Required]
-        public int OrderId { get; set; } // Saang order ito kasama
+        public int OrderId { get; set; } 
 
         [Required]
-        public int ProductId { get; set; } // Anong produkto ito
+        public int ProductId { get; set; } 
 
         [Required]
-        public int Quantity { get; set; } // Ilang piraso ang binili
-
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal UnitPrice { get; set; } // Magkano ang isang piraso noong binili ito
+        public int Quantity { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Subtotal { get; set; } // Quantity * UnitPrice
+        public decimal UnitPrice { get; set; } 
 
-        // Navigation Properties
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Subtotal { get; set; } 
+
+
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
 

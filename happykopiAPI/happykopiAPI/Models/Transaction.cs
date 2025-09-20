@@ -10,24 +10,23 @@ namespace happykopiAPI.Models
         public int Id { get; set; }
 
         [Required]
-        public int OrderId { get; set; } // Para saang order ang bayad na ito (One-to-one relationship)
+        public int OrderId { get; set; } 
 
         [Required]
-        public PaymentType PaymentType { get; set; } // Cash o Cashless
+        public PaymentType PaymentType { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal AmountPaid { get; set; } // Magkano ang ibinayad ng customer
+        public decimal AmountPaid { get; set; } 
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Change { get; set; } // Sukli (kung cash)
+        public decimal Change { get; set; } 
 
         public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
 
         [MaxLength(100)]
-        public string ReferenceNumber { get; set; } // Para sa GCash, Maya, Card, etc.
+        public string ReferenceNumber { get; set; } 
 
-        // Navigation Property
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
     }

@@ -9,9 +9,8 @@ namespace happykopiAPI.Models
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; } // Hal. "Hot Coffees", "Iced Coffees", "Pastries"
+        public string Name { get; set; } 
 
-        // Navigation Property: Isang category ay pwedeng magkaroon ng maraming produkto
         public ICollection<Product> Products { get; set; }
     }
 }
