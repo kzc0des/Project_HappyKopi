@@ -1,6 +1,7 @@
 # .NET  Visual Studio
-.vs
-[Bb]in
-[Oo]bj
-.user
-.suo
+.vs/
+[Bb]in/
+[Oo]bj/
+
+*.user
+*.suo
