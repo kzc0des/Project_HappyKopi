@@ -6,6 +6,6 @@ namespace happykopiAPI.Services
     {
         Task<UserDto> Register(UserForRegisterDto userForRegisterDto);
         Task<LoginResponseDto> Login(UserForLoginDto userForLoginDto);
-        Task<bool> UserExists(string username);
+        string GenerateJwtToken(UserDto user);
     }
 }

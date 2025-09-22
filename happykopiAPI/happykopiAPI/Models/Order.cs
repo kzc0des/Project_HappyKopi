@@ -16,7 +16,7 @@ namespace happykopiAPI.Models
         [Required]
         public int UserId { get; set; } 
 
-        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+        public DateTime OrderDate { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]

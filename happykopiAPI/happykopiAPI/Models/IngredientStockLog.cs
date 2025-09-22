@@ -33,7 +33,7 @@ namespace happykopiAPI.Models
         [MaxLength(255)]
         public string Remarks { get; set; }
 
-        public DateTime DateLogged { get; set; } = DateTime.UtcNow;
+        public DateTime DateLogged { get; set; } 
 
         [ForeignKey("IngredientId")]
         public Ingredient Ingredient { get; set; }

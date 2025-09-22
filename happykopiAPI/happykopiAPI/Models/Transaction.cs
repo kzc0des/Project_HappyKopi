@@ -22,7 +22,7 @@ namespace happykopiAPI.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Change { get; set; } 
 
-        public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
+        public DateTime TransactionDate { get; set; } 
 
         [MaxLength(100)]
         public string? ReferenceNumber { get; set; } 

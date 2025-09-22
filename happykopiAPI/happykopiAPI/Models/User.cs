@@ -19,8 +19,9 @@ namespace happykopiAPI.Models
         public string FullName { get; set; }
 
         [Required]
-        public UserRole Role { get; set; }
+        public UserRole Role { get; set; } 
 
-        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        public DateTime DateCreated { get; set; } 
+        public bool IsActive { get; set; } 
     }
 }
