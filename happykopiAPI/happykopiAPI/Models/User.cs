@@ -13,7 +13,14 @@ namespace happykopiAPI.Models
         public string Username { get; set; }
 
         [Required]
+        [MaxLength(100)]
+        public string EmailAddress { get; set; }
+
+        [Required]
         public string PasswordHash { get; set; }
+
+        [MaxLength(20)]
+        public string? PhoneNumber { get; set; }
 
         [Required]
         public string FullName { get; set; }

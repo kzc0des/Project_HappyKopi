@@ -10,6 +10,14 @@ namespace happykopiAPI.DTOs.Auth
         public string Username { get; set; }
 
         [Required]
+        [StringLength(100)]
+        [EmailAddress]
+        public string EmailAddress { get; set; }
+
+        [StringLength(20, MinimumLength = 11)]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [StringLength(20, MinimumLength = 8)]
         public string Password { get; set; }
 
