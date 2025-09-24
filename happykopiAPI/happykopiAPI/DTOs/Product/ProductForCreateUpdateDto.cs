@@ -11,7 +11,7 @@ namespace happykopiAPI.DTOs.Product
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
         public string? ImageUrl { get; set; }
-        public bool IsAvailable { get; set; } = true;
+        public bool IsAvailable { get; set; }
         [Required]
         public int CategoryId { get; set; }
 

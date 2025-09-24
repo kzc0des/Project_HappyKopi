@@ -97,6 +97,17 @@ namespace happykopiAPI.Data
                 .Property(t => t.TransactionDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 
+            modelBuilder.Entity<Product>()
+                .Property(p => p.IsAvailable)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+
+            modelBuilder.Entity<Order>()
+                .HasIndex(o => o.OrderNumber)
+                .IsUnique();
         }
     }
 }

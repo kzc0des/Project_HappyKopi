@@ -15,6 +15,6 @@ namespace happykopiAPI.DTOs.Inventory
         [Required]
         [Range(0, double.MaxValue)]
         public decimal AlertLevel { get; set; }
-        public System.DateTime LastUpdated { get; set; }
+        public DateTime LastUpdated { get; set; }
     }
 }
