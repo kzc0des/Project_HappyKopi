@@ -1,6 +1,6 @@
 ﻿using happykopiAPI.DTOs.Auth;
 
-namespace happykopiAPI.Services
+namespace happykopiAPI.Services.Interfaces
 {
     public interface IAuthService
     {

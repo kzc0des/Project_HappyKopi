@@ -12,7 +12,7 @@ namespace happykopiAPI.Data.Migrations
         {
             var sp_UserAuthenticate = @"
             CREATE PROCEDURE sp_UserAuthenticate 
-            @UserName NVARCHAR(50) 
+            @UserName NVARCHAR(50)
             AS
             BEGIN
 	            SET NOCOUNT ON;
@@ -21,11 +21,11 @@ namespace happykopiAPI.Data.Migrations
 		        Id,
 		        Username,
 		        PasswordHash,
+				FullName,
 		        Role
 	            FROM dbo.Users
 	            WHERE Username = @Username AND IsActive = 1;
-            END
-            GO";
+            END";
 
             migrationBuilder.Sql(sp_UserAuthenticate);
 
