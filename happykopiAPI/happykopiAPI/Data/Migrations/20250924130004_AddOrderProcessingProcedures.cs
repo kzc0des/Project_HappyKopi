@@ -10,8 +10,25 @@ namespace happykopiAPI.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            var dbo_TransactionType = @"
+            CREATE TYPE dbo.TransactionsType AS TABLE (
+	            PaymentType NVARCHAR(MAX) NOT NULL,
+	            AmountPaid DECIMAL(18, 2) NOT NULL,
+	            ReferenceNumber NVARCHAR(MAX)
+            );";
+
+            migrationBuilder.Sql(dbo_TransactionType);
+
+            var dbo_OrderItemsType = @"
+            CREATE TYPE dbo.OrderItemsType AS TABLE (
+                ProductId INT NOT NULL,
+                Quantity INT NOT NULL
+            );";
+
+            migrationBuilder.Sql(dbo_OrderItemsType);
+
             var sp_CreateOrder = @"
-            ALTER PROCEDURE sp_CreateOrder
+            CREATE PROCEDURE sp_CreateOrder
                 @UserId INT,
                 @OrderNumber NVARCHAR(20),
                 @OrderItems dbo.OrderItemsType READONLY,
@@ -144,23 +161,6 @@ namespace happykopiAPI.Data.Migrations
             END";
 
             migrationBuilder.Sql(sp_CreateOrder);
-
-            var dbo_TransactionType = @"
-            CREATE TYPE dbo.TransactionsType AS TABLE (
-	            PaymentType NVARCHAR(MAX) NOT NULL,
-	            AmountPaid DECIMAL(18, 2) NOT NULL,
-	            ReferenceNumber NVARCHAR(MAX)
-            );";
-
-            migrationBuilder.Sql(dbo_TransactionType);
-
-            var dbo_OrderItemsType = @"
-            CREATE TYPE dbo.OrderItemsType AS TABLE (
-                ProductId INT NOT NULL,
-                Quantity INT NOT NULL
-            );";
-
-            migrationBuilder.Sql(dbo_OrderItemsType);
         }
 
         /// <inheritdoc />

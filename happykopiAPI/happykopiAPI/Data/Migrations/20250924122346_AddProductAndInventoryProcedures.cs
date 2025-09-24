@@ -28,7 +28,15 @@ namespace happykopiAPI.Data.Migrations
 
             migrationBuilder.Sql(sp_AddNewCategory);
 
-			var sp_AddNewProduct = @"
+            var dbo_ProductRecipeType = @"
+			CREATE TYPE dbo.ProductRecipeType AS TABLE (
+				IngredientId INT NOT NULL,
+				QuantityNeeded DECIMAL(18, 2) NOT NULL
+			)";
+
+            migrationBuilder.Sql(dbo_ProductRecipeType);
+
+            var sp_AddNewProduct = @"
 			CREATE PROCEDURE sp_AddNewProduct
 				@Name NVARCHAR(150),
 				@Description NVARCHAR(MAX) = NULL,
@@ -225,14 +233,6 @@ namespace happykopiAPI.Data.Migrations
 			END";
 
 			migrationBuilder.Sql(sp_GetProductsWithCategory);
-
-			var dbo_ProductRecipeType = @"
-			CREATE TYPE dbo.ProductRecipeType AS TABLE (
-				IngredientId INT NOT NULL,
-				QuantityNeeded DECIMAL(18, 2) NOT NULL
-			)";
-
-			migrationBuilder.Sql(dbo_ProductRecipeType);
         }
 
         /// <inheritdoc />

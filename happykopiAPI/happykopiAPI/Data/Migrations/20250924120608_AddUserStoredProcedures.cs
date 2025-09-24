@@ -18,7 +18,7 @@ namespace happykopiAPI.Data.Migrations
 	            SET NOCOUNT ON;
 
 	            SELECT
-		        UserId,
+		        Id,
 		        Username,
 		        PasswordHash,
 		        Role
