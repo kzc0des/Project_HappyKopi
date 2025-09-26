@@ -19,6 +19,7 @@ namespace happykopiAPI.Data
         public DbSet<ProductIngredient> ProductIngredients { get; set; }
         public DbSet<IngredientStockLog> IngredientStockLogs { get; set; }
         public DbSet<DailyIngredientSummary> DailyIngredientSummaries { get; set; }
+        public DbSet<IngredientBatch> IngredientBatches { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,11 +53,6 @@ namespace happykopiAPI.Data
                 .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId);
 
-            modelBuilder.Entity<Ingredient>()
-                .HasMany(i => i.StockLogs)
-                .WithOne(log => log.Ingredient)
-                .HasForeignKey(log => log.IngredientId);
-
             modelBuilder.Entity<User>()
                 .Property(u => u.Role)
                 .HasConversion<string>();
@@ -89,10 +85,6 @@ namespace happykopiAPI.Data
                 .Property(log => log.DateLogged)
                 .HasDefaultValueSql("GETUTCDATE()");
 
-            modelBuilder.Entity<Ingredient>()
-                .Property(i => i.LastUpdated)
-                .HasDefaultValueSql("GETUTCDATE()");
-
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.TransactionDate)
                 .HasDefaultValueSql("GETUTCDATE()");
@@ -108,6 +100,28 @@ namespace happykopiAPI.Data
             modelBuilder.Entity<Order>()
                 .HasIndex(o => o.OrderNumber)
                 .IsUnique();
+
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.Batches)
+                .WithOne(b => b.Ingredient)
+                .HasForeignKey(b => b.IngredientId);
+
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.StockLogs)
+                .WithOne(log => log.Ingredient)
+                .HasForeignKey(log => log.IngredientId);
+
+            modelBuilder.Entity<Ingredient>()
+                .Property(i => i.IsPerishable)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<IngredientBatch>()
+                .Property(b => b.DateReceived)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Ingredient>()
+                .Property(i => i.LastUpdated)
+                .HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }

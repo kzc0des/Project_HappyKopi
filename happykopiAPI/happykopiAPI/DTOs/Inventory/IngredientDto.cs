@@ -15,6 +15,9 @@ namespace happykopiAPI.DTOs.Inventory
         [Required]
         [Range(0, double.MaxValue)]
         public decimal AlertLevel { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTime? ExpiryDate { get; set; }
+
+        [Required]
+        public bool IsPerishable { get; set; }
     }
 }

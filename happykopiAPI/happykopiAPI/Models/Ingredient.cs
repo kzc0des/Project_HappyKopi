@@ -13,19 +13,20 @@ namespace happykopiAPI.Models
         public string Name { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")] 
-        public decimal StockQuantity { get; set; } 
-
-        [Required]
         [MaxLength(20)]
         public string UnitOfMeasure { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal AlertLevel { get; set; } 
+        public decimal AlertLevel { get; set; }
 
+        [Required]
         public DateTime LastUpdated { get; set; }
+
+        [Required]
+        public bool IsPerishable { get; set; }
         public ICollection<ProductIngredient> Recipe { get; set; }
+        public ICollection<IngredientBatch> Batches { get; set; }
         public ICollection<IngredientStockLog> StockLogs { get; set; }
     }
 }
