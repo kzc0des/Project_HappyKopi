@@ -28,5 +28,6 @@ namespace happykopiAPI.Models
         public ICollection<ProductIngredient> Recipe { get; set; }
         public ICollection<IngredientBatch> Batches { get; set; }
         public ICollection<IngredientStockLog> StockLogs { get; set; }
+        public ICollection<AddOnIngredient> AddOnRecipes { get; set; }
     }
 }

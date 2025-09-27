@@ -122,6 +122,42 @@ namespace happykopiAPI.Data
             modelBuilder.Entity<Ingredient>()
                 .Property(i => i.LastUpdated)
                 .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<AddOn>()
+                .Property(a => a.NeedsIngredientBreakdown)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<AddOn>()
+                .Property(a => a.StockQuantity)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<AddOn>()
+                .Property(a => a.LastUpdated)
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<AddOnIngredient>()
+                .HasKey(ai => new { ai.AddOnId, ai.IngredientId });
+
+            modelBuilder.Entity<AddOnIngredient>()
+                .HasOne(ai => ai.AddOn)
+                .WithMany(a => a.Ingredients)
+                .HasForeignKey(ai => ai.AddOnId);
+
+            modelBuilder.Entity<AddOnIngredient>()
+                .HasOne(ai => ai.Ingredient)
+                .WithMany(i => i.AddOnRecipes)
+                .HasForeignKey(ai => ai.IngredientId);
+
+            modelBuilder.Entity<OrderItemAddOn>()
+                .HasOne(oia => oia.OrderItem)
+                .WithMany(oi => oi.AddOns)
+                .HasForeignKey(oia => oia.OrderItemId);
+
+            modelBuilder.Entity<OrderItemAddOn>()
+                .HasOne(oia => oia.AddOn)
+                .WithMany(a => a.OrderItemAddOns)
+                .HasForeignKey(oia => oia.AddOnId);
         }
     }
 }

@@ -25,7 +25,6 @@ namespace happykopiAPI.Models
         [Required]
         public OrderStatus Status { get; set; } 
 
-        // Navigation Properties
         [ForeignKey("UserId")]
         public User User { get; set; }
 
