@@ -5,7 +5,7 @@ namespace happykopiAPI.Models
 {
     public class AddOn
     {
-        [Required]
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -13,7 +13,7 @@ namespace happykopiAPI.Models
         public string Name { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18, 2")]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
 
         [Required]
@@ -28,6 +28,7 @@ namespace happykopiAPI.Models
         [MaxLength(20)]
         public string? UnitOfMeasure { get; set; }
         public DateTime? ExpiryDate { get; set; }
+        [Required]
         public DateTime LastUpdated { get; set; }
         public ICollection<OrderItemAddOn> OrderItemAddOns { get; set; }
         public ICollection<AddOnIngredient> Ingredients { get; set; }

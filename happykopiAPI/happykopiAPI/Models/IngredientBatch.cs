@@ -5,6 +5,7 @@ namespace happykopiAPI.Models
 {
     public class IngredientBatch
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
