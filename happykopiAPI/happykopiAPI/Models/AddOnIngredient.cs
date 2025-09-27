@@ -8,6 +8,7 @@ namespace happykopiAPI.Models
         public int AddOnId { get; set; }
         public int IngredientId { get; set; }
 
+        [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal QuantityNeeded { get; set; } 
         public AddOn AddOn { get; set; }

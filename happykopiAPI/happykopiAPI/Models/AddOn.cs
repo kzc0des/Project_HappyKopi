@@ -29,8 +29,6 @@ namespace happykopiAPI.Models
         public string? UnitOfMeasure { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public DateTime LastUpdated { get; set; }
-
-        // Navigation Properties
         public ICollection<OrderItemAddOn> OrderItemAddOns { get; set; }
         public ICollection<AddOnIngredient> Ingredients { get; set; }
     }
