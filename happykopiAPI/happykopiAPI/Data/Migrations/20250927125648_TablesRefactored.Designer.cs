@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using happykopiAPI.Data;
 
@@ -11,9 +12,11 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    partial class HappyKopiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250927125648_TablesRefactored")]
+    partial class TablesRefactored
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,9 +225,6 @@ namespace happykopiAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BatchId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ChangeType")
                         .HasColumnType("int");
 
@@ -254,8 +254,6 @@ namespace happykopiAPI.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BatchId");
 
                     b.HasIndex("IngredientId");
 
@@ -552,16 +550,10 @@ namespace happykopiAPI.Data.Migrations
 
             modelBuilder.Entity("happykopiAPI.Models.IngredientStockLog", b =>
                 {
-                    b.HasOne("happykopiAPI.Models.IngredientBatch", "Batch")
-                        .WithMany("StockLogs")
-                        .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("happykopiAPI.Models.Ingredient", "Ingredient")
                         .WithMany("StockLogs")
                         .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("happykopiAPI.Models.User", "User")
@@ -569,8 +561,6 @@ namespace happykopiAPI.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Batch");
 
                     b.Navigation("Ingredient");
 
@@ -687,11 +677,6 @@ namespace happykopiAPI.Data.Migrations
 
                     b.Navigation("Recipe");
 
-                    b.Navigation("StockLogs");
-                });
-
-            modelBuilder.Entity("happykopiAPI.Models.IngredientBatch", b =>
-                {
                     b.Navigation("StockLogs");
                 });
 

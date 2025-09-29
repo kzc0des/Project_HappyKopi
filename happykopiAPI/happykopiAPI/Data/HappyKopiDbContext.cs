@@ -20,6 +20,9 @@ namespace happykopiAPI.Data
         public DbSet<IngredientStockLog> IngredientStockLogs { get; set; }
         public DbSet<DailyIngredientSummary> DailyIngredientSummaries { get; set; }
         public DbSet<IngredientBatch> IngredientBatches { get; set; }
+        public DbSet<AddOn> AddOns { get; set; }
+        public DbSet<AddOnIngredient> AddOnIngredients { get; set; }
+        public DbSet<OrderItemAddOn> OrderItemAddOns { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -158,6 +161,18 @@ namespace happykopiAPI.Data
                 .HasOne(oia => oia.AddOn)
                 .WithMany(a => a.OrderItemAddOns)
                 .HasForeignKey(oia => oia.AddOnId);
+
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.StockLogs)
+                .WithOne(log => log.Ingredient)
+                .HasForeignKey(log => log.IngredientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<IngredientBatch>()
+                .HasMany(b => b.StockLogs)
+                .WithOne(log => log.Batch)
+                .HasForeignKey(log => log.BatchId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

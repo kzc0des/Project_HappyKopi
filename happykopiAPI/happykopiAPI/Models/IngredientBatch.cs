@@ -23,5 +23,6 @@ namespace happykopiAPI.Models
         public DateTime? DateUsed { get; set; }
 
         public Ingredient Ingredient { get; set; }
+        public ICollection<IngredientStockLog> StockLogs { get; set; }
     }
 }

@@ -10,7 +10,10 @@ namespace happykopiAPI.Models
         public int Id { get; set; }
 
         [Required]
-        public int IngredientId { get; set; } 
+        public int IngredientId { get; set; }
+
+        [Required]
+        public int BatchId { get; set; }
 
         [Required]
         public int UserId { get; set; } 
@@ -37,6 +40,9 @@ namespace happykopiAPI.Models
 
         [ForeignKey("IngredientId")]
         public Ingredient Ingredient { get; set; }
+
+        [ForeignKey("BatchId")]
+        public IngredientBatch Batch { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }
