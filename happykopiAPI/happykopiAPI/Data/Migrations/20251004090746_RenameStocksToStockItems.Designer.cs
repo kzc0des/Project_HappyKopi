@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using happykopiAPI.Data;
 
@@ -11,9 +12,11 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    partial class HappyKopiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251004090746_RenameStocksToStockItems")]
+    partial class RenameStocksToStockItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,6 +147,88 @@ namespace happykopiAPI.Data.Migrations
                     b.HasIndex("IngredientId");
 
                     b.ToTable("DailyIngredientSummaries");
+                });
+
+            modelBuilder.Entity("happykopiAPI.Models.IngredientBatch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateReceived")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTime?>("DateUsed")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("StockQuantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("IngredientBatches");
+                });
+
+            modelBuilder.Entity("happykopiAPI.Models.IngredientStockLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChangeType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateLogged")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("QuantityChanged")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<decimal>("StockQuantityAfter")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("StockQuantityBefore")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("IngredientStockLogs");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Order", b =>
@@ -286,15 +371,15 @@ namespace happykopiAPI.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StockItemId")
+                    b.Property<int>("IngredientId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("QuantityNeeded")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ProductId", "StockItemId");
+                    b.HasKey("ProductId", "IngredientId");
 
-                    b.HasIndex("StockItemId");
+                    b.HasIndex("IngredientId");
 
                     b.ToTable("ProductIngredients");
                 });
@@ -336,91 +421,6 @@ namespace happykopiAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StockItems");
-                });
-
-            modelBuilder.Entity("happykopiAPI.Models.StockItemBatch", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateReceived")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<DateTime?>("DateUsed")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("StockItemId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("StockQuantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StockItemId");
-
-                    b.ToTable("StockItemBatches");
-                });
-
-            modelBuilder.Entity("happykopiAPI.Models.StockLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BatchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChangeType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateLogged")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("QuantityChanged")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("StockItemId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("StockQuantityAfter")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("StockQuantityBefore")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BatchId");
-
-                    b.HasIndex("StockItemId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("StockLogs");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Transaction", b =>
@@ -523,7 +523,7 @@ namespace happykopiAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("happykopiAPI.Models.StockItem", "StockItem")
+                    b.HasOne("happykopiAPI.Models.StockItem", "Ingredient")
                         .WithMany("AddOnRecipes")
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -531,18 +531,56 @@ namespace happykopiAPI.Data.Migrations
 
                     b.Navigation("AddOn");
 
-                    b.Navigation("StockItem");
+                    b.Navigation("Ingredient");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.DailyIngredientSummary", b =>
                 {
-                    b.HasOne("happykopiAPI.Models.StockItem", "StockItem")
+                    b.HasOne("happykopiAPI.Models.StockItem", "Ingredient")
                         .WithMany()
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("StockItem");
+                    b.Navigation("Ingredient");
+                });
+
+            modelBuilder.Entity("happykopiAPI.Models.IngredientBatch", b =>
+                {
+                    b.HasOne("happykopiAPI.Models.StockItem", "Ingredient")
+                        .WithMany("Batches")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+                });
+
+            modelBuilder.Entity("happykopiAPI.Models.IngredientStockLog", b =>
+                {
+                    b.HasOne("happykopiAPI.Models.IngredientBatch", "Batch")
+                        .WithMany("StockLogs")
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("happykopiAPI.Models.StockItem", "Ingredient")
+                        .WithMany("StockLogs")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("happykopiAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Order", b =>
@@ -607,59 +645,21 @@ namespace happykopiAPI.Data.Migrations
 
             modelBuilder.Entity("happykopiAPI.Models.ProductIngredient", b =>
                 {
+                    b.HasOne("happykopiAPI.Models.StockItem", "Ingredient")
+                        .WithMany("Recipe")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("happykopiAPI.Models.Product", "Product")
                         .WithMany("Recipe")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("happykopiAPI.Models.StockItem", "StockItem")
-                        .WithMany("Recipe")
-                        .HasForeignKey("StockItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Ingredient");
 
                     b.Navigation("Product");
-
-                    b.Navigation("StockItem");
-                });
-
-            modelBuilder.Entity("happykopiAPI.Models.StockItemBatch", b =>
-                {
-                    b.HasOne("happykopiAPI.Models.StockItem", "StockItem")
-                        .WithMany("Batches")
-                        .HasForeignKey("StockItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StockItem");
-                });
-
-            modelBuilder.Entity("happykopiAPI.Models.StockLog", b =>
-                {
-                    b.HasOne("happykopiAPI.Models.StockItemBatch", "Batch")
-                        .WithMany("StockLogs")
-                        .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("happykopiAPI.Models.StockItem", "StockItem")
-                        .WithMany("StockLogs")
-                        .HasForeignKey("StockItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("happykopiAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Batch");
-
-                    b.Navigation("StockItem");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Transaction", b =>
@@ -683,6 +683,11 @@ namespace happykopiAPI.Data.Migrations
             modelBuilder.Entity("happykopiAPI.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("happykopiAPI.Models.IngredientBatch", b =>
+                {
+                    b.Navigation("StockLogs");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Order", b =>
@@ -711,11 +716,6 @@ namespace happykopiAPI.Data.Migrations
 
                     b.Navigation("Recipe");
 
-                    b.Navigation("StockLogs");
-                });
-
-            modelBuilder.Entity("happykopiAPI.Models.StockItemBatch", b =>
-                {
                     b.Navigation("StockLogs");
                 });
 #pragma warning restore 612, 618

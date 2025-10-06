@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using happykopiAPI.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace happykopiAPI.Models
 {
-    public class Ingredient
+    public class StockItem
     {
         [Key]
         public int Id { get; set; }
@@ -25,9 +26,12 @@ namespace happykopiAPI.Models
 
         [Required]
         public bool IsPerishable { get; set; }
+
+        [Required]
+        public StockItemType ItemType { get; set; }
         public ICollection<ProductIngredient> Recipe { get; set; }
-        public ICollection<IngredientBatch> Batches { get; set; }
-        public ICollection<IngredientStockLog> StockLogs { get; set; }
+        public ICollection<StockItemBatch> Batches { get; set; }
+        public ICollection<StockLog> StockLogs { get; set; }
         public ICollection<AddOnIngredient> AddOnRecipes { get; set; }
     }
 }

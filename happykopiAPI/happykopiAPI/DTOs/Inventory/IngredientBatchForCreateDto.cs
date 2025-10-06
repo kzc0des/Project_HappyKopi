@@ -8,11 +8,11 @@ namespace happykopiAPI.DTOs.Inventory
         public int IngredientId { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessage = "Ang Batch Number ay hindi maaaring lumagpas sa 50 characters.")]
+        [StringLength(50)]
         public string BatchNumber { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Ang quantity ay dapat hindi bababa sa 1.")]
+        [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
 
         [Required]

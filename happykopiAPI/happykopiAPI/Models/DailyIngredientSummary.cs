@@ -43,6 +43,6 @@ namespace happykopiAPI.Models
         public string UnitOfMeasure { get; set; } 
 
         [ForeignKey("IngredientId")]
-        public Ingredient Ingredient { get; set; }
+        public StockItem StockItem { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace happykopiAPI.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal QuantityNeeded { get; set; } 
         public AddOn AddOn { get; set; }
-        public Ingredient Ingredient { get; set; }
+        public StockItem StockItem { get; set; }
     }
 }

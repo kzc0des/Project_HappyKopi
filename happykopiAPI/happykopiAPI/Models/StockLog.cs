@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace happykopiAPI.Models
 {
-    public class IngredientStockLog
+    public class StockLog
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public int IngredientId { get; set; }
+        public int StockItemId { get; set; }
 
         [Required]
         public int BatchId { get; set; }
@@ -39,10 +39,10 @@ namespace happykopiAPI.Models
         public DateTime DateLogged { get; set; } 
 
         [ForeignKey("IngredientId")]
-        public Ingredient Ingredient { get; set; }
+        public StockItem StockItem { get; set; }
 
         [ForeignKey("BatchId")]
-        public IngredientBatch Batch { get; set; }
+        public StockItemBatch Batch { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }

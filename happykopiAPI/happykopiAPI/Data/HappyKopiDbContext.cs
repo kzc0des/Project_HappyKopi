@@ -12,14 +12,14 @@ namespace happykopiAPI.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<StockItem> StockItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ProductIngredient> ProductIngredients { get; set; }
-        public DbSet<IngredientStockLog> IngredientStockLogs { get; set; }
+        public DbSet<StockLog> StockLogs { get; set; }
         public DbSet<DailyIngredientSummary> DailyIngredientSummaries { get; set; }
-        public DbSet<IngredientBatch> IngredientBatches { get; set; }
+        public DbSet<StockItemBatch> StockItemBatches { get; set; }
         public DbSet<AddOn> AddOns { get; set; }
         public DbSet<AddOnIngredient> AddOnIngredients { get; set; }
         public DbSet<OrderItemAddOn> OrderItemAddOns { get; set; }
@@ -29,7 +29,7 @@ namespace happykopiAPI.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ProductIngredient>()
-                .HasKey(pi => new { pi.ProductId, pi.IngredientId });
+                .HasKey(pi => new { pi.ProductId, pi.StockItemId });
 
             modelBuilder.Entity<ProductIngredient>()
                 .HasOne(pi => pi.Product)
@@ -37,9 +37,9 @@ namespace happykopiAPI.Data
                 .HasForeignKey(pi => pi.ProductId);
 
             modelBuilder.Entity<ProductIngredient>()
-                .HasOne(pi => pi.Ingredient)
+                .HasOne(pi => pi.StockItem)
                 .WithMany(i => i.Recipe)
-                .HasForeignKey(pi => pi.IngredientId);
+                .HasForeignKey(pi => pi.StockItemId);
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderItems)
@@ -84,7 +84,7 @@ namespace happykopiAPI.Data
                 .Property(o => o.OrderDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 
-            modelBuilder.Entity<IngredientStockLog>()
+            modelBuilder.Entity<StockLog>()
                 .Property(log => log.DateLogged)
                 .HasDefaultValueSql("GETUTCDATE()");
 
@@ -104,25 +104,25 @@ namespace happykopiAPI.Data
                 .HasIndex(o => o.OrderNumber)
                 .IsUnique();
 
-            modelBuilder.Entity<Ingredient>()
+            modelBuilder.Entity<StockItem>()
                 .HasMany(i => i.Batches)
-                .WithOne(b => b.Ingredient)
-                .HasForeignKey(b => b.IngredientId);
+                .WithOne(b => b.StockItem)
+                .HasForeignKey(b => b.StockItemId);
 
-            modelBuilder.Entity<Ingredient>()
+            modelBuilder.Entity<StockItem>()
                 .HasMany(i => i.StockLogs)
-                .WithOne(log => log.Ingredient)
-                .HasForeignKey(log => log.IngredientId);
+                .WithOne(log => log.StockItem)
+                .HasForeignKey(log => log.StockItemId);
 
-            modelBuilder.Entity<Ingredient>()
+            modelBuilder.Entity<StockItem>()
                 .Property(i => i.IsPerishable)
                 .HasDefaultValue(false);
 
-            modelBuilder.Entity<IngredientBatch>()
+            modelBuilder.Entity<StockItemBatch>()
                 .Property(b => b.DateReceived)
                 .HasDefaultValueSql("GETUTCDATE()");
 
-            modelBuilder.Entity<Ingredient>()
+            modelBuilder.Entity<StockItem>()
                 .Property(i => i.LastUpdated)
                 .HasDefaultValueSql("GETUTCDATE()");
 
@@ -148,7 +148,7 @@ namespace happykopiAPI.Data
                 .HasForeignKey(ai => ai.AddOnId);
 
             modelBuilder.Entity<AddOnIngredient>()
-                .HasOne(ai => ai.Ingredient)
+                .HasOne(ai => ai.StockItem)
                 .WithMany(i => i.AddOnRecipes)
                 .HasForeignKey(ai => ai.IngredientId);
 
@@ -162,13 +162,13 @@ namespace happykopiAPI.Data
                 .WithMany(a => a.OrderItemAddOns)
                 .HasForeignKey(oia => oia.AddOnId);
 
-            modelBuilder.Entity<Ingredient>()
+            modelBuilder.Entity<StockItem>()
                 .HasMany(i => i.StockLogs)
-                .WithOne(log => log.Ingredient)
-                .HasForeignKey(log => log.IngredientId)
+                .WithOne(log => log.StockItem)
+                .HasForeignKey(log => log.StockItemId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<IngredientBatch>()
+            modelBuilder.Entity<StockItemBatch>()
                 .HasMany(b => b.StockLogs)
                 .WithOne(log => log.Batch)
                 .HasForeignKey(log => log.BatchId)

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using happykopiAPI.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace happykopiAPI.DTOs.Inventory
 {
-    public class IngredientDto
+    public class StockItemDto
     {
         public int Id { get; set; }
         [Required]
@@ -19,5 +20,6 @@ namespace happykopiAPI.DTOs.Inventory
 
         [Required]
         public bool IsPerishable { get; set; }
+        public StockItemType ItemType { get; set; }
     }
 }

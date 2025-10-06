@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace happykopiAPI.Models
 {
-    public class IngredientBatch
+    public class StockItemBatch
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public int IngredientId { get; set; }
+        public int StockItemId { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -22,7 +22,7 @@ namespace happykopiAPI.Models
 
         public DateTime? DateUsed { get; set; }
 
-        public Ingredient Ingredient { get; set; }
-        public ICollection<IngredientStockLog> StockLogs { get; set; }
+        public StockItem StockItem { get; set; }
+        public ICollection<StockLog> StockLogs { get; set; }
     }
 }
