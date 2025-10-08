@@ -1,48 +1,63 @@
-<div class="flex flex-col justify-around items-center
-h-[100dvh] w-[100dvw]">
-    <header>
-        <img class="w-[10em]" src="../../../../assets/HappyKopiLogo.jpg" alt="">
+<div class="flex flex-col h-[100dvh]">
+    <header class="bg-hapikopi-yellow w-full h-[20dvh] rounded-b-2xl">
+        <img class="logo w-[10em] absolute" src="../../../../assets/HappyKopiLogo.png" alt="">
     </header>
-    <main class="flex flex-col items-center w-full">
-        <div class="flex flex-col items-center gap-2 pb-10">
-            <h1 class="font-black text-5xl text-hapikopi-yellow">HappyKopi</h1>
-            <p>Sign in to start your session</p>
-        </div>
-        <div class="mb-6">
-            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
-            <input type="text" id="username" name="username" ngModel required
-                class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
-                placeholder="Enter your username" />
-        </div>
-        <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-            <div class="relative">
-                <input [type]="passwordFieldType()" id="password" name="password" ngModel required
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
-                    placeholder="Enter your password" />
-                <button type="button" (click)="togglePasswordVisibility()"
-                    class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 hover:text-amber-600 focus:outline-none"
-                    aria-label="Toggle password visibility">
-
-                    @if (!passwordVisible()) {
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                    }
-                    @if (passwordVisible()) {
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
-                        <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
-                        <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
-                        <line x1="2" x2="22" y1="2" y2="22"></line>
-                    </svg>
-                    }
-                </button>
+    <div class="flex flex-col justify-center items-center w-[100dvw] flex-1">
+        <main class="flex flex-col items-center justify-center w-full h-full">
+            <div class="flex flex-col items-center gap-2 pb-10">
+                <h1 class="font-black text-5xl text-hapikopi-yellow">HappyKopi</h1>
+                <p>Sign in to start your session</p>
             </div>
-        </div>
-        <button>Login</button>
-    </main>
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+                <div class="mb-6">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <input type="text" id="username" name="username" ngModel required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
+                        placeholder="Enter your username" />
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <input [type]="passwordFieldType()" id="password" name="password" ngModel required
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
+                            placeholder="Enter your password" />
+                        <button type="button" (click)="togglePasswordVisibility()"
+                            class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 hover:text-amber-600 focus:outline-none"
+                            aria-label="Toggle password visibility">
+
+                            @if (!passwordVisible()) {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            }
+                            @if (passwordVisible()) {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68">
+                                </path>
+                                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                <line x1="2" x2="22" y1="2" y2="22"></line>
+                            </svg>
+                            }
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" [disabled]="!loginForm.valid" class="w-full px-4 py-3 font-semibold text-white bg-hapikopi-yellow rounded-lg 
+                    hover:bg-amber-700 
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 
+                    disabled:bg-gray-400 disabled:cursor-not-allowed 
+                    transition-colors 
+                    shadow-md">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
 </div>
