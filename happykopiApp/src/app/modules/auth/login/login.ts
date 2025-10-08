@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -7,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrl: './login.css'
 })
 export class Login {
+  passwordVisible = signal(false);
 
+  passwordFieldType = computed(() => this.passwordVisible() ? 'text' : 'password');
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible.update(visible => !visible);
+  }
 }
