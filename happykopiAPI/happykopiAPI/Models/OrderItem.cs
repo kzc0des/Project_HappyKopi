@@ -19,7 +19,7 @@ namespace happykopiAPI.Models
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal UnitPrice { get; set; } 
+        public decimal Price { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
