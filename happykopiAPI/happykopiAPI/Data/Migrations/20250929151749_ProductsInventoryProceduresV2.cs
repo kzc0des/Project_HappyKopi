@@ -44,214 +44,217 @@ namespace happykopiAPI.Data.Migrations
 
             migrationBuilder.Sql(dbo_AddOnRecipeType);
 
-            var sp_AddNewProduct = @"
-            CREATE PROCEDURE sp_AddNewProduct
-				@Name NVARCHAR(150),
-				@Description NVARCHAR(MAX) = NULL,
-				@Price DECIMAL(18, 2),
-				@ImageUrl NVARCHAR(MAX),
-				@CategoryId INT,
-				@Recipe dbo.ProductRecipeType READONLY
-			AS
-			BEGIN
-				SET NOCOUNT ON;
+            #region Refactored out in V2
+            /*            var sp_AddNewProduct = @"
+						CREATE PROCEDURE sp_AddNewProduct
+							@Name NVARCHAR(150),
+							@Description NVARCHAR(MAX) = NULL,
+							@Price DECIMAL(18, 2),
+							@ImageUrl NVARCHAR(MAX),
+							@CategoryId INT,
+							@Recipe dbo.ProductRecipeType READONLY
+						AS
+						BEGIN
+							SET NOCOUNT ON;
 
-				IF EXISTS (SELECT 1 FROM dbo.Products WHERE Name = @Name)
-					THROW 50001, 'The product is already existing.', 1;
-		
-				BEGIN TRANSACTION
-				BEGIN TRY
-					INSERT INTO dbo.Products (
-						Name, 
-						Description, 
-						Price, 
-						ImageUrl,
-						CategoryId
-					)
-					VALUES (
-						@Name,
-						@Description,
-						@Price,
-						@ImageUrl,
-						@CategoryId
-					);
-		
-					DECLARE @NewProductId INT;
-					SET @NewProductId = SCOPE_IDENTITY();
-		
-					INSERT INTO dbo.ProductIngredients (
-						ProductId,
-						IngredientId,
-						QuantityNeeded
-					)
-					SELECT 
-						@NewProductId,
-						IngredientId,
-						QuantityNeeded
-					FROM @Recipe;
-		
-					COMMIT TRANSACTION
-				END TRY
-				BEGIN CATCH
-					IF @@TRANCOUNT > 0
-						ROLLBACK TRANSACTION
-					THROW;
-				END CATCH
-			END";
+							IF EXISTS (SELECT 1 FROM dbo.Products WHERE Name = @Name)
+								THROW 50001, 'The product is already existing.', 1;
 
-            migrationBuilder.Sql(sp_AddNewProduct);
+							BEGIN TRANSACTION
+							BEGIN TRY
+								INSERT INTO dbo.Products (
+									Name, 
+									Description, 
+									Price, 
+									ImageUrl,
+									CategoryId
+								)
+								VALUES (
+									@Name,
+									@Description,
+									@Price,
+									@ImageUrl,
+									@CategoryId
+								);
 
-            var sp_AddNewIngdredient = @"
-            CREATE PROCEDURE [dbo].[sp_AddNewIngredient]
-				@Name NVARCHAR(100),
-				@UnitOfMeasure NVARCHAR(20),
-				@AlertLevel DECIMAL(18, 2),
-				@IsPerishable BIT,
+								DECLARE @NewProductId INT;
+								SET @NewProductId = SCOPE_IDENTITY();
 
-				@InitialStockQuantity DECIMAL(18, 2),
-				@ExpiryDate DATETIME = NULL,
+								INSERT INTO dbo.ProductIngredients (
+									ProductId,
+									IngredientId,
+									QuantityNeeded
+								)
+								SELECT 
+									@NewProductId,
+									IngredientId,
+									QuantityNeeded
+								FROM @Recipe;
 
-				@UserId INT
-			AS
-			BEGIN
-				SET XACT_ABORT ON;
-				SET NOCOUNT ON;
+								COMMIT TRANSACTION
+							END TRY
+							BEGIN CATCH
+								IF @@TRANCOUNT > 0
+									ROLLBACK TRANSACTION
+								THROW;
+							END CATCH
+						END";
 
-				BEGIN TRANSACTION;
+						migrationBuilder.Sql(sp_AddNewProduct);
 
-				BEGIN TRY
-					IF EXISTS (SELECT 1 FROM dbo.Ingredients WHERE Name = @Name)
-						THROW 50001, 'An ingredient with this name already exists.', 1;
+						var sp_AddNewIngdredient = @"
+						CREATE PROCEDURE [dbo].[sp_AddNewIngredient]
+							@Name NVARCHAR(100),
+							@UnitOfMeasure NVARCHAR(20),
+							@AlertLevel DECIMAL(18, 2),
+							@IsPerishable BIT,
 
-					INSERT INTO dbo.Ingredients (
-						Name,
-						UnitOfMeasure,
-						AlertLevel,
-						IsPerishable
-					)
-					VALUES (
-						@Name,
-						@UnitOfMeasure,
-						@AlertLevel,
-						@IsPerishable
-					);
+							@InitialStockQuantity DECIMAL(18, 2),
+							@ExpiryDate DATETIME = NULL,
 
-					DECLARE @NewIngredientId INT = SCOPE_IDENTITY();
+							@UserId INT
+						AS
+						BEGIN
+							SET XACT_ABORT ON;
+							SET NOCOUNT ON;
 
-					IF @InitialStockQuantity > 0
-					BEGIN
-						-- Insert sa IngredientBatches table
-						INSERT INTO dbo.IngredientBatches (
-							IngredientId,
-							StockQuantity,
-							ExpiryDate
-						)
-						VALUES (
-							@NewIngredientId,
-							@InitialStockQuantity,
-							@ExpiryDate
-						);
+							BEGIN TRANSACTION;
 
-						-- Step 3: Mag-log sa IngredientStockLogs
-						INSERT INTO dbo.IngredientStockLogs (
-							IngredientId,
-							UserId,
-							ChangeType, -- 0 para sa 'StockIn'
-							QuantityChanged,
-							StockQuantityBefore,
-							StockQuantityAfter,
-							Remarks
-						)
-						VALUES (
-							@NewIngredientId,
-							@UserId,
-							0, -- 'StockIn'
-							@InitialStockQuantity,
-							0, -- Dahil bago pa lang, ang stock before ay 0
-							@InitialStockQuantity,
-							'Initial stock for new ingredient'
-						);
-					END
+							BEGIN TRY
+								IF EXISTS (SELECT 1 FROM dbo.Ingredients WHERE Name = @Name)
+									THROW 50001, 'An ingredient with this name already exists.', 1;
 
-					COMMIT TRANSACTION;
+								INSERT INTO dbo.Ingredients (
+									Name,
+									UnitOfMeasure,
+									AlertLevel,
+									IsPerishable
+								)
+								VALUES (
+									@Name,
+									@UnitOfMeasure,
+									@AlertLevel,
+									@IsPerishable
+								);
 
-					SELECT @NewIngredientId AS NewIngredientId;
+								DECLARE @NewIngredientId INT = SCOPE_IDENTITY();
 
-				END TRY
-				BEGIN CATCH
-					IF @@TRANCOUNT > 0
-						ROLLBACK TRANSACTION;
-					THROW;
-				END CATCH
-			END";
+								IF @InitialStockQuantity > 0
+								BEGIN
+									-- Insert sa IngredientBatches table
+									INSERT INTO dbo.IngredientBatches (
+										IngredientId,
+										StockQuantity,
+										ExpiryDate
+									)
+									VALUES (
+										@NewIngredientId,
+										@InitialStockQuantity,
+										@ExpiryDate
+									);
 
-            migrationBuilder.Sql(sp_AddNewIngdredient);
+									-- Step 3: Mag-log sa IngredientStockLogs
+									INSERT INTO dbo.IngredientStockLogs (
+										IngredientId,
+										UserId,
+										ChangeType, -- 0 para sa 'StockIn'
+										QuantityChanged,
+										StockQuantityBefore,
+										StockQuantityAfter,
+										Remarks
+									)
+									VALUES (
+										@NewIngredientId,
+										@UserId,
+										0, -- 'StockIn'
+										@InitialStockQuantity,
+										0, -- Dahil bago pa lang, ang stock before ay 0
+										@InitialStockQuantity,
+										'Initial stock for new ingredient'
+									);
+								END
 
-            var sp_AddIngredientBatch = @"
-			CREATE PROCEDURE [dbo].[sp_AddIngredientBatch]
-				@IngredientId INT,
-				@QuantityAdded DECIMAL(18, 2),
-				@UserId INT,
-				@ExpiryDate DATETIME = NULL,
-				@Remarks NVARCHAR(255) = NULL
-			AS
-			BEGIN
-				SET XACT_ABORT ON;
-				SET NOCOUNT ON;
+								COMMIT TRANSACTION;
 
-				BEGIN TRANSACTION;
+								SELECT @NewIngredientId AS NewIngredientId;
 
-				BEGIN TRY
-					DECLARE @TotalStockBefore DECIMAL(18, 2);
-					SELECT @TotalStockBefore = ISNULL(SUM(StockQuantity), 0)
-					FROM dbo.IngredientBatches
-					WHERE IngredientId = @IngredientId AND StockQuantity > 0;
+							END TRY
+							BEGIN CATCH
+								IF @@TRANCOUNT > 0
+									ROLLBACK TRANSACTION;
+								THROW;
+							END CATCH
+						END";
 
-					INSERT INTO dbo.IngredientBatches (
-						IngredientId,
-						StockQuantity,
-						DateReceived,
-						ExpiryDate
-					)
-					VALUES (
-						@IngredientId,
-						@QuantityAdded,
-						GETDATE(),
-						@ExpiryDate
-					);
-					DECLARE @TotalStockAfter DECIMAL(18, 2) = @TotalStockBefore + @QuantityAdded;
+						migrationBuilder.Sql(sp_AddNewIngdredient);
 
-					INSERT INTO dbo.IngredientStockLogs (
-						IngredientId,
-						UserId,
-						ChangeType, -- 0 para sa 'StockIn'
-						QuantityChanged,
-						StockQuantityBefore,
-						StockQuantityAfter,
-						Remarks
-					)
-					VALUES (
-						@IngredientId,
-						@UserId,
-						0, -- 'StockIn'
-						@QuantityAdded,
-						@TotalStockBefore,
-						@TotalStockAfter,
-						'Stock Added'
-					);
+						var sp_AddIngredientBatch = @"
+						CREATE PROCEDURE [dbo].[sp_AddIngredientBatch]
+							@IngredientId INT,
+							@QuantityAdded DECIMAL(18, 2),
+							@UserId INT,
+							@ExpiryDate DATETIME = NULL,
+							@Remarks NVARCHAR(255) = NULL
+						AS
+						BEGIN
+							SET XACT_ABORT ON;
+							SET NOCOUNT ON;
 
-					COMMIT TRANSACTION;
+							BEGIN TRANSACTION;
 
-				END TRY
-				BEGIN CATCH
-					IF @@TRANCOUNT > 0
-						ROLLBACK TRANSACTION;
-        
-					THROW;
-				END CATCH
-			END";
+							BEGIN TRY
+								DECLARE @TotalStockBefore DECIMAL(18, 2);
+								SELECT @TotalStockBefore = ISNULL(SUM(StockQuantity), 0)
+								FROM dbo.IngredientBatches
+								WHERE IngredientId = @IngredientId AND StockQuantity > 0;
 
-            migrationBuilder.Sql(sp_AddIngredientBatch);
+								INSERT INTO dbo.IngredientBatches (
+									IngredientId,
+									StockQuantity,
+									DateReceived,
+									ExpiryDate
+								)
+								VALUES (
+									@IngredientId,
+									@QuantityAdded,
+									GETDATE(),
+									@ExpiryDate
+								);
+								DECLARE @TotalStockAfter DECIMAL(18, 2) = @TotalStockBefore + @QuantityAdded;
+
+								INSERT INTO dbo.IngredientStockLogs (
+									IngredientId,
+									UserId,
+									ChangeType, -- 0 para sa 'StockIn'
+									QuantityChanged,
+									StockQuantityBefore,
+									StockQuantityAfter,
+									Remarks
+								)
+								VALUES (
+									@IngredientId,
+									@UserId,
+									0, -- 'StockIn'
+									@QuantityAdded,
+									@TotalStockBefore,
+									@TotalStockAfter,
+									'Stock Added'
+								);
+
+								COMMIT TRANSACTION;
+
+							END TRY
+							BEGIN CATCH
+								IF @@TRANCOUNT > 0
+									ROLLBACK TRANSACTION;
+
+								THROW;
+							END CATCH
+						END";
+
+						migrationBuilder.Sql(sp_AddIngredientBatch);
+			*/
+            #endregion
 
             var sp_GetProductsWithCategory = @"
             CREATE PROCEDURE sp_GetProductsWithCategoryOf
@@ -351,13 +354,15 @@ namespace happykopiAPI.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddNewCategory");
-            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddNewProduct");
-            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddNewIngredient");
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_GetProductsWithCategoryOf");
             migrationBuilder.Sql("DROP TYPE IF EXISTS dbo.ProductRecipeType");
             migrationBuilder.Sql("DROP TYPE IF EXISTS dbo.AddOnRecipeType");
-            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddIngredientBatch");
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddNewAddOn");
+            #region Refactored out in V2
+            //migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddNewProduct");
+            //migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddNewIngredient");
+            //migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddIngredientBatch");
+            #endregion
         }
     }
 }

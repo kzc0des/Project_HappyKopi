@@ -38,7 +38,7 @@ namespace happykopiAPI.Models
 
         public DateTime DateLogged { get; set; } 
 
-        [ForeignKey("IngredientId")]
+        [ForeignKey("StockItemId")]
         public StockItem StockItem { get; set; }
 
         [ForeignKey("BatchId")]
