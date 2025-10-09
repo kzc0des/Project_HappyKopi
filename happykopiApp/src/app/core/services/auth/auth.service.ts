@@ -23,13 +23,14 @@ private api:string = environment.apiBaseUrl + "/Users";
   }
 
   login(user: UserForLoginDto): Observable<LoginResponseDto> {
-    return this.http.post<LoginResponseDto>(`${this.api}login`, user)
+    return this.http.post<LoginResponseDto>(`${this.api}/LoginUser`, user)
       .pipe(
         tap(response => {
           if (response && response.token) {
             localStorage.setItem('token', response.token);
             this.loggedIn.next(true);
             this.currentUser.next(response.user);
+            alert(`Welcome, ${response.user.username}`);
           }
         })
       );

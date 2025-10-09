@@ -28,7 +28,10 @@ export class Login {
 
   onSubmit(form: any): void {
     if (form.valid) {
-      this._authService.login(this.user);
+      this._authService.login(this.user).subscribe({
+        next: (response) => {alert(`Welcome, ${response.user.username}`)},
+        error: (err) => {alert('Wrong Credentials')}
+      });
     }
   }
 }

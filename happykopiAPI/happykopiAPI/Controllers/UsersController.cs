@@ -17,13 +17,21 @@ namespace happykopiAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly HappyKopiDbContext _context;
 
         public UsersController(HappyKopiDbContext context, IAuthService authService)
         {
             _authService = authService;
+            _context = context;
         }
 
-        [HttpPost("login")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
+        [HttpPost("LoginUser")]
         public async Task<ActionResult<LoginResponseDto>> Login(UserForLoginDto userForLoginDto)
         {
             var loginResponse = await _authService.Login(userForLoginDto);
