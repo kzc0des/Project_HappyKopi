@@ -30,7 +30,6 @@ private api:string = environment.apiBaseUrl + "/Users";
             localStorage.setItem('token', response.token);
             this.loggedIn.next(true);
             this.currentUser.next(response.user);
-            alert(`Welcome, ${response.user.username}`);
           }
         })
       );
