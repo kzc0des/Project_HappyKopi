@@ -1,5 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { UserForLoginDto } from '../../../core/dtos/auth/user-for-login-dto';
 
 @Component({
   selector: 'app-login',
@@ -8,6 +10,14 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login.css'
 })
 export class Login {
+
+  constructor(private readonly _authService: AuthService) {}
+
+  private user:UserForLoginDto = {
+    username: '',
+    password: ''
+  }
+
   passwordVisible = signal(false);
 
   passwordFieldType = computed(() => this.passwordVisible() ? 'text' : 'password');
@@ -18,7 +28,7 @@ export class Login {
 
   onSubmit(form: any): void {
     if (form.valid) {
-      
+      this._authService.login(this.user);
     }
   }
 }

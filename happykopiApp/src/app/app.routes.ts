@@ -4,11 +4,11 @@ import { Login } from './modules/auth/login/login';
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'Login',
+        redirectTo: 'login',
         pathMatch: 'full'
     },
     {
-        path: 'Login',
+        path: 'login',
         component: Login
     }
 ];
