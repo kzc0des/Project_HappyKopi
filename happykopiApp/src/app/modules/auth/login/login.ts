@@ -13,7 +13,7 @@ export class Login {
 
   constructor(private readonly _authService: AuthService) {}
 
-  private user:UserForLoginDto = {
+  public user:UserForLoginDto = {
     username: '',
     password: ''
   }
