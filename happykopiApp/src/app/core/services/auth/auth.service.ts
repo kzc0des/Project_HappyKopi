@@ -56,7 +56,7 @@ private api:string = environment.apiBaseUrl + "/Users";
   loadCurrentUser(): void {
     const token = localStorage.getItem('token');
     if (token) {
-
+      
     }
   }
 
