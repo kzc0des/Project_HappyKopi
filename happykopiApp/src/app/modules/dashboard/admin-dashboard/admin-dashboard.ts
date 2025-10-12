@@ -11,8 +11,11 @@ import { Lowstockitem } from '../../../core/models/lowstockitem.model';
 })
 export class AdminDashboard {
   totalSales: number = 0;
+  transactions: number = 0;
   cashTransactions: number = 0;
   cashlessTransactions: number = 0;
+  cashSales:number = 0;
+  cashlessSales:number = 0;
   recentTransactions: Transaction[] = [];
   lowStockItems: Lowstockitem[] = [];
 
@@ -23,9 +26,12 @@ export class AdminDashboard {
   }
 
   loadDashboardData(): void {
-    this.totalSales = 12530.50;
-    this.cashTransactions = 82;
-    this.cashlessTransactions = 45;
+    this.totalSales = 622.5;
+    this.cashTransactions = 7;
+    this.cashlessTransactions = 7;
+    this.transactions = this.cashTransactions + this.cashlessTransactions;
+    this.cashSales = 622.5;
+    this.cashlessSales = 622.5;
 
     this.recentTransactions = [
       { id: 'HK-0156', barista: 'Kyla', time: '2:45 PM', amount: 250.00, paymentMethod: 'Cashless' },

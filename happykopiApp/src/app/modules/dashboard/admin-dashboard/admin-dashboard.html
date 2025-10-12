@@ -3,35 +3,60 @@
 
         <div class="lg:col-span-2 xl:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center space-x-4">
-                <div class="bg-hapikopi-yellow p-3 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 256 256">
-                        <path fill="#fff"
-                            d="M128 88a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m112-96H16a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h224a8 8 0 0 0 8-8V64a8 8 0 0 0-8-8m-46.35 128H62.35A56.78 56.78 0 0 0 24 145.65v-35.3A56.78 56.78 0 0 0 62.35 72h131.3A56.78 56.78 0 0 0 232 110.35v35.3A56.78 56.78 0 0 0 193.65 184M232 93.37A40.8 40.8 0 0 1 210.63 72H232ZM45.37 72A40.8 40.8 0 0 1 24 93.37V72ZM24 162.63A40.8 40.8 0 0 1 45.37 184H24ZM210.63 184A40.8 40.8 0 0 1 232 162.63V184Z" />
-                    </svg>
+            <div class="flex gap-5">
+                <div class="bg-white py-6 rounded-2xl shadow-sm flex flex-col items-center flex-1 gap-2 justify-center">
+                    <div class="bg-hapikopi-yellow p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 256 256">
+                            <path fill="#fff"
+                                d="M128 88a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m112-96H16a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h224a8 8 0 0 0 8-8V64a8 8 0 0 0-8-8m-46.35 128H62.35A56.78 56.78 0 0 0 24 145.65v-35.3A56.78 56.78 0 0 0 62.35 72h131.3A56.78 56.78 0 0 0 232 110.35v35.3A56.78 56.78 0 0 0 193.65 184M232 93.37A40.8 40.8 0 0 1 210.63 72H232ZM45.37 72A40.8 40.8 0 0 1 24 93.37V72ZM24 162.63A40.8 40.8 0 0 1 45.37 184H24ZM210.63 184A40.8 40.8 0 0 1 232 162.63V184Z" />
+                        </svg>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 p-2">
+                        <p class="text-sm text-gray-500">Total Sales (Today)</p>
+                        <p class="text-xl font-bold text-gray-800">{{ totalSales | currency:'PHP':'symbol':'1.2-2' }}
+                        </p>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-sm text-gray-500">Total Sales (Today)</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ totalSales | currency:'PHP':'symbol':'1.2-2' }}</p>
+
+                <div class="bg-white py-6 rounded-2xl shadow-sm flex flex-col items-center flex-1 gap-2 justify-center">
+                    <div class="bg-hapikopi-yellow p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 48 48">
+                            <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="4">
+                                <path d="M39 6H9a3 3 0 0 0-3 3v30a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3" />
+                                <path d="m21 31l5 4l8-10M14 15h20m-20 8h8" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 p-2">
+                        <p class="text-sm text-gray-500">Transactions</p>
+                        <p class="text-xl font-bold text-gray-800">{{ transactions }}</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center space-x-4">
+
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center gap-2">
                 <div class="bg-hapikopi-yellow p-3 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 48 48">
-                        <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
-                            <path d="M39 6H9a3 3 0 0 0-3 3v30a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3" />
-                            <path d="m21 31l5 4l8-10M14 15h20m-20 8h8" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
+                        <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M7 15H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+                            <path d="M7 10a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1z" />
+                            <path d="M12 14a2 2 0 1 0 4 0a2 2 0 0 0-4 0" />
                         </g>
                     </svg>
                 </div>
-                <div>
+                <div class="flex-1">
                     <p class="text-sm text-gray-500">Cash Transactions</p>
                     <p class="text-2xl font-bold text-gray-800">{{ cashTransactions }}</p>
                 </div>
+                <div>
+                    <p class="text-lg font-bold text-gray-800">{{ cashSales | currency:'PHP':'symbol':'1.2-2' }}
+                </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center space-x-4">
+            <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center gap-2">
                 <div class="bg-hapikopi-yellow p-3 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 512 512">
                         <rect width="416" height="320" x="48" y="96" fill="none" stroke="#fff" stroke-linecap="round"
@@ -40,9 +65,12 @@
                             d="M48 192h416M128 300h48v20h-48z" />
                     </svg>
                 </div>
-                <div>
+                <div class="flex-1">
                     <p class="text-sm text-gray-500">Cashless Transactions</p>
                     <p class="text-2xl font-bold text-gray-800">{{ cashlessTransactions }}</p>
+                </div>
+                <div>
+                    <p class="text-lg font-bold text-gray-800">{{ cashlessSales | currency:'PHP':'symbol':'1.2-2' }}
                 </div>
             </div>
         </div>
