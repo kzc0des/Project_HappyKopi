@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'happykopi-app',
   webDir: 'dist/happykopiApp/browser',
   server: {
-    url: "http://10.158.20.148:4200",
+    url: "http://192.168.1.14:4200",
     cleartext: true
   }
 };
