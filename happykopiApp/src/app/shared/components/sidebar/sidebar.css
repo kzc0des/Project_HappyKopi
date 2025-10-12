@@ -33,3 +33,23 @@ aside.open {
     background: rgba(0, 0, 0, 0.5);
     z-index: 49;
 }
+
+.selected {
+    background-color: #FFFBF2;
+    border: none;
+    color: #333;
+    font-weight: 700;
+
+    padding-block: 16px;
+    padding-left: 10px;
+    margin-block: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    transition: all 0.3s ease-in-out;
+
+    width: 100%;
+}
+
+.selected > svg {
+    width: 40px;
+}

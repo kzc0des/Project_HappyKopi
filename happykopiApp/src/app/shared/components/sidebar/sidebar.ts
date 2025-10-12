@@ -15,8 +15,11 @@ export class Sidebar {
   isSidebarOpen$: Observable<boolean>;
   currentUser:string = '';
 
+  selectedPage: Observable<string>;
+
   constructor(private sidebarService: SidebarService, private authService: AuthService, private router: Router) {
-    this.isSidebarOpen$ = this.sidebarService.isSidebarOpen$;
+    this.isSidebarOpen$ = sidebarService.isSidebarOpen$;
+    this.selectedPage = sidebarService.currentSelectedPage$;
   }
 
   close() {
