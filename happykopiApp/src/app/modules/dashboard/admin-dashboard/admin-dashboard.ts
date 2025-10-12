@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgClass } from '@angular/common';
+import { CommonModule, CurrencyPipe, NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Transaction } from '../../../core/models/transaction.model';
@@ -6,7 +6,7 @@ import { Lowstockitem } from '../../../core/models/lowstockitem.model';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [FormsModule, NgClass, CurrencyPipe],
+  imports: [CommonModule, NgClass, CurrencyPipe],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css'
 })
@@ -20,13 +20,10 @@ export class AdminDashboard {
   constructor() { }
 
   ngOnInit(): void {
-    // Dito mo ilalagay ang iyong API calls.
-    // Sa ngayon, gagamit tayo ng sample static data.
     this.loadDashboardData();
   }
 
   loadDashboardData(): void {
-    // Sample Data
     this.totalSales = 12530.50;
     this.cashTransactions = 82;
     this.cashlessTransactions = 45;
