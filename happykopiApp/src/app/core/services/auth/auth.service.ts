@@ -11,7 +11,7 @@ import { environment } from '../../../../environments/environment.development';
 })
 export class AuthService {
 
-private api:string = environment.apiBaseUrl + "/Users"; 
+  private api: string = environment.apiBaseUrl + "/Users";
 
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
   private currentUser = new BehaviorSubject<UserDto | null>(null);
@@ -53,10 +53,15 @@ private api:string = environment.apiBaseUrl + "/Users";
     return this.currentUser.asObservable();
   }
 
+  getUserRole(): 'Admin' | 'Barista' | null {
+    const user = this.currentUser.getValue();
+    return user?.role as 'Admin' | 'Barista' | null;
+  }
+
   loadCurrentUser(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      
+
     }
   }
 
