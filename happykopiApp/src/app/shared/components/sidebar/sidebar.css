@@ -19,5 +19,17 @@ aside {
 }
 
 aside.open {
+    -webkit-box-shadow: 5px 1px 15px 2px rgba(191, 144, 35, 0.29);
+    box-shadow: 5px 1px 15px 2px rgba(46, 34, 7, 0.15);
     transform: translateX(0);
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 49;
 }

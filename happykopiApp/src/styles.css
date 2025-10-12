@@ -16,3 +16,7 @@ html, body {
 body {
     font-family: "Poppins", sans-serif;
 }
+
+body.sidebar-open {
+  overflow: hidden;
+}

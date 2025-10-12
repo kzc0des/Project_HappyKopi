@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class Sidebar {
   isSidebarOpen$: Observable<boolean>;
+  currentUser:string = '';
 
   constructor(private sidebarService: SidebarService, private authService: AuthService, private router: Router) {
     this.isSidebarOpen$ = this.sidebarService.isSidebarOpen$;
