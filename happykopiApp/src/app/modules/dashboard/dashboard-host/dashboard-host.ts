@@ -1,18 +1,14 @@
-import { NgModule, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
-
-
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ]
+@Component({
+  selector: 'app-dashboard-host',
+  imports: [RouterOutlet],
+  templateUrl: './dashboard-host.html',
+  styleUrl: './dashboard-host.css'
 })
-export class DashboardHostModule implements OnInit {
-
+export class DashboardHost implements OnInit{
   constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
