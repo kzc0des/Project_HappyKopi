@@ -1,8 +1,23 @@
 .toggle {
+    transform: translateX(-100%);
+    transition: transform .5s ease-in-out;
     position: absolute;
     background-color: #fafafa;
     border-radius: 50%;
     padding: 5px;
+}
 
-    left: 85%;
+.toggle.open {
+    transform: translateX(-50%);
+    left: 75%;
+}
+
+aside {
+    z-index: 50;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+}
+
+aside.open {
+    transform: translateX(0);
 }

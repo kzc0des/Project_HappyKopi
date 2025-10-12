@@ -1,9 +1,11 @@
-<aside class="w-[80vw] h-screen bg-hapikopi-bg pt-5 flex flex-col relative">
-    <div class="toggle">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-            <path fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                d="M31 36L19 24l12-12" />
-        </svg>
+<aside [class.open]="isSidebarOpen$ | async" class="w-[80vw] h-screen bg-hapikopi-bg pt-5 flex flex-col absolute">
+    <div class="relative w-[100vw]">
+        <div [class.open]="isSidebarOpen$ | async" class="toggle" (click)="close()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                <path fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
+                    d="M31 36L19 24l12-12" />
+            </svg>
+        </div>
     </div>
     <section class="px-5">
         <div class="flex items-center gap-2">
