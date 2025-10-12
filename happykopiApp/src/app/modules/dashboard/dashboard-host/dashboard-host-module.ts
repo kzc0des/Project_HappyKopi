@@ -11,11 +11,19 @@ import { AuthService } from '../../../core/services/auth/auth.service';
     CommonModule
   ]
 })
-export class DashboardHostModule implements OnInit{ 
+export class DashboardHostModule implements OnInit {
 
-  constructor (private router:Router, private authService:AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-    
+    const userRole = this.authService.getUserRole();
+
+    if (userRole === 'Admin') {
+      this.router.navigate(['/app/dashboard/admin'], { replaceUrl: true });
+    } else if (userRole === 'Barista') {
+      this.router.navigate(['/app/dashboard/barista'], { replaceUrl: true });
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 }
