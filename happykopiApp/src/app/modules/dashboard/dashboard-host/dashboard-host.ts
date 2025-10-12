@@ -15,9 +15,9 @@ export class DashboardHost implements OnInit{
     const userRole = this.authService.getUserRole();
 
     if (userRole === 'Admin') {
-      this.router.navigate(['/app/dashboard/admin'], { replaceUrl: true });
+      this.router.navigate(['dashboard/admin'], { replaceUrl: true });
     } else if (userRole === 'Barista') {
-      this.router.navigate(['/app/dashboard/barista'], { replaceUrl: true });
+      this.router.navigate(['dashboard/barista'], { replaceUrl: true });
     } else {
       this.router.navigate(['/login']);
     }
