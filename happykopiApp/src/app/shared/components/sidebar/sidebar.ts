@@ -31,4 +31,9 @@ export class Sidebar {
       this.router.navigate(['/login']);
     }
   }
+
+  selectPage(page:string) {
+    this.sidebarService.selectPage(page);
+    this.close();
+  }
 }

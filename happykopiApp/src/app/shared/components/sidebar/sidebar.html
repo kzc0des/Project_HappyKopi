@@ -20,35 +20,35 @@
     </section>
     <hr>
     <section class="flex flex-col gap-5 flex-1 px-5 py-5">
-        <button class="flex items-center gap-2 pb-2 border-b-1 border-yellow-500">
+        <button class="flex items-center gap-2 pb-2 border-b-1 border-yellow-500" (click)="selectPage('Dashboard')">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-8" viewBox="0 0 24 24">
                 <path fill="#f3b72c"
                     d="M3 12a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1zm0 8a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1zm10 0a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1zm1-17a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z" />
             </svg>
             <p class="font-[400]">Dashboard</p>
         </button>
-        <button class="flex items-center gap-2 pb-2 border-b-1 border-yellow-500">
+        <button class="flex items-center gap-2 pb-2 border-b-1 border-yellow-500" (click)="selectPage('Orders')">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-8" viewBox="0 0 24 24">
                 <path fill="#f3b72c"
                     d="M3.778 3.655c-.181.36-.27.806-.448 1.696l-.598 2.99a3.06 3.06 0 1 0 6.043.904l.07-.69a3.167 3.167 0 1 0 6.307-.038l.073.728a3.06 3.06 0 1 0 6.043-.904l-.598-2.99c-.178-.89-.267-1.335-.448-1.696a3 3 0 0 0-1.888-1.548C17.944 2 17.49 2 16.582 2H7.418c-.908 0-1.362 0-1.752.107a3 3 0 0 0-1.888 1.548M18.269 13.5a4.53 4.53 0 0 0 2.231-.581V14c0 3.771 0 5.657-1.172 6.828c-.943.944-2.348 1.127-4.828 1.163V18.5c0-.935 0-1.402-.201-1.75a1.5 1.5 0 0 0-.549-.549C13.402 16 12.935 16 12 16s-1.402 0-1.75.201a1.5 1.5 0 0 0-.549.549c-.201.348-.201.815-.201 1.75v3.491c-2.48-.036-3.885-.22-4.828-1.163C3.5 19.657 3.5 17.771 3.5 14v-1.081a4.53 4.53 0 0 0 2.232.581a4.55 4.55 0 0 0 3.112-1.228A4.64 4.64 0 0 0 12 13.5a4.64 4.64 0 0 0 3.156-1.228a4.55 4.55 0 0 0 3.112 1.228" />
             </svg>
             <p class="font-[400]">Orders</p>
         </button>
-        <button class=" flex items-center gap-2 pb-2 border-b-1 border-yellow-500">
+        <button class=" flex items-center gap-2 pb-2 border-b-1 border-yellow-500" (click)="selectPage('Products')">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-8" viewBox="0 0 15 15">
                 <path fill="#f3b72c"
                     d="m3 2l1-2h7l1 2h.5c.28 0 .5.22.5.5v1c0 .28-.22.5-.5.5H12l-1 11H4L3 4h-.5c-.28 0-.5-.22-.5-.5v-1c0-.28.22-.5.5-.5zm7.82 4L11 4H4l.19 2zm-.55 6H4.73l.18 2h5.18z" />
             </svg>
             <p class="font-[400]">Products</p>
         </button>
-        <button class=" flex items-center gap-2 pb-2 border-b-1 border-yellow-500">
+        <button class=" flex items-center gap-2 pb-2 border-b-1 border-yellow-500" (click)="selectPage('Modifiers')">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-8" viewBox="0 0 24 24">
                 <path fill="#f3b72c"
                     d="M18.135 14.75H15.65l-.785 5.5h1.75c.466 0 .594-.078.632-.11c.034-.029.139-.141.207-.619zm-4.786 5.5l.786-5.5h-4.27l.785 5.5zm-4.214 0l-.786-5.5H5.865l.681 4.77c.066.462.16.58.199.613c.033.03.158.117.64.117zm-4.824-5.772c-1.407-.876-2.061-2.671-2.061-4.144c0-1.89 1.265-3.46 2.978-4.1a.04.04 0 0 0 .016-.013l.005-.011l.001-.002c0-1.74 1.518-3.041 3.25-3.041c.224 0 .433.026.605.052l.151.023c.113.017.204.031.302.04c.247.025.374.001.49-.07A6.6 6.6 0 0 1 13.5 2.25c3.389 0 6.25 2.533 6.25 5.792c0 .091.029.187.147.335c.121.15.28.29.505.49q.046.039.095.084c.496.439 1.253 1.127 1.253 2.3c0 1.382-.705 2.754-2.073 3.317l-.738 5.166c-.084.588-.261 1.162-.724 1.553c-.46.387-1.046.463-1.6.463h-9.23c-.595 0-1.188-.094-1.64-.5c-.448-.4-.605-.97-.684-1.518z" />
             </svg>
             <p class="font-[400]">Modifiers</p>
         </button>
-        <button class=" flex items-center gap-2 pb-2 border-b-1 border-yellow-500">
+        <button class=" flex items-center gap-2 pb-2 border-b-1 border-yellow-500" (click)="selectPage('Ingredients')">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-8" viewBox="0 0 24 24">
                 <path fill="#f3b72c"
                     d="M6 18a6.06 6.06 0 0 0 5.17-6a7.62 7.62 0 0 1 6.52-7.51l2.59-.37c-.07-.08-.13-.16-.21-.24c-3.26-3.26-9.52-2.28-14 2.18C2.28 9.9 1 15 2.76 18.46z" />

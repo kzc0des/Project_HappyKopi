@@ -9,6 +9,9 @@ export class SidebarService {
   private isSidebarOpen = new BehaviorSubject<boolean>(false);
   public isSidebarOpen$ = this.isSidebarOpen.asObservable();
 
+  private currentSelectedPage = new BehaviorSubject<string>('Dashboard');
+  public currentSelectedPage$ = this.currentSelectedPage.asObservable();
+
   constructor(rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
@@ -29,5 +32,9 @@ export class SidebarService {
     } else {
       this.openSidebar();
     }
+  }
+
+  selectPage(page:string) {
+    this.currentSelectedPage.next(page);
   }
 }
