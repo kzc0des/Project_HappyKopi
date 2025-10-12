@@ -44,7 +44,7 @@ builder.Services.AddCors(options =>
         policy =>
         {
             // Payagan ang request mula sa iyong Angular app (both localhost at IP address)
-            policy.WithOrigins("http://localhost:4200", "http://10.158.20.148:4200")
+            policy.WithOrigins("http://localhost:4200", "http://192.168.1.14:4200")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
