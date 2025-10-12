@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,11 +14,20 @@ import { AsyncPipe } from '@angular/common';
 export class Sidebar {
   isSidebarOpen$: Observable<boolean>;
 
-  constructor(private sidebarService: SidebarService) {
+  constructor(private sidebarService: SidebarService, private authService: AuthService, private router: Router) {
     this.isSidebarOpen$ = this.sidebarService.isSidebarOpen$;
   }
 
   close() {
     this.sidebarService.closeSidebar();
+  }
+
+  logout() {
+    const isConfirmed = confirm("Are you sure you want to end your shift?");
+    if (isConfirmed) {
+      this.authService.logout();
+      this.sidebarService.closeSidebar();
+      this.router.navigate(['/login']);
+    }
   }
 }
