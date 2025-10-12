@@ -107,5 +107,36 @@ namespace happykopiAPI.Services.Implementations
                 }
             }
         }
+
+        public async Task<UserDto> RegisterAdminForTesting(UserForRegisterDto userForAdminRegisterDto)
+        {
+            await using (var connection = new SqlConnection(_connectionString))
+            {
+                var passwordHash = BCrypt.Net.BCrypt.HashPassword(userForAdminRegisterDto.Password);
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@Username", userForAdminRegisterDto.Username);
+                parameters.Add("@PasswordHash", passwordHash);
+                parameters.Add("@EmailAddress", userForAdminRegisterDto.EmailAddress);
+                parameters.Add("@PhoneNumber", userForAdminRegisterDto.PhoneNumber);
+                parameters.Add("@FirstName", userForAdminRegisterDto.FirstName);
+                parameters.Add("@LastName", userForAdminRegisterDto.LastName);
+
+                try
+                {
+                    await connection.ExecuteAsync(
+                        "dbo.sp_RegisterAdminForTesting", 
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    var newUser = await GetUserByUsername(userForAdminRegisterDto.Username, connection);
+                    return newUser;
+                }
+                catch (SqlException ex)
+                {
+                    throw new InvalidOperationException(ex.Message);
+                }
+            }
+        }
     }
 }

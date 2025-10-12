@@ -34,23 +34,43 @@ namespace happykopiAPI.Controllers
         [HttpPost("LoginUser")]
         public async Task<ActionResult<LoginResponseDto>> Login(UserForLoginDto userForLoginDto)
         {
-            var loginResponse = await _authService.Login(userForLoginDto);
-            if (loginResponse == null)
+            try
+            {
+                var loginResponse = await _authService.Login(userForLoginDto);
+                return Ok(loginResponse);
+            }
+            catch (InvalidOperationException ex)
             {
                 return Unauthorized("Invalid username or password");
-            }
-            return Ok(loginResponse);
+            }            
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(UserForRegisterDto userForRegisterDto)
         {
-            var user = await _authService.Register(userForRegisterDto);
-            if (user == null)
+            try
             {
-                return BadRequest("Username already exists");
+                var user = await _authService.Register(userForRegisterDto);
+                return Ok(user);
             }
-            return Ok(user);
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("register/admin")]
+        public async Task<ActionResult<UserDto>> RegisterAdmin(UserForRegisterDto userForAdminRegisterDto)
+        {
+            try
+            {
+                var user = await _authService.RegisterAdminForTesting(userForAdminRegisterDto);
+                return Ok(user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
