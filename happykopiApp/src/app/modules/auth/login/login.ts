@@ -2,6 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UserForLoginDto } from '../../../core/dtos/auth/user-for-login-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { UserForLoginDto } from '../../../core/dtos/auth/user-for-login-dto';
 })
 export class Login {
 
-  constructor(private readonly _authService: AuthService) {}
+  constructor(private readonly _authService: AuthService, private router:Router) {}
 
   public user:UserForLoginDto = {
     username: '',
@@ -29,7 +30,10 @@ export class Login {
   onSubmit(form: any): void {
     if (form.valid) {
       this._authService.login(this.user).subscribe({
-        next: (response) => {alert(`Welcome, ${response.user.username}`)},
+        next: (response) => {
+          alert(`Welcome, ${response.user.username}`);
+          this.router.navigate(['app'])
+        },
         error: (err) => {alert('Wrong Credentials')}
       });
     }

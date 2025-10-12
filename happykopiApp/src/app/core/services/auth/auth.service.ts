@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserForLoginDto } from '../../dtos/auth/user-for-login-dto';
 import { LoginResponseDto } from '../../dtos/auth/login-response-dto';
 import { environment } from '../../../../environments/environment.development';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,7 @@ export class AuthService {
             localStorage.setItem('token', response.token);
             this.loggedIn.next(true);
             this.currentUser.next(response.user);
+            this.loadCurrentUser();
           }
         })
       );
@@ -61,7 +63,29 @@ export class AuthService {
   loadCurrentUser(): void {
     const token = localStorage.getItem('token');
     if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        
+        const expiry = decodedToken.exp;
+        if (Date.now() >= expiry * 1000) {
+          this.logout(); 
+          return;
+        }
 
+        const user: UserDto = {
+          id: decodedToken['nameid'],
+          username: decodedToken['unique_name'],
+          role: decodedToken['role'],
+          isActive: true 
+        };
+
+        this.currentUser.next(user);
+        this.loggedIn.next(true);
+
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        this.logout(); 
+      }
     }
   }
 
