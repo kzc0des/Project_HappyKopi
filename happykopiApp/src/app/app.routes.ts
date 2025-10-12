@@ -6,6 +6,7 @@ import { AdminDashboard } from './modules/dashboard/admin-dashboard/admin-dashbo
 import { roleGuard } from './core/guards/role-guard';
 import { BaristaDashboard } from './modules/dashboard/barista-dashboard/barista-dashboard';
 import { DashboardHost } from './modules/dashboard/dashboard-host/dashboard-host';
+import { loginGuard } from './core/guards/login-guard';
 
 export const routes: Routes = [
     {
@@ -15,7 +16,8 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        component: Login
+        component: Login,
+        canActivate: [loginGuard]
     },
     {
         path: 'app',
