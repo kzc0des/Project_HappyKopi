@@ -1,12 +1,11 @@
-import { CommonModule, CurrencyPipe, NgClass } from '@angular/common';
+import { CurrencyPipe, NgClass } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Transaction } from '../../../core/models/transaction.model';
 import { Lowstockitem } from '../../../core/models/lowstockitem.model';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, NgClass, CurrencyPipe],
+  imports: [NgClass, CurrencyPipe],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css'
 })
