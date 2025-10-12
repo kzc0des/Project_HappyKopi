@@ -4,12 +4,10 @@
         <div class="lg:col-span-2 xl:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
 
             <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center space-x-4">
-                <div class="bg-blue-100 p-3 rounded-full">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 10v-1m0 0c-1.657 0-3-.895-3-2s1.343-2 3-2 3-.895 3-2-1.343-2-3-2m0 0c-1.11 0-2.08-.402-2.599-1M12 8a3 3 0 100-6 3 3 0 000 6z">
-                        </path>
+                <div class="bg-hapikopi-yellow p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 256 256">
+                        <path fill="#fff"
+                            d="M128 88a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m112-96H16a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h224a8 8 0 0 0 8-8V64a8 8 0 0 0-8-8m-46.35 128H62.35A56.78 56.78 0 0 0 24 145.65v-35.3A56.78 56.78 0 0 0 62.35 72h131.3A56.78 56.78 0 0 0 232 110.35v35.3A56.78 56.78 0 0 0 193.65 184M232 93.37A40.8 40.8 0 0 1 210.63 72H232ZM45.37 72A40.8 40.8 0 0 1 24 93.37V72ZM24 162.63A40.8 40.8 0 0 1 45.37 184H24ZM210.63 184A40.8 40.8 0 0 1 232 162.63V184Z" />
                     </svg>
                 </div>
                 <div>
@@ -19,12 +17,12 @@
             </div>
 
             <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center space-x-4">
-                <div class="bg-green-100 p-3 rounded-full">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
-                        </path>
+                <div class="bg-hapikopi-yellow p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 48 48">
+                        <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+                            <path d="M39 6H9a3 3 0 0 0-3 3v30a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3" />
+                            <path d="m21 31l5 4l8-10M14 15h20m-20 8h8" />
+                        </g>
                     </svg>
                 </div>
                 <div>
@@ -34,12 +32,12 @@
             </div>
 
             <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center space-x-4">
-                <div class="bg-purple-100 p-3 rounded-full">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
-                        </path>
+                <div class="bg-hapikopi-yellow p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 512 512">
+                        <rect width="416" height="320" x="48" y="96" fill="none" stroke="#fff" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="32" rx="56" ry="56" />
+                        <path fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="60"
+                            d="M48 192h416M128 300h48v20h-48z" />
                     </svg>
                 </div>
                 <div>
@@ -101,7 +99,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ tx.barista }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                                    [ngClass]="{'bg-green-100 text-green-800': tx.paymentMethod === 'Cash', 'bg-purple-100 text-purple-800': tx.paymentMethod === 'Cashless'}">
+                                    [ngClass]="{'bg-green-100 text-green-800': tx.paymentMethod === 'Cash', 'bg-yellow-100 text-yellow-500': tx.paymentMethod === 'Cashless'}">
                                     {{ tx.paymentMethod }}
                                 </span>
                             </td>
