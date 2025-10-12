@@ -16,7 +16,7 @@
             <img class="w-20" src="../../../../assets/HappyKopiLogo.png" alt="happykopi_logo">
             <p class="font-bold text-xl text-hapikopi-dark">HappyKopi</p>
         </div>
-        <h1 class="py-5 text-lg font-[700]">Admin</h1>
+        <h1 class="py-5 text-lg font-[700]">{{(currentUser | async)?.username}}</h1>
     </section>
     <hr>
     <section class="flex flex-col flex-1 px-5 py-5">

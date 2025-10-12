@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { UserDto } from '../../../core/dtos/auth/user-dto';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,13 +14,14 @@ import { Router } from '@angular/router';
 })
 export class Sidebar {
   isSidebarOpen$: Observable<boolean>;
-  currentUser:string = '';
+  currentUser:Observable<UserDto | null>;
 
   selectedPage: Observable<string>;
 
   constructor(private sidebarService: SidebarService, private authService: AuthService, private router: Router) {
     this.isSidebarOpen$ = sidebarService.isSidebarOpen$;
     this.selectedPage = sidebarService.currentSelectedPage$;
+    this.currentUser = authService.getCurrentUser$();
   }
 
   close() {
@@ -39,4 +41,6 @@ export class Sidebar {
     this.sidebarService.selectPage(page);
     this.close();
   }
+
+  
 }
