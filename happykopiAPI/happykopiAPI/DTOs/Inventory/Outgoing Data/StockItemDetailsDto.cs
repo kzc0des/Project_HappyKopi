@@ -11,5 +11,6 @@
         public int ItemType { get; set; }
         public bool IsActive { get; set; }
         public decimal TotalStockQuantity { get; set; }
+        public int BatchCount { get; set; }
     }
 }
