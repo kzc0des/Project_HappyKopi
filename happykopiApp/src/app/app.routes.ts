@@ -7,6 +7,8 @@ import { roleGuard } from './core/guards/role-guard';
 import { BaristaDashboard } from './modules/dashboard/barista-dashboard/barista-dashboard';
 import { DashboardHost } from './modules/dashboard/dashboard-host/dashboard-host';
 import { loginGuard } from './core/guards/login-guard';
+import { OrderCard } from './shared/components/orders/order-card/order-card';
+import { AddonCard } from './shared/components/orders/addon-card/addon-card';
 
 export const routes: Routes = [
     {
@@ -48,5 +50,9 @@ export const routes: Routes = [
                 ]
             }
         ]
+    },
+    {
+        path: 'order',
+        component: AddonCard
     }
 ];
