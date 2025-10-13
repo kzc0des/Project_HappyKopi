@@ -17,20 +17,11 @@ namespace happykopiAPI.Models
         public decimal Price { get; set; }
 
         [Required]
-        public bool NeedsIngredientBreakdown { get; set; }
+        public bool IsAvailable { get; set; } 
 
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal? StockQuantity { get; set; }
-
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal? AlertLevel { get; set; }
-
-        [MaxLength(20)]
-        public string? UnitOfMeasure { get; set; }
-        public DateTime? ExpiryDate { get; set; }
         [Required]
         public DateTime LastUpdated { get; set; }
+
         public ICollection<OrderItemAddOn> OrderItemAddOns { get; set; }
-        public ICollection<AddOnIngredient> Ingredients { get; set; }
     }
 }
