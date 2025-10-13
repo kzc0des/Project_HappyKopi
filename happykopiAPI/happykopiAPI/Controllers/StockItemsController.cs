@@ -22,6 +22,16 @@ namespace happykopiAPI.Controllers
         {
             try
             {
+                /* will be removed later
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                dto.UserId = int.Parse(userIdString);
+                */
+
                 await _stockItemService.AddNewStockItemAsync(dto);
                 return Ok(new { message = "Stock item created successfully." });
             }
@@ -40,6 +50,16 @@ namespace happykopiAPI.Controllers
         {
             try
             {
+                /* will be removed later
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                dto.UserId = int.Parse(userIdString);
+                */
+
                 await _stockItemService.AddStockItemBatchAsync(dto);
                 return Ok(new { message = "Stock batch added successfully." });
             }
@@ -114,6 +134,16 @@ namespace happykopiAPI.Controllers
         {
             try
             {
+                /* will be removed later
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                dto.UserId = int.Parse(userIdString);
+                */
+
                 await _stockItemService.UpdateStockItemAsync(id, dto);
                 return Ok(new { message = "Stock item updated successfully." });
             }
@@ -132,6 +162,16 @@ namespace happykopiAPI.Controllers
         {
             try
             {
+                /* will be removed later
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                dto.UserId = int.Parse(userIdString);
+                */
+
                 await _stockItemService.AdjustStockQuantityAsync(dto);
                 return Ok(new { message = "Stock quantity adjusted successfully." });
             }

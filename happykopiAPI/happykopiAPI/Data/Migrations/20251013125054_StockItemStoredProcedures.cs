@@ -25,7 +25,8 @@ namespace happykopiAPI.Data.Migrations
                     si.IsPerishable,
                     si.ItemType,
                     si.IsActive,
-                    ISNULL(SUM(sib.StockQuantity), 0) AS TotalStockQuantity
+                    ISNULL(SUM(sib.StockQuantity), 0) AS TotalStockQuantity,
+                    COUNT(sib.Id) AS BatchCount
                 FROM
                     dbo.StockItems si
                 LEFT JOIN
@@ -50,7 +51,8 @@ namespace happykopiAPI.Data.Migrations
                     si.UnitOfMeasure,
                     si.AlertLevel,
                     ISNULL(SUM(sib.StockQuantity), 0) AS TotalStockQuantity,
-                    si.IsActive
+                    si.IsActive,
+                    COUNT(sib.Id) AS BatchCount 
                 FROM
                     dbo.StockItems si
                 LEFT JOIN
