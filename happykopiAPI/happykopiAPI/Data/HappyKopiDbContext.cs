@@ -151,6 +151,10 @@ namespace happykopiAPI.Data
                 .WithOne(log => log.Batch)
                 .HasForeignKey(log => log.BatchId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<StockItem>()
+                .Property(i => i.IsActive)
+                .HasDefaultValue(true);
         }
     }
 }

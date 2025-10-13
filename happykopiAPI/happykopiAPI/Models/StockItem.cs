@@ -28,6 +28,9 @@ namespace happykopiAPI.Models
         public bool IsPerishable { get; set; }
 
         [Required]
+        public bool IsActive { get; set; }
+
+        [Required]
         public StockItemType ItemType { get; set; }
         public ICollection<ProductIngredient> Recipe { get; set; }
         public ICollection<StockItemBatch> Batches { get; set; }

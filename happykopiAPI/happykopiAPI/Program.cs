@@ -36,7 +36,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IStockItemService, StockItemService>();
 
 builder.Services.AddCors(options =>
 {
@@ -62,6 +64,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(AllowSpecificOrigins);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

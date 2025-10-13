@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using happykopiAPI.DTOs.Inventory;
+using happykopiAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using happykopiAPI.Data;
-using happykopiAPI.Models;
+using Microsoft.Data.SqlClient;
+using System.Security.Claims;
 
 namespace happykopiAPI.Controllers
 {
@@ -14,95 +10,198 @@ namespace happykopiAPI.Controllers
     [ApiController]
     public class StockItemsController : ControllerBase
     {
-        private readonly HappyKopiDbContext _context;
+        private readonly IStockItemService _stockItemService;
 
-        public StockItemsController(HappyKopiDbContext context)
+        public StockItemsController(IStockItemService stockItemService)
         {
-            _context = context;
+            _stockItemService = stockItemService;
         }
 
-        // GET: api/StockItems
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<StockItem>>> GetStockItems()
+        [HttpPost("stock-items")]
+        public async Task<IActionResult> CreateStockItem([FromBody] StockItemForCreateDto dto)
         {
-            return await _context.StockItems.ToListAsync();
-        }
-
-        // GET: api/StockItems/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<StockItem>> GetStockItem(int id)
-        {
-            var stockItem = await _context.StockItems.FindAsync(id);
-
-            if (stockItem == null)
-            {
-                return NotFound();
-            }
-
-            return stockItem;
-        }
-
-        // PUT: api/StockItems/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStockItem(int id, StockItem stockItem)
-        {
-            if (id != stockItem.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(stockItem).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                /* will be removed later
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                dto.UserId = int.Parse(userIdString);
+                */
+
+                await _stockItemService.AddNewStockItemAsync(dto);
+                return Ok(new { message = "Stock item created successfully." });
             }
-            catch (DbUpdateConcurrencyException)
+            catch (SqlException ex) when (ex.Number == 50001)
             {
-                if (!StockItemExists(id))
+                return Conflict(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("stock-items/batches")]
+        public async Task<IActionResult> AddStockBatch([FromBody] StockItemBatchForCreateDto dto)
+        {
+            try
+            {
+                /* will be removed later
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                dto.UserId = int.Parse(userIdString);
+                */
+
+                await _stockItemService.AddStockItemBatchAsync(dto);
+                return Ok(new { message = "Stock batch added successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("stock-items")]
+        public async Task<IActionResult> GetAllStockItems()
+        {
+            try
+            {
+                var items = await _stockItemService.GetAllStockItemsAsync();
+                return Ok(items);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("stock-items/{id}")]
+        public async Task<IActionResult> GetStockItem(int id)
+        {
+            try
+            {
+                var item = await _stockItemService.GetStockItemByIdAsync(id);
+                if (item == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                return Ok(item);
             }
-
-            return NoContent();
-        }
-
-        // POST: api/StockItems
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<StockItem>> PostStockItem(StockItem stockItem)
-        {
-            _context.StockItems.Add(stockItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStockItem", new { id = stockItem.Id }, stockItem);
-        }
-
-        // DELETE: api/StockItems/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStockItem(int id)
-        {
-            var stockItem = await _context.StockItems.FindAsync(id);
-            if (stockItem == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
             }
-
-            _context.StockItems.Remove(stockItem);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
-        private bool StockItemExists(int id)
+        [HttpGet("stock-items/{stockItemId}/batches")]
+        public async Task<IActionResult> GetStockItemBatches(int stockItemId)
         {
-            return _context.StockItems.Any(e => e.Id == id);
+            try
+            {
+                var batches = await _stockItemService.GetBatchesByStockItemIdAsync(stockItemId);
+                return Ok(batches);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("stock-items/low-stock")]
+        public async Task<IActionResult> GetLowStockItems()
+        {
+            try
+            {
+                var items = await _stockItemService.GetLowStockItemsAsync();
+                return Ok(items);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPut("stock-items/{id}")]
+        public async Task<IActionResult> UpdateStockItem(int id, [FromBody] StockItemUpdateDto dto)
+        {
+            try
+            {
+                /* will be removed later
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                dto.UserId = int.Parse(userIdString);
+                */
+
+                await _stockItemService.UpdateStockItemAsync(id, dto);
+                return Ok(new { message = "Stock item updated successfully." });
+            }
+            catch (SqlException ex) when (ex.Number == 50002) 
+            {
+                return Conflict(new { message = ex.Message }); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("stock-items/batches/adjust")]
+        public async Task<IActionResult> AdjustStockBatchQuantity([FromBody] StockAdjustmentDto dto)
+        {
+            try
+            {
+                /* will be removed later
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                dto.UserId = int.Parse(userIdString);
+                */
+
+                await _stockItemService.AdjustStockQuantityAsync(dto);
+                return Ok(new { message = "Stock quantity adjusted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("stock-items/{id}")]
+        public async Task<IActionResult> DeactivateStockItem(int id)
+        {
+            try
+            {
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    return Unauthorized();
+                }
+
+                var userId = int.Parse(userIdString);
+
+                await _stockItemService.DeactivateStockItemAsync(id, userId);
+
+                return Ok(new { message = "Stock item has been deactivated." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
         }
     }
 }

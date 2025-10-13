@@ -87,8 +87,8 @@ namespace happykopiAPI.Data.Migrations
 				END TRY
 				BEGIN CATCH
 					IF @@TRANCOUNT > 0
-						ROLLBACK TRANSACTION
-						THROW;
+						ROLLBACK TRANSACTION;
+					THROW;
 				END CATCH
 			END";
 
