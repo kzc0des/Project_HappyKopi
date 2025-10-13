@@ -2,7 +2,8 @@
 {
     public enum StockItemType
     {
-        Ingredient,
+        Liquid,
+        Powder,
         Miscellaneous
     }
 }
