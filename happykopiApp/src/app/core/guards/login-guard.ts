@@ -12,7 +12,6 @@ export const loginGuard: CanActivateFn = (route, state) => {
     take(1),
     map(isLoggedIn => {
       if (isLoggedIn) {
-        console.log('LoginGuard: Naka-login na. Reredirect sa /app.');
         router.navigate(['/app']);
         return false;
       }
