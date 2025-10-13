@@ -21,7 +21,6 @@ namespace happykopiAPI.Data
         public DbSet<DailyIngredientSummary> DailyIngredientSummaries { get; set; }
         public DbSet<StockItemBatch> StockItemBatches { get; set; }
         public DbSet<AddOn> AddOns { get; set; }
-        public DbSet<AddOnIngredient> AddOnIngredients { get; set; }
         public DbSet<OrderItemAddOn> OrderItemAddOns { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
