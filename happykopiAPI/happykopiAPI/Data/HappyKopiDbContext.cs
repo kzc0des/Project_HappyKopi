@@ -127,30 +127,9 @@ namespace happykopiAPI.Data
                 .HasDefaultValueSql("GETUTCDATE()");
 
             modelBuilder.Entity<AddOn>()
-                .Property(a => a.NeedsIngredientBreakdown)
-                .HasDefaultValue(false);
-
-            modelBuilder.Entity<AddOn>()
-                .Property(a => a.StockQuantity)
-                .HasColumnType("decimal(18,2)");
-
-            modelBuilder.Entity<AddOn>()
                 .Property(a => a.LastUpdated)
                 .IsRequired()
                 .HasDefaultValueSql("GETUTCDATE()");
-
-            modelBuilder.Entity<AddOnIngredient>()
-                .HasKey(ai => new { ai.AddOnId, ai.IngredientId });
-
-            modelBuilder.Entity<AddOnIngredient>()
-                .HasOne(ai => ai.AddOn)
-                .WithMany(a => a.Ingredients)
-                .HasForeignKey(ai => ai.AddOnId);
-
-            modelBuilder.Entity<AddOnIngredient>()
-                .HasOne(ai => ai.StockItem)
-                .WithMany(i => i.AddOnRecipes)
-                .HasForeignKey(ai => ai.IngredientId);
 
             modelBuilder.Entity<OrderItemAddOn>()
                 .HasOne(oia => oia.OrderItem)
