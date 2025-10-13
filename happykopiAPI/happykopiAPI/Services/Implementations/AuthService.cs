@@ -18,7 +18,7 @@ namespace happykopiAPI.Services.Implementations
         {
             _key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             _issuer = config["Jwt:Issuer"];
-            _connectionString = config.GetConnectionString("v3");
+            _connectionString = config.GetConnectionString("LocalDB");
         }
         public string GenerateJwtToken(UserDto user)
         {
