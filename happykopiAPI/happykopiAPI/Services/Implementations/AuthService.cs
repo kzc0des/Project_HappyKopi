@@ -51,7 +51,7 @@ namespace happykopiAPI.Services.Implementations
 
                 if (user == null)
                 {
-                    return null;
+                    throw new InvalidOperationException("Invalid username or password");
                 }
 
                 bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userForLoginDto.Password, user.PasswordHash);

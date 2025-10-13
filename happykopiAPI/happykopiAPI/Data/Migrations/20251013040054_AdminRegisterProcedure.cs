@@ -26,6 +26,9 @@ namespace happykopiAPI.Data.Migrations
                 IF EXISTS (SELECT 1 FROM dbo.Users WHERE Username = @Username)
                     THROW 50000, 'Username already exists.', 1;
 
+                IF EXISTS (SELECT 1 FROM dbo.Users WHERE EmailAddress = @EmailAddress)
+                    THROW 50000, 'Email address already exists.', 1;
+
                 DECLARE @FullName NVARCHAR(MAX) = @FirstName + ' ' + @LastName;
 
                 INSERT INTO dbo.Users (Username, PasswordHash, EmailAddress, PhoneNumber, FullName, Role)

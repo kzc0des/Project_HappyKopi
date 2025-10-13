@@ -12,7 +12,7 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    [Migration("20251012041249_AdminRegisterProcedure")]
+    [Migration("20251013040054_AdminRegisterProcedure")]
     partial class AdminRegisterProcedure
     {
         /// <inheritdoc />
