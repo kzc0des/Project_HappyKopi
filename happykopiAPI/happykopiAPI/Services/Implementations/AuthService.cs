@@ -45,28 +45,26 @@ namespace happykopiAPI.Services.Implementations
         }
         public async Task<LoginResponseDto> Login(UserForLoginDto userForLoginDto)
         {
-            await using (var connection = new SqlConnection(_connectionString))
+            await using var connection = new SqlConnection(_connectionString);
+            var user = await GetUserByUsername(userForLoginDto.Username, connection);
+
+            if (user == null)
             {
-                var user = await GetUserByUsername(userForLoginDto.Username, connection);
-
-                if (user == null)
-                {
-                    throw new InvalidOperationException("Invalid username or password");
-                }
-
-                bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userForLoginDto.Password, user.PasswordHash);
-
-                if (!isPasswordValid)
-                {
-                    return null;
-                }
-
-                return new LoginResponseDto
-                {
-                    Token = GenerateJwtToken(user),
-                    User = user
-                };
+                throw new InvalidOperationException("Invalid username or password");
             }
+
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userForLoginDto.Password, user.PasswordHash);
+
+            if (!isPasswordValid)
+            {
+                return null;
+            }
+
+            return new LoginResponseDto
+            {
+                Token = GenerateJwtToken(user),
+                User = user
+            };
         }
 
         private async Task<UserDto> GetUserByUsername(string username, SqlConnection connection)
@@ -79,63 +77,59 @@ namespace happykopiAPI.Services.Implementations
         }
         public async Task<UserDto> Register(UserForRegisterDto userForRegisterDto)
         {
-            await using (var connection = new SqlConnection(_connectionString))
+            await using var connection = new SqlConnection(_connectionString);
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(userForRegisterDto.Password);
+            string fullName = $"{userForRegisterDto.FirstName} {userForRegisterDto.LastName}";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@Username", userForRegisterDto.Username);
+            parameters.Add("@PasswordHash", passwordHash);
+            parameters.Add("@EmailAddress", userForRegisterDto.EmailAddress);
+            parameters.Add("@PhoneNumber", userForRegisterDto.PhoneNumber);
+            parameters.Add("@FirstName", userForRegisterDto.FirstName);
+            parameters.Add("@LastName", userForRegisterDto.LastName);
+
+            try
             {
-                var passwordHash = BCrypt.Net.BCrypt.HashPassword(userForRegisterDto.Password);               
-                string fullName = $"{userForRegisterDto.FirstName} {userForRegisterDto.LastName}";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("@Username", userForRegisterDto.Username);
-                parameters.Add("@PasswordHash", passwordHash);
-                parameters.Add("@EmailAddress", userForRegisterDto.EmailAddress);
-                parameters.Add("@PhoneNumber", userForRegisterDto.PhoneNumber);
-                parameters.Add("@FirstName", userForRegisterDto.FirstName);
-                parameters.Add("@LastName", userForRegisterDto.LastName);
-
-                try
-                {
-                    await connection.ExecuteAsync(
-                        "sp_UserRegister",
-                        parameters,
-                        commandType: CommandType.StoredProcedure);
-                    var newUser = await GetUserByUsername(userForRegisterDto.Username, connection);
-                    return newUser;
-                }
-                catch (SqlException ex) 
-                {
-                    throw new InvalidOperationException(ex.Message);
-                }
+                await connection.ExecuteAsync(
+                    "sp_UserRegister",
+                    parameters,
+                    commandType: CommandType.StoredProcedure);
+                var newUser = await GetUserByUsername(userForRegisterDto.Username, connection);
+                return newUser;
+            }
+            catch (SqlException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
         }
 
         public async Task<UserDto> RegisterAdminForTesting(UserForRegisterDto userForAdminRegisterDto)
         {
-            await using (var connection = new SqlConnection(_connectionString))
+            await using var connection = new SqlConnection(_connectionString);
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(userForAdminRegisterDto.Password);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@Username", userForAdminRegisterDto.Username);
+            parameters.Add("@PasswordHash", passwordHash);
+            parameters.Add("@EmailAddress", userForAdminRegisterDto.EmailAddress);
+            parameters.Add("@PhoneNumber", userForAdminRegisterDto.PhoneNumber);
+            parameters.Add("@FirstName", userForAdminRegisterDto.FirstName);
+            parameters.Add("@LastName", userForAdminRegisterDto.LastName);
+
+            try
             {
-                var passwordHash = BCrypt.Net.BCrypt.HashPassword(userForAdminRegisterDto.Password);
+                await connection.ExecuteAsync(
+                    "dbo.sp_RegisterAdminForTesting",
+                    parameters,
+                    commandType: CommandType.StoredProcedure);
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@Username", userForAdminRegisterDto.Username);
-                parameters.Add("@PasswordHash", passwordHash);
-                parameters.Add("@EmailAddress", userForAdminRegisterDto.EmailAddress);
-                parameters.Add("@PhoneNumber", userForAdminRegisterDto.PhoneNumber);
-                parameters.Add("@FirstName", userForAdminRegisterDto.FirstName);
-                parameters.Add("@LastName", userForAdminRegisterDto.LastName);
-
-                try
-                {
-                    await connection.ExecuteAsync(
-                        "dbo.sp_RegisterAdminForTesting", 
-                        parameters,
-                        commandType: CommandType.StoredProcedure);
-
-                    var newUser = await GetUserByUsername(userForAdminRegisterDto.Username, connection);
-                    return newUser;
-                }
-                catch (SqlException ex)
-                {
-                    throw new InvalidOperationException(ex.Message);
-                }
+                var newUser = await GetUserByUsername(userForAdminRegisterDto.Username, connection);
+                return newUser;
+            }
+            catch (SqlException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
         }
     }
