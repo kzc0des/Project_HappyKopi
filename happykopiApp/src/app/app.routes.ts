@@ -10,6 +10,9 @@ import { loginGuard } from './core/guards/login-guard';
 import { OrderCard } from './shared/components/orders/order-card/order-card';
 import { AddonCard } from './shared/components/orders/addon-card/addon-card';
 import { OrderItemCard } from './shared/components/orders/order-item-card/order-item-card';
+import { InventoryCategories } from './modules/inventory/inventory-categories/inventory-categories';
+import { InventoryList } from './modules/inventory/inventory-list/inventory-list';
+import { InventoryItemDetail } from './modules/inventory/inventory-item-detail/inventory-item-detail';
 
 export const routes: Routes = [
     {
@@ -49,6 +52,24 @@ export const routes: Routes = [
                         data: { roles: ['Barista'] }
                     }
                 ]
+            },
+            {
+                path: 'inventory',
+                children: [
+                    {
+                        path: '',
+                        component: InventoryCategories,
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: ':categoryName',
+                        component: InventoryList,
+                    },
+                    {
+                        path: 'item/:itemId',
+                        component: InventoryItemDetail
+                    }
+                ] 
             }
         ]
     },
