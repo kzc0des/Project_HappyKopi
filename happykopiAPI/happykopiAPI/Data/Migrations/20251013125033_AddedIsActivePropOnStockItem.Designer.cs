@@ -12,8 +12,8 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    [Migration("20251013121456_StockItemStoredProcedures")]
-    partial class StockItemStoredProcedures
+    [Migration("20251013125033_AddedIsActivePropOnStockItem")]
+    partial class AddedIsActivePropOnStockItem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -285,6 +285,11 @@ namespace happykopiAPI.Data.Migrations
 
                     b.Property<decimal>("AlertLevel")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsPerishable")
                         .ValueGeneratedOnAdd()

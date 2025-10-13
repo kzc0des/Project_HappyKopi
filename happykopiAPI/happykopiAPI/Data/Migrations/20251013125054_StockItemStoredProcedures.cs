@@ -24,7 +24,7 @@ namespace happykopiAPI.Data.Migrations
                     si.AlertLevel,
                     si.IsPerishable,
                     si.ItemType,
-                    si.IsActive, -- Kailangan ng IsActive column
+                    si.IsActive,
                     ISNULL(SUM(sib.StockQuantity), 0) AS TotalStockQuantity
                 FROM
                     dbo.StockItems si
@@ -35,7 +35,7 @@ namespace happykopiAPI.Data.Migrations
                 GROUP BY
                     si.Id, si.Name, si.UnitOfMeasure, si.AlertLevel, si.IsPerishable, si.ItemType, si.IsActive;
             END";
-            
+
             migrationBuilder.Sql(sp_GetStockItemById);
 
             var sp_GetAllStockItems = @"
@@ -56,7 +56,7 @@ namespace happykopiAPI.Data.Migrations
                 LEFT JOIN
                     dbo.StockItemBatches sib ON si.Id = sib.StockItemId
                 WHERE
-                    si.IsActive = 
+                    si.IsActive = 1
                 GROUP BY
                     si.Id, si.Name, si.UnitOfMeasure, si.AlertLevel, si.IsActive
                 ORDER BY
@@ -212,7 +212,7 @@ namespace happykopiAPI.Data.Migrations
                 WHERE
                     StockItemId = @StockItemId
                 ORDER BY
-                    ExpiryDate ASC; -- Para mauna ang mga malapit na ma-expire
+                    ExpiryDate ASC;
             END";
 
             migrationBuilder.Sql(sp_GetBatchesByStockItemId);
@@ -221,7 +221,13 @@ namespace happykopiAPI.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS dbo.sp_GetStockItemById");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS dbo.sp_GetAllStockItems");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS dbo.sp_GetLowStockItems");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS dbo.sp_UpdateStockItem");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS dbo.sp_DeactivateStockItem");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS dbo.sp_AdjustStockQuantity");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS dbo.sp_GetBatchesByStockItemId");
         }
     }
 }

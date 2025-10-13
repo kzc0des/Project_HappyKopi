@@ -283,6 +283,11 @@ namespace happykopiAPI.Data.Migrations
                     b.Property<decimal>("AlertLevel")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<bool>("IsPerishable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
