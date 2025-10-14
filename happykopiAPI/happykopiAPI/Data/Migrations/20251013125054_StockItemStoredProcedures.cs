@@ -15,26 +15,36 @@ namespace happykopiAPI.Data.Migrations
                 @StockItemId INT
             AS
             BEGIN
-                SET NOCOUNT ON;
+                    SET NOCOUNT ON;
 
-                SELECT
-                    si.Id,
-                    si.Name,
-                    si.UnitOfMeasure,
-                    si.AlertLevel,
-                    si.IsPerishable,
-                    si.ItemType,
-                    si.IsActive,
-                    ISNULL(SUM(sib.StockQuantity), 0) AS TotalStockQuantity,
-                    COUNT(sib.Id) AS BatchCount
-                FROM
-                    dbo.StockItems si
-                LEFT JOIN
-                    dbo.StockItemBatches sib ON si.Id = sib.StockItemId
-                WHERE
-                    si.Id = @StockItemId
-                GROUP BY
-                    si.Id, si.Name, si.UnitOfMeasure, si.AlertLevel, si.IsPerishable, si.ItemType, si.IsActive;
+                    SELECT
+                        si.Id,
+                        si.Name,
+                        si.UnitOfMeasure,
+                        si.AlertLevel,
+                        si.IsPerishable,
+                        si.ItemType,
+                        si.IsActive,
+                        ISNULL(SUM(sib.StockQuantity), 0) AS TotalStockQuantity,
+                        (
+                            SELECT 
+                                b.Id,
+                                b.StockQuantity,
+                                b.ExpiryDate
+                            FROM dbo.StockItemBatches b
+                            WHERE b.StockItemId = si.Id
+                            ORDER BY b.ExpiryDate ASC
+                            FOR JSON PATH 
+                        ) AS Batches
+                    FROM
+                        dbo.StockItems si
+                    LEFT JOIN
+                        dbo.StockItemBatches sib ON si.Id = sib.StockItemId
+                    WHERE
+                        si.Id = @StockItemId
+                    GROUP BY
+                        si.Id, si.Name, si.UnitOfMeasure, si.AlertLevel, si.IsPerishable, si.ItemType, si.IsActive
+                    FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;
             END";
 
             migrationBuilder.Sql(sp_GetStockItemById);
