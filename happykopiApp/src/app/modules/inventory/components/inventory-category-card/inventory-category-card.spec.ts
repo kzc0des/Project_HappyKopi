@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddonCard } from './addon-card';
+import { InventoryCategoryCard } from './inventory-category-card';
 
-describe('AddonCard', () => {
-  let component: AddonCard;
-  let fixture: ComponentFixture<AddonCard>;
+describe('InventoryCategoryCard', () => {
+  let component: InventoryCategoryCard;
+  let fixture: ComponentFixture<InventoryCategoryCard>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddonCard]
+      imports: [InventoryCategoryCard]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddonCard);
+    fixture = TestBed.createComponent(InventoryCategoryCard);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
