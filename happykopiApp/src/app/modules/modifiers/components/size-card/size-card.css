@@ -1,0 +1,43 @@
+body {
+  background: #222;
+}
+
+.size-card {
+  width: 540px;
+  height: 123px;
+  position: relative;
+  background: #FAFAFA;
+  font-family: "Outfit", sans-serif;
+}
+ 
+.size-name {
+  left: 43.92px;
+  top: 33px;
+  position: absolute;
+  color: #282828;
+  font-size: 16px;
+  font-weight: 600;
+  word-wrap: break-word;
+}
+ 
+.size-price {
+  left: 43.92px;
+  top: 66px;
+  position: absolute;
+  color: #777777;
+  font-size: 16px;
+  font-weight: 400;
+  word-wrap: break-word;
+}
+ 
+.size-arrow {
+  width: 8px;
+  height: 8px;
+  left: 478px;
+  top: 56px;
+  position: absolute;
+  border-top: 3px solid #777;
+  border-right: 3px solid #777;
+  transform: rotate(45deg);
+  transform-origin: center;
+}

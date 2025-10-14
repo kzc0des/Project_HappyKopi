@@ -1,0 +1,92 @@
+body {
+  background: #222;
+  font-family: "Outfit", sans-serif;
+}
+
+.payment-card {
+  width: 540px;
+  height: 158px;
+  position: relative;
+  background: #FAFAFA;
+}
+ 
+.payment-arrow {
+  position: absolute;
+  left: 395px;
+  top: 74px;
+  width: 18px;
+  height: 9px;
+}
+
+.payment-arrow::before,
+.payment-arrow::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 2.5px;
+  background: #282828;
+  border-radius: 2px;
+  top: 3px;
+}
+
+.payment-arrow::before {
+  left: 2.5px;
+  transform: rotate(45deg);
+  transform-origin: left center;
+}
+
+.payment-arrow::after {
+  right: 2.5px;
+  transform: rotate(-45deg);
+  transform-origin: right center;
+}
+ 
+.payment-method {
+  left: 116px;
+  top: 41px;
+  position: absolute;
+  color: #909090;
+  font-size: 16px;
+  font-weight: 400;
+  word-wrap: break-word;
+}
+ 
+.payment-amount-input {
+  left: 116px;
+  top: 78px;
+  position: absolute;
+  width: 223px;
+  border: none;
+  border-bottom: 3.5px solid #E3E3E3;
+  background: transparent;
+  font-size: 20px;
+  font-weight: 700;
+  color: #282828;
+  padding: 0;
+  outline: none;
+  padding-bottom: 8px;
+  font-family: "Outfit", sans-serif;
+}
+
+ 
+.payment-icon {
+  width: 55px;
+  height: 55px;
+  position: absolute;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+.payment-icon.left {
+  left: 30px;
+  top: 52px;
+  background: #F3B72C;
+}
+
+.payment-icon.right {
+  left: 450.5px;
+  top: 52px;
+  background: #D9D9D9;
+}

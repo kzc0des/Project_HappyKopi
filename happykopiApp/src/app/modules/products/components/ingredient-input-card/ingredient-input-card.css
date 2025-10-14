@@ -1,0 +1,90 @@
+body {
+  background: #222;
+  font-family: "Outfit", sans-serif;
+}
+
+.ingredient-card {
+  width: 540px;
+  height: 158px;
+  position: relative;
+  background: #fafafa;
+}
+ 
+.ingredient-icon {
+  width: 55px;
+  height: 55px;
+  left: 30px;
+  top: 52px;
+  position: absolute;
+  background: #f3b72c;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
+.delete-ingredient {
+  width: 55px;
+  height: 55px;
+  left: 450.5px;
+  top: 52px;
+  position: absolute;
+  background: #d9d9d9;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
+.ingredient-label {
+  left: 116px;
+  top: 41px;
+  position: absolute;
+  color: #909090;
+  font-size: 16px;
+  font-weight: 400;
+}
+ 
+.ingredient-input {
+  left: 116px;
+  top: 78px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ingredient-input input {
+  width: 223px;
+  border: none;
+  background: transparent;
+  color: #282828;
+  font-size: 20px;
+  font-weight: 600;
+  outline: none;
+  text-align: left;
+}
+ 
+.ingredient-divider {
+  width: 277px;
+  height: 0.02px;
+  left: 116px;
+  top: 115.01px;
+  position: absolute;
+  outline: 2px #e3e3e3 solid;
+  outline-offset: -1px;
+}
+ 
+.ingredient-unit {
+  width: 25px;
+  height: 30px;
+  left: 357px;
+  top: 78px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #909090;
+  font-size: 16px;
+  font-weight: 600;
+}

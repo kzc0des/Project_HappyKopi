@@ -1,0 +1,51 @@
+body {
+  background: #222;
+  font-family: "Outfit", sans-serif;
+  width: 540px;
+  height: 960px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-total-card {
+  width: 540px;
+  height: 95px;
+  padding: 28px 35px;
+  background: #FAFAFA;
+  display: flex;
+  align-items: center;
+  gap: 32px; 
+  box-sizing: border-box;
+}
+
+.order-total-icon {
+  width: 55px;
+  height: 55px;
+  background: #F3B72C;
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.mop-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.mop {
+  color: #282828;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.mop-label {
+  color: #777777;
+  font-size: 16px;
+  font-weight: 400;
+}

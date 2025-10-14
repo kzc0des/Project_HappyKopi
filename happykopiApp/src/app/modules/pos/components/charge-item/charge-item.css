@@ -1,0 +1,73 @@
+body {
+  background: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: "Outfit", sans-serif;
+}
+
+.drink-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: #FAFAFA;
+  padding: 24px;
+  width: 100%;
+  max-width: 540px;
+  box-sizing: border-box;
+  gap: 24px;
+  box-shadow: 0 1.5px 5px rgba(0, 0, 0, 0.15);
+}
+
+.drink-image {
+  width: 103px;
+  height: 122px;
+  background: #F0F0F0;
+  border-radius: 24px;
+  flex-shrink: 0;
+}
+
+.drink-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.drink-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.drink-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: #282828;
+}
+
+.drink-price {
+  font-weight: 700;
+  font-size: 20px;
+  color: #282828;
+}
+
+.drink-size {
+  font-size: 16px;
+  color: #D59400;
+  font-weight: 700;
+}
+
+.addon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.addon-list div {
+  font-size: 16px;
+  color: #777777;
+}

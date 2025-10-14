@@ -57,7 +57,7 @@ namespace happykopiAPI.Services.Implementations
 
             if (!isPasswordValid)
             {
-                return null;
+                throw new InvalidOperationException("Invalid username or password");
             }
 
             return new LoginResponseDto

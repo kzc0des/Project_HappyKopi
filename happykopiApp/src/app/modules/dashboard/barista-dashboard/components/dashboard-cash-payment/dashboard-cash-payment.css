@@ -1,0 +1,63 @@
+body {
+  background: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Outfit", sans-serif;
+  margin: 0;
+}
+
+.transaction-card {
+  width: 540px;
+  height: 116px;
+  position: relative;
+  background: #FAFAFA; 
+}
+ 
+.transaction-icon {
+  width: 55px;
+  height: 55px;
+  background: #F3B72C;
+  border-radius: 12px;
+  position: absolute;
+  left: 30px;
+  top: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
+.transaction-title {
+  position: absolute;
+  left: 116px;
+  top: 25px;
+  color: #909090;
+  font-size: 16px;
+  font-weight: 400;
+}
+ 
+.transaction-count {
+  position: absolute;
+  left: 116px;
+  top: 62px;
+  color: #282828;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+ 
+.transaction-amount {
+  position: absolute;
+  right: 30px;
+  top: 43px;
+  color: #282828;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: right;
+}
