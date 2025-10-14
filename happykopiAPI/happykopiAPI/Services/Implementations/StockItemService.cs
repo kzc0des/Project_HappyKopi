@@ -1,5 +1,4 @@
-﻿using happykopiAPI.Data;
-using happykopiAPI.DTOs.Inventory;
+﻿using happykopiAPI.DTOs.Inventory;
 using happykopiAPI.DTOs.Inventory.Outgoing_Data;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
