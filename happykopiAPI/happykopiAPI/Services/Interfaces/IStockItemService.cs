@@ -11,6 +11,7 @@ namespace happykopiAPI.Services.Interfaces
         Task<StockItemDetailsDto> GetStockItemByIdAsync(int id);
         Task<IEnumerable<StockItemBatchDetailsDto>> GetBatchesByStockItemIdAsync(int stockItemId);
         Task<IEnumerable<LowStockItemDto>> GetLowStockItemsAsync();
+        Task<IEnumerable<StockItemTypeCountDto>> GetStockItemCountByItemTypeAsync();
         Task UpdateStockItemAsync(int id, StockItemUpdateDto stockItemDto);
         Task AdjustStockQuantityAsync(StockAdjustmentDto adjustmentDto);
         Task DeactivateStockItemAsync(int id, int userId);
