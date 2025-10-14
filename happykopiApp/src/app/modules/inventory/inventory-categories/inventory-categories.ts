@@ -1,19 +1,20 @@
 import { Component } from '@angular/core';
+import { InventoryCategoryCard } from "../components/inventory-category-card/inventory-category-card";
 
-export interface Category {
+export interface StockItemType {
   name: string,
   quantity: number
 }
 
 @Component({
   selector: 'app-inventory-categories',
-  imports: [],
+  imports: [InventoryCategoryCard],
   templateUrl: './inventory-categories.html',
   styleUrl: './inventory-categories.css'
 })
 export class InventoryCategories {
-  categories: Category[] = [];
+  stockItemTypes: StockItemType[] = [];
 
-  
+
 
 }
