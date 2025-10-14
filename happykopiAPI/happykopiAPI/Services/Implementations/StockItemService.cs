@@ -3,6 +3,7 @@ using happykopiAPI.DTOs.Inventory.Outgoing_Data;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Text.Json;
 
 namespace happykopiAPI.Services.Implementations
 {
@@ -84,24 +85,17 @@ namespace happykopiAPI.Services.Implementations
             command.Parameters.AddWithValue("@StockItemId", id);
 
             await connection.OpenAsync();
-            await using var reader = await command.ExecuteReaderAsync();
+            var jsonResult = await command.ExecuteScalarAsync() as string;
 
-            if (await reader.ReadAsync())
+            if (string.IsNullOrEmpty(jsonResult))
             {
-                return new StockItemDetailsDto
-                {
-                    Id = reader.GetInt32("Id"),
-                    Name = reader.GetString("Name"),
-                    UnitOfMeasure = reader.GetString("UnitOfMeasure"),
-                    AlertLevel = reader.GetDecimal("AlertLevel"),
-                    IsPerishable = reader.GetBoolean("IsPerishable"),
-                    ItemType = reader.GetInt32("ItemType"),
-                    IsActive = reader.GetBoolean("IsActive"),
-                    TotalStockQuantity = reader.GetDecimal("TotalStockQuantity"),
-                    BatchCount = reader.GetInt32("BatchCount")
-                };
+                return null;
             }
-            return null;
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var resultDto = JsonSerializer.Deserialize<StockItemDetailsDto>(jsonResult, options);
+
+            return resultDto;
         }
 
         public async Task<IEnumerable<StockItemBatchDetailsDto>> GetBatchesByStockItemIdAsync(int stockItemId)
