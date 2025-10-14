@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
 
+export interface Category {
+  name: string,
+  quantity: number
+}
+
 @Component({
   selector: 'app-inventory-categories',
   imports: [],
@@ -7,5 +12,8 @@ import { Component } from '@angular/core';
   styleUrl: './inventory-categories.css'
 })
 export class InventoryCategories {
+  categories: Category[] = [];
+
+  
 
 }

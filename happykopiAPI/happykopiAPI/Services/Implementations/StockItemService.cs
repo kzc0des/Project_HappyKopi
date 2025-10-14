@@ -1,5 +1,4 @@
-﻿using happykopiAPI.Data;
-using happykopiAPI.DTOs.Inventory;
+﻿using happykopiAPI.DTOs.Inventory;
 using happykopiAPI.DTOs.Inventory.Outgoing_Data;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
@@ -150,6 +149,28 @@ namespace happykopiAPI.Services.Implementations
                 });
             }
             return lowStockItems;
+        }
+
+        public async Task<IEnumerable<StockItemTypeCountDto>> GetStockItemCountByItemTypeAsync()
+        {
+            var counts = new List<StockItemTypeCountDto>();
+            await using var connection = new SqlConnection(_connectionString);
+            await using var command = new SqlCommand("sp_GetStockItemCountByItemType", connection);
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            await connection.OpenAsync();
+            await using var reader = await command.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                counts.Add(new StockItemTypeCountDto
+                {
+                    ItemTypeName = reader.GetString("ItemTypeName"),
+                    StockItemCount = reader.GetInt32("StockItemCount")
+                });
+            }
+            return counts;
         }
 
         // === UPDATE METHODS ===
