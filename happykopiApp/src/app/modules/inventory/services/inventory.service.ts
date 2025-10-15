@@ -26,7 +26,7 @@ export class InventoryService {
   }
 
   getStockItemDetailsById(id: number): Observable<StockItemDetailsDto> {
-    return this.apiService.get<StockItemDetailsDto>(`${this.controllerPath}/stock-items/details/${id}`);
+    return this.apiService.get<StockItemDetailsDto>(`${this.controllerPath}/stock-items/${id}`);
   }
 
   getStockItemTypeCounts(): Observable<StockItemTypeCountDto[]> {

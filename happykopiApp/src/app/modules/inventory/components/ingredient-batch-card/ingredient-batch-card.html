@@ -1,25 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ingredient Batch Card</title>
- 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="ingredient-batch-card.css">
-</head>
-<body>
-  <div class="batch-row">
-    <div class="batch-text batch-col-1">1</div>
-    <div class="batch-text batch-col-2">500 mL</div>
-    <div class="batch-text batch-col-3">9/12/2025</div>
+<div class="relative overflow-x-auto sm:rounded-lg">
+  <table class="w-full text-gray-500">
 
-    <div class="batch-icon-bg">
-      <div class="batch-icon-inner"></div>
-    </div>
-  </div>
-</body>
-</html>
+    <thead class="text-lg text-white bg-hapikopi-yellow">
+      <tr>
+        <th scope="col" class="px-6 py-3">
+          Batch
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Quantity
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Expiry Date
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for(batch of batches;track $index) {
+      <tr class="border-b">
+        <td scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap">
+          {{ batch.id }}
+        </td>
+        <td class="px-6 py-4">
+          {{ batch.stockQuantity }}
+        </td>
+        <td class="px-6 py-4">
+          {{ batch.expiryDate | date }}
+        </td>
+      </tr>
+      }@empty {
+      <tr>
+        <td colspan="3" class="px-6 py-4 text-center">No batches found.</td>
+      </tr>
+      }
+    </tbody>
+
+  </table>
+</div>

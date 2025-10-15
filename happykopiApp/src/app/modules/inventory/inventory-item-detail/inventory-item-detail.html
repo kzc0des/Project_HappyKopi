@@ -1,1 +1,9 @@
-<p>inventory-item-detail works!</p>
+<div>
+    <div class="flex flex-col gap-5 p-5">
+        <app-itemcard [itemName]="stockitemdetail.name" itemTitle="Ingredient Name">
+        </app-itemcard>
+        <app-itemcard [itemName]="stockitemdetail.unitOfMeasure" itemTitle="Measurement">
+        </app-itemcard>
+    </div>
+    <app-ingredient-batch-card [batches]="stockitemdetail.batches"></app-ingredient-batch-card>
+</div>
