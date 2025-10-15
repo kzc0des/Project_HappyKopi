@@ -4,7 +4,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [
+      "jasmine", 
+      "@capacitor/core",
+      "@capacitor/app",
+      "@capacitor/cli"
+    ]
   },
   "include": [
     "src/**/*.ts"
