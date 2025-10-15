@@ -1,6 +1,7 @@
 <div>
     @for(item of stockitemsummaries; track $index;) {
         <app-batch-organizer-card 
+        [itemId]="item.id"
         [name]="item.name" 
         [batches]="item.batchCount" 
         [totalQuantity]="item.totalStockQuantity" 

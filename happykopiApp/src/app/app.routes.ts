@@ -16,6 +16,7 @@ import { stockItemTypeCountResolver } from './modules/inventory/resolver/stockit
 import { IngredientBatchCard } from './modules/inventory/components/ingredient-batch-card/ingredient-batch-card';
 import { IngredientInputCard } from './modules/products/components/ingredient-input-card/ingredient-input-card';
 import { stockItemSummaryResolver } from './modules/inventory/resolver/stockitemsummary/stock-item-summary-resolver';
+import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 
 export const routes: Routes = [
     {
@@ -76,7 +77,10 @@ export const routes: Routes = [
                     },
                     {
                         path: 'item/:itemId',
-                        component: InventoryItemDetail
+                        component: InventoryItemDetail,
+                        resolve: {
+                            stockitemdetail: stockitemdetailResolver
+                        }
                     }
                 ] 
             }
