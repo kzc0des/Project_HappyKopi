@@ -167,6 +167,34 @@ namespace happykopiAPI.Services.Implementations
             return counts;
         }
 
+        public async Task<IEnumerable<StockItemSummaryDto>> GetStockItemsByItemTypeAsync(int itemType)
+        {
+            var stockItems = new List<StockItemSummaryDto>();
+            await using var connection = new SqlConnection(_connectionString);
+            await using var command = new SqlCommand("sp_GetStockItemsByItemType", connection);
+
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@ItemType", itemType);
+
+            await connection.OpenAsync();
+            await using var reader = await command.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                stockItems.Add(new StockItemSummaryDto
+                {
+                    Id = reader.GetInt32("Id"),
+                    Name = reader.GetString("Name"),
+                    UnitOfMeasure = reader.GetString("UnitOfMeasure"),
+                    AlertLevel = reader.GetDecimal("AlertLevel"),
+                    TotalStockQuantity = reader.GetDecimal("TotalStockQuantity"),
+                    IsActive = reader.GetBoolean("IsActive"),
+                    BatchCount = reader.GetInt32("BatchCount")
+                });
+            }
+            return stockItems;
+        }
+
         // === UPDATE METHODS ===
 
         public async Task UpdateStockItemAsync(int id, StockItemUpdateDto dto)

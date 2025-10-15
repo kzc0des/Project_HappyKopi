@@ -9,7 +9,7 @@ export const stockItemTypeCountResolver: ResolveFn<StockItemTypeCountDto[]> = (r
 
   return inventoryService.getStockItemTypeCounts().pipe(
     catchError(err => {
-      console.error('Failed to retrieve inventory list', err);
+      console.error('Failed to retrieve stockitem types', err);
       return of ([]);
     })
   )  
