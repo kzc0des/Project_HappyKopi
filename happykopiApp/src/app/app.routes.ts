@@ -13,6 +13,7 @@ import { InventoryItemDetail } from './modules/inventory/inventory-item-detail/i
 import { IngredientTypeCard } from './modules/inventory/components/ingredient-type-card/ingredient-type-card';
 import { BatchOrganizerCard } from './modules/inventory/components/batch-organizer-card/batch-organizer-card';
 import { InventoryCategoryCard } from './modules/inventory/components/inventory-category-card/inventory-category-card';
+import { stockItemTypeCountResolver } from './modules/inventory/resolver/stockitemtype/stock-item-type-count-resolver';
 
 export const routes: Routes = [
     {
@@ -59,7 +60,10 @@ export const routes: Routes = [
                     {
                         path: '',
                         component: InventoryCategories,
-                        pathMatch: 'full'
+                        pathMatch: 'full',
+                        resolve: {
+                            stockitemtypecount: stockItemTypeCountResolver
+                        }
                     },
                     {
                         path: ':categoryName',
