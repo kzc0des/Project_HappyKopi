@@ -71,9 +71,7 @@ export const routes: Routes = [
                         path: ':itemType',
                         component: InventoryList,
                         resolve: {
-                            stockitemlist: stockItemSummaryResolver 
-                        }
-
+                            stockitemlist: stockItemSummaryResolver
                         }
                     },
                     {
@@ -86,6 +84,6 @@ export const routes: Routes = [
     },
     {
         path: 'sample',
-        component: IngredientInputCard
+        component: BatchOrganizerCard
     }
 ];
