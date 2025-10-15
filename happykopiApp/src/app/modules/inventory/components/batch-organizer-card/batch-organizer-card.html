@@ -1,5 +1,5 @@
-<div class="flex items-center w-full p-5" [routerLink]="['../item', itemId]">
-  <div class="flex flex-col flex-1 gap-1">
+<button class="flex items-center w-full p-5" [routerLink]="['../item', itemId]">
+  <div class="flex flex-col flex-1 gap-1 text-start">
     <p class="font-[600]">{{name || 'Stock Item Name'}}</p>
 
     <div class="flex gap-2">
@@ -38,4 +38,4 @@
         clip-rule="evenodd" />
     </svg>
 
-</div>
+</button>
