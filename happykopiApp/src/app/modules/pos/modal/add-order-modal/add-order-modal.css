@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+.modal-card {
+  width: 465px;
+  height: 691px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Header */
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 29px;
+  color: #282828;
+}
+
+.product-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+.product-subtitle {
+  font-size: 14px;
+  color: #777;
+  margin: 2px 0 0 0;
+}
+
+.product-price {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Quantity Selector */
+.quantity-container {
+  width: 418px;
+  height: 54px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.quantity-bg {
+  width: 416px;
+  height: 54px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #fafafa;
+  border-radius: 90px;
+  outline: 2px solid #d9d9d9;
+}
+ 
+.quantity-value {
+  position: absolute;
+  left: 205px;
+  top: 12px;
+  text-align: center;
+  color: #282828;
+  font-size: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  word-wrap: break-word;
+}
+ 
+.quantity-btn {
+  width: 49px;
+  height: 49px;
+  position: absolute;
+  top: 2px;
+  background: #f3b72c;
+  border-radius: 9999px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px; 
+  color: #765302;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+ 
+.quantity-btn.minus {
+  left: 3px;
+}
+
+.quantity-btn.plus {
+  left: 364px;
+}
+
+/* Sizes */
+.size-container {
+  width: 414px;
+  height: 77px;
+  position: relative;
+  display: flex;
+  gap: 12px;
+}
+ 
+.size-option {
+  width: 201px;
+  height: 77px;
+  border-radius: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  background: #ededed;
+  padding: 17px 26px; 
+  cursor: pointer;
+}
+ 
+.size-option.active {
+  background: #fffbf2;
+  outline: 2px solid #f3b72c;
+  outline-offset: -2px;
+}
+ 
+.size-icon svg {
+  display: block;
+}
+ 
+.size-label {
+  font-size: 16px;
+  font-weight: 400;
+  color: #282828;
+  text-align: center;
+}
+ 
+.size-option.active .size-label {
+  color: #f3b72c;
+}
+
+/* Add-ons */
+.addons-section {
+  margin-top: 33px;
+  margin-bottom: 53px;
+}
+
+.addons-title {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 17px;
+  color: #282828;
+}
+
+.addons-list {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+  padding-top: 3px;  
+}
+
+.addons-list::-webkit-scrollbar {
+  width: 0;                
+}
+
+
+.addon-card {
+  min-width: 130px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.addon-icon {
+  width: 36px;
+  height: 36px;
+  background: #f8c23d;
+  border-radius: 50%;
+  margin: 0 auto 8px;
+}
+
+.addon-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.addon-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 30px;
+  border: 1px solid #eee;
+  padding: 4px 8px;
+}
+
+.addon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: #f8c23d;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.addon-value {
+  font-weight: 600;
+}
+
+/* Add Item Button */
+.add-item-btn {
+  width: 413px;
+  height: 77px;
+  padding: 26px 126px;
+  background: #F3B72C;
+  border-radius: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.add-item-icon svg {
+  width: 20px;
+  height: 25px;
+}
+
+.add-item-text {
+  text-align: center;
+  color: #765302;
+  font-size: 20px; 
+  font-weight: 600;
+  word-wrap: break-word;
+}
+
