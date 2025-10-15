@@ -8,22 +8,17 @@ export const stockItemSummaryResolver: ResolveFn<StockItemSummaryDto[]> = (route
   const inventoryService = inject(InventoryService);
   const itemTypeParam = route.paramMap.get('itemType');
 
+  console.log("Item Type Param:" + itemTypeParam);
+
   if (!itemTypeParam) {
     console.error('ItemType parameter not found in route!');
-    return of([]);
+    return of([]); 
   }
 
-  const itemType = Number(itemTypeParam);
-
-  if (isNaN(itemType)) {
-    console.error('ItemType parameter is not a valid number!');
-    return of([]);
-  }
-
-  return inventoryService.getStockItemsSummaryByItemType(itemType).pipe(
+  return inventoryService.getStockItemsSummaryByItemType(itemTypeParam).pipe(
     catchError(err => {
-      console.error('Failed to retrieve stockitem list', err);
+      console.error('Failed to retrieve stock item list by type', err);
       return of([]);
     })
-  )
+  );
 };

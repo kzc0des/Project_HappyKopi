@@ -1,5 +1,6 @@
 ﻿using happykopiAPI.DTOs.Inventory;
 using happykopiAPI.DTOs.Inventory.Outgoing_Data;
+using happykopiAPI.Enums;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -167,7 +168,7 @@ namespace happykopiAPI.Services.Implementations
             return counts;
         }
 
-        public async Task<IEnumerable<StockItemSummaryDto>> GetStockItemsByItemTypeAsync(int itemType)
+        public async Task<IEnumerable<StockItemSummaryDto>> GetStockItemsByItemTypeAsync(StockItemType itemType)
         {
             var stockItems = new List<StockItemSummaryDto>();
             await using var connection = new SqlConnection(_connectionString);
