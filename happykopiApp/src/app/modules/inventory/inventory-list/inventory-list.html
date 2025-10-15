@@ -1,1 +1,9 @@
-<p>inventory-list works!</p>
+<div>
+    @for(item of stockitemsummaries; track $index;) {
+        <app-batch-organizer-card 
+        [name]="item.name" 
+        [batches]="item.batchCount" 
+        [totalQuantity]="item.totalStockQuantity" 
+        [unitOfMeasurement]="item.unitOfMeasure"></app-batch-organizer-card>
+    }
+</div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-batch-organizer-card',
@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './batch-organizer-card.css'
 })
 export class BatchOrganizerCard {
-
+  @Input() name:string = '';
+  @Input() batches:number = 0;
+  @Input() totalQuantity:number = 0;
+  @Input() unitOfMeasurement:string = '';
 }

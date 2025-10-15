@@ -1,41 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Batch Organizer Card</title>
+<div class="flex items-center w-full p-5">
+  <div class="flex flex-col flex-1 gap-1">
+    <p class="font-[600]">{{name || 'Stock Item Name'}}</p>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="batch-organizer-card.css" />
-  </head>
-  <body>
-    <div class="batch-card">
-      <div class="batch-card-next"></div>
-      <div class="product-name">Green Apple Juice</div>
-      <div class="product-batches">4 Batches</div>
-
-      <!-- batch icon -->
-      <svg class="product-batch-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18" fill="none">
-        <path d="M19 1H3C1.89543 1 1 1.89543 1 3V5C1 6.10457 1.89543 7 3 7H19C20.1046 7 21 6.10457 21 5V3C21 1.89543 20.1046 1 19 1Z" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M19 11H3C1.89543 11 1 11.8954 1 13V15C1 16.1046 1.89543 17 3 17H19C20.1046 17 21 16.1046 21 15V13C21 11.8954 20.1046 11 19 11Z" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <div class="flex gap-2">
+      <svg class="product-batch-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18"
+        fill="none">
+        <path
+          d="M19 1H3C1.89543 1 1 1.89543 1 3V5C1 6.10457 1.89543 7 3 7H19C20.1046 7 21 6.10457 21 5V3C21 1.89543 20.1046 1 19 1Z"
+          stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path
+          d="M19 11H3C1.89543 11 1 11.8954 1 13V15C1 16.1046 1.89543 17 3 17H19C20.1046 17 21 16.1046 21 15V13C21 11.8954 20.1046 11 19 11Z"
+          stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
-
-      <div class="product-volume">1900 mL</div>
-
-      <!-- volume/size icon -->
-      <svg class="product-volume-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 24 20" fill="none">
-        <path d="M18.082 1H22.0818L21.1141 8H18.082" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M4.5827 1H18.0828V18C18.0828 18.5523 17.6351 19 17.0828 19H5.58266C5.0304 19 4.58269 18.5523 4.58267 18L4.58231 6.24995C4.58229 5.77785 4.36073 5.336 4.00241 5.0286C2.65689 3.8744 -0.212456 1 4.5827 1Z" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M13.082 5.5H15.082" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M13.082 9.5H15.082" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M13.082 13.5H15.082" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
- 
+      <p class="text-hapikopi-dark">{{batches}} {{(batches > 1) ? 'batches' : 'batch'}}</p>
     </div>
-  </body>
-</html>
+
+    <div class="flex gap-2">
+      <svg class="product-volume-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 24 20"
+        fill="none">
+        <path d="M18.082 1H22.0818L21.1141 8H18.082" stroke="#777777" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M4.5827 1H18.0828V18C18.0828 18.5523 17.6351 19 17.0828 19H5.58266C5.0304 19 4.58269 18.5523 4.58267 18L4.58231 6.24995C4.58229 5.77785 4.36073 5.336 4.00241 5.0286C2.65689 3.8744 -0.212456 1 4.5827 1Z"
+          stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M13.082 5.5H15.082" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M13.082 9.5H15.082" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M13.082 13.5H15.082" stroke="#777777" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      <p class="text-hapikopi-dark">{{totalQuantity}} {{unitOfMeasurement}}</p>
+    </div>
+  </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <path fill="#333" fill-rule="evenodd"
+        d="M8.512 4.43a.75.75 0 0 1 1.057.082l6 7a.75.75 0 0 1 0 .976l-6 7a.75.75 0 0 1-1.138-.976L14.012 12L8.431 5.488a.75.75 0 0 1 .08-1.057"
+        clip-rule="evenodd" />
+    </svg>
+
+</div>
