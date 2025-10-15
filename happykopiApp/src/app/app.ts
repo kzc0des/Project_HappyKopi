@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Login } from './modules/auth/login/login';
+import { Component, NgZone, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { App as CapacitorApp } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +10,33 @@ import { Login } from './modules/auth/login/login';
 })
 export class App {
   protected readonly title = signal('happykopiApp');
+
+  constructor(
+    private router: Router,
+    private zone: NgZone
+  ) {
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+      this.zone.run(() => {
+        console.log('Back button pressed');
+        const currentPageUrl = this.router.url;
+
+        const exitAppPages = [
+          '/login',
+          '/app/dashboard/admin',
+          '/app/dashboard/barista'
+        ];
+        if (exitAppPages.includes(currentPageUrl)) {
+          CapacitorApp.exitApp();
+        } else if (canGoBack) {
+          window.history.back();
+        } else {
+          this.router.navigate(['/login']);
+        }
+      });
+    });
+  }
 }
