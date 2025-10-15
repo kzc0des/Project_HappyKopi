@@ -143,6 +143,20 @@ namespace happykopiAPI.Controllers
             }
         }
 
+        [HttpGet("stock-items/type/{itemType}")]
+        public async Task<IActionResult> GetStockItemsByItemType(int itemType)
+        {
+            try
+            {
+                var items = await _stockItemService.GetStockItemsByItemTypeAsync(itemType);
+                return Ok(items);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
         [HttpPut("stock-items/{id}")]
         public async Task<IActionResult> UpdateStockItem(int id, [FromBody] StockItemUpdateDto dto)
         {
