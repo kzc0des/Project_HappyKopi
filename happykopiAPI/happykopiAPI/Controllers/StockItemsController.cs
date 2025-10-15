@@ -1,6 +1,8 @@
 ﻿using happykopiAPI.DTOs.Inventory;
+using happykopiAPI.Enums;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Model.Tree;
 using Microsoft.Data.SqlClient;
 using System.Security.Claims;
 
@@ -140,6 +142,20 @@ namespace happykopiAPI.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("stock-items/type/{itemType}")]
+        public async Task<IActionResult> GetStockItemsByItemType([FromRoute] StockItemType itemType)
+        {
+            try
+            {
+                var items = await _stockItemService.GetStockItemsByItemTypeAsync(itemType);
+                return Ok(items);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message} \n The itemtype that was passed inside is {itemType}");
             }
         }
 
