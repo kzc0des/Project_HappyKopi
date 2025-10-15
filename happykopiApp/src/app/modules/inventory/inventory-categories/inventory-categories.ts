@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryCategoryCard } from "../components/inventory-category-card/inventory-category-card";
 import { InventoryService } from '../services/inventory.service';
 import { ActivatedRoute } from '@angular/router';
-
-export interface StockItemType {
-  name: string,
-  quantity: number
-}
+import { StockItemTypeCountDto } from '../../../core/dtos/stockitem/stock-item-type-count-dto';
 
 @Component({
   selector: 'app-inventory-categories',
@@ -17,7 +13,7 @@ export interface StockItemType {
 export class InventoryCategories implements OnInit{
 
   constructor(private inventoryService: InventoryService, private route: ActivatedRoute) {}
-  stockItemTypes: StockItemType[] = [];
+  stockItemTypes: StockItemTypeCountDto[] = [];
 
   ngOnInit(): void {
     this.stockItemTypes = this.route.snapshot.data['stockitemtypecount'];
