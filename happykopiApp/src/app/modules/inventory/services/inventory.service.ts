@@ -26,7 +26,7 @@ export class InventoryService {
   }
 
   getStockItemTypeCounts(): Observable<StockItemTypeCountDto[]> {
-    return this.apiService.get<StockItemTypeCountDto[]>(`${this.controllerPath}/stock-items/types-count`);
+    return this.apiService.get<StockItemTypeCountDto[]>(`${this.controllerPath}/stock-items/count-by-itemtype`);
   }
 
   createStockItem(item: StockItemForCreateDto): Observable<{ message: string }> {
