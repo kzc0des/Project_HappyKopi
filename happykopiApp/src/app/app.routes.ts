@@ -10,10 +10,11 @@ import { loginGuard } from './core/guards/login-guard';
 import { InventoryCategories } from './modules/inventory/inventory-categories/inventory-categories';
 import { InventoryList } from './modules/inventory/inventory-list/inventory-list';
 import { InventoryItemDetail } from './modules/inventory/inventory-item-detail/inventory-item-detail';
-import { IngredientTypeCard } from './modules/inventory/components/ingredient-type-card/ingredient-type-card';
 import { BatchOrganizerCard } from './modules/inventory/components/batch-organizer-card/batch-organizer-card';
 import { InventoryCategoryCard } from './modules/inventory/components/inventory-category-card/inventory-category-card';
 import { stockItemTypeCountResolver } from './modules/inventory/resolver/stockitemtype/stock-item-type-count-resolver';
+import { IngredientBatchCard } from './modules/inventory/components/ingredient-batch-card/ingredient-batch-card';
+import { IngredientInputCard } from './modules/products/components/ingredient-input-card/ingredient-input-card';
 
 export const routes: Routes = [
     {
@@ -79,6 +80,6 @@ export const routes: Routes = [
     },
     {
         path: 'sample',
-        component: InventoryCategoryCard
+        component: IngredientInputCard
     }
 ];
