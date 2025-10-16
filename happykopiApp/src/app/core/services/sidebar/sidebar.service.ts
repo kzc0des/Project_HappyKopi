@@ -36,5 +36,6 @@ export class SidebarService {
 
   selectPage(page:string) {
     this.currentSelectedPage.next(page);
+    console.log(this.currentSelectedPage.value);
   }
 }

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
-import { Observable } from 'rxjs';
+import { filter, Observable, pipe, Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,14 +10,51 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header {
+export class Header implements OnInit, OnDestroy {
 
+  showAddButton = false;
+  showDeleteButton = false;
+
+  private routerSubscription!: Subscription;
   currentPageSelected: Observable<string>;
-  constructor(private sidebarService:SidebarService) {
+
+  constructor(private sidebarService: SidebarService, private router: Router) {
     this.currentPageSelected = sidebarService.currentSelectedPage$;
+  }
+
+  ngOnInit(): void {
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+        const currentUrl = event.urlAfterRedirects;
+        this.updateHeaderButtons(currentUrl);
+        console.log(currentUrl);
+      });
+
+    this.updateHeaderButtons(this.router.url);
+  }
+
+  private updateHeaderButtons(url: string): void {
+    this.showAddButton = false;
+    this.showDeleteButton = false;
+
+    if (url.includes('/inventory/') && !url.includes('/item/')) {
+      this.showAddButton = true;
+    }
+    else if (url.includes('/inventory/item/')) {
+      this.showDeleteButton = true;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   toggleSidebar() {
     this.sidebarService.toggleSidebar();
   }
 }
+
+
+
