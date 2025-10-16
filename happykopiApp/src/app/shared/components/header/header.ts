@@ -15,9 +15,12 @@ export class Header implements OnInit, OnDestroy {
 
   showAddButton = false;
   showDeleteButton = false;
-  editing = false;
+  isEditing = false;
+  hasValueChanged = false;
 
   private routerSubscription!: Subscription;
+  private valueChangeSubscription!: Subscription;
+
   currentPageSelected: Observable<string>;
 
   constructor(private sidebarService: SidebarService, private router: Router, private headerActionService: HeaderService) {
@@ -33,6 +36,10 @@ export class Header implements OnInit, OnDestroy {
       });
 
     this.updateHeaderButtons(this.router.url);
+
+    this.valueChangeSubscription = this.headerActionService.isValueChanged$.subscribe(changed => {
+      this.hasValueChanged = changed;
+    });
   }
 
   private updateHeaderButtons(url: string): void {
@@ -45,6 +52,9 @@ export class Header implements OnInit, OnDestroy {
     else if (url.includes('/inventory/item/')) {
       this.showDeleteButton = true;
     }
+
+    this.isEditing = false; 
+    this.headerActionService.notifyValueChanged(false);
   }
 
   onAddItemClick(): void {
@@ -52,7 +62,7 @@ export class Header implements OnInit, OnDestroy {
   }
 
   onEditItemClick(): void {
-    this.editing = !this.editing;
+    this.isEditing = !this.isEditing;
     this.headerActionService.emitAction('EDIT');
   }
 
@@ -60,9 +70,25 @@ export class Header implements OnInit, OnDestroy {
     this.headerActionService.emitAction('DELETE');
   }
 
+  onSaveItemClick(): void {
+    this.headerActionService.emitAction('SAVE');
+    this.isEditing = false;
+    this.headerActionService.notifyValueChanged(false);
+  }
+
+  onCancelClick(): void {
+    this.headerActionService.emitAction('CANCEL');
+    this.isEditing = false;
+    this.headerActionService.notifyValueChanged(false); 
+  }
+
   ngOnDestroy(): void {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
+    }
+
+    if (this.valueChangeSubscription) {
+      this.valueChangeSubscription.unsubscribe();
     }
   }
 
