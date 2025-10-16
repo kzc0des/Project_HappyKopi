@@ -12,6 +12,7 @@ import { InventoryList } from './modules/inventory/inventory-list/inventory-list
 import { InventoryItemDetail } from './modules/inventory/inventory-item-detail/inventory-item-detail';
 import { BatchOrganizerCard } from './modules/inventory/components/batch-organizer-card/batch-organizer-card';
 import { InventoryCategoryCard } from './modules/inventory/components/inventory-category-card/inventory-category-card';
+import { AddOrderModal } from './modules/pos/modal/add-order-modal/add-order-modal';
 import { stockItemTypeCountResolver } from './modules/inventory/resolver/stockitemtype/stock-item-type-count-resolver';
 import { IngredientBatchCard } from './modules/inventory/components/ingredient-batch-card/ingredient-batch-card';
 import { IngredientInputCard } from './modules/products/components/ingredient-input-card/ingredient-input-card';
@@ -80,7 +81,10 @@ export const routes: Routes = [
                     },
                     {
                         path: 'item/:itemId',
-                        component: InventoryItemDetail
+                        component: InventoryItemDetail,
+                        resolve: {
+                            stockitemdetail: stockitemdetailResolver
+                        }
                     }
                 ] 
             }
