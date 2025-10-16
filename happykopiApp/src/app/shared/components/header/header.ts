@@ -3,6 +3,7 @@ import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
 import { filter, Observable, pipe, Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
+import { HeaderService } from '../../../core/services/header/header.service';
 
 @Component({
   selector: 'app-header',
@@ -14,11 +15,12 @@ export class Header implements OnInit, OnDestroy {
 
   showAddButton = false;
   showDeleteButton = false;
+  editing = false;
 
   private routerSubscription!: Subscription;
   currentPageSelected: Observable<string>;
 
-  constructor(private sidebarService: SidebarService, private router: Router) {
+  constructor(private sidebarService: SidebarService, private router: Router, private headerActionService: HeaderService) {
     this.currentPageSelected = sidebarService.currentSelectedPage$;
   }
 
@@ -43,6 +45,19 @@ export class Header implements OnInit, OnDestroy {
     else if (url.includes('/inventory/item/')) {
       this.showDeleteButton = true;
     }
+  }
+
+  onAddItemClick(): void {
+    this.headerActionService.emitAction('ADD');
+  }
+
+  onEditItemClick(): void {
+    this.editing = !this.editing;
+    this.headerActionService.emitAction('EDIT');
+  }
+
+  onDeleteItemClick(): void {
+    this.headerActionService.emitAction('DELETE');
   }
 
   ngOnDestroy(): void {
