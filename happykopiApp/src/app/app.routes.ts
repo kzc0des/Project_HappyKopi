@@ -17,7 +17,10 @@ import { stockItemTypeCountResolver } from './modules/inventory/resolver/stockit
 import { IngredientBatchCard } from './modules/inventory/components/ingredient-batch-card/ingredient-batch-card';
 import { IngredientInputCard } from './modules/products/components/ingredient-input-card/ingredient-input-card';
 import { stockItemSummaryResolver } from './modules/inventory/resolver/stockitemsummary/stock-item-summary-resolver';
-import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
+import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
+import { ProductPage} from './modules/products/product-page/product-page';
+import { DrinkListPage } from './modules/products/drink-list-page/drink-list-page';
+import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page'
 
 export const routes: Routes = [
     {
@@ -89,11 +92,14 @@ export const routes: Routes = [
     },
     {
         path: 'sample',
-        component: InventoryCategoryCard
+        component: ProductPage
     },
     {
-        // TESTING FOR MODAL
-        path: 'modal',
-        component: AddOrderModal
+        path: 'drink-list-page',
+        component: DrinkListPage
+    },
+    {
+        path: 'categories-list-page',
+        component: CategoriesListPage
     }
 ];

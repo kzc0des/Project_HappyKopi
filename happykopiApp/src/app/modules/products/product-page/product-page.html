@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="product-page.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=chevron_right" />
+</head>
+<body>
+    <div class="card bg-white p-10 rounded-0 shadow-sm flex items-center gap-6"
+        (click)="router.navigate(['/drink-list-page'])">    
+        <div class="ingredient-icon">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="23"
+                height="21"
+                viewBox="0 0 23 21"
+                fill="none"
+            >
+            <path
+                d="M17.167 1.86914H21.1668L20.199 8.86914H17.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M3.66669 1.86914H17.1668V18.8691C17.1668 19.4214 16.7191 19.8691 16.1668 19.8691H4.66664C4.11438 19.8691 3.66667 19.4214 3.66665 18.8692L3.66629 7.11909C3.66628 6.64699 3.44471 6.20514 3.08639 5.89774C1.74087 4.74354 -1.12847 1.86914 3.66669 1.86914Z"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 6.36914H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 10.3691H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 14.3691H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            </svg>
+        </div>
+        <div class="flex flex-1 justify-between items-center gap-6">
+            <div>
+                <div class="text-2xl font-bold text-gray-800">
+                    Drinks
+                </div>
+                <div class="text-sm text-gray-400"> 
+                    33 Drinks
+                </div>
+            </div>
+            <div>
+                <span class="material-symbols-outlined">
+                    chevron_right
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card bg-white p-10 rounded-0 shadow-sm flex items-center gap-6"
+        (click)="router.navigate(['/categories-list-page'])">  
+        <div class="ingredient-icon">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="23"
+                height="21"
+                viewBox="0 0 23 21"
+                fill="none"
+            >
+            <path
+                d="M17.167 1.86914H21.1668L20.199 8.86914H17.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M3.66669 1.86914H17.1668V18.8691C17.1668 19.4214 16.7191 19.8691 16.1668 19.8691H4.66664C4.11438 19.8691 3.66667 19.4214 3.66665 18.8692L3.66629 7.11909C3.66628 6.64699 3.44471 6.20514 3.08639 5.89774C1.74087 4.74354 -1.12847 1.86914 3.66669 1.86914Z"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 6.36914H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 10.3691H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 14.3691H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            </svg>
+        </div>
+        <div class="flex flex-1 justify-between items-center gap-6">
+            <div>
+                <div class="text-2xl font-bold text-gray-800">
+                    Categories
+                </div>
+                <div class="text-sm text-gray-400"> 
+                    4 Categories
+                </div>
+            </div>
+            <div>
+                <span class="material-symbols-outlined">
+                    chevron_right
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
