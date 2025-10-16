@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-5 p-5">
         <app-itemcard [value]="stockitemdetail.name" itemTitle="Ingredient Name">
         </app-itemcard>
-        <app-itemcard [value]="stockitemdetail.unitOfMeasure" itemTitle="Measurement">
+        <app-itemcard [value]="stockitemdetail.unitOfMeasure" itemTitle="Measurement" [isEditing]="isEditing">
         </app-itemcard>
     </div>
     <app-ingredient-batch-card [batches]="stockitemdetail.batches"></app-ingredient-batch-card>

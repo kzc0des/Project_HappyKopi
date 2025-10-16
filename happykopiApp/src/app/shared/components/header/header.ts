@@ -20,6 +20,7 @@ export class Header implements OnInit, OnDestroy {
 
   private routerSubscription!: Subscription;
   private valueChangeSubscription!: Subscription;
+  private cancelButtonSubscription!: Subscription;
 
   currentPageSelected: Observable<string>;
 
@@ -78,9 +79,9 @@ export class Header implements OnInit, OnDestroy {
   }
 
   onCancelClick(): void {
-    this.headerActionService.emitAction('CANCEL');
     this.isEditing = false;
     this.showDeleteButton = true;
+    this.headerActionService.emitAction('CANCEL');
     this.headerActionService.notifyValueChanged(false); 
   }
 
