@@ -21,6 +21,7 @@ import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
 import { ProductPage} from './modules/products/product-page/product-page';
 import { DrinkListPage } from './modules/products/drink-list-page/drink-list-page';
 import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page'
+import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 
 export const routes: Routes = [
     {
