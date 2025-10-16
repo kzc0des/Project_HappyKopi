@@ -63,6 +63,7 @@ export class Header implements OnInit, OnDestroy {
 
   onEditItemClick(): void {
     this.isEditing = !this.isEditing;
+    this.showDeleteButton = false;
     this.headerActionService.emitAction('EDIT');
   }
 
@@ -79,6 +80,7 @@ export class Header implements OnInit, OnDestroy {
   onCancelClick(): void {
     this.headerActionService.emitAction('CANCEL');
     this.isEditing = false;
+    this.showDeleteButton = true;
     this.headerActionService.notifyValueChanged(false); 
   }
 
