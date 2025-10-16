@@ -1,6 +1,6 @@
-<div class="flex p-2 bg-hapikopi-yellow text-white h-[12vh] items-end">
+<header class="flex p-2 bg-hapikopi-yellow text-white h-[12vh] items-end">
     <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-center gap-1.5" [class.hidden]="isEditing">
             <button (click)="toggleSidebar()">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10" viewBox="0 0 24 24">
                     <path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -9,9 +9,9 @@
             </button>
             <h1 class="font-[800] text-2xl">{{currentPageSelected | async}}</h1>
         </div>
-        <div>
+        <div [class.flex-1]="isEditing">
             @if (showAddButton) {
-            <button class="flex justify-center items-center p-2">
+            <button class="flex justify-center items-center px-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
                     <path fill="#fff"
                         d="M12 4c4.411 0 8 3.589 8 8s-3.589 8-8 8s-8-3.589-8-8s3.589-8 8-8m0-2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 9h-4V7h-2v4H7v2h4v4h2v-4h4z" />
@@ -20,14 +20,14 @@
             }
 
             @if (showDeleteButton) {
-            <div class="flex gap-2 items-center p-2">
-                <button class="flex justify-center items-center">
+            <div class="flex gap-2 items-center px-2">
+                <button class="flex justify-center items-center" (click)="onEditItemClick()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
                         <path fill="#fff"
                             d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z" />
                     </svg>
                 </button>
-                <button class="flex justify-center items-center p-2">
+                <button class="flex justify-center items-center" (click)="onDeleteItemClick()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
                         <path fill="#fff"
                             d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z" />
@@ -35,6 +35,23 @@
                 </button>
             </div>
             }
+
+            @if (isEditing) {
+            <div class="flex gap-2 items-center px-2 w-full justify-between">
+                <button (click)="onCancelClick()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
+                        <path fill="#fff"
+                            d="m8.4 17l3.6-3.6l3.6 3.6l1.4-1.4l-3.6-3.6L17 8.4L15.6 7L12 10.6L8.4 7L7 8.4l3.6 3.6L7 15.6zm3.6 5q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8" />
+                    </svg>
+                </button>
+                <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path [attr.fill]="(hasValueChanged) ? '#fff' : '#333'"
+                            d="m9.55 15.15l8.475-8.475q.3-.3.7-.3t.7.3t.3.713t-.3.712l-9.175 9.2q-.3.3-.7.3t-.7-.3L4.55 13q-.3-.3-.288-.712t.313-.713t.713-.3t.712.3z" />
+                    </svg>
+                </button>
+            </div>
+            }
         </div>
     </div>
-</div>
+</header>
