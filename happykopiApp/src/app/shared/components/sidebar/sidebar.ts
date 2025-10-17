@@ -5,10 +5,11 @@ import { AsyncPipe } from '@angular/common';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { UserDto } from '../../../core/dtos/auth/user-dto';
+import { SidebarButton } from "../sidebar-button/sidebar-button";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [AsyncPipe, RouterLink],
+  imports: [AsyncPipe, RouterLink, SidebarButton],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
@@ -18,10 +19,19 @@ export class Sidebar {
 
   selectedPage: Observable<string>;
 
+  pages!:{page: string, route: string}[];
+
   constructor(private sidebarService: SidebarService, private authService: AuthService, private router: Router) {
     this.isSidebarOpen$ = sidebarService.isSidebarOpen$;
     this.selectedPage = sidebarService.currentSelectedPage$;
     this.currentUser = authService.getCurrentUser$();
+    this.pages = [
+      {page: 'dashboard', route: 'dashboard'},
+      {page: 'order', route: 'dashboard'},
+      {page: 'product', route: 'dashboard'},
+      {page: 'modifier', route: 'dashboard'},
+      {page: 'inventory', route: 'inventory'},
+    ];
   }
 
   close() {
@@ -35,11 +45,6 @@ export class Sidebar {
       this.sidebarService.closeSidebar();
       this.router.navigate(['/login']);
     }
-  }
-
-  selectPage(page:string) {
-    this.sidebarService.selectPage(page);
-    this.close();
   }
 
   
