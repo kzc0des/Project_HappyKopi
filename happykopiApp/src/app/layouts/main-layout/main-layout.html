@@ -1,12 +1,12 @@
 <!-- happykopiApp/src/app/layouts/main-layout/main-layout.html -->
 
 <div class="flex h-screen bg-gray-50">
-<app-sidebar></app-sidebar>
+  <app-sidebar></app-sidebar>
+
   <div class="flex-1 flex flex-col overflow-hidden">
     <app-header></app-header>
-    <main class="flex-1 overflow-x-hidden overflow-y-auto">
+    <main class="flex-1 overflow-x-hidden overflow-y-auto w-full">
       <router-outlet></router-outlet>
     </main>
-
   </div>
 </div>

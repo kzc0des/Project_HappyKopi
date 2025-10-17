@@ -1,24 +1,64 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { HeaderService } from '../../../core/services/header/header.service';
-import { Subscription } from 'rxjs';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-itemcard',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './itemcard.html',
-  styleUrl: './itemcard.css'
+  styleUrl: './itemcard.css',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => Itemcard),
+      multi: true
+    }
+  ]
 })
-export class Itemcard {
+export class Itemcard implements ControlValueAccessor {
   @Input() itemTitle: string = 'Item Title';
-  @Input() value: string | number = '';
   @Input() isEditing: boolean = false;
-  @Output() valueChange = new EventEmitter<string>();
+  @Input() type!: string;
 
-  constructor(private headerService: HeaderService) {  }
+  internalValue: string | number = '';
+  private originalValue!: string | number;
 
-  onValueChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.valueChange.emit(target.value);
-    this.headerService.notifyValueChanged(true);
+  constructor(private headerService: HeaderService) {
   }
+
+  onChange: (value: any) => void = () => { };
+  onTouched: () => void = () => { };
+
+  writeValue(value: any): void {
+    if (value !== undefined) {
+      this.internalValue = value;
+    }
+
+    this.originalValue = value;
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn
+  }
+
+  onValueChange(newValue: string | number): void {
+    this.internalValue = newValue;
+    this.onChange(this.internalValue);
+    this.onTouched();
+
+    console.log(`Internal Value: ${this.internalValue}`);
+    console.log(`Original Value: ${this.originalValue}`);
+
+    if (this.originalValue != newValue) {
+      this.headerService.notifyValueChanged(this.itemTitle, true);
+    } else {
+      this.headerService.notifyValueChanged(this.itemTitle, false);
+    }
+  }
+
+
 }

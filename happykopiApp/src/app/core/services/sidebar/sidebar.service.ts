@@ -1,5 +1,6 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { BehaviorSubject, filter } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,21 @@ export class SidebarService {
   private isSidebarOpen = new BehaviorSubject<boolean>(false);
   public isSidebarOpen$ = this.isSidebarOpen.asObservable();
 
-  private currentSelectedPage = new BehaviorSubject<string>('Dashboard');
+  private currentSelectedPage = new BehaviorSubject<string>('');
   public currentSelectedPage$ = this.currentSelectedPage.asObservable();
 
-  constructor(rendererFactory: RendererFactory2) {
+  constructor(rendererFactory: RendererFactory2, private router: Router) {
     this.renderer = rendererFactory.createRenderer(null, null);
+
+    router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const currentRoute = event.urlAfterRedirects;
+      const pathWithoutSlash = currentRoute.substring(1); 
+      const routeSegments = pathWithoutSlash.split('/'); 
+      const pageName = routeSegments[1]; 
+      this.selectPage(pageName);
+    });
   }
 
   openSidebar() {
@@ -36,6 +47,5 @@ export class SidebarService {
 
   selectPage(page:string) {
     this.currentSelectedPage.next(page);
-    console.log(this.currentSelectedPage.value);
   }
 }

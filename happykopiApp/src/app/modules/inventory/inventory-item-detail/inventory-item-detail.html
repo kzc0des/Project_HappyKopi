@@ -1,14 +1,26 @@
 <div>
     <div class="flex flex-col gap-5 p-5">
-        <app-itemcard [value]="stockitemdetail.name" itemTitle="Ingredient Name" [isEditing]="isEditing">
+        <app-itemcard 
+        itemTitle="Ingredient Name" 
+        [isEditing]="isEditing" 
+        [(ngModel)]="stockitemdetail.name">
         </app-itemcard>
         <div class="grid grid-cols-2 gap-2">
-            <app-itemcard [value]="stockitemdetail.alertLevel" itemTitle="Alert Level" [isEditing]="isEditing">
+            <app-itemcard 
+            itemTitle="Alert Level"
+            type="number" 
+            [isEditing]="isEditing" 
+            [(ngModel)]="stockitemdetail.alertLevel">
             </app-itemcard>
-            <app-itemcard [value]="stockitemdetail.unitOfMeasure" itemTitle="Measurement" [isEditing]="isEditing">
+            <app-itemcard 
+            itemTitle="Measurement"
+            [isEditing]="isEditing" 
+            [(ngModel)]="stockitemdetail.unitOfMeasure">
             </app-itemcard>
         </div>
-        <app-itemcard [value]="stockitemdetail.totalStockQuantity" itemTitle="Total Stock">
+        <app-itemcard 
+        itemTitle="Total Stock"
+        [(ngModel)]="stockitemdetail.totalStockQuantity">
         </app-itemcard>
     </div>
     <app-ingredient-batch-card [batches]="stockitemdetail.batches"></app-ingredient-batch-card>

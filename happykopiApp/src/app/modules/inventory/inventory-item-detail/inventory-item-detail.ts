@@ -5,10 +5,13 @@ import { IngredientBatchCard } from "../components/ingredient-batch-card/ingredi
 import { Itemcard } from "../../../shared/components/itemcard/itemcard";
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
+import { InventoryService } from '../services/inventory.service';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-inventory-item-detail',
-  imports: [IngredientBatchCard, Itemcard],
+  imports: [IngredientBatchCard, Itemcard, FormsModule],
   templateUrl: './inventory-item-detail.html',
   styleUrl: './inventory-item-detail.css'
 })
@@ -16,12 +19,11 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
 
   isEditing = false;
   private actionSubscription!: Subscription;
-  private cancelButtonSubscription!: Subscription;
 
   stockitemdetail!: StockItemDetailsDto;
   private originalStockItemDetail!: StockItemDetailsDto;
 
-  constructor(private route: ActivatedRoute, private headerActionService: HeaderService) { }
+  constructor(private route: ActivatedRoute, private headerActionService: HeaderService, private inventoryService: InventoryService) { }
 
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['stockitemdetail'];
@@ -36,6 +38,11 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
         case 'EDIT':
           this.isEditing = !this.isEditing;
           break;
+        case 'SAVE':
+          if (confirm('Save Changes?')) {
+          this.isEditing = !this.isEditing;
+          }
+          break;
         case 'DELETE':
           if (confirm('Are you sure you want to delete this item?')) {
 
@@ -47,6 +54,22 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           break;
       }
     });
+  }
+
+  updateAlertLevel(newValue: string): void {
+    const numericValue = parseInt(newValue, 10);
+
+    if (!isNaN(numericValue)) {
+      this.stockitemdetail.alertLevel = numericValue;
+    }
+  }
+
+  updateName(newValue: string): void {
+    this.stockitemdetail.name = newValue;
+  }
+
+  updateUnitOfMeasure(newValue: string): void {
+    this.stockitemdetail.unitOfMeasure = newValue;
   }
 
   ngOnDestroy(): void {

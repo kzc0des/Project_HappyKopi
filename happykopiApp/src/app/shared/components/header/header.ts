@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
 import { filter, Observable, pipe, Subscription } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { HeaderService } from '../../../core/services/header/header.service';
 
 @Component({
   selector: 'app-header',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, TitleCasePipe],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
@@ -20,7 +20,6 @@ export class Header implements OnInit, OnDestroy {
 
   private routerSubscription!: Subscription;
   private valueChangeSubscription!: Subscription;
-  private cancelButtonSubscription!: Subscription;
 
   currentPageSelected: Observable<string>;
 
@@ -55,7 +54,7 @@ export class Header implements OnInit, OnDestroy {
     }
 
     this.isEditing = false; 
-    this.headerActionService.notifyValueChanged(false);
+    this.headerActionService.resetValueChangedState();
   }
 
   onAddItemClick(): void {
@@ -75,14 +74,15 @@ export class Header implements OnInit, OnDestroy {
   onSaveItemClick(): void {
     this.headerActionService.emitAction('SAVE');
     this.isEditing = false;
-    this.headerActionService.notifyValueChanged(false);
+    this.showDeleteButton = true;
+    this.headerActionService.resetValueChangedState();
   }
 
   onCancelClick(): void {
     this.isEditing = false;
     this.showDeleteButton = true;
     this.headerActionService.emitAction('CANCEL');
-    this.headerActionService.notifyValueChanged(false); 
+    this.headerActionService.resetValueChangedState(); 
   }
 
   ngOnDestroy(): void {

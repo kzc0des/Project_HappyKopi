@@ -27,11 +27,16 @@ import { DrinkListPage } from './modules/products/drink-list-page/drink-list-pag
 import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/drink-detail-page/drink-detail-page';
+import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
 import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
 import { Order } from './modules/pos/forms/order/order';
 import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-category-on';
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
+import { SizesPage } from './modules/modifiers/sizes-page/sizes-page'
+import { AddOnsPage } from './modules/modifiers/add-ons-page/add-ons-page'
+
+
 
 export const routes: Routes = [
     {
@@ -58,6 +63,12 @@ export const routes: Routes = [
                 path: 'dashboard',
                 component: DashboardHost,
                 children: [
+                    {
+                        path: '',
+                        pathMatch: 'full',
+                        component: DashboardHost,
+                        canActivate: [dashboardRedirectGuard]
+                    },
                     {
                         path: 'admin',
                         component: AdminDashboard,
@@ -156,6 +167,18 @@ export const routes: Routes = [
     {
         path: 'posoff',
         component: PosCategoryOff
+    },
+    {
+        path:'modifier-page',
+        component: ModifierPage
+    },
+    {
+        path:'sizes',
+        component: SizesPage
+    },
+    {
+        path:'addons',
+        component: AddOnsPage
     }
 
 ];
