@@ -30,8 +30,7 @@ export class HeaderService {
     this.isValueChange.next(overallState);
 
     console.log(this.changedInputs);
-
-    console.log("may bagyo? o may bago?", hasChanged);
+    console.log("may bagyo? o may bago?", overallState);
   }
 
   resetValueChangedState(): void {

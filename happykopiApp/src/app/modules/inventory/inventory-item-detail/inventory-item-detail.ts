@@ -8,6 +8,7 @@ import { HeaderService } from '../../../core/services/header/header.service';
 import { InventoryService } from '../services/inventory.service';
 import { FormsModule } from '@angular/forms';
 
+
 @Component({
   selector: 'app-inventory-item-detail',
   imports: [IngredientBatchCard, Itemcard, FormsModule],

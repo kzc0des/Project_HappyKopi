@@ -1,16 +1,16 @@
 
-<div class="relative overflow-x-auto sm:rounded-lg">
+<div class="relative overflow-x-auto sm:rounded-lg w-[100vw]">
   <table class="w-full text-gray-500">
 
-    <thead class="text-lg text-white bg-hapikopi-yellow">
-      <tr>
-        <th scope="col" class="px-6 py-3">
+    <thead class="text-lg text-white bg-hapikopi-yellow w-full">
+      <tr class="grid grid-cols-3">
+        <th class="py-3">
           Batch
         </th>
-        <th scope="col" class="px-6 py-3">
+        <th class="py-3">
           Quantity
         </th>
-        <th scope="col" class="px-6 py-3">
+        <th class="py-3">
           Expiry Date
         </th>
       </tr>
@@ -18,14 +18,14 @@
 
     <tbody>
       @for(batch of batches;track $index) {
-      <tr class="border-b">
-        <td scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap">
+      <tr class="border-b grid grid-cols-3 w-full items-center text-center">
+        <td class=" py-3 font-medium text-gray-900">
           {{ batch.id }}
         </td>
-        <td class="px-6 py-4">
+        <td class="">
           {{ batch.stockQuantity }}
         </td>
-        <td class="px-6 py-4">
+        <td class="">
           {{ batch.expiryDate | date }}
         </td>
       </tr>
@@ -35,5 +35,6 @@
       </tr>
       }
     </tbody>
+
   </table>
 </div>
