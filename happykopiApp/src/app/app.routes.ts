@@ -208,6 +208,10 @@ export const routes: Routes = [
     {
         path: 'charge-summary',
         component: ChargeSummary
+    },
+    {
+        path: 'oqvd',
+        component: OrderQuickViewDown
     }
 
 
