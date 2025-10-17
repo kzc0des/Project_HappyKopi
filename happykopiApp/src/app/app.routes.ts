@@ -35,6 +35,8 @@ import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-cate
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { SizesPage } from './modules/modifiers/sizes-page/sizes-page'
 import { AddOnsPage } from './modules/modifiers/add-ons-page/add-ons-page'
+import { ViewOrder } from './modules/pos/forms/view-order/view-order';
+import { CartItem } from './modules/pos/components/cart-item/cart-item';
 
 
 
@@ -179,6 +181,14 @@ export const routes: Routes = [
     {
         path:'addons',
         component: AddOnsPage
+    },
+    {
+        path: 'view-order',
+        component: ViewOrder
+    },
+    {
+        path: 'cart-item',
+        component: CartItem
     }
 
 ];

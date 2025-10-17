@@ -1,25 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
-body {
-  background: #222;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  font-family: "Outfit", sans-serif;
-}
-
 .drink-card {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   background: #FAFAFA;
   padding: 24px;
-  width: 100%;
-  max-width: 540px;
+  width: 100%; 
   box-sizing: border-box;
-  gap: 24px;
-  box-shadow: 0 1.5px 5px rgba(0, 0, 0, 0.15);
+  gap: 24px; 
+  margin-bottom: 2px;
 }
 
 .drink-image {

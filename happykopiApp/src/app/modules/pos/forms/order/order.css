@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
-.page-name {
-  font-family: 'Outfit', sans-serif;
-  color: #f0f0f0;
-  font-size: 28px;
-  font-weight: bold;
-}
 
 .order-body { 
   display: flex;
@@ -13,6 +7,7 @@
   align-items: center;
   width: 100%; 
   background-color: #F0F0F0;
+  margin-top: 12vh;
 }
 .order-body::-webkit-scrollbar {
   width: 0;
@@ -41,14 +36,14 @@ app-search-drink {
   background-color: #FAFAFA;
   width: 100%;
   height: 100%;
-  padding: 30px 10px 3% 10px;
+  padding: 30px 5px 30px 5px;
   margin-bottom: 310px;
 
   display: flex;
   flex-wrap: wrap;  
   justify-content: center; 
   align-content: flex-start; 
-  gap: 30px 17px;  
+  gap: 30px 20px;  
 }
 
 
