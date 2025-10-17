@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+.order-body {
+  width: 100%;
+  background-color: #f0f0f0;
+  position: fixed;
+  top: 110px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* full viewport height */
+  font-family: 'Outfit', sans-serif;
+}
+.order-body::-webkit-scrollbar {
+  width: 0;
+}
+
+.upper-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: max-content;
+  background-color: #fafafa;
+  padding: 66px 0 10px 0;
+  gap: 0 80px;
+  margin-bottom: 30px;
+}
+.middle-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: max-content;
+  background-color: #fafafa;
+  padding: 20px 0 20px 0;
+  gap: 0 80px;
+}
+
+.total-price,
+.amount-received {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 62px;
+}
+
+.amount-received-value {
+  font-size: 40px;
+  font-weight: bold;
+  color: #777777;
+}
+
+.amount-received-label {
+  font-size: 16px;
+  color: #909090;
+}
+
+.total-price-value {
+  font-size: 40px;
+  font-weight: bold;
+  color: #282828;
+}
+
+.total-price-label {
+  font-size: 16px;
+  color: #909090;
+}
+
+.btns {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 19px 0;
+}

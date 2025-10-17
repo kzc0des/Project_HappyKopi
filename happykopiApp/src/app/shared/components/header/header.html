@@ -1,7 +1,7 @@
-<header class="flex p-2 bg-hapikopi-yellow text-white h-[12vh] items-end mb-4
-lg:h-[0] lg:items-center lg:py-10">
-    <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-1.5" [class.hidden]="isEditing">
+<header class="fixed top-0 left-0 w-full flex p-2 bg-hapikopi-yellow text-white h-[12vh] items-end
+lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba(0,0,0,0.25)] z-50">
+    <div class="flex items-center justify-between w-full ">
+        <div class="flex items-center gap-1.5 " [class.hidden]="isEditing">
             <button (click)="toggleSidebar()">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10" viewBox="0 0 24 24">
                     <path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
