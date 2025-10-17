@@ -3,7 +3,7 @@ import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserDto } from '../../../core/dtos/auth/user-dto';
 import { SidebarButton } from "../sidebar-button/sidebar-button";
 
@@ -39,8 +39,7 @@ export class Sidebar {
   }
 
   logout() {
-    const isConfirmed = confirm("Are you sure you want to end your shift?");
-    if (isConfirmed) {
+    if (confirm("Are you sure you want to end your shift?")) {
       this.authService.logout();
       this.sidebarService.closeSidebar();
       this.router.navigate(['/login']);

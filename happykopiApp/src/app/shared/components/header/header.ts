@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
 import { filter, Observable, pipe, Subscription } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { HeaderService } from '../../../core/services/header/header.service';
 
 @Component({
   selector: 'app-header',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, TitleCasePipe],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
