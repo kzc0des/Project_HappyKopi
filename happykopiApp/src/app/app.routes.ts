@@ -39,6 +39,7 @@ import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
 import { YellowButton } from './shared/components/yellow-button/yellow-button';
 import { Charge } from './modules/pos/forms/charge/charge';
+import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary';
 
 
 
@@ -203,6 +204,11 @@ export const routes: Routes = [
     {
         path: 'charge',
         component: Charge
+    },
+    {
+        path: 'charge-summary',
+        component: ChargeSummary
     }
+
 
 ];
