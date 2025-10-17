@@ -116,6 +116,7 @@ export const routes: Routes = [
         path: 'searchdrink',
         component: SearchDrink
     },
+    {
         path: 'product-page',
         component: ProductPage
     },
