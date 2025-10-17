@@ -27,6 +27,7 @@ import { DrinkListPage } from './modules/products/drink-list-page/drink-list-pag
 import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/drink-detail-page/drink-detail-page';
+import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 
 export const routes: Routes = [
     {
@@ -53,6 +54,12 @@ export const routes: Routes = [
                 path: 'dashboard',
                 component: DashboardHost,
                 children: [
+                    {
+                        path: '',
+                        pathMatch: 'full',
+                        component: DashboardHost,
+                        canActivate: [dashboardRedirectGuard]
+                    },
                     {
                         path: 'admin',
                         component: AdminDashboard,
