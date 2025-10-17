@@ -30,6 +30,9 @@ import { DrinkDetailPage } from './modules/products/drink-detail-page/drink-deta
 import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
 import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
+import { Order } from './modules/pos/forms/order/order';
+import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-category-on';
+import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { SizesPage } from './modules/modifiers/sizes-page/sizes-page'
 import { AddOnsPage } from './modules/modifiers/add-ons-page/add-ons-page'
 
@@ -154,6 +157,18 @@ export const routes: Routes = [
         component: OrderQuickViewDown
     },
     {
+        path: 'order',
+        component: Order
+    },
+    {
+        path: 'poson',
+        component: PosCategoryOn
+    },
+    {
+        path: 'posoff',
+        component: PosCategoryOff
+    },
+    {
         path:'modifier-page',
         component: ModifierPage
     },
@@ -165,4 +180,5 @@ export const routes: Routes = [
         path:'addons',
         component: AddOnsPage
     }
+
 ];

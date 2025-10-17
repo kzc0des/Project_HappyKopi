@@ -24,7 +24,7 @@ body {
 .card-active-title {
   position: absolute;
   left: 25px;
-  top: 86px;
+  top: 81px;
   color: #282828;
   font-size: 20px;
   font-weight: 700;
@@ -33,7 +33,7 @@ body {
 .card-active-subtitle {
   position: absolute;
   left: 25px;
-  top: 118px;
+  top: 112px;
   color: #777777;
   font-size: 16px;
   font-weight: 400;
