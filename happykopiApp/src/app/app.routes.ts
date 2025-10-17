@@ -27,6 +27,8 @@ import { DrinkListPage } from './modules/products/drink-list-page/drink-list-pag
 import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/drink-detail-page/drink-detail-page';
+import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
+import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
 
 export const routes: Routes = [
     {
@@ -131,5 +133,13 @@ export const routes: Routes = [
     {
         path: 'drink-detail/:id',
         component: DrinkDetailPage  
+    },
+    {
+        path: 'order-quick-view',
+        component: OrderQuickView
+    },
+    {
+        path:'order-quick-view-down',
+        component: OrderQuickViewDown
     }
 ];
