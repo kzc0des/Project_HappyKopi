@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+.split-card {
+  width: 472px;
+  height: 77.72px;
+  position: relative;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* left side */
+.split-card-left {
+  width: 351px;
+  height: 77.72px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #fafafa;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 32px 10px 10px 32px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* right side */
+.split-card-right {
+  width: 111px;
+  height: 77.72px;
+  position: absolute;
+  left: 361px;
+  top: 0;
+  background: #f3b72c;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 10px 32px 32px 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* order summary */
+.order-summary {
+  width: 304px;
+  color: #282828;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.order-icon svg {
+  width: 20px;
+  height: 25px;
+  margin-left: 5px;
+  margin-right: 3px;
+}
+
+.order-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.order-price {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* charge */
+.charge-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
