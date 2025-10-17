@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './itemcard.html',
   styleUrl: './itemcard.css'
 })
-export class Itemcard {
+export class Itemcard implements OnInit {
   @Input() itemTitle: string = 'Item Title';
   @Input() value: string | number = '';
   @Input() isEditing: boolean = false;
@@ -16,12 +16,20 @@ export class Itemcard {
 
   originalValue!: string | number;
   constructor(private headerService: HeaderService) {
+  }
+
+  ngOnInit(): void {
     this.originalValue = this.value;
   }
 
   onValueChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.valueChange.emit(target.value);
-    this.headerService.notifyValueChanged(true);
+
+    if (this.originalValue != target.value) {
+      this.headerService.notifyValueChanged(true);
+    }else {
+      this.headerService.notifyValueChanged(false);
+    }
   }
 }

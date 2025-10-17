@@ -19,5 +19,6 @@ export class HeaderService {
 
   notifyValueChanged(hasChanged: boolean): void {
     this.isValueChange.next(hasChanged);
+    console.log("may bagyo? o may bago?", hasChanged)
   }
 }
