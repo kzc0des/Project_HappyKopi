@@ -5,6 +5,7 @@ import { IngredientBatchCard } from "../components/ingredient-batch-card/ingredi
 import { Itemcard } from "../../../shared/components/itemcard/itemcard";
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
+import { InventoryService } from '../services/inventory.service';
 
 @Component({
   selector: 'app-inventory-item-detail',
@@ -20,7 +21,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
   stockitemdetail!: StockItemDetailsDto;
   private originalStockItemDetail!: StockItemDetailsDto;
 
-  constructor(private route: ActivatedRoute, private headerActionService: HeaderService) { }
+  constructor(private route: ActivatedRoute, private headerActionService: HeaderService, private inventoryService: InventoryService) { }
 
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['stockitemdetail'];
@@ -37,7 +38,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           break;
         case 'SAVE':
           if (confirm('Save Changes?')) {
-
+            
           }
           break;
         case 'DELETE':
