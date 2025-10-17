@@ -1,35 +1,63 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-itemcard',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './itemcard.html',
-  styleUrl: './itemcard.css'
+  styleUrl: './itemcard.css',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => Itemcard),
+      multi: true
+    }
+  ]
 })
-export class Itemcard implements OnInit {
+export class Itemcard implements OnInit, ControlValueAccessor {
   @Input() itemTitle: string = 'Item Title';
-  @Input() value: string | number = '';
   @Input() isEditing: boolean = false;
-  @Output() valueChange = new EventEmitter<string>();
 
-  originalValue!: string | number;
+  internalValue: string | number = '';
+  private originalValue!: string | number;
+
   constructor(private headerService: HeaderService) {
   }
 
-  ngOnInit(): void {
-    this.originalValue = this.value;
+  onChange: (value: any) => void = () => { };
+  onTouched: () => void = () => { };
+
+  writeValue(value: any): void {
+    if (value !== undefined) {
+      this.internalValue = value;
+    }
   }
 
-  onValueChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.valueChange.emit(target.value);
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
 
-    if (this.originalValue != target.value) {
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn
+  }
+
+  ngOnInit(): void {
+    this.originalValue = this.internalValue;
+  }
+
+  onValueChange(newValue: string | number): void {
+    this.internalValue = newValue;
+    this.onChange(this.internalValue);
+    this.onTouched();
+
+    if (this.originalValue != newValue) {
       this.headerService.notifyValueChanged(true);
-    }else {
+    } else {
       this.headerService.notifyValueChanged(false);
     }
   }
+
+
 }

@@ -1,17 +1,17 @@
 <div>
     <div class="flex flex-col gap-5 p-5">
-        <app-itemcard [value]="stockitemdetail.name" itemTitle="Ingredient Name" [isEditing]="isEditing" 
+        <app-itemcard itemTitle="Ingredient Name" [isEditing]="isEditing" 
         (valueChange)="updateName($event)">
         </app-itemcard>
         <div class="grid grid-cols-2 gap-2">
-            <app-itemcard [value]="stockitemdetail.alertLevel" itemTitle="Alert Level" [isEditing]="isEditing" 
+            <app-itemcard itemTitle="Alert Level" [isEditing]="isEditing" 
             (valueChange)="updateAlertLevel($event)">
             </app-itemcard>
-            <app-itemcard [value]="stockitemdetail.unitOfMeasure" itemTitle="Measurement" [isEditing]="isEditing" 
-            (valueChange)="updateUnitOfMeasure($event)">
+            <app-itemcard itemTitle="Measurement" [isEditing]="isEditing" 
+            (onValueChange)="updateUnitOfMeasure($event)">
             </app-itemcard>
         </div>
-        <app-itemcard [value]="stockitemdetail.totalStockQuantity" itemTitle="Total Stock">
+        <app-itemcard itemTitle="Total Stock">
         </app-itemcard>
     </div>
     <app-ingredient-batch-card [batches]="stockitemdetail.batches"></app-ingredient-batch-card>
