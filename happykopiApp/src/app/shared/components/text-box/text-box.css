@@ -1,0 +1,23 @@
+.drink-card {
+  width: 290px;
+  height: 98.4px;
+  box-sizing: border-box;
+  padding: 15px;
+  border: 1px solid #dcdcdc;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.drink-label {
+  color: #a3a3a3;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.drink-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: #000;
+}
