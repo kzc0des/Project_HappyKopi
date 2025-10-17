@@ -38,6 +38,7 @@ import { AddOnsPage } from './modules/modifiers/add-ons-page/add-ons-page'
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
 import { YellowButton } from './shared/components/yellow-button/yellow-button';
+import { Charge } from './modules/pos/forms/charge/charge';
 
 
 
@@ -198,6 +199,10 @@ export const routes: Routes = [
     {
         path: 'yellow-btn',
         component: YellowButton
+    },
+    {
+        path: 'charge',
+        component: Charge
     }
 
 ];
