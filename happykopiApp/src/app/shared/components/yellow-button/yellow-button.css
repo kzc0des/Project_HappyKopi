@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+.add-item-btn {
+  width: 472px;
+  height: 77px;
+  padding: 26px 126px;
+  background: #F3B72C;
+  border-radius: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: 0px 1.5px 5px 0px rgba(0, 0, 0, 0.25);
+
+}
+
+.add-item-icon svg {
+  width: 20px;
+  height: 25px;
+}
+
+.add-item-text {
+  text-align: center;
+  color: #765302;
+  font-size: 20px; 
+  font-weight: 600;
+  word-wrap: break-word;
+}
