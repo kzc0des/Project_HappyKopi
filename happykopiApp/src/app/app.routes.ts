@@ -29,6 +29,9 @@ import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemd
 import { DrinkDetailPage } from './modules/products/drink-detail-page/drink-detail-page';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
 import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
+import { Order } from './modules/pos/forms/order/order';
+import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-category-on';
+import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 
 export const routes: Routes = [
     {
@@ -141,5 +144,18 @@ export const routes: Routes = [
     {
         path:'order-quick-view-down',
         component: OrderQuickViewDown
+    },
+    {
+        path: 'order',
+        component: Order
+    },
+    {
+        path: 'poson',
+        component: PosCategoryOn
+    },
+    {
+        path: 'posoff',
+        component: PosCategoryOff
     }
+
 ];
