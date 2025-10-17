@@ -12,6 +12,7 @@ import { InventoryList } from './modules/inventory/inventory-list/inventory-list
 import { InventoryItemDetail } from './modules/inventory/inventory-item-detail/inventory-item-detail';
 import { BatchOrganizerCard } from './modules/inventory/components/batch-organizer-card/batch-organizer-card';
 import { InventoryCategoryCard } from './modules/inventory/components/inventory-category-card/inventory-category-card';
+import { AddOrderModal } from './modules/pos/modal/add-order-modal/add-order-modal';
 import { stockItemTypeCountResolver } from './modules/inventory/resolver/stockitemtype/stock-item-type-count-resolver';
 import { IngredientBatchCard } from './modules/inventory/components/ingredient-batch-card/ingredient-batch-card';
 import { IngredientInputCard } from './modules/products/components/ingredient-input-card/ingredient-input-card';
@@ -20,7 +21,12 @@ import { TextBoxComponent } from './shared/components/text-box/text-box';
 import { TextBoxPrice } from './shared/components/text-box-price/text-box-price';
 import { AddIngredient } from './shared/components/add-ingredient/add-ingredient';
 import { SearchDrink } from './shared/components/search-drink/search-drink';
-;
+import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
+import { ProductPage} from './modules/products/product-page/product-page';
+import { DrinkListPage } from './modules/products/drink-list-page/drink-list-page';
+import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page';
+import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
+import { DrinkDetailPage } from './modules/products/drink-detail-page/drink-detail-page';
 
 export const routes: Routes = [
     {
@@ -81,13 +87,16 @@ export const routes: Routes = [
                     },
                     {
                         path: 'item/:itemId',
-                        component: InventoryItemDetail
+                        component: InventoryItemDetail,
+                        resolve: {
+                            stockitemdetail: stockitemdetailResolver
+                        }
                     }
                 ] 
             }
         ]
     },
-    {
+    { 
         path: 'sample',
         component: BatchOrganizerCard
     },
@@ -107,4 +116,19 @@ export const routes: Routes = [
         path: 'searchdrink',
         component: SearchDrink
     },
+        path: 'product-page',
+        component: ProductPage
+    },
+    {
+        path: 'drink-list-page',
+        component: DrinkListPage
+    },
+    {
+        path: 'categories-list-page',
+        component: CategoriesListPage
+    },
+    {
+        path: 'drink-detail/:id',
+        component: DrinkDetailPage  
+    }
 ];

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
 body {
   background: #222;
   font-family: "Outfit", sans-serif;
@@ -7,7 +9,7 @@ body {
   width: 540px;
   height: 158px;
   position: relative;
-  background: #fafafa;
+  background: #fafafa; 
 }
  
 .ingredient-icon {

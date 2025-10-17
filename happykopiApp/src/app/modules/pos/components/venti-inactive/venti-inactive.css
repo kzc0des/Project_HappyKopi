@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+.size-container {
+  width: 414px;
+  height: 77px;
+  position: relative;
+  display: flex;
+  gap: 12px;
+}
+ 
+.size-option {
+  width: 201px;
+  height: 77px;
+  border-radius: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  background: #ededed;
+  padding: 17px 26px; 
+  cursor: pointer;
+}
+ 
+.size-option.active {
+  background: #fffbf2;
+  outline: 2px solid #f3b72c;
+  outline-offset: -2px;
+}
+ 
+.size-icon svg {
+  display: block;
+}
+ 
+.size-label {
+  font-size: 16px;
+  font-weight: 400;
+  color: #282828;
+  text-align: center;
+}
+ 
+.size-option.active .size-label {
+  color: #f3b72c;
+}

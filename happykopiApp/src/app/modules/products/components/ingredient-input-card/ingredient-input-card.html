@@ -1,94 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ingredient Input Card</title>
-    <link rel="stylesheet" href="ingredient-input-card.css" />
- 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+<div class="ingredient-card">
+  <div class="ingredient-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="21" viewBox="0 0 23 21" fill="none">
+      <path d="M17.167 1.86914H21.1668L20.199 8.86914H17.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <path
+        d="M3.66669 1.86914H17.1668V18.8691C17.1668 19.4214 16.7191 19.8691 16.1668 19.8691H4.66664C4.11438 19.8691 3.66667 19.4214 3.66665 18.8692L3.66629 7.11909C3.66628 6.64699 3.44471 6.20514 3.08639 5.89774C1.74087 4.74354 -1.12847 1.86914 3.66669 1.86914Z"
+        stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M12.167 6.36914H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <path d="M12.167 10.3691H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <path d="M12.167 14.3691H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </svg>
+  </div>
 
-  <body>
-    <div class="ingredient-card"> 
-      <div class="ingredient-icon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="23"
-          height="21"
-          viewBox="0 0 23 21"
-          fill="none"
-        >
-          <path
-            d="M17.167 1.86914H21.1668L20.199 8.86914H17.167"
-            stroke="#FAFAFA"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M3.66669 1.86914H17.1668V18.8691C17.1668 19.4214 16.7191 19.8691 16.1668 19.8691H4.66664C4.11438 19.8691 3.66667 19.4214 3.66665 18.8692L3.66629 7.11909C3.66628 6.64699 3.44471 6.20514 3.08639 5.89774C1.74087 4.74354 -1.12847 1.86914 3.66669 1.86914Z"
-            stroke="#FAFAFA"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M12.167 6.36914H14.167"
-            stroke="#FAFAFA"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M12.167 10.3691H14.167"
-            stroke="#FAFAFA"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M12.167 14.3691H14.167"
-            stroke="#FAFAFA"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </div>
- 
-      <div class="ingredient-label">Milk</div>
- 
-      <div class="ingredient-input">
-        <input type="number" placeholder="0" />
-      </div>
- 
-      <div class="ingredient-divider"></div>
- 
-      <div class="ingredient-unit">mL</div>
- 
-      <div class="delete-ingredient">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="22"
-          viewBox="0 0 20 22"
-          fill="none"
-        >
-          <path
-            d="M8 10V16M12 10V16M17 5V19C17 19.5304 16.7893 20.0391 16.4142 20.4142C16.0391 20.7893 15.5304 21 15 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5M1 5H19M6 5V3C6 2.46957 6.21071 1.96086 6.58579 1.58579C6.96086 1.21071 7.46957 1 8 1H12C12.5304 1 13.0391 1.21071 13.4142 1.58579C13.7893 1.96086 14 2.46957 14 3V5"
-            stroke="#282828"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </div>
+  <div class="ingredient-card">
+    <div class="ingredient-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="23" height="21" viewBox="0 0 23 21" fill="none">
+        <path d="M17.167 1.86914H21.1668L20.199 8.86914H17.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M3.66669 1.86914H17.1668V18.8691C17.1668 19.4214 16.7191 19.8691 16.1668 19.8691H4.66664C4.11438 19.8691 3.66667 19.4214 3.66665 18.8692L3.66629 7.11909C3.66628 6.64699 3.44471 6.20514 3.08639 5.89774C1.74087 4.74354 -1.12847 1.86914 3.66669 1.86914Z"
+          stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M12.167 6.36914H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path d="M12.167 10.3691H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path d="M12.167 14.3691H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
     </div>
-  </body>
-</html>
+
+    <div class="ingredient-label">Milk</div>
+
+    <div class="ingredient-input">
+      <input type="number" placeholder="0" />
+    </div>
+
+    <div class="ingredient-divider"></div>
+
+    <div class="ingredient-unit">mL</div>
+
+    <div class="delete-ingredient">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
+        <path
+          d="M8 10V16M12 10V16M17 5V19C17 19.5304 16.7893 20.0391 16.4142 20.4142C16.0391 20.7893 15.5304 21 15 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5M1 5H19M6 5V3C6 2.46957 6.21071 1.96086 6.58579 1.58579C6.96086 1.21071 7.46957 1 8 1H12C12.5304 1 13.0391 1.21071 13.4142 1.58579C13.7893 1.96086 14 2.46957 14 3V5"
+          stroke="#282828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>

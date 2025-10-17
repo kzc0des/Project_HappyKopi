@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
 body {
   background: #222;
 }
@@ -5,7 +7,6 @@ body {
 .menu-card {
   width: 540px;
   height: 123px;
-  position: relative;
   background: #FAFAFA;
   font-family: "Outfit", sans-serif;
 }
@@ -23,9 +24,9 @@ body {
 .menu-title {
   left: 124px;
   top: 33px;
-  position: absolute;
   color: #282828;
   font-size: 16px;
+  position: absolute;
   font-weight: 600;
   word-wrap: break-word;
 }
@@ -33,7 +34,6 @@ body {
 .menu-subtitle {
   left: 124px;
   top: 66px;
-  position: absolute;
   color: #777777;
   font-size: 16px;
   font-weight: 400;
@@ -45,7 +45,6 @@ body {
   height: 8px;
   left: 478px;
   top: 56px;
-  position: absolute;
   border-top: 3px solid #777;
   border-right: 3px solid #777;
   transform: rotate(45deg);
