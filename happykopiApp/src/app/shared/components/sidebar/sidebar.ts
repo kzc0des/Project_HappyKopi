@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
 import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { UserDto } from '../../../core/dtos/auth/user-dto';
@@ -9,7 +9,7 @@ import { SidebarButton } from "../sidebar-button/sidebar-button";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [AsyncPipe, RouterLink, SidebarButton],
+  imports: [AsyncPipe, SidebarButton, TitleCasePipe],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
