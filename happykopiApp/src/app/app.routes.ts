@@ -22,6 +22,7 @@ import { ProductPage} from './modules/products/product-page/product-page';
 import { DrinkListPage } from './modules/products/drink-list-page/drink-list-page';
 import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page'
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
+import { DrinkDetailPage } from './modules/products/drink-detail-page/drink-detail-page';
 
 export const routes: Routes = [
     {
@@ -91,7 +92,7 @@ export const routes: Routes = [
             }
         ]
     },
-    {
+    { 
         path: 'sample',
         component: ProductPage
     },
@@ -102,5 +103,9 @@ export const routes: Routes = [
     {
         path: 'categories-list-page',
         component: CategoriesListPage
+    },
+    {
+    path: 'drink-detail/:id',
+    component: DrinkDetailPage
     }
 ];
