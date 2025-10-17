@@ -20,7 +20,6 @@ export class Header implements OnInit, OnDestroy {
 
   private routerSubscription!: Subscription;
   private valueChangeSubscription!: Subscription;
-  private cancelButtonSubscription!: Subscription;
 
   currentPageSelected: Observable<string>;
 

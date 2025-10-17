@@ -16,7 +16,6 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
 
   isEditing = false;
   private actionSubscription!: Subscription;
-  private cancelButtonSubscription!: Subscription;
 
   stockitemdetail!: StockItemDetailsDto;
   private originalStockItemDetail!: StockItemDetailsDto;
@@ -36,6 +35,11 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
         case 'EDIT':
           this.isEditing = !this.isEditing;
           break;
+        case 'SAVE':
+          if (confirm('Save Changes?')) {
+
+          }
+          break;
         case 'DELETE':
           if (confirm('Are you sure you want to delete this item?')) {
 
@@ -47,6 +51,22 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           break;
       }
     });
+  }
+
+  updateAlertLevel(newValue: string): void {
+    const numericValue = parseInt(newValue, 10);
+
+    if (!isNaN(numericValue)) {
+      this.stockitemdetail.alertLevel = numericValue;
+    }
+  }
+
+  updateName(newValue: string): void {
+    this.stockitemdetail.name = newValue;
+  }
+
+  updateUnitOfMeasure(newValue: string): void {
+    this.stockitemdetail.unitOfMeasure = newValue;
   }
 
   ngOnDestroy(): void {

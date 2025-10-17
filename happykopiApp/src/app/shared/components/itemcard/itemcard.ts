@@ -14,7 +14,10 @@ export class Itemcard {
   @Input() isEditing: boolean = false;
   @Output() valueChange = new EventEmitter<string>();
 
-  constructor(private headerService: HeaderService) {  }
+  originalValue!: string | number;
+  constructor(private headerService: HeaderService) {
+    this.originalValue = this.value;
+  }
 
   onValueChange(event: Event): void {
     const target = event.target as HTMLInputElement;
