@@ -54,7 +54,7 @@ export class Header implements OnInit, OnDestroy {
     }
 
     this.isEditing = false; 
-    this.headerActionService.notifyValueChanged(false);
+    this.headerActionService.resetValueChangedState();
   }
 
   onAddItemClick(): void {
@@ -74,14 +74,15 @@ export class Header implements OnInit, OnDestroy {
   onSaveItemClick(): void {
     this.headerActionService.emitAction('SAVE');
     this.isEditing = false;
-    this.headerActionService.notifyValueChanged(false);
+    this.showDeleteButton = true;
+    this.headerActionService.resetValueChangedState();
   }
 
   onCancelClick(): void {
     this.isEditing = false;
     this.showDeleteButton = true;
     this.headerActionService.emitAction('CANCEL');
-    this.headerActionService.notifyValueChanged(false); 
+    this.headerActionService.resetValueChangedState(); 
   }
 
   ngOnDestroy(): void {

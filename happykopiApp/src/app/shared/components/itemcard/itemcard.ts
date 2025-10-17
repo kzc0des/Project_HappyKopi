@@ -1,6 +1,5 @@
 import { Component, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { HeaderService } from '../../../core/services/header/header.service';
-import { Subscription } from 'rxjs';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -16,9 +15,10 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
     }
   ]
 })
-export class Itemcard implements OnInit, ControlValueAccessor {
+export class Itemcard implements ControlValueAccessor {
   @Input() itemTitle: string = 'Item Title';
   @Input() isEditing: boolean = false;
+  @Input() type!: string;
 
   internalValue: string | number = '';
   private originalValue!: string | number;
@@ -33,6 +33,8 @@ export class Itemcard implements OnInit, ControlValueAccessor {
     if (value !== undefined) {
       this.internalValue = value;
     }
+
+    this.originalValue = value;
   }
 
   registerOnChange(fn: any): void {
@@ -43,19 +45,18 @@ export class Itemcard implements OnInit, ControlValueAccessor {
     this.onTouched = fn
   }
 
-  ngOnInit(): void {
-    this.originalValue = this.internalValue;
-  }
-
   onValueChange(newValue: string | number): void {
     this.internalValue = newValue;
     this.onChange(this.internalValue);
     this.onTouched();
 
+    console.log(`Internal Value: ${this.internalValue}`);
+    console.log(`Original Value: ${this.originalValue}`);
+
     if (this.originalValue != newValue) {
-      this.headerService.notifyValueChanged(true);
+      this.headerService.notifyValueChanged(this.itemTitle, true);
     } else {
-      this.headerService.notifyValueChanged(false);
+      this.headerService.notifyValueChanged(this.itemTitle, false);
     }
   }
 
