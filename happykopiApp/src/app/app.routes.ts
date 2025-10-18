@@ -43,6 +43,7 @@ import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary
 import { AddDrinkPage } from './modules/products/add-drink-page/add-drink-page';
 import { DrinkCard } from './modules/products/components/drink-card/drink-card';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
+import { EditCategoryPage } from './modules/products/edit-category-page/edit-category-page';
 
 
 
@@ -223,5 +224,9 @@ export const routes: Routes = [
     {
         path: 'add-drink-page',
         component: AddDrinkPage
+    },
+    {
+        path: 'edit-category/:categories',
+        component: EditCategoryPage
     }
 ];

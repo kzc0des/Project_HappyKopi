@@ -15,7 +15,6 @@ export class DrinkListPage {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  //sample data
   drinks = [
     { name: 'Thai', category: 'Milk Tea'},  //image: (wala akong malinaw na copy ng image kaya di ko na nilagyan)
     { name: 'Matcha', category: 'Milk Tea'},
