@@ -52,4 +52,16 @@ export class InventoryService {
   deactivateStockItem(id: number): Observable<{ message: string }> {
     return this.apiService.delete<{ message: string }>(`${this.controllerPath}/stock-items/${id}`);
   }
+
+  public loadCategoryOptions(arr: any): any {
+    return Object.keys(arr)
+      .filter(key => isNaN(Number(key)))
+      .map(key => ({
+        // The value is the NUMBER from the enum (e.g., 0, 1, 2)
+        value: arr[key as keyof typeof arr],
+        // The label is the string key itself (e.g., "Liquid")
+        label: key,
+      }));
+  }
+
 }
