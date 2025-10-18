@@ -87,7 +87,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
   private updateStockItem(): void {
     this.stockitemDetailForUpdate = {
       name: this.stockitemdetail.name,
-      unit: this.stockitemdetail.unit,
+      unit: this.stockitemdetail.unitOfMeasure,
       alertLevel: this.stockitemdetail.alertLevel,
       isPerishable: this.stockitemdetail.isPerishable,
       itemType: this.stockitemdetail.itemType

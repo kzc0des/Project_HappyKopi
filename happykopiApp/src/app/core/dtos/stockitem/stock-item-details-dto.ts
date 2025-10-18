@@ -3,7 +3,7 @@ import { StockItemBatchDetailsDto } from "./stock-item-batch-details-dto";
 export interface StockItemDetailsDto {
     id: number;
     name: string;
-    unit: string;
+    unitOfMeasure: string;
     alertLevel: number;
     isPerishable: boolean;
     itemType: number;
