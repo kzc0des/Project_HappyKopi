@@ -24,7 +24,6 @@ namespace happykopiAPI.Controllers
         {
             try
             {
-                /* will be removed later
                 var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userIdString))
                 {
@@ -32,7 +31,7 @@ namespace happykopiAPI.Controllers
                 }
 
                 dto.UserId = int.Parse(userIdString);
-                */
+                
 
                 await _stockItemService.AddNewStockItemAsync(dto);
                 return Ok(new { message = "Stock item created successfully." });

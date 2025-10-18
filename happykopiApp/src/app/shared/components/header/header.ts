@@ -63,7 +63,7 @@ export class Header implements OnInit, OnDestroy {
       this.onEdit = true;
       this.onAdd = false;
     }
-    else if (url.includes('/inventory')) {
+    else if (url.includes('/inventory/') && !url.includes('/item/')) {
       this.isEditing = false;
       this.showAddButton = true;      
       this.showDeleteButton = false;

@@ -62,11 +62,16 @@ export class InventoryAddItem implements OnInit, OnDestroy {
         this.location.back(); 
       },
       error: (err) => {
-        console.error('Failed to create item:', err);
+        if (err.status === 409) {
+        alert(`Error: ${err.error.message}`);
+      } else {
+        alert('An unexpected error occurred. Please try again.');
+      }
+      console.error('Failed to create item:', err);
       }
     });
 
-    console.log("Inventory Add toh nangyari");
+    // console.log("Inventory Add toh nangyari");
   }
 
   private initializeEmptyDto(): void {
