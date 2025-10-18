@@ -210,7 +210,6 @@ namespace happykopiAPI.Services.Implementations
             command.Parameters.AddWithValue("@AlertLevel", dto.AlertLevel);
             command.Parameters.AddWithValue("@IsPerishable", dto.IsPerishable);
             command.Parameters.AddWithValue("@ItemType", dto.ItemType);
-            command.Parameters.AddWithValue("@IsActive", dto.IsActive);
             command.Parameters.AddWithValue("@UserId", dto.UserId);
 
             await connection.OpenAsync();

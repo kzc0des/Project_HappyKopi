@@ -100,8 +100,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
       unit: this.stockitemdetail.unitOfMeasure,
       alertLevel: this.stockitemdetail.alertLevel,
       isPerishable: this.stockitemdetail.isPerishable,
-      itemType: this.stockitemdetail.itemType,
-      isActive: this.stockitemdetail.isActive
+      itemType: this.stockitemdetail.itemType
     }
 
     this.inventoryService.updateStockItem(this.stockitemdetail.id, this.stockitemDetailForUpdate)
@@ -113,6 +112,9 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           console.error('Update failed: ' + err);
         }
       });
-    // console.log(`Data to be passed: ${JSON.stringify(this.stockitemDetailForUpdate)}`)
+  }
+
+  private deleteStockItem(): void {
+      
   }
 }
