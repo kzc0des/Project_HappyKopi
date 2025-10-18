@@ -8,15 +8,22 @@ import { HeaderService } from '../../../core/services/header/header.service';
 import { InventoryService } from '../services/inventory.service';
 import { FormsModule } from '@angular/forms';
 import { ToggleButton } from "../../../shared/components/toggle-button/toggle-button";
+import { DropdownOption } from '../../../shared/components/dropdown-button/dropdown-option';
+import { DropdownButton } from "../../../shared/components/dropdown-button/dropdown-button";
+import { Stockitemtype } from '../../../core/enums/stockitemtype';
 
 
 @Component({
   selector: 'app-inventory-item-detail',
-  imports: [IngredientBatchCard, Itemcard, FormsModule, ToggleButton],
+  imports: [IngredientBatchCard, Itemcard, FormsModule, ToggleButton, DropdownButton],
   templateUrl: './inventory-item-detail.html',
   styleUrl: './inventory-item-detail.css'
 })
 export class InventoryItemDetail implements OnInit, OnDestroy {
+
+  stockitemType!: number;
+
+  categories: DropdownOption[] = [];
 
   isEditing = false;
   private actionSubscription!: Subscription;
@@ -33,6 +40,8 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
 
     console.log('Data from resolver:', this.stockitemdetail);
 
+    this.stockitemType = this.stockitemdetail.itemType;
+
     this.actionSubscription = this.headerActionService.action$.subscribe(action => {
 
       switch (action) {
@@ -41,7 +50,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           break;
         case 'SAVE':
           if (confirm('Save Changes?')) {
-          this.isEditing = !this.isEditing;
+            this.isEditing = !this.isEditing;
           }
           break;
         case 'DELETE':
@@ -55,6 +64,9 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           break;
       }
     });
+
+    this.loadCategoryOptions();
+
   }
 
   updateAlertLevel(newValue: string): void {
@@ -63,6 +75,17 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
     if (!isNaN(numericValue)) {
       this.stockitemdetail.alertLevel = numericValue;
     }
+  }
+
+  private loadCategoryOptions(): void {
+    this.categories = Object.keys(Stockitemtype)
+      .filter(key => isNaN(Number(key)))
+      .map(key => ({
+        // The value is the NUMBER from the enum (e.g., 0, 1, 2)
+        value: Stockitemtype[key as keyof typeof Stockitemtype],
+        // The label is the string key itself (e.g., "Liquid")
+        label: key,
+      }));
   }
 
   updateName(newValue: string): void {

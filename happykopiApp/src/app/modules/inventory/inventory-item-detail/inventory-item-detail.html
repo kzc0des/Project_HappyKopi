@@ -27,6 +27,7 @@
             <app-itemcard itemTitle="Measurement" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.unitOfMeasure">
             </app-itemcard>
         </div>
+        <app-dropdown-button [options]="categories" [(ngModel)]="stockitemType" [selected]="stockitemdetail.itemType" placeholder="Choose an item type"></app-dropdown-button>
     </div>
     }
 
