@@ -1,0 +1,36 @@
+<div class="relative w-full">
+  
+  <button 
+    type="button" 
+    (click)="toggleDropdown()"
+    [disabled]="isDisabled"
+    class="relative w-full cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-6 text-left shadow-sm focus:border-[#f3b72c] focus:outline-none focus:ring-1 focus:ring-[#f3b72c] sm:text-sm"
+    [class.opacity-50]="isDisabled"
+    [class.cursor-not-allowed]="isDisabled">
+    
+    <span class="block truncate text-hapikopi-dark">{{ selectedLabel | titlecase}}</span>
+    
+    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+      <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.5a.75.75 0 01-1.5 0V3.75A.75.75 0 0110 3zM5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z" clip-rule="evenodd" />
+      </svg>
+    </span>
+  </button>
+
+  @if (isOpen) {
+    <ul 
+      class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+      
+      @for (option of options; track option.value) {
+        <li 
+          (click)="selectOption(option)"
+          class="relative cursor-default select-none py-3 pl-3 text-gray-900 hover:bg-[#f3b72c] hover:text-white"
+          [class.bg-[#f3b72c]]="option.value === selectedValue"
+          [class.text-white]="option.value === selectedValue">
+          
+          <span class="block truncate">{{ option.label | titlecase}}</span>
+        </li>
+      }
+    </ul>
+  }
+</div>

@@ -7,23 +7,39 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { InventoryService } from '../services/inventory.service';
 import { FormsModule } from '@angular/forms';
+import { ToggleButton } from "../../../shared/components/toggle-button/toggle-button";
+import { DropdownOption } from '../../../shared/components/dropdown-button/dropdown-option';
+import { DropdownButton } from "../../../shared/components/dropdown-button/dropdown-button";
+import { Stockitemtype } from '../../../core/enums/stockitemtype';
+import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-for-update-dto';
+import { Location } from '@angular/common';
 
 
 @Component({
   selector: 'app-inventory-item-detail',
-  imports: [IngredientBatchCard, Itemcard, FormsModule],
+  imports: [IngredientBatchCard, Itemcard, FormsModule, ToggleButton, DropdownButton],
   templateUrl: './inventory-item-detail.html',
   styleUrl: './inventory-item-detail.css'
 })
 export class InventoryItemDetail implements OnInit, OnDestroy {
 
+  stockitemType!: number;
+
+  categories: DropdownOption[] = [];
+
   isEditing = false;
   private actionSubscription!: Subscription;
 
   stockitemdetail!: StockItemDetailsDto;
+  stockitemDetailForUpdate!: StockItemForUpdateDto;
   private originalStockItemDetail!: StockItemDetailsDto;
 
-  constructor(private route: ActivatedRoute, private headerActionService: HeaderService, private inventoryService: InventoryService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private headerActionService: HeaderService,
+    private inventoryService: InventoryService,
+    private location: Location,
+  ) { }
 
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['stockitemdetail'];
@@ -31,6 +47,8 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
     this.originalStockItemDetail = { ...resolvedData };
 
     console.log('Data from resolver:', this.stockitemdetail);
+
+    this.stockitemType = this.stockitemdetail.itemType;
 
     this.actionSubscription = this.headerActionService.action$.subscribe(action => {
 
@@ -40,12 +58,13 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           break;
         case 'SAVE':
           if (confirm('Save Changes?')) {
-          this.isEditing = !this.isEditing;
+            this.updateStockItem();
+            this.isEditing = !this.isEditing;
           }
           break;
         case 'DELETE':
           if (confirm('Are you sure you want to delete this item?')) {
-
+            this.deleteStockItem();
           }
           break;
         case 'CANCEL':
@@ -54,27 +73,57 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           break;
       }
     });
+
+    this.loadCategoryOptions();
+
   }
 
-  updateAlertLevel(newValue: string): void {
-    const numericValue = parseInt(newValue, 10);
-
-    if (!isNaN(numericValue)) {
-      this.stockitemdetail.alertLevel = numericValue;
-    }
-  }
-
-  updateName(newValue: string): void {
-    this.stockitemdetail.name = newValue;
-  }
-
-  updateUnitOfMeasure(newValue: string): void {
-    this.stockitemdetail.unitOfMeasure = newValue;
+  private loadCategoryOptions(): void {
+    this.categories = Object.keys(Stockitemtype)
+      .filter(key => isNaN(Number(key)))
+      .map(key => ({
+        // The value is the NUMBER from the enum (e.g., 0, 1, 2)
+        value: Stockitemtype[key as keyof typeof Stockitemtype],
+        // The label is the string key itself (e.g., "Liquid")
+        label: key,
+      }));
   }
 
   ngOnDestroy(): void {
     if (this.actionSubscription) {
       this.actionSubscription.unsubscribe();
     }
+  }
+
+  private updateStockItem(): void {
+    this.stockitemDetailForUpdate = {
+      name: this.stockitemdetail.name,
+      unit: this.stockitemdetail.unitOfMeasure,
+      alertLevel: this.stockitemdetail.alertLevel,
+      isPerishable: this.stockitemdetail.isPerishable,
+      itemType: this.stockitemdetail.itemType
+    }
+
+    this.inventoryService.updateStockItem(this.stockitemdetail.id, this.stockitemDetailForUpdate)
+      .subscribe({
+        next: (response) => {
+          console.log("Update successful.", response);
+        },
+        error: err => {
+          console.error('Update failed: ' + err);
+        }
+      });
+  }
+
+  private deleteStockItem(): void {
+    this.inventoryService.deactivateStockItem(this.stockitemdetail.id).subscribe({
+      next: response => {
+        console.log(`Update successful. ${response}`);
+        this.location.back();
+      },
+      error: err => {
+        console.error(`Update failed ${err}`);
+      }
+    })
   }
 }

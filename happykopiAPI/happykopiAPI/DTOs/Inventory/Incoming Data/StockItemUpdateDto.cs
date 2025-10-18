@@ -23,6 +23,9 @@ namespace happykopiAPI.DTOs.Inventory
         public int ItemType { get; set; }
 
         [Required]
+        public bool IsActive { get; set; }
+
+        [Required]
         public int UserId { get; set; }
     }
 }

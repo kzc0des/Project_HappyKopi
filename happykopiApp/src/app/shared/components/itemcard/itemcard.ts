@@ -50,6 +50,7 @@ export class Itemcard implements ControlValueAccessor {
     this.onChange(this.internalValue);
     this.onTouched();
 
+    console.log("Item Card Side");
     console.log(`Internal Value: ${this.internalValue}`);
     console.log(`Original Value: ${this.originalValue}`);
 

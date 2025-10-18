@@ -48,7 +48,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AddOns");
+                    b.ToTable("AddOns", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Category", b =>
@@ -66,7 +66,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.DailyIngredientSummary", b =>
@@ -110,7 +110,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("DailyIngredientSummaries");
+                    b.ToTable("DailyIngredientSummaries", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Order", b =>
@@ -148,7 +148,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.OrderItem", b =>
@@ -180,7 +180,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.OrderItemAddOn", b =>
@@ -212,7 +212,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("OrderItemId");
 
-                    b.ToTable("OrderItemAddOns");
+                    b.ToTable("OrderItemAddOns", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Product", b =>
@@ -251,7 +251,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.ProductIngredient", b =>
@@ -269,7 +269,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("StockItemId");
 
-                    b.ToTable("ProductIngredients");
+                    b.ToTable("ProductIngredients", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.StockItem", b =>
@@ -313,7 +313,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StockItems");
+                    b.ToTable("StockItems", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.StockItemBatch", b =>
@@ -345,7 +345,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("StockItemId");
 
-                    b.ToTable("StockItemBatches");
+                    b.ToTable("StockItemBatches", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.StockLog", b =>
@@ -395,7 +395,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("StockLogs");
+                    b.ToTable("StockLogs", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Transaction", b =>
@@ -433,7 +433,7 @@ namespace happykopiAPI.Data.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transactions", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.User", b =>
@@ -487,7 +487,7 @@ namespace happykopiAPI.Data.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.DailyIngredientSummary", b =>
