@@ -22,11 +22,9 @@ export class DrinkListPage {
     { name: 'Caramel', category: 'Iced Kopi'},
   ];
 
-  drinkId: string | null = null;
-
   constructor(private router: Router) {}
 
   goToDrink(drink: any) {
-    this.router.navigate(['/drink-detail', drink.name]);
+    this.router.navigate(['/drink-detail', drink.name], { state: { drink } });
   }
 }
