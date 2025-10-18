@@ -7,11 +7,12 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { InventoryService } from '../services/inventory.service';
 import { FormsModule } from '@angular/forms';
+import { ToggleButton } from "../../../shared/components/toggle-button/toggle-button";
 
 
 @Component({
   selector: 'app-inventory-item-detail',
-  imports: [IngredientBatchCard, Itemcard, FormsModule],
+  imports: [IngredientBatchCard, Itemcard, FormsModule, ToggleButton],
   templateUrl: './inventory-item-detail.html',
   styleUrl: './inventory-item-detail.css'
 })
