@@ -4,4 +4,5 @@ export interface StockItemForUpdateDto {
     alertLevel: number;
     isPerishable: boolean;
     itemType: number;
+    isActive: boolean;
 }

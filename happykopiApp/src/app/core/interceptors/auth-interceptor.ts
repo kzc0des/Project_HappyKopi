@@ -5,7 +5,7 @@ import { catchError, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  const token = localStorage.getItem('jwt_token');
+  const token = localStorage.getItem('token');
 
   if (!token) {
     return next(req);

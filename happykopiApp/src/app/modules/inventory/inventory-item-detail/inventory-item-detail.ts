@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StockItemDetailsDto } from '../../../core/dtos/stockitem/stock-item-details-dto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IngredientBatchCard } from "../components/ingredient-batch-card/ingredient-batch-card";
 import { Itemcard } from "../../../shared/components/itemcard/itemcard";
 import { Subscription } from 'rxjs';
@@ -11,6 +11,8 @@ import { ToggleButton } from "../../../shared/components/toggle-button/toggle-bu
 import { DropdownOption } from '../../../shared/components/dropdown-button/dropdown-option';
 import { DropdownButton } from "../../../shared/components/dropdown-button/dropdown-button";
 import { Stockitemtype } from '../../../core/enums/stockitemtype';
+import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-for-update-dto';
+import { JsonPipe } from '@angular/common';
 
 
 @Component({
@@ -29,9 +31,14 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
   private actionSubscription!: Subscription;
 
   stockitemdetail!: StockItemDetailsDto;
+  stockitemDetailForUpdate!: StockItemForUpdateDto;
   private originalStockItemDetail!: StockItemDetailsDto;
 
-  constructor(private route: ActivatedRoute, private headerActionService: HeaderService, private inventoryService: InventoryService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private headerActionService: HeaderService,
+    private inventoryService: InventoryService,
+  ) { }
 
   ngOnInit(): void {
     const resolvedData = this.route.snapshot.data['stockitemdetail'];
@@ -50,6 +57,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
           break;
         case 'SAVE':
           if (confirm('Save Changes?')) {
+            this.updateStockItem();
             this.isEditing = !this.isEditing;
           }
           break;
@@ -69,14 +77,6 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
 
   }
 
-  updateAlertLevel(newValue: string): void {
-    const numericValue = parseInt(newValue, 10);
-
-    if (!isNaN(numericValue)) {
-      this.stockitemdetail.alertLevel = numericValue;
-    }
-  }
-
   private loadCategoryOptions(): void {
     this.categories = Object.keys(Stockitemtype)
       .filter(key => isNaN(Number(key)))
@@ -88,17 +88,31 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
       }));
   }
 
-  updateName(newValue: string): void {
-    this.stockitemdetail.name = newValue;
-  }
-
-  updateUnitOfMeasure(newValue: string): void {
-    this.stockitemdetail.unitOfMeasure = newValue;
-  }
-
   ngOnDestroy(): void {
     if (this.actionSubscription) {
       this.actionSubscription.unsubscribe();
     }
+  }
+
+  private updateStockItem(): void {
+    this.stockitemDetailForUpdate = {
+      name: this.stockitemdetail.name,
+      unit: this.stockitemdetail.unitOfMeasure,
+      alertLevel: this.stockitemdetail.alertLevel,
+      isPerishable: this.stockitemdetail.isPerishable,
+      itemType: this.stockitemdetail.itemType,
+      isActive: this.stockitemdetail.isActive
+    }
+
+    this.inventoryService.updateStockItem(this.stockitemdetail.id, this.stockitemDetailForUpdate)
+      .subscribe({
+        next: (response) => {
+          console.log("Update successful.", response);
+        },
+        error: err => {
+          console.error('Update failed: ' + err);
+        }
+      });
+    // console.log(`Data to be passed: ${JSON.stringify(this.stockitemDetailForUpdate)}`)
   }
 }
