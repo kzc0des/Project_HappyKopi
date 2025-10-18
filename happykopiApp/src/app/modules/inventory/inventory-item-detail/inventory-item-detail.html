@@ -19,7 +19,6 @@
     <div class="flex flex-col gap-5 p-5">
         <div class="flex">
             <app-toggle-button class="flex-1" itemTitle="In Stock" [(ngModel)]="stockitemdetail.isActive"></app-toggle-button>
-            <app-toggle-button class="flex-1" itemTitle="Perishable" [(ngModel)]="stockitemdetail.isPerishable"></app-toggle-button>
         </div>
         <app-itemcard itemTitle="Ingredient Name" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.name">
         </app-itemcard>
