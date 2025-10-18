@@ -22,7 +22,7 @@ import { TextBoxPrice } from './shared/components/text-box-price/text-box-price'
 import { AddIngredient } from './shared/components/add-ingredient/add-ingredient';
 import { SearchDrink } from './shared/components/search-drink/search-drink';
 import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
-import { ProductPage} from './modules/products/product-page/product-page';
+import { ProductPage } from './modules/products/product-page/product-page';
 import { DrinkListPage } from './modules/products/drink-list-page/drink-list-page';
 import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
@@ -42,6 +42,7 @@ import { Charge } from './modules/pos/forms/charge/charge';
 import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary';
 import { AddDrinkPage } from './modules/products/add-drink-page/add-drink-page';
 import { DrinkCard } from './modules/products/components/drink-card/drink-card';
+import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
 import { EditCategoryPage } from './modules/products/edit-category-page/edit-category-page';
 
 
@@ -103,6 +104,10 @@ export const routes: Routes = [
                         }
                     },
                     {
+                        path: 'add-item',
+                        component: InventoryAddItem
+                    },
+                    {
                         path: ':itemType',
                         component: InventoryList,
                         resolve: {
@@ -116,11 +121,11 @@ export const routes: Routes = [
                             stockitemdetail: stockitemdetailResolver
                         }
                     }
-                ] 
+                ]
             }
         ]
     },
-    { 
+    {
         path: 'sample',
         component: DrinkCard
     },
@@ -154,14 +159,14 @@ export const routes: Routes = [
     },
     {
         path: 'drink-detail/:id',
-        component: DrinkDetailPage  
+        component: DrinkDetailPage
     },
     {
         path: 'order-quick-view',
         component: OrderQuickView
     },
     {
-        path:'order-quick-view-down',
+        path: 'order-quick-view-down',
         component: OrderQuickViewDown
     },
     {
@@ -177,15 +182,15 @@ export const routes: Routes = [
         component: PosCategoryOff
     },
     {
-        path:'modifier-page',
+        path: 'modifier-page',
         component: ModifierPage
     },
     {
-        path:'sizes',
+        path: 'sizes',
         component: SizesPage
     },
     {
-        path:'addons',
+        path: 'addons',
         component: AddOnsPage
     },
     {

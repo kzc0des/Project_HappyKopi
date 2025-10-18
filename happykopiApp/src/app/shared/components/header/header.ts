@@ -16,6 +16,8 @@ export class Header implements OnInit, OnDestroy {
   showAddButton = false;
   showDeleteButton = false;
   isEditing = false;
+  onAdd = false;
+  onEdit = false;
   hasValueChanged = false;
 
   private routerSubscription!: Subscription;
@@ -43,17 +45,27 @@ export class Header implements OnInit, OnDestroy {
   }
 
   private updateHeaderButtons(url: string): void {
-    this.showAddButton = false;
-    this.showDeleteButton = false;
 
-    if (url.includes('/inventory/') && !url.includes('/item/')) {
-      this.showAddButton = true;
+    if (url.includes('/inventory/add-item')) {
+      this.isEditing = true;
+      this.showAddButton = false;     
+      this.showDeleteButton = false;  
+      this.onAdd = true;
+      this.onEdit = false;
     }
     else if (url.includes('/inventory/item/')) {
-      this.showDeleteButton = true;
+      this.isEditing = false;         
+      this.showAddButton = false;     
+      this.showDeleteButton = true;   
+      this.onEdit = true;
+      this.onAdd = false;
+    }
+    else if (url.includes('/inventory/') && !url.includes('/item/')) {
+      this.isEditing = false;
+      this.showAddButton = true;      
+      this.showDeleteButton = false;
     }
 
-    this.isEditing = false; 
     this.headerActionService.resetValueChangedState();
   }
 
@@ -82,7 +94,7 @@ export class Header implements OnInit, OnDestroy {
     this.isEditing = false;
     this.showDeleteButton = true;
     this.headerActionService.emitAction('CANCEL');
-    this.headerActionService.resetValueChangedState(); 
+    this.headerActionService.resetValueChangedState();
   }
 
   ngOnDestroy(): void {

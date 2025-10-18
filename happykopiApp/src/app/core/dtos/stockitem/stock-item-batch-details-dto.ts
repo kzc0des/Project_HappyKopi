@@ -1,5 +1,5 @@
 export interface StockItemBatchDetailsDto {
     id: number;
-    stockQuantity: number;
+    totalStockQuantity: number;
     expiryDate?: Date;
 }

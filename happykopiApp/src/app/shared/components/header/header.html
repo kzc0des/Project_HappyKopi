@@ -12,7 +12,7 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
         </div>
         <div [class.flex-1]="isEditing">
             @if (showAddButton) {
-            <button class="flex justify-center items-center px-2">
+            <button class="flex justify-center items-center px-2" (click)="onAddItemClick()">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10" viewBox="0 0 24 24">
                     <path fill="#fff"
                         d="M12 4c4.411 0 8 3.589 8 8s-3.589 8-8 8s-8-3.589-8-8s3.589-8 8-8m0-2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 9h-4V7h-2v4H7v2h4v4h2v-4h4z" />
@@ -38,23 +38,35 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
             }
 
             @if (isEditing) {
-            <div class="flex gap-2 items-center px-2 w-full justify-between">
-                <button (click)="onCancelClick()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9" viewBox="0 0 24 24">
-                        <path fill="#fff"
-                            d="m8.4 17l3.6-3.6l3.6 3.6l1.4-1.4l-3.6-3.6L17 8.4L15.6 7L12 10.6L8.4 7L7 8.4l3.6 3.6L7 15.6zm3.6 5q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8" />
-                    </svg>
-                </button>
-                <button [disabled]="!hasValueChanged" (click)="onSaveItemClick()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9" [class.opacity]="(!hasValueChanged)" viewBox="0 0 24 24">
-                        <g fill="none" fill-rule="evenodd">
-                            <path
-                                d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+            <div class="flex items-center px-4 w-full justify-between">
+                <p class="font-bold text-[1.5em]">
+                    @if(onAdd){
+                        Add Item
+                    }
+                    @if(onEdit){
+                        Edit Item
+                    }
+                </p>
+                <div class="flex gap-2">
+                    <button (click)="onCancelClick()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-9" viewBox="0 0 24 24">
                             <path fill="#fff"
-                                d="M21.546 5.111a1.5 1.5 0 0 1 0 2.121L10.303 18.475a1.6 1.6 0 0 1-2.263 0L2.454 12.89a1.5 1.5 0 1 1 2.121-2.121l4.596 4.596L19.424 5.111a1.5 1.5 0 0 1 2.122 0" />
-                        </g>
-                    </svg>
-                </button>
+                                d="m8.4 17l3.6-3.6l3.6 3.6l1.4-1.4l-3.6-3.6L17 8.4L15.6 7L12 10.6L8.4 7L7 8.4l3.6 3.6L7 15.6zm3.6 5q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8" />
+                        </svg>
+                    </button>
+                    <button [disabled]="!hasValueChanged" (click)="onSaveItemClick()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-9" [class.opacity]="(!hasValueChanged)"
+                            viewBox="0 0 24 24">
+                            <g fill="none" fill-rule="evenodd">
+                                <path
+                                    d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                                <path fill="#fff"
+                                    d="M21.546 5.111a1.5 1.5 0 0 1 0 2.121L10.303 18.475a1.6 1.6 0 0 1-2.263 0L2.454 12.89a1.5 1.5 0 1 1 2.121-2.121l4.596 4.596L19.424 5.111a1.5 1.5 0 0 1 2.122 0" />
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+
             </div>
             }
         </div>

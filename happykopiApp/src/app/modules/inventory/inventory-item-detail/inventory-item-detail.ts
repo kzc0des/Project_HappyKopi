@@ -25,7 +25,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
 
   stockitemType!: number;
 
-  categories: DropdownOption[] = [];
+  categories!: DropdownOption[];
 
   isEditing = false;
   private actionSubscription!: Subscription;
@@ -74,19 +74,8 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
       }
     });
 
-    this.loadCategoryOptions();
+    this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
 
-  }
-
-  private loadCategoryOptions(): void {
-    this.categories = Object.keys(Stockitemtype)
-      .filter(key => isNaN(Number(key)))
-      .map(key => ({
-        // The value is the NUMBER from the enum (e.g., 0, 1, 2)
-        value: Stockitemtype[key as keyof typeof Stockitemtype],
-        // The label is the string key itself (e.g., "Liquid")
-        label: key,
-      }));
   }
 
   ngOnDestroy(): void {
