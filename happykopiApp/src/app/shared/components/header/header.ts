@@ -45,9 +45,6 @@ export class Header implements OnInit, OnDestroy {
   }
 
   private updateHeaderButtons(url: string): void {
-    this.showAddButton = false;
-    this.showDeleteButton = false;
-    this.isEditing = false;
 
     if (url.includes('/inventory/add-item')) {
       this.isEditing = true;
