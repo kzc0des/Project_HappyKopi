@@ -65,6 +65,11 @@ export class Header implements OnInit, OnDestroy {
       this.showAddButton = true;      
       this.showDeleteButton = false;
     }
+    else if(url.includes('/inventory')){
+      this.isEditing = false;
+      this.showAddButton = false;
+      this.showDeleteButton = false;
+    }
 
     this.headerActionService.resetValueChangedState();
   }
