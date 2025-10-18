@@ -19,18 +19,15 @@
                     <div class="text-2xl font-bold text-gray-800">All Drinks</div>
                     <div class="text-lg text-gray-400">33 drinks</div>
                 </div>
-            <span
-
-            class="material-symbols-outlined"
-            [style.transform]="isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)'"
-            style="transition: transform 0.2s ease;"
-            >
-                keyboard_arrow_down
-            </span>
-
+                <span
+                class="material-symbols-outlined"
+                [style.transform]="isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)'"
+                style="transition: transform 0.2s ease;"
+                >
+                    keyboard_arrow_down
+                </span>
             </div>
-
-
+            
             <div class="dropdown-list" *ngIf="isDropdownOpen">
             <div class="dropdown-item">Milk Tea</div>
             <div class="dropdown-item">Fruit Tea</div>
