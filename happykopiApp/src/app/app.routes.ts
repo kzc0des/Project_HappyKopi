@@ -40,6 +40,8 @@ import { CartItem } from './modules/pos/components/cart-item/cart-item';
 import { YellowButton } from './shared/components/yellow-button/yellow-button';
 import { Charge } from './modules/pos/forms/charge/charge';
 import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary';
+import { AddDrinkPage } from './modules/products/add-drink-page/add-drink-page';
+import { DrinkCard } from './modules/products/components/drink-card/drink-card';
 
 
 
@@ -119,7 +121,7 @@ export const routes: Routes = [
     },
     { 
         path: 'sample',
-        component: BatchOrganizerCard
+        component: DrinkCard
     },
     {
         path: 'textbox',
@@ -212,7 +214,9 @@ export const routes: Routes = [
     {
         path: 'oqvd',
         component: OrderQuickViewDown
+    },
+    {
+        path: 'add-drink-page',
+        component: AddDrinkPage
     }
-
-
 ];
