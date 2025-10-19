@@ -16,9 +16,12 @@ export class DrinkListPage {
   }
 
   drinks = [
-    { name: 'Thai', category: 'Milk Tea'},  //image: (wala akong malinaw na copy ng image kaya di ko na nilagyan)
-    { name: 'Matcha', category: 'Milk Tea'},
-    { name: 'Caramel', category: 'Iced Kopi'},
+    { name: 'Thai', category: 'Milk Tea', baseprice: 45.00},  //image: (wala akong malinaw na copy ng image kaya di ko na nilagyan)
+    { name: 'Hokkaido', category: 'Milk Tea', baseprice: 45.00},
+    { name: 'Hot Kopi Latte', category: 'Hot Kopi', baseprice: 45.00},
+    { name: 'Karamel Macchiato', category: 'Milk Tea', baseprice: 45.00},
+    { name: 'Capuccino', category: 'Iced Kopi', baseprice: 45.00},
+    { name: 'Taro', category: 'Milk Tea', baseprice: 45.00},
   ];
 
   constructor(private router: Router) {}
