@@ -4,6 +4,7 @@ import { filter, Observable, pipe, Subscription } from 'rxjs';
 import { AsyncPipe, Location, TitleCasePipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { HeaderService } from '../../../core/services/header/header.service';
+import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-header',
@@ -42,7 +43,9 @@ export class Header implements OnInit, OnDestroy {
     private sidebarService: SidebarService,
     private router: Router,
     private headerActionService: HeaderService,
-    private location: Location) {
+    private location: Location,
+    private confirmationService: ConfirmationService
+  ) {
     this.currentPageSelected = sidebarService.currentSelectedPage$;
   }
 
@@ -73,9 +76,11 @@ export class Header implements OnInit, OnDestroy {
     this.showBackButton = false;
     this.headerTitle = null;
     this.onSelected = false;
+    this.showSaveButton = false;
 
     if (url.includes('/inventory/add-item')) {
       this.showBackButton = true;
+      this.showSaveButton = true;
       this.headerTitle = "Add New Item"
 
       // this.onAdd = true;
@@ -89,6 +94,13 @@ export class Header implements OnInit, OnDestroy {
 
       // this.onEdit = true;
       // this.onAdd = false;
+    }
+    else if (url.includes('/inventory/edit/item')) {
+      this.showBackButton = true;
+      this.showSaveButton = true;
+      this.showDeleteButton = true;
+
+      this.onSelected = true;
     }
     else if (url.includes('/inventory/') && !url.includes('/item/')) {
       this.showAddButton = true;
@@ -106,8 +118,6 @@ export class Header implements OnInit, OnDestroy {
     }
     else if (url.includes('/inventory')) {
       this.showAddButton = true;
-      this.showSaveButton = false;
-      this.showEditButton = false;
     }
 
     this.headerActionService.resetValueChangedState();
@@ -168,17 +178,21 @@ export class Header implements OnInit, OnDestroy {
     this.sidebarService.toggleSidebar();
   }
 
-  onBackClick() {
-    if (this.showSaveButton && this.showSaveButton) {
-      this.onCancelClick();
-    } else {
-
-      // from specific item to list
+  async onBackClick() {
+    if (!this.hasValueChanged) {
       this.location.back();
-    }
+    } else {
+      const confirmed = await this.confirmationService.confirm(
+        'Discard Changes?',
+        'You have unsaved changes. Are you sure you want to discard them?'
+      );
 
-    console.log(`Show Save Button: ${this.showSaveButton}`);
+      if (confirmed) {
+        this.location.back();
+      }
+    }
   }
+
 }
 
 

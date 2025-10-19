@@ -44,6 +44,7 @@ import { AddDrinkPage } from './modules/products/drinks/add-drink-page/add-drink
 import { DrinkCard } from './modules/products/components/drink-card/drink-card';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
 import { EditCategoryPage } from './modules/products/categories/edit-category-page/edit-category-page';
+import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/drinks/edit-drink-page/edit-drink-page';
 
 
@@ -118,6 +119,13 @@ export const routes: Routes = [
                     {
                         path: 'item/:itemId',
                         component: InventoryItemDetail,
+                        resolve: {
+                            stockitemdetail: stockitemdetailResolver
+                        }
+                    },
+                    {
+                        path: 'edit/item/:itemId',
+                        component: InventoryEditItem,
                         resolve: {
                             stockitemdetail: stockitemdetailResolver
                         }
