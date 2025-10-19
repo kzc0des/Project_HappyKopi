@@ -16,25 +16,7 @@
 </head>
 <body>
     <div class="card bg-white p-4 shadow-sm flex flex-col gap-6 w-full">
-        <div class="flex gap-10 w-full">
-            <div class="flex-1 flex flex-col gap-10">
-                <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
-                    <div class="font-medium text-gray-400 text-md">Drink Name</div>
-                    <input
-                        type="text"
-                        class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
-                        [value]="drink?.name"
-                        />
-                </div>
-
-                <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
-                    <div class="font-medium text-gray-400 text-md">Base Price</div>
-                    <input
-                        type="text"
-                        class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
-                    />
-                </div>
-            </div>
+        <div class="flex flex-col gap-10 items-center w-full">
             <div class="menu-image w-20 h-20 bg-gray-200 rounded-md flex items-center justify-center">
                 <div class="w-20 h-20 bg-[#F3B72C]/50 rounded-2xl flex items-center justify-center">
                     <span class="material-symbols-rounded">
@@ -42,35 +24,33 @@
                     </span>
                 </div>
             </div>
-        </div>
-
-        <div class="category bg-white p-4 rounded-2xl shadow-sm flex items-center gap-6"
-        (click)="toggleDropdown()"
-        style="cursor: pointer;">
-            <div class="flex flex-1 justify-between items-center gap-6">
-                <div class="flex flex-col flex-1 gap-4 px-2">
-                    <div class="text-md font-medium text-gray-400"> Category </div>
-                    <div class="text-lg font-bold text-gray-800"> Milk Tea </div>
-                </div>
-                <div>
-                    <span
-                    class="material-symbols-outlined"
-                    [style.transform]="isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)'"
-                    style="transition: transform 0.2s ease;"
-                    >
-                        keyboard_arrow_down
-                    </span>
-                </div>
-
-                <div class="dropdown-list" *ngIf="isDropdownOpen">
-                <div class="dropdown-item">Milk Tea</div>
-                <div class="dropdown-item">Fruit Tea</div>
-                <div class="dropdown-item">Hot Kopi</div>
-                <div class="dropdown-item">Iced Kopi</div>
-                </div>
+            <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
+                <div class="font-medium text-gray-400 text-md">Drink Name</div>
+                <input
+                    type="text"
+                    class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
+                    />
+            </div>
+            <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
+                <div class="font-medium text-gray-400 text-md">Base Price (PHP)</div>
+                <input
+                    type="text"
+                    class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
+                    readonly
+                />
             </div>
         </div>
 
+        <div class="flex shadow-sm flex-1 justify-between items-center rounded-2xl p-6 gap-8 w-full">
+            <div class="font-medium text-gray-400 text-md"> Available </div>
+            <div>  
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-[#F3B72C] peer transition-all duration-300"></div>
+                    <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-all duration-300 peer-checked:translate-x-5"></div>
+                </label>
+            </div>
+        </div>
     </div>
 
     <div class="add-bg">
@@ -89,8 +69,7 @@
     </div>
    
 
-    <div class="card bg-white p-10 rounded-0 shadow-sm flex flex-1 items-center gap-7"
-     *ngFor="let ingredient of ingredients">
+    <div class="card bg-white p-10 rounded-0 shadow-sm flex flex-1 items-center gap-7">
         <div class="ingredient-icon">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -137,19 +116,18 @@
             </svg>
         </div>
         <div class="flex flex-1 flex-col gap-4">
-            <div class="text-xl font-medium text-gray-400 text-md"> {{ ingredient.name }} </div>
+            <div class="text-xl font-medium text-gray-400 text-md"> </div>
             <div class="relative w-full">
                 <input
                     type="text"
                     class="flex-1 w-full text-lg font-semibold border-b border-gray-300 outline-none focus:ring-0 text-gray-800 pr-10"
                 />
                 <div class="absolute right-0 -top-2 text-xl font-medium text-gray-400">
-                    {{ ingredient.unit }}
+
                 </div>
             </div>
         </div>
-        <div class="w-15 h-15 bg-[#D9D9D9]/50 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-300 transition"
-            (click)="removeIngredient(ingredient)">
+        <div class="w-15 h-15 bg-[#D9D9D9]/50 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-300 transition">
             <span class="material-symbols-outlined" style="color: black;">
                 delete
             </span>
