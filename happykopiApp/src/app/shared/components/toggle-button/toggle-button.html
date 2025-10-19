@@ -1,11 +1,14 @@
-<div class="flex items-center gap-2">
-  <p class="text-hapikopi-dark font-medium text-lg">
+<div class="
+flex items-center gap-2 justify-between 
+border-1 border-gray-300 px-3 py-6 shadow-sm rounded-2xl">
+  <p class="font-bold text-lg" [ngClass]="{'text-hapikopi-dark':_isOn, 'text-gray-400': !_isOn}">
     {{itemTitle}}
   </p>
+
   <div (click)="toggle(!_isOn)" class="w-14 h-7 flex items-center rounded-full p-1 transition-colors duration-300 ease-in-out"
     [ngClass]="{
     'bg-[#f3b72c]': _isOn,
-    'bg-white border-2 border-gray-300': !_isOn,
+    'default-shadow border-2 border-gray-300': !_isOn,
     'cursor-pointer': !isDisabled,
     'opacity-50 cursor-not-allowed': isDisabled
   }">
