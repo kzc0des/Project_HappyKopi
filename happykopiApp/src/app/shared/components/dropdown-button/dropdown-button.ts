@@ -21,6 +21,7 @@ export class DropdownButton {
   @Input() options: DropdownOption[] = [];
   @Input() placeholder: string = 'Select an option';
   @Input() selected!: number;
+  @Input() itemTitle!: string;
 
   selectedValue!: number;
   originalValue!: number;

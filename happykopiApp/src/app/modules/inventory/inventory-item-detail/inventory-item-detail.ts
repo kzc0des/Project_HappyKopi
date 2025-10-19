@@ -23,16 +23,15 @@ import { Location } from '@angular/common';
 })
 export class InventoryItemDetail implements OnInit, OnDestroy {
 
+  private originalStockItemDetail!: StockItemDetailsDto;
   stockitemType!: number;
-
   categories!: DropdownOption[];
-
   isEditing = false;
-  private actionSubscription!: Subscription;
 
   stockitemdetail!: StockItemDetailsDto;
   stockitemDetailForUpdate!: StockItemForUpdateDto;
-  private originalStockItemDetail!: StockItemDetailsDto;
+
+  private actionSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,7 +58,6 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
         case 'SAVE':
           if (confirm('Save Changes?')) {
             this.updateStockItem();
-            this.isEditing = !this.isEditing;
           }
           break;
         case 'DELETE':
@@ -97,9 +95,11 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           console.log("Update successful.", response);
+          this.isEditing = false;
         },
         error: err => {
           console.error('Update failed: ' + err);
+          this.isEditing = false;
         }
       });
   }
