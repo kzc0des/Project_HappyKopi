@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StockItemDetailsDto } from '../../../core/dtos/stockitem/stock-item-details-dto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IngredientBatchCard } from "../components/ingredient-batch-card/ingredient-batch-card";
 import { Itemcard } from "../../../shared/components/itemcard/itemcard";
 import { Subscription } from 'rxjs';
@@ -38,6 +38,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
     private headerActionService: HeaderService,
     private inventoryService: InventoryService,
     private location: Location,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +55,8 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
       switch (action) {
         case 'EDIT':
           this.isEditing = !this.isEditing;
+          this.router.navigate(['../../edit/item', this.stockitemdetail.id], {relativeTo: this.route})
+          
           break;
         case 'SAVE':
           if (confirm('Save Changes?')) {

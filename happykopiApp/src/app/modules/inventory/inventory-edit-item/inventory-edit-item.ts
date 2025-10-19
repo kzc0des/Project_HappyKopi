@@ -11,6 +11,7 @@ import { InventoryService } from '../services/inventory.service';
 import { Location } from '@angular/common';
 import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-for-update-dto';
 import { FormsModule } from '@angular/forms';
+import { Stockitemtype } from '../../../core/enums/stockitemtype';
 
 @Component({
   selector: 'app-inventory-edit-item',
@@ -37,6 +38,8 @@ export class InventoryEditItem implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.stockitemdetail = this.route.snapshot.data['stockitemdetail'];
+    this.stockitemType = this.stockitemdetail.itemType;
+    this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
 
     this.actionSubscription = this.headerActionService.action$.subscribe(action => {
       switch (action) {

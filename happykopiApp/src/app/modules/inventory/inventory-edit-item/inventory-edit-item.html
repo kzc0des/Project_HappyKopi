@@ -3,7 +3,7 @@
     <div class="bg-white flex-2/5
         flex flex-col gap-5 justify-center 
         w-full h-full">
-        <app-itemcard itemTitle="Ingredient Name" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.name">
+        <app-itemcard itemTitle="Ingredient Name" [isEditing]="true" [(ngModel)]="stockitemdetail.name">
         </app-itemcard>
         <app-dropdown-button [options]="categories" itemTitle="Category" [(ngModel)]="stockitemType"
             [selected]="stockitemdetail.itemType" placeholder="Choose an item type">
@@ -18,10 +18,10 @@
             <span class="text-gray-400 text-sm">This will put/remove the expiry date for batches.</span>
         </div>
         <div class="flex flex-col gap-3">
-            <app-itemcard itemTitle="Alert Level" type="number" [isEditing]="isEditing"
+            <app-itemcard itemTitle="Alert Level" type="number" [isEditing]="true"
                 [(ngModel)]="stockitemdetail.alertLevel">
             </app-itemcard>
-            <app-itemcard itemTitle="Measurement" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.unitOfMeasure">
+            <app-itemcard itemTitle="Measurement" [isEditing]="true" [(ngModel)]="stockitemdetail.unitOfMeasure">
             </app-itemcard>
         </div>
     </div>
