@@ -1,10 +1,11 @@
 import { Component, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-itemcard',
-  imports: [FormsModule],
+  imports: [FormsModule, TitleCasePipe],
   templateUrl: './itemcard.html',
   styleUrl: './itemcard.css',
   providers: [
