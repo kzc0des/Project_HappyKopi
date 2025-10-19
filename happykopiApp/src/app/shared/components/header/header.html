@@ -1,7 +1,11 @@
-<header class="w-full flex bg-hapikopi-yellow text-white h-[13vh] items-end mb-2 pb-2
-lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba(0,0,0,0.25)] z-50">
+<header class="
+flex items-end w-full 
+bg-hapikopi-yellow text-white 
+h-[13vh] mb-2 pb-4
+lg:h-[0] lg:items-center lg:py-10
+shadow">
 
-    <div class="flex items-center justify-between pb-2 w-full">
+    <div class="flex items-center justify-between w-full">
 
         <div class="flex items-center gap-3 flex-1" [class.hidden]="isEditing">
 
@@ -23,7 +27,7 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
 
             @if(!onSelected){
             @if(headerTitle){
-            <h1 class="font-[600] text-lg">
+            <h1 class="font-[800] text-xl">
                 {{ headerTitle | titlecase }}
             </h1>
             }@else{
@@ -48,7 +52,7 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
             }
 
             @if (showEditButton) {
-            <div class="flex gap-2 items-center px-2">
+            <div class="flex gap-2 items-center">
                 <button class="flex justify-center items-center" (click)="onEditItemClick()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
                         <path fill="#fff"
@@ -59,7 +63,7 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
             }
 
             @if (showDeleteButton && showSaveButton) {
-            <div class="flex items-center px-4 justify-end">
+            <div class="flex items-center justify-end">
                 <button [disabled]="!hasValueChanged" (click)="onSaveItemClick()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" [class.opacity]="!hasValueChanged"
                         viewBox="0 0 24 24">

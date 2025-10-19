@@ -15,13 +15,12 @@ export class Header implements OnInit, OnDestroy {
 
   showAddButton = false;
   showEditButton = false;
-  showDeleteButton = false;
   showBackButton = false;
 
   // under editing state
   isEditing = false;
   showSaveButton = false;
-  showCancelButton = false;
+  showDeleteButton = false;
 
   // for labels
   onAdd = false;
@@ -140,6 +139,8 @@ export class Header implements OnInit, OnDestroy {
     this.headerActionService.resetValueChangedState();
 
     this.showEditButton = true;
+    this.showSaveButton = false;
+    this.showDeleteButton = false;
   }
 
   onDeleteItemClick(): void {
@@ -161,7 +162,14 @@ export class Header implements OnInit, OnDestroy {
   }
 
   onBackClick() {
-    this.location.back();
+    if (this.showSaveButton && this.showSaveButton) {
+      this.onCancelClick();
+    } else {
+
+      // from specific item to list
+      this.location.back();
+      this.showEditButton = false;
+    }
   }
 }
 
