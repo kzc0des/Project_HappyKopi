@@ -1,24 +1,18 @@
 <div>
     @if(!isEditing){
-    <div class="flex flex-col gap-5 p-5">
+    <div class="flex flex-col gap-2 px-5 py-3">
         <app-itemcard itemTitle="Ingredient Name" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.name">
         </app-itemcard>
-        <div class="grid grid-cols-2 gap-2">
-            <app-itemcard itemTitle="Alert Level" type="number" [isEditing]="isEditing"
-                [(ngModel)]="stockitemdetail.alertLevel">
-            </app-itemcard>
-            <app-itemcard itemTitle="Measurement" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.unitOfMeasure">
-            </app-itemcard>
-        </div>
-        <app-itemcard itemTitle="Total Stock" [(ngModel)]="stockitemdetail.totalStockQuantity">
+        <app-itemcard itemTitle="Measurement" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.unitOfMeasure">
         </app-itemcard>
     </div>
-    <app-ingredient-batch-card [batches]="stockitemdetail.batches"></app-ingredient-batch-card>
+    <app-ingredient-batch-card [batches]="stockitemdetail.batches" [unit]="stockitemdetail.unitOfMeasure"></app-ingredient-batch-card>
     }
     @if(isEditing){
     <div class="flex flex-col gap-5 p-5">
         <div class="flex">
-            <app-toggle-button class="flex-1" itemTitle="In Stock" [(ngModel)]="stockitemdetail.isActive"></app-toggle-button>
+            <app-toggle-button class="flex-1" itemTitle="Is Perishable"
+                [(ngModel)]="stockitemdetail.isPerishable"></app-toggle-button>
         </div>
         <app-itemcard itemTitle="Ingredient Name" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.name">
         </app-itemcard>
@@ -29,7 +23,8 @@
             <app-itemcard itemTitle="Measurement" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.unitOfMeasure">
             </app-itemcard>
         </div>
-        <app-dropdown-button [options]="categories" [(ngModel)]="stockitemType" [selected]="stockitemdetail.itemType" placeholder="Choose an item type"></app-dropdown-button>
+        <app-dropdown-button [options]="categories" [(ngModel)]="stockitemType" [selected]="stockitemdetail.itemType"
+            placeholder="Choose an item type"></app-dropdown-button>
     </div>
     }
 

@@ -30,8 +30,9 @@ export class Header implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.routerSubscription = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
         const currentUrl = event.urlAfterRedirects;
         this.updateHeaderButtons(currentUrl);
         console.log(currentUrl);
