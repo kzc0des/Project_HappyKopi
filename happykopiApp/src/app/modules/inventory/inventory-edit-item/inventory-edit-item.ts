@@ -23,7 +23,6 @@ export class InventoryEditItem implements OnInit, OnDestroy {
   stockitemdetail!: StockItemDetailsDto;
   private stockitemDetailForUpdate!: StockItemForUpdateDto;
 
-  isEditing = false;
   categories!: DropdownOption[];
   stockitemType!: number;
 
@@ -53,9 +52,6 @@ export class InventoryEditItem implements OnInit, OnDestroy {
             this.deleteStockItem();
           }
           break;
-        case 'CANCEL':
-          this.isEditing = false;
-          break;
       }
     })
   }
@@ -79,11 +75,9 @@ export class InventoryEditItem implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           console.log("Update successful.", response);
-          this.isEditing = false;
         },
         error: err => {
           console.error('Update failed: ' + err);
-          this.isEditing = false;
         }
       });
   }

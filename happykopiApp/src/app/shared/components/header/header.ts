@@ -4,6 +4,7 @@ import { filter, Observable, pipe, Subscription } from 'rxjs';
 import { AsyncPipe, Location, TitleCasePipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { HeaderService } from '../../../core/services/header/header.service';
+import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-header',
@@ -42,7 +43,9 @@ export class Header implements OnInit, OnDestroy {
     private sidebarService: SidebarService,
     private router: Router,
     private headerActionService: HeaderService,
-    private location: Location) {
+    private location: Location,
+    private confirmationService: ConfirmationService
+  ) {
     this.currentPageSelected = sidebarService.currentSelectedPage$;
   }
 
@@ -176,11 +179,19 @@ export class Header implements OnInit, OnDestroy {
     this.sidebarService.toggleSidebar();
   }
 
-  onBackClick() {
-    if(this.showSaveButton) {
+  async onBackClick() {
+    if (!this.hasValueChanged) {
+      this.location.back();
+    } else {
+      const confirmed = await this.confirmationService.confirm(
+        'Discard Changes?',
+        'You have unsaved changes. Are you sure you want to discard them?'
+      );
 
+      if (confirmed) {
+        this.location.back();
+      }
     }
-    this.location.back();
   }
 
 }
