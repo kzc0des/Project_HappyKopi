@@ -10,4 +10,5 @@ import { DatePipe, JsonPipe } from '@angular/common';
 })
 export class IngredientBatchCard {
   @Input() batches: StockItemBatchDetailsDto[] = [];
+  @Input() unit!: string;
 }

@@ -17,7 +17,7 @@ export class InventoryCategories implements OnInit{
 
   ngOnInit(): void {
     this.stockItemTypes = this.route.snapshot.data['stockitemtypecount'];
-    console.log('Data from resolver:', this.stockItemTypes);
+    // console.log('Data from resolver:', this.stockItemTypes);
   }
 
 }

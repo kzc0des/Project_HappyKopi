@@ -19,7 +19,7 @@ export class InventoryList implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.stockitemsummaries = this.route.snapshot.data['stockitemlist'];
-    console.log('Data from resolver:', this.stockitemsummaries);
+    // console.log('Data from resolver:', this.stockitemsummaries);
 
     this.actionSubscription = this.headerService.action$.subscribe(action => {
       if (action === 'ADD') {

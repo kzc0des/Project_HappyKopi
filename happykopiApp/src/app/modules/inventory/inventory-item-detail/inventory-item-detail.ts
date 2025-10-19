@@ -46,7 +46,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
     this.stockitemdetail = { ...resolvedData };
     this.originalStockItemDetail = { ...resolvedData };
 
-    console.log('Data from resolver:', this.stockitemdetail);
+    // console.log('Data from resolver:', this.stockitemdetail);
 
     this.stockitemType = this.stockitemdetail.itemType;
 

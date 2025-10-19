@@ -11,7 +11,7 @@ export class HeaderService {
   public action$ = this.actionSource.asObservable();
 
   private isValueChange = new BehaviorSubject<boolean>(false);
-  public isValueChanged$ = this.isValueChange.asObservable();
+  public isItemCardValueChanged$ = this.isValueChange.asObservable();
 
   private changedInputs = new Set<string>();
 
@@ -36,6 +36,6 @@ export class HeaderService {
   resetValueChangedState(): void {
     this.changedInputs.clear();
     this.isValueChange.next(false);
-    console.log("Change state has been reset.");
+    // console.log("Change state has been reset.");
   }
 }

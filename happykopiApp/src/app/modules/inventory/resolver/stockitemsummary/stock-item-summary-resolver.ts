@@ -8,7 +8,7 @@ export const stockItemSummaryResolver: ResolveFn<StockItemSummaryDto[]> = (route
   const inventoryService = inject(InventoryService);
   const itemTypeParam = route.paramMap.get('itemType');
 
-  console.log("Item Type Param:" + itemTypeParam);
+  // console.log("Item Type Param:" + itemTypeParam);
 
   if (!itemTypeParam) {
     console.error('ItemType parameter not found in route!');
