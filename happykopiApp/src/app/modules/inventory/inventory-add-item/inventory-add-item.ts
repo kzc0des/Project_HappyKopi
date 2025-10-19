@@ -10,11 +10,11 @@ import { DropdownButton } from '../../../shared/components/dropdown-button/dropd
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Route } from '@angular/router';
+import { ExpiryDateCard } from '../components/expiry-date-card/expiry-date-card';
 
 @Component({
   selector: 'app-inventory-add-item',
-  imports: [ToggleButton, Itemcard, FormsModule, DropdownButton],
+  imports: [ToggleButton, Itemcard, FormsModule, DropdownButton, ExpiryDateCard],
   templateUrl: './inventory-add-item.html',
   styleUrl: './inventory-add-item.css'
 })
@@ -37,7 +37,6 @@ export class InventoryAddItem implements OnInit, OnDestroy {
     this.initializeEmptyDto();
 
     const passedState = history.state;
-    // console.log(`Current Category: ${passedState.itemType}`);
 
     if (passedState && passedState.itemType) {
       const categoryNameFromPreviousPage = passedState.itemType;

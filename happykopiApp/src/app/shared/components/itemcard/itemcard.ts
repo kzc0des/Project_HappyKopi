@@ -5,7 +5,7 @@ import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-itemcard',
-  imports: [FormsModule, TitleCasePipe],
+  imports: [FormsModule],
   templateUrl: './itemcard.html',
   styleUrl: './itemcard.css',
   providers: [
