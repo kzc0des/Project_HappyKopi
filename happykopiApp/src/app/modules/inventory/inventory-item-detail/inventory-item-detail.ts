@@ -55,18 +55,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
       switch (action) {
         case 'EDIT':
           this.isEditing = !this.isEditing;
-          this.router.navigate(['../../edit/item', this.stockitemdetail.id], {relativeTo: this.route})
-          
-          break;
-        case 'SAVE':
-          if (confirm('Save Changes?')) {
-            this.updateStockItem();
-          }
-          break;
-        case 'DELETE':
-          if (confirm('Are you sure you want to delete this item?')) {
-            this.deleteStockItem();
-          }
+          this.router.navigate(['../../edit/item', this.stockitemdetail.id], {relativeTo: this.route});
           break;
         case 'CANCEL':
           this.isEditing = false;
@@ -83,39 +72,5 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
     if (this.actionSubscription) {
       this.actionSubscription.unsubscribe();
     }
-  }
-
-  private updateStockItem(): void {
-    this.stockitemDetailForUpdate = {
-      name: this.stockitemdetail.name,
-      unit: this.stockitemdetail.unitOfMeasure,
-      alertLevel: this.stockitemdetail.alertLevel,
-      isPerishable: this.stockitemdetail.isPerishable,
-      itemType: this.stockitemdetail.itemType
-    }
-
-    this.inventoryService.updateStockItem(this.stockitemdetail.id, this.stockitemDetailForUpdate)
-      .subscribe({
-        next: (response) => {
-          console.log("Update successful.", response);
-          this.isEditing = false;
-        },
-        error: err => {
-          console.error('Update failed: ' + err);
-          this.isEditing = false;
-        }
-      });
-  }
-
-  private deleteStockItem(): void {
-    this.inventoryService.deactivateStockItem(this.stockitemdetail.id).subscribe({
-      next: response => {
-        console.log(`Update successful. ${response}`);
-        this.location.back();
-      },
-      error: err => {
-        console.error(`Update failed ${err}`);
-      }
-    })
   }
 }

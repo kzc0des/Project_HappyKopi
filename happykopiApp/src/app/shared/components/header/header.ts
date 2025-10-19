@@ -73,6 +73,7 @@ export class Header implements OnInit, OnDestroy {
     this.showBackButton = false;
     this.headerTitle = null;
     this.onSelected = false;
+    this.showSaveButton = false;
 
     if (url.includes('/inventory/add-item')) {
       this.showBackButton = true;
@@ -89,6 +90,13 @@ export class Header implements OnInit, OnDestroy {
 
       // this.onEdit = true;
       // this.onAdd = false;
+    }
+    else if (url.includes('/inventory/edit/item')) {
+      this.showBackButton = true;
+      this.showSaveButton = true;
+      this.showDeleteButton = true;
+
+      this.onSelected = true;
     }
     else if (url.includes('/inventory/') && !url.includes('/item/')) {
       this.showAddButton = true;
@@ -169,16 +177,12 @@ export class Header implements OnInit, OnDestroy {
   }
 
   onBackClick() {
-    if (this.showSaveButton && this.showSaveButton) {
-      this.onCancelClick();
-    } else {
+    if(this.showSaveButton) {
 
-      // from specific item to list
-      this.location.back();
     }
-
-    console.log(`Show Save Button: ${this.showSaveButton}`);
+    this.location.back();
   }
+
 }
 
 
