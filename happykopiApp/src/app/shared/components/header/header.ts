@@ -60,7 +60,7 @@ export class Header implements OnInit, OnDestroy {
 
     this.valueChangeSubscription = this.headerActionService.isItemCardValueChanged$.subscribe(changed => {
       this.hasValueChanged = changed;
-      console.log(changed);
+      // console.log(changed);
     });
 
     console.log(`show back button state: ${this.showBackButton}`);
@@ -70,13 +70,11 @@ export class Header implements OnInit, OnDestroy {
   private updateHeaderButtons(url: string): void {
     this.showAddButton = false;
     this.showDeleteButton = false;
-    this.isEditing = false;
     this.showBackButton = false;
     this.headerTitle = null;
     this.onSelected = false;
 
     if (url.includes('/inventory/add-item')) {
-      this.isEditing = true;
       this.showBackButton = true;
       this.headerTitle = "Add New Item"
 
@@ -96,6 +94,10 @@ export class Header implements OnInit, OnDestroy {
       this.showAddButton = true;
       this.showBackButton = true;
 
+      this.showSaveButton = false;
+      this.showEditButton = false;
+
+
       // getting the last link segment
       const urlSegments = url.split('/');
 
@@ -104,6 +106,8 @@ export class Header implements OnInit, OnDestroy {
     }
     else if (url.includes('/inventory')) {
       this.showAddButton = true;
+      this.showSaveButton = false;
+      this.showEditButton = false;
     }
 
     this.headerActionService.resetValueChangedState();
@@ -111,6 +115,11 @@ export class Header implements OnInit, OnDestroy {
 
   onAddItemClick(): void {
     this.headerActionService.emitAction('ADD');
+
+    this.showBackButton = true;
+    this.showSaveButton = true;
+
+    console.log(this.isEditing);
   }
 
   onEditItemClick(): void {
@@ -125,7 +134,6 @@ export class Header implements OnInit, OnDestroy {
 
   onSaveItemClick(): void {
     this.headerActionService.emitAction('SAVE');
-    this.isEditing = false;
     this.showDeleteButton = true;
     this.headerActionService.resetValueChangedState();
 
@@ -133,7 +141,6 @@ export class Header implements OnInit, OnDestroy {
   }
 
   onCancelClick(): void {
-    this.isEditing = false;
     this.showDeleteButton = true;
     this.headerActionService.emitAction('CANCEL');
     this.headerActionService.resetValueChangedState();
@@ -168,8 +175,9 @@ export class Header implements OnInit, OnDestroy {
 
       // from specific item to list
       this.location.back();
-      this.showEditButton = false;
     }
+
+    console.log(`Show Save Button: ${this.showSaveButton}`);
   }
 }
 

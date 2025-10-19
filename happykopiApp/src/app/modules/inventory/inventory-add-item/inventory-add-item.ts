@@ -24,7 +24,7 @@ export class InventoryAddItem implements OnInit, OnDestroy {
 
   constructor(
     private inventoryService: InventoryService,
-    private headerActionService: HeaderService, // <-- Inject HeaderService
+    private headerActionService: HeaderService,
     private location: Location
   ) { }
 
