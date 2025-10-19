@@ -1,0 +1,29 @@
+<div
+  class="inline-flex items-center justify-between w-[120px] rounded-md border border-gray-300 bg-white py-2 px-3 transition-all duration-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/30"
+>
+  <input
+    type="text"
+    inputmode="numeric"
+    id="month-input"
+    placeholder="MM"
+    [(ngModel)]="month"
+    (ngModelChange)="onMonthInput($event)"
+    maxlength="2"
+    pattern="\d*"
+    class="w-[35px] border-0 bg-transparent p-0 text-center text-base placeholder:text-gray-400 focus:outline-none focus:ring-0"
+  />
+
+  <span class="px-1 text-base text-gray-400">/</span>
+
+  <input
+    type="text"
+    inputmode="numeric"
+    id="year-input"
+    placeholder="YY"
+    [(ngModel)]="year"
+    (ngModelChange)="onDateChange()"
+    maxlength="2"
+    pattern="\d*"
+    class="w-[35px] border-0 bg-transparent p-0 text-center text-base placeholder:text-gray-400 focus:outline-none focus:ring-0"
+  />
+</div>
