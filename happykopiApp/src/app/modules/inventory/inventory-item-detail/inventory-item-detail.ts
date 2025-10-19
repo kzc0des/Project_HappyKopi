@@ -7,23 +7,19 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { InventoryService } from '../services/inventory.service';
 import { FormsModule } from '@angular/forms';
-import { ToggleButton } from "../../../shared/components/toggle-button/toggle-button";
 import { DropdownOption } from '../../../shared/components/dropdown-button/dropdown-option';
-import { DropdownButton } from "../../../shared/components/dropdown-button/dropdown-button";
 import { Stockitemtype } from '../../../core/enums/stockitemtype';
 import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-for-update-dto';
-import { Location } from '@angular/common';
 
 
 @Component({
   selector: 'app-inventory-item-detail',
-  imports: [IngredientBatchCard, Itemcard, FormsModule, ToggleButton, DropdownButton],
+  imports: [IngredientBatchCard, Itemcard, FormsModule],
   templateUrl: './inventory-item-detail.html',
   styleUrl: './inventory-item-detail.css'
 })
 export class InventoryItemDetail implements OnInit, OnDestroy {
 
-  private originalStockItemDetail!: StockItemDetailsDto;
   stockitemType!: number;
   categories!: DropdownOption[];
   isEditing = false;
@@ -37,31 +33,21 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private headerActionService: HeaderService,
     private inventoryService: InventoryService,
-    private location: Location,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    const resolvedData = this.route.snapshot.data['stockitemdetail'];
-    this.stockitemdetail = { ...resolvedData };
-    this.originalStockItemDetail = { ...resolvedData };
-
-    // console.log('Data from resolver:', this.stockitemdetail);
-
+    this.stockitemdetail = this.route.snapshot.data['stockitemdetail'];
     this.stockitemType = this.stockitemdetail.itemType;
+    // console.log('Data from resolver:', this.stockitemdetail);
 
     this.actionSubscription = this.headerActionService.action$.subscribe(action => {
 
-      switch (action) {
-        case 'EDIT':
+      if(action === 'EDIT') {
           this.isEditing = !this.isEditing;
           this.router.navigate(['../../edit/item', this.stockitemdetail.id], {relativeTo: this.route});
-          break;
-        case 'CANCEL':
-          this.isEditing = false;
-          this.stockitemdetail = { ...this.originalStockItemDetail };
-          break;
       }
+
     });
 
     this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);

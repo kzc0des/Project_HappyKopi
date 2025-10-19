@@ -80,6 +80,7 @@ export class Header implements OnInit, OnDestroy {
 
     if (url.includes('/inventory/add-item')) {
       this.showBackButton = true;
+      this.showSaveButton = true;
       this.headerTitle = "Add New Item"
 
       // this.onAdd = true;
@@ -117,8 +118,6 @@ export class Header implements OnInit, OnDestroy {
     }
     else if (url.includes('/inventory')) {
       this.showAddButton = true;
-      this.showSaveButton = false;
-      this.showEditButton = false;
     }
 
     this.headerActionService.resetValueChangedState();
