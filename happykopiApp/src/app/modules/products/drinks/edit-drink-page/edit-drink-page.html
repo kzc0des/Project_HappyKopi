@@ -1,1 +1,168 @@
-<p>edit-drink-page works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0&icon_names=photo_camera" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Add:opsz,wght,FILL,GRAD@48,400,0,0&icon_names=add_2" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Delete:opsz,wght,FILL,GRAD@48,400,0,0&icon_names=delete" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap"
+    rel="stylesheet"
+    />
+    
+</head>
+<body>
+    <div class="card bg-white p-4 shadow-sm flex flex-col gap-6 w-full">
+        <div class="flex flex-col gap-10 items-center w-full">
+            <div class="menu-image w-20 h-20 bg-gray-200 rounded-md flex items-center justify-center">
+                <div class="w-20 h-20 bg-[#F3B72C]/50 rounded-2xl flex items-center justify-center">
+                    <span class="material-symbols-rounded">
+                        photo_camera
+                    </span>
+                </div>
+            </div>
+            <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
+                <div class="font-medium text-gray-400 text-md">Drink Name</div>
+                <input
+                    type="text"
+                    class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
+                    [value]="drink?.name"
+                    />
+            </div>
+            <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
+                <div class="font-medium text-gray-400 text-md">Base Price (PHP)</div>
+                <input
+                    type="text"
+                    class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
+                    [value]="drink?.baseprice | number:'1.2-2'"
+                    readonly
+                />
+            </div>
+        </div>
+
+        <div class="category bg-white p-4 rounded-2xl shadow-sm flex items-center gap-6"
+        (click)="toggleDropdown()"
+        style="cursor: pointer;">
+            <div class="flex flex-1 justify-between items-center gap-6">
+                <div class="flex flex-col flex-1 gap-4 px-2">
+                    <div class="text-md font-medium text-gray-400"> Category </div>
+                    <div class="text-lg font-bold text-gray-800"> Milk Tea </div>
+                </div>
+                <div>
+                    <span
+                    class="material-symbols-outlined"
+                    [style.transform]="isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)'"
+                    style="transition: transform 0.2s ease;"
+                    >
+                        keyboard_arrow_down
+                    </span>
+                </div>
+
+                <div class="dropdown-list" *ngIf="isDropdownOpen">
+                <div class="dropdown-item">Milk Tea</div>
+                <div class="dropdown-item">Fruit Tea</div>
+                <div class="dropdown-item">Hot Kopi</div>
+                <div class="dropdown-item">Iced Kopi</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex shadow-sm flex-1 justify-between items-center rounded-2xl p-6 gap-8 w-full">
+            <div class="font-medium text-gray-400 text-md"> Available </div>
+            <div>  
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-[#F3B72C] peer transition-all duration-300"></div>
+                    <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-all duration-300 peer-checked:translate-x-5"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-bg">
+        <div class="add bg-white p-7 rounded-2xl flex shadow-sm gap-9 items-center">
+            <div class="w-15 h-15 bg-[#D9D9D9]/50 rounded-2xl flex items-center justify-center">
+                <div>
+                   <span class="material-symbols-outlined">
+                        add
+                   </span>
+                </div>
+            </div>
+            <div class="text-xl font-semibold text-gray-800">
+                Add an Ingredient
+            </div>
+        </div>
+    </div>
+   
+
+    <div class="card bg-white p-10 rounded-0 shadow-sm flex flex-1 items-center gap-7"
+     *ngFor="let ingredient of ingredients">
+        <div class="ingredient-icon">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="23"
+                height="21"
+                viewBox="0 0 23 21"
+                fill="none"
+            >
+            <path
+                d="M17.167 1.86914H21.1668L20.199 8.86914H17.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M3.66669 1.86914H17.1668V18.8691C17.1668 19.4214 16.7191 19.8691 16.1668 19.8691H4.66664C4.11438 19.8691 3.66667 19.4214 3.66665 18.8692L3.66629 7.11909C3.66628 6.64699 3.44471 6.20514 3.08639 5.89774C1.74087 4.74354 -1.12847 1.86914 3.66669 1.86914Z"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 6.36914H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 10.3691H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 14.3691H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            </svg>
+        </div>
+        <div class="flex flex-1 flex-col gap-4">
+            <div class="text-xl font-medium text-gray-400 text-md"> {{ ingredient.name }} </div>
+            <div class="relative w-full">
+                <input
+                    type="text"
+                    class="flex-1 w-full text-lg font-semibold border-b border-gray-300 outline-none focus:ring-0 text-gray-800 pr-10"
+                />
+                <div class="absolute right-0 -top-2 text-xl font-medium text-gray-400">
+                    {{ ingredient.unit }}
+                </div>
+            </div>
+        </div>
+        <div class="w-15 h-15 bg-[#D9D9D9]/50 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-300 transition"
+            (click)="removeIngredient(ingredient)">
+            <span class="material-symbols-outlined" style="color: black;">
+                delete
+            </span>
+        </div>
+    </div>
+</body>
+</html>

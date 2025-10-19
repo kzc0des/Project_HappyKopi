@@ -44,6 +44,7 @@ import { AddDrinkPage } from './modules/products/drinks/add-drink-page/add-drink
 import { DrinkCard } from './modules/products/components/drink-card/drink-card';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
 import { EditCategoryPage } from './modules/products/categories/edit-category-page/edit-category-page';
+import { EditDrinkPage } from './modules/products/drinks/edit-drink-page/edit-drink-page';
 
 
 
@@ -158,7 +159,7 @@ export const routes: Routes = [
         component: CategoriesListPage
     },
     {
-        path: 'drink-detail/:id',
+        path: 'drink-detail',
         component: DrinkDetailPage
     },
     {
@@ -228,5 +229,9 @@ export const routes: Routes = [
     {
         path: 'edit-category/:categories',
         component: EditCategoryPage
+    },
+    {
+        path: 'edit-drink-page',
+        component: EditDrinkPage
     }
 ];
