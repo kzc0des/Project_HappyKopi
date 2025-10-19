@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
-import { ConfirmationState } from '../../../core/models/confirmation-state.model';
+import { ConfirmationState, ConfirmButtonType } from '../../../core/models/confirmation-state.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-confirmation-dialog',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './confirmation-dialog.html',
   styleUrl: './confirmation-dialog.css'
 })
@@ -16,6 +17,7 @@ export class ConfirmationDialog implements OnInit, OnDestroy {
   message = 'Do you really want to perform this action?';
   confirmText = 'Yes';
   cancelText = 'No';
+  confirmButtonType: ConfirmButtonType = 'danger';
 
   private resolve!: (value: boolean) => void;
   private subscription!: Subscription;
@@ -28,6 +30,7 @@ export class ConfirmationDialog implements OnInit, OnDestroy {
       if (this.show) {
         this.title = state.title;
         this.message = state.message;
+        this.confirmButtonType = state.confirmButtonType;
         this.resolve = state.resolve;
       }
     });

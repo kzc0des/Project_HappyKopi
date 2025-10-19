@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-for-update-dto';
 import { FormsModule } from '@angular/forms';
 import { Stockitemtype } from '../../../core/enums/stockitemtype';
+import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-inventory-edit-item',
@@ -33,6 +34,7 @@ export class InventoryEditItem implements OnInit, OnDestroy {
     private headerActionService: HeaderService,
     private inventoryService: InventoryService,
     private location: Location,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -40,15 +42,24 @@ export class InventoryEditItem implements OnInit, OnDestroy {
     this.stockitemType = this.stockitemdetail.itemType;
     this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
 
-    this.actionSubscription = this.headerActionService.action$.subscribe(action => {
+    this.actionSubscription = this.headerActionService.action$.subscribe(async action => {
       switch (action) {
         case 'SAVE':
-          if (confirm('Save Changes?')) {
+          const confirmedSave = await this.confirmationService.confirm(
+            'Confirm Save',
+            `Are you sure you want to save these changes?`,
+            'primary'
+          );
+          if (confirmedSave) {
             this.updateStockItem();
           }
           break;
         case 'DELETE':
-          if (confirm('Are you sure you want to delete this item?')) {
+          const confirmedDelete = await this.confirmationService.confirm(
+            'Confirm Deletion',
+            `Are you sure you want to delete ${this.stockitemdetail.name}? This action cannot be undone.`
+          );
+          if (confirmedDelete) {
             this.deleteStockItem();
           }
           break;

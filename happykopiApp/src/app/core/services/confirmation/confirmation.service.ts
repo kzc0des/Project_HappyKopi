@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { ConfirmationState } from '../../models/confirmation-state.model';
+import { ConfirmationState, ConfirmButtonType } from '../../models/confirmation-state.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +11,14 @@ export class ConfirmationService {
 
   constructor() { }
 
-  confirm(title: string, message: string): Promise<boolean> {
+  confirm(title: string, message: string, confirmButtonType: ConfirmButtonType = "danger"): Promise<boolean> {
     return new Promise((resolve) => {
       this.state.next({
         show: true,
         title,
         message,
-        resolve
+        resolve,
+        confirmButtonType
       });
     });
   }
