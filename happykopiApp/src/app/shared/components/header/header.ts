@@ -26,6 +26,8 @@ export class Header implements OnInit, OnDestroy {
   // for labels
   onAdd = false;
   onEdit = false;
+  onSelected = false;
+
   headerTitle!: string | null;
   hasValueChanged = false;
 
@@ -69,6 +71,7 @@ export class Header implements OnInit, OnDestroy {
     this.isEditing = false;
     this.showBackButton = false;
     this.headerTitle = null;
+    this.onSelected = false;
 
     if (url.includes('/inventory/add-item')) {
       this.isEditing = true;
@@ -79,8 +82,9 @@ export class Header implements OnInit, OnDestroy {
       // this.onEdit = false;
     }
     else if (url.includes('/inventory/item/')) {
-      this.showDeleteButton = true;
+      this.showBackButton = true;
       this.showEditButton = true;
+      this.onSelected = true;
 
       // this.onEdit = true;
       // this.onAdd = false;
