@@ -10,6 +10,7 @@ import { DropdownButton } from '../../../shared/components/dropdown-button/dropd
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Location } from '@angular/common';
+import { ActivatedRoute, Route } from '@angular/router';
 
 @Component({
   selector: 'app-inventory-add-item',
@@ -19,7 +20,8 @@ import { Location } from '@angular/common';
 })
 export class InventoryAddItem implements OnInit, OnDestroy {
   stockitemdetail !: StockItemForCreateDto;
-  itemtypes !: DropdownOption[];
+  categories !: DropdownOption[];
+  stockitemType !: number;
   private actionSubscription!: Subscription;
 
   constructor(
@@ -29,8 +31,28 @@ export class InventoryAddItem implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.itemtypes = this.inventoryService.loadCategoryOptions(Stockitemtype);
+    this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
+    console.log(this.categories);
+
     this.initializeEmptyDto();
+
+    const passedState = history.state;
+    console.log(`Current Category: ${passedState.itemType}`);
+
+    if (passedState && passedState.itemType) {
+      const categoryNameFromPreviousPage = passedState.itemType;
+
+      const selectedCategory = this.categories.find(
+        itemtype => itemtype.label.toLowerCase() === categoryNameFromPreviousPage.toLowerCase()
+      );
+
+      console.log(`Did it match: ${selectedCategory}`);
+
+      if (selectedCategory) {
+        console.log(selectedCategory.value);
+        this.stockitemdetail.itemType = selectedCategory.value;
+      }
+    }
 
     this.actionSubscription = this.headerActionService.action$.subscribe(action => {
       switch (action) {
@@ -41,7 +63,7 @@ export class InventoryAddItem implements OnInit, OnDestroy {
           this.location.back();
           break;
       }
-    });
+    })
   }
 
   ngOnDestroy(): void {
@@ -59,19 +81,18 @@ export class InventoryAddItem implements OnInit, OnDestroy {
     this.inventoryService.createStockItem(this.stockitemdetail).subscribe({
       next: (response) => {
         console.log('Item created successfully!', response);
-        this.location.back(); 
+        this.location.back();
       },
       error: (err) => {
         if (err.status === 409) {
-        alert(`Error: ${err.error.message}`);
-      } else {
-        alert('An unexpected error occurred. Please try again.');
-      }
-      console.error('Failed to create item:', err);
+          alert(`Error: ${err.error.message}`);
+        } else {
+          alert('An unexpected error occurred. Please try again.');
+        }
+        console.error('Failed to create item:', err);
       }
     });
 
-    // console.log("Inventory Add toh nangyari");
   }
 
   private initializeEmptyDto(): void {
@@ -82,6 +103,6 @@ export class InventoryAddItem implements OnInit, OnDestroy {
       isPerishable: false,
       itemType: Stockitemtype.Liquid,
       initialStockQuantity: 0,
-    };
+    }
   }
 }

@@ -23,7 +23,12 @@ export class InventoryList implements OnInit, OnDestroy{
 
     this.actionSubscription = this.headerService.action$.subscribe(action => {
       if (action === 'ADD') {
-        this.router.navigate(['../add-item'], {relativeTo: this.route});
+        const currentCategory = this.route.snapshot.paramMap.get('itemType');
+
+        this.router.navigate(['../add-item'], {
+          relativeTo: this.route, 
+          state: { itemType: currentCategory}
+        });
       }
     });
   }

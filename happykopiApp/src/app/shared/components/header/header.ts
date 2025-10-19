@@ -129,7 +129,7 @@ export class Header implements OnInit, OnDestroy {
     this.showBackButton = true;
     this.showSaveButton = true;
 
-    console.log(this.isEditing);
+    // console.log(this.isEditing);
   }
 
   onEditItemClick(): void {
