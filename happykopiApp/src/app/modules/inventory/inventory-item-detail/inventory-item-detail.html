@@ -1,4 +1,4 @@
-<div>
+<div class="h-full">
     @if(!isEditing){
     <div class="flex flex-col gap-2 px-5 py-3">
         <app-itemcard itemTitle="Ingredient Name" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.name">
@@ -11,8 +11,11 @@
     }
 
     @if(isEditing){
-    <div class="flex flex-col gap-5 p-5 w-full">
-        <div class="bg-white w-full">
+    <div class="flex flex-col gap-8 w-full h-full px-5">
+
+        <div class="bg-white flex-2/5
+        flex flex-col gap-5 justify-center 
+        w-full h-full">
             <app-itemcard itemTitle="Ingredient Name" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.name">
             </app-itemcard>
             <app-dropdown-button [options]="categories" itemTitle="Category" [(ngModel)]="stockitemType"
@@ -20,13 +23,22 @@
             </app-dropdown-button>
         </div>
 
-        <div class="bg-white">
-            <app-toggle-button itemTitle="Perishable" [(ngModel)]="stockitemdetail.isPerishable"></app-toggle-button>
-            <app-itemcard itemTitle="Alert Level" type="number" [isEditing]="isEditing"
-                [(ngModel)]="stockitemdetail.alertLevel">
-            </app-itemcard>
-            <app-itemcard itemTitle="Measurement" [isEditing]="isEditing" [(ngModel)]="stockitemdetail.unitOfMeasure">
-            </app-itemcard>
+        <div class="bg-white flex-3/5
+        flex flex-col justify-center gap-6 pb-2
+        w-full h-full">
+            <div class="flex flex-col gap-4">
+                <app-toggle-button itemTitle="Perishable"
+                    [(ngModel)]="stockitemdetail.isPerishable"></app-toggle-button>
+                <span class="text-gray-400 text-sm">This will put/remove the expiry date for batches.</span>
+            </div>
+            <div class="flex flex-col gap-3">
+                <app-itemcard itemTitle="Alert Level" type="number" [isEditing]="isEditing"
+                    [(ngModel)]="stockitemdetail.alertLevel">
+                </app-itemcard>
+                <app-itemcard itemTitle="Measurement" [isEditing]="isEditing"
+                    [(ngModel)]="stockitemdetail.unitOfMeasure">
+                </app-itemcard>
+            </div>
         </div>
 
     </div>

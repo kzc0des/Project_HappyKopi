@@ -1,37 +1,36 @@
 <div class="relative w-full">
-  
-  <button 
-    type="button" 
-    (click)="toggleDropdown()"
-    [disabled]="isDisabled"
-    class="relative w-full cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-4 text-left shadow-sm focus:border-[#f3b72c] focus:outline-none focus:ring-1 focus:ring-[#f3b72c] sm:text-sm"
-    [class.opacity-50]="isDisabled"
-    [class.cursor-not-allowed]="isDisabled">
-    
-    <span class="block truncate mb-1 text-gray-500">{{itemTitle}}</span>
-    <span class="block truncate text-xl text-hapikopi-dark">{{ selectedLabel | titlecase}}</span>
-    
+
+  <button type="button" (click)="toggleDropdown()" [disabled]="isDisabled"
+    class="relative w-full cursor-pointer rounded-2xl border border-gray-300 bg-white px-3 py-4 text-left shadow-sm focus:border-[#f3b72c] focus:outline-none focus:ring-1 focus:ring-[#f3b72c] sm:text-sm"
+    [class.opacity-50]="isDisabled" [class.cursor-not-allowed]="isDisabled">
+
+    <span class="block truncate mb-2 text-gray-500">{{itemTitle}}</span>
+    <span class="block truncate text-xl text-hapikopi-dark font-bold">{{ selectedLabel | titlecase}}</span>
+
     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-      <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.5a.75.75 0 01-1.5 0V3.75A.75.75 0 0110 3zM5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z" clip-rule="evenodd" />
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
+        <g fill="none" fill-rule="evenodd">
+          <path
+            d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+          <path fill="#282828"
+            d="M13.06 16.06a1.5 1.5 0 0 1-2.12 0l-5.658-5.656a1.5 1.5 0 1 1 2.122-2.121L12 12.879l4.596-4.596a1.5 1.5 0 0 1 2.122 2.12l-5.657 5.658Z" />
+        </g>
       </svg>
     </span>
   </button>
 
   @if (isOpen) {
-    <ul 
-      class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-      
-      @for (option of options; track option.value) {
-        <li 
-          (click)="selectOption(option)"
-          class="relative cursor-default select-none py-3 pl-3 text-gray-900 hover:bg-[#f3b72c] hover:text-white"
-          [class.bg-[#f3b72c]]="option.value === selectedValue"
-          [class.text-white]="option.value === selectedValue">
-          
-          <span class="block truncate">{{ option.label | titlecase}}</span>
-        </li>
-      }
-    </ul>
+  <ul
+    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-gray-600 focus:outline-none sm:text-sm">
+
+    @for (option of options; track option.value) {
+    <li (click)="selectOption(option)"
+      class="relative cursor-default select-none py-3 pl-3 text-gray-900 hover:bg-[#f3b72c] hover:text-white"
+      [class.bg-[#f3b72c]]="option.value === selectedValue" [class.text-white]="option.value === selectedValue">
+
+      <span class="block truncate">{{ option.label | titlecase}}</span>
+    </li>
+    }
+  </ul>
   }
 </div>

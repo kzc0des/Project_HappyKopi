@@ -1,7 +1,7 @@
 <div class="
 flex items-center gap-2 justify-between 
-border-1 border-gray-300 px-3 py-6 shadow-sm rounded-md">
-  <p class="text-hapikopi-dark font-medium text-lg">
+border-1 border-gray-300 px-3 py-6 shadow-sm rounded-2xl">
+  <p class="font-bold text-lg" [ngClass]="{'text-hapikopi-dark':_isOn, 'text-gray-400': !_isOn}">
     {{itemTitle}}
   </p>
 
