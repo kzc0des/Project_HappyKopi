@@ -32,12 +32,12 @@ export class InventoryAddItem implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
-    console.log(this.categories);
+    // console.log(this.categories);
 
     this.initializeEmptyDto();
 
     const passedState = history.state;
-    console.log(`Current Category: ${passedState.itemType}`);
+    // console.log(`Current Category: ${passedState.itemType}`);
 
     if (passedState && passedState.itemType) {
       const categoryNameFromPreviousPage = passedState.itemType;
@@ -46,7 +46,7 @@ export class InventoryAddItem implements OnInit, OnDestroy {
         itemtype => itemtype.label.toLowerCase() === categoryNameFromPreviousPage.toLowerCase()
       );
 
-      console.log(`Did it match: ${selectedCategory}`);
+      // console.log(`Did it match: ${selectedCategory}`);
 
       if (selectedCategory) {
         console.log(selectedCategory.value);

@@ -62,7 +62,7 @@ shadow">
             }
 
 
-            <div class="flex items-center justify-end">
+            <div class="flex items-center justify-end gap-1">
                 @if(showSaveButton) {
                 <button [disabled]="!hasValueChanged" (click)="onSaveItemClick()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" [class.opacity]="!hasValueChanged"
