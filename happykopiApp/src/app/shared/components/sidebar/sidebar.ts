@@ -25,7 +25,6 @@ export class Sidebar {
     this.isSidebarOpen$ = sidebarService.isSidebarOpen$;
     this.selectedPage = sidebarService.currentSelectedPage$;
     this.currentUser = authService.getCurrentUser$();
-    console.log(this.currentUser);
 
     this.pages = [
       {page: 'dashboard', route: 'dashboard'},

@@ -10,7 +10,7 @@ export const stockitemdetailResolver: ResolveFn<StockItemDetailsDto> = (route, s
   const itemIdParam = route.paramMap.get('itemId');
   const itemId = Number(itemIdParam);
 
-  console.log("Item Type Param:" + itemId);
+  // console.log("Item Type Param:" + itemId);
 
   if (!itemId) {
     console.error('ItemType parameter not found in route!');
