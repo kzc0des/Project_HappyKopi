@@ -1,11 +1,11 @@
 <div class="relative w-full">
 
   <button type="button" (click)="toggleDropdown()" [disabled]="isDisabled"
-    class="relative w-full cursor-pointer rounded-2xl border border-gray-300 bg-white px-3 py-4 text-left shadow-sm focus:border-[#f3b72c] focus:outline-none focus:ring-1 focus:ring-[#f3b72c] sm:text-sm"
+    class="relative w-full cursor-pointer rounded-2xl border border-gray-300 bg-white px-3 py-3 text-left shadow-sm focus:border-[#f3b72c] focus:outline-none focus:ring-1 focus:ring-[#f3b72c] sm:text-sm"
     [class.opacity-50]="isDisabled" [class.cursor-not-allowed]="isDisabled">
 
     <span class="block truncate mb-2 text-gray-500">{{itemTitle}}</span>
-    <span class="block truncate text-xl text-hapikopi-dark font-bold">{{ selectedLabel | titlecase}}</span>
+    <span class="block truncate text-hapikopi-dark font-bold">{{ selectedLabel | titlecase}}</span>
 
     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
