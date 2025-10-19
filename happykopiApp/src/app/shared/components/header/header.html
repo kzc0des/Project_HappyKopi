@@ -1,9 +1,13 @@
-<header class="w-full flex bg-hapikopi-yellow text-white h-[13vh] items-end mb-2 pb-2
-lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba(0,0,0,0.25)] z-50">
+<header class="
+flex items-end w-full 
+bg-hapikopi-yellow text-white 
+h-[13vh] mb-2 pb-4
+lg:h-[0] lg:items-center lg:py-10
+shadow">
 
-    <div class="flex items-center justify-between pb-2 w-full">
+    <div class="flex items-center justify-between w-full">
 
-        <div class="flex items-center gap-3 flex-1" [class.hidden]="isEditing">
+        <div class="flex items-center gap-3 flex-1">
 
             @if (showBackButton) {
             <button (click)="onBackClick()">
@@ -23,7 +27,7 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
 
             @if(!onSelected){
             @if(headerTitle){
-            <h1 class="font-[600] text-lg">
+            <h1 class="font-[800] text-xl">
                 {{ headerTitle | titlecase }}
             </h1>
             }@else{
@@ -32,7 +36,6 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
             </h1>
             }
             }
-
 
         </div>
 
@@ -48,7 +51,7 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
             }
 
             @if (showEditButton) {
-            <div class="flex gap-2 items-center px-2">
+            <div class="flex gap-2 items-center">
                 <button class="flex justify-center items-center" (click)="onEditItemClick()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
                         <path fill="#fff"
@@ -58,8 +61,9 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
             </div>
             }
 
-            @if (showDeleteButton && showSaveButton) {
-            <div class="flex items-center px-4 justify-end">
+
+            <div class="flex items-center justify-end">
+                @if(showSaveButton) {
                 <button [disabled]="!hasValueChanged" (click)="onSaveItemClick()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" [class.opacity]="!hasValueChanged"
                         viewBox="0 0 24 24">
@@ -72,14 +76,18 @@ lg:h-[0] lg:items-center lg:py-10 shadow-[0px_-1px_10.600000381469727px_2px_rgba
                         </g>
                     </svg>
                 </button>
+                }
+
+                @if(showDeleteButton){
                 <button (click)="onDeleteItemClick()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
                         <path fill="#fff"
                             d="M7.616 20q-.667 0-1.141-.475T6 18.386V6h-.5q-.213 0-.356-.144T5 5.499t.144-.356T5.5 5H9q0-.31.23-.54t.54-.23h4.46q.31 0 .54.23T15 5h3.5q.213 0 .356.144t.144.357t-.144.356T18.5 6H18v12.385q0 .666-.475 1.14t-1.14.475zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.269 0 .442-.173t.173-.442zm-6.692 11q.213 0 .357-.144t.143-.356v-8q0-.213-.144-.356T10.307 8t-.356.144t-.143.356v8q0 .213.144.356q.144.144.356.144m3.385 0q.213 0 .356-.144t.143-.356v-8q0-.213-.144-.356Q13.904 8 13.692 8q-.213 0-.357.144t-.143.356v8q0 .213.144.356t.357.144M7 6v13z" />
                     </svg>
                 </button>
+                }
             </div>
-            }
+
         </div>
     </div>
 </header>
