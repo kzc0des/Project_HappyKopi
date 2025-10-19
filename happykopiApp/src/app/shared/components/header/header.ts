@@ -63,6 +63,9 @@ export class Header implements OnInit, OnDestroy {
       this.hasValueChanged = changed;
       console.log(changed);
     });
+
+    console.log(`show back button state: ${this.showBackButton}`);
+    console.log(`show isEditing state: ${this.isEditing}`);
   }
 
   private updateHeaderButtons(url: string): void {
@@ -84,6 +87,7 @@ export class Header implements OnInit, OnDestroy {
     else if (url.includes('/inventory/item/')) {
       this.showBackButton = true;
       this.showEditButton = true;
+
       this.onSelected = true;
 
       // this.onEdit = true;
@@ -111,13 +115,13 @@ export class Header implements OnInit, OnDestroy {
   }
 
   onEditItemClick(): void {
-    this.isEditing = !this.isEditing;
     this.showDeleteButton = false;
     this.headerActionService.emitAction('EDIT');
-  }
 
-  onDeleteItemClick(): void {
-    this.headerActionService.emitAction('DELETE');
+    this.showDeleteButton = true;
+    this.showSaveButton = true;
+    this.showBackButton = true;
+    this.showEditButton = false;
   }
 
   onSaveItemClick(): void {
@@ -125,6 +129,8 @@ export class Header implements OnInit, OnDestroy {
     this.isEditing = false;
     this.showDeleteButton = true;
     this.headerActionService.resetValueChangedState();
+
+    this.showEditButton = true;
   }
 
   onCancelClick(): void {
@@ -132,6 +138,12 @@ export class Header implements OnInit, OnDestroy {
     this.showDeleteButton = true;
     this.headerActionService.emitAction('CANCEL');
     this.headerActionService.resetValueChangedState();
+
+    this.showEditButton = true;
+  }
+
+  onDeleteItemClick(): void {
+    this.headerActionService.emitAction('DELETE');
   }
 
   ngOnDestroy(): void {
