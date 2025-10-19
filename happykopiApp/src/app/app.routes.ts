@@ -23,10 +23,10 @@ import { AddIngredient } from './shared/components/add-ingredient/add-ingredient
 import { SearchDrink } from './shared/components/search-drink/search-drink';
 import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
 import { ProductPage } from './modules/products/product-page/product-page';
-import { DrinkListPage } from './modules/products/drink-list-page/drink-list-page';
-import { CategoriesListPage } from './modules/products/categories-list-page/categories-list-page';
+import { DrinkListPage } from './modules/products/drinks/drink-list-page/drink-list-page';
+import { CategoriesListPage } from './modules/products/categories/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
-import { DrinkDetailPage } from './modules/products/drink-detail-page/drink-detail-page';
+import { DrinkDetailPage } from './modules/products/drinks/drink-detail-page/drink-detail-page';
 import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
 import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
@@ -40,10 +40,10 @@ import { CartItem } from './modules/pos/components/cart-item/cart-item';
 import { YellowButton } from './shared/components/yellow-button/yellow-button';
 import { Charge } from './modules/pos/forms/charge/charge';
 import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary';
-import { AddDrinkPage } from './modules/products/add-drink-page/add-drink-page';
+import { AddDrinkPage } from './modules/products/drinks/add-drink-page/add-drink-page';
 import { DrinkCard } from './modules/products/components/drink-card/drink-card';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
-import { EditCategoryPage } from './modules/products/edit-category-page/edit-category-page';
+import { EditCategoryPage } from './modules/products/categories/edit-category-page/edit-category-page';
 
 
 
