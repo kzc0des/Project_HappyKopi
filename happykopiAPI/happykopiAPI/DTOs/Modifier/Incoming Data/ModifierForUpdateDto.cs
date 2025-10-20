@@ -10,7 +10,7 @@ namespace happykopiAPI.DTOs.Modifier.Incoming_Data
         public string Name { get; set; }
 
         [Required]
-        [Range(0, 999999.99)]
+        [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
 
         [Required]
