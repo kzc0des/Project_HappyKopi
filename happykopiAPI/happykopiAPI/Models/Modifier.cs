@@ -26,6 +26,6 @@ namespace happykopiAPI.Models
         [Required]
         public DateTime LastUpdated { get; set; }
 
-        public ICollection<OrderItemAddOn> OrderItemAddOns { get; set; }
+        public ICollection<OrderItemModifier> OrderItemModifiers { get; set; }
     }
 }

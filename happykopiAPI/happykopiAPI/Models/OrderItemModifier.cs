@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace happykopiAPI.Models
 {
-    public class OrderItemAddOn
+    public class OrderItemModifier
     {
         [Key]
         public int Id { get; set; }
@@ -11,7 +11,7 @@ namespace happykopiAPI.Models
         public int OrderItemId { get; set; }
 
         [Required]
-        public int AddOnId { get; set; }
+        public int ModifierId { get; set; }
 
         [Required]
         public int Quantity { get; set; }
@@ -25,6 +25,6 @@ namespace happykopiAPI.Models
         public decimal Subtotal { get; set; }
 
         public OrderItem OrderItem { get; set; }
-        public Modifier AddOn { get; set; }
+        public Modifier Modifier { get; set; }
     }
 }
