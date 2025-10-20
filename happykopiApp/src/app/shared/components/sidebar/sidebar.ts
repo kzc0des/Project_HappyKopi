@@ -30,7 +30,7 @@ export class Sidebar {
       {page: 'dashboard', route: 'dashboard'},
       {page: 'order', route: 'dashboard'},
       {page: 'product', route: 'dashboard'},
-      {page: 'modifier', route: 'dashboard'},
+      {page: 'modifier', route: 'modifiers'},
       {page: 'inventory', route: 'inventory'},
     ];
   }
