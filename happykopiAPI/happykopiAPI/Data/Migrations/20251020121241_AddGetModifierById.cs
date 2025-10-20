@@ -25,26 +25,32 @@ namespace happykopiAPI.Data.Migrations
             AS
             BEGIN
                 SET NOCOUNT ON;
-    
+
                 SELECT
                     m.Id,
                     m.Name,
                     m.Price,
                     m.Type,
                     m.IsAvailable,
-        
-                    msi.StockItemId,
-                    si.Name AS StockItemName,
-                    msi.QuantityNeeded
+                    (
+                        SELECT
+                            msi.StockItemId,
+                            si.Name AS StockItemName,
+                            msi.QuantityNeeded
+                        FROM
+                            dbo.ModifierStockItems AS msi
+                        JOIN
+                            dbo.StockItems AS si ON msi.StockItemId = si.Id
+                        WHERE
+                            msi.ModifierId = m.Id
+                        FOR JSON PATH
+                    ) AS LinkedItems
                 FROM
                     dbo.Modifiers AS m
-                LEFT JOIN
-                    dbo.ModifierStockItems AS msi ON m.Id = msi.ModifierId
-                LEFT JOIN
-                    dbo.StockItems AS si ON msi.StockItemId = si.Id
                 WHERE
-                    m.Id = @ModifierId; 
-            END";
+                    m.Id = @ModifierId
+                FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;
+            END;";
 
             migrationBuilder.Sql(sp_GetModifierById);
         }

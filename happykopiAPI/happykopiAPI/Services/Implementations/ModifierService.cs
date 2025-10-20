@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Text.Json;
 
 namespace happykopiAPI.Services.Implementations
 {
@@ -97,6 +98,27 @@ namespace happykopiAPI.Services.Implementations
             using var connection = new SqlConnection(_connectionString);
             await connection.ExecuteAsync("sp_UnlinkModifierFromStockItem", parameters, commandType: CommandType.StoredProcedure);
             return true;
+        }
+
+        public async Task<ModifierDetailsDto> GetModifierByIdAsync(int modifierId)
+        {
+            await using var connection = new SqlConnection(_connectionString);
+
+            var parameters = new { ModifierId = modifierId };
+
+            var jsonResult = await connection.ExecuteScalarAsync<string>(
+                "sp_GetModifierById",
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            if (string.IsNullOrEmpty(jsonResult))
+            {
+                return null;
+            }
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<ModifierDetailsDto>(jsonResult, options);
         }
     }
 }

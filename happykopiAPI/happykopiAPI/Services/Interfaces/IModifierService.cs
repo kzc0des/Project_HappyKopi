@@ -7,6 +7,7 @@ namespace happykopiAPI.Services.Interfaces
     {
         Task<IEnumerable<ModifierSummaryDto>> GetAllModifiersAsync();
         Task<IEnumerable<ModifierSummaryDto>> GetAvailableModifiersAsync();
+        Task<ModifierDetailsDto> GetModifierByIdAsync(int modifierId);
 
         Task<ModifierSummaryDto> CreateModifierAsync(ModifierForCreateDto modifierForCreateDto);
         Task<bool> UpdateModifierAsync(int modifierId, ModifierForUpdateDto modifierForUpdateDto);
