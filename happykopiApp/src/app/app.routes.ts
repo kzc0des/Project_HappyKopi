@@ -51,6 +51,7 @@ import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-pr
 import { CategoriesPage } from './modules/modifiers/categories-page/categories-page';
 import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
 import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
+import { AssignDrinkPage } from './modules/products/categories/assign-drink-page/assign-drink-page';
 
 export const routes: Routes = [
     {
@@ -264,5 +265,9 @@ export const routes: Routes = [
     {
         path: 'create-drink-page',
         component: CreateDrinkPage
+    },
+    {
+        path: 'assign-drink-page',
+        component: AssignDrinkPage
     }
 ];
