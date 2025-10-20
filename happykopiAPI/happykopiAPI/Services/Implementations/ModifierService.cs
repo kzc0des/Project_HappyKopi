@@ -43,7 +43,7 @@ namespace happykopiAPI.Services.Implementations
                 dto.Name,
                 dto.Price,
                 IsAvailable = true, 
-                Type = dto.Type.ToString()
+                Type = dto.Type
             };
 
             using var connection = new SqlConnection(_connectionString);

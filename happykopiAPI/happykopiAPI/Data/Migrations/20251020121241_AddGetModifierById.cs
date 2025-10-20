@@ -20,7 +20,7 @@ namespace happykopiAPI.Data.Migrations
                 oldType: "decimal(18,2)");
 
             var sp_GetModifierById = @"
-            CREATE OR ALTER PROCEDURE [dbo].[sp_GetModifierById]
+            CREATE OR ALTER PROCEDURE [dbo].[sp_GetModifierById_AsJson]
                 @ModifierId INT
             AS
             BEGIN
@@ -30,7 +30,13 @@ namespace happykopiAPI.Data.Migrations
                     m.Id,
                     m.Name,
                     m.Price,
-                    m.Type,
+                    -- DITO ANG PAGBABAGO --
+                    -- I-convert ang INT (0, 1) sa String ('AddOn', 'Option')
+                    Type = CASE m.Type
+                               WHEN 0 THEN 'AddOn'
+                               WHEN 1 THEN 'Option'
+                               ELSE 'Unknown' -- Fallback para kung may ibang value
+                           END,
                     m.IsAvailable,
                     (
                         SELECT
@@ -50,7 +56,7 @@ namespace happykopiAPI.Data.Migrations
                 WHERE
                     m.Id = @ModifierId
                 FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;
-            END;";
+            END";
 
             migrationBuilder.Sql(sp_GetModifierById);
         }
