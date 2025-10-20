@@ -5,6 +5,7 @@ namespace happykopiAPI.Services.Interfaces
 {
     public interface IModifierService
     {
+        Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync();
         Task<IEnumerable<ModifierSummaryDto>> GetAllModifiersAsync();
         Task<IEnumerable<ModifierSummaryDto>> GetAvailableModifiersAsync();
         Task<ModifierDetailsDto> GetModifierByIdAsync(int modifierId);
