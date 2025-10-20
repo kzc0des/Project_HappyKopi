@@ -22,4 +22,12 @@ export class SignalRService {
   public on(eventName: string, newMethod: (...args: any[]) => void) {
     this.hubConnection.on(eventName, newMethod);
   }
+
+  public stopConnection = () => {
+    if (this.hubConnection) {
+      this.hubConnection.stop()
+        .then(() => console.log('SignalR Connection stopped'))
+        .catch(err => console.log('Error while stopping connection: ' + err));
+    }
+  }
 }

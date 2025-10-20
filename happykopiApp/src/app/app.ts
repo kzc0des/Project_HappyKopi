@@ -1,6 +1,7 @@
-import { Component, NgZone, signal } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { App as CapacitorApp } from '@capacitor/app';
+import { SignalRService } from './core/services/signalR/signal-r.service';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +9,13 @@ import { App as CapacitorApp } from '@capacitor/app';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
+export class App implements OnInit, OnDestroy {
   protected readonly title = signal('happykopiApp');
 
   constructor(
     private router: Router,
-    private zone: NgZone
+    private zone: NgZone,
+    private signalrService: SignalRService
   ) {
     this.initializeApp();
   }
@@ -38,5 +40,13 @@ export class App {
         }
       });
     });
+  }
+
+  ngOnInit() {
+    this.signalrService.startConnection();
+  }
+
+  ngOnDestroy() {
+    this.signalrService.stopConnection();
   }
 }
