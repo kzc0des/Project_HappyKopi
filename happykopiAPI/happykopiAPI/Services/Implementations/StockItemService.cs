@@ -5,7 +5,7 @@ using happykopiAPI.Enums;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Text.Json; 
+using System.Text.Json;
 
 namespace happykopiAPI.Services.Implementations
 {
@@ -22,15 +22,17 @@ namespace happykopiAPI.Services.Implementations
         {
             await using var connection = new SqlConnection(_connectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@Name", dto.Name);
-            parameters.Add("@Unit", dto.Unit);
-            parameters.Add("@AlertLevel", dto.AlertLevel);
-            parameters.Add("@IsPerishable", dto.IsPerishable);
-            parameters.Add("@ItemType", dto.ItemType);
-            parameters.Add("@InitialStockQuantity", dto.InitialStockQuantity);
-            parameters.Add("@ExpiryDate", dto.ExpiryDate); 
-            parameters.Add("@UserId", dto.UserId);
+            var parameters = new
+            {
+                dto.Name,
+                dto.Unit,
+                dto.AlertLevel,
+                dto.IsPerishable,
+                dto.ItemType,
+                dto.InitialStockQuantity,
+                dto.ExpiryDate,
+                dto.UserId
+            };
 
             await connection.ExecuteAsync("sp_AddNewStockItem", parameters, commandType: CommandType.StoredProcedure);
         }
@@ -39,12 +41,14 @@ namespace happykopiAPI.Services.Implementations
         {
             await using var connection = new SqlConnection(_connectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@StockItemId", dto.StockItemId);
-            parameters.Add("@QuantityAdded", dto.QuantityAdded);
-            parameters.Add("@UserId", dto.UserId);
-            parameters.Add("@ExpiryDate", dto.ExpiryDate);
-            parameters.Add("@Remarks", dto.Remarks);
+            var parameters = new
+            {
+                dto.StockItemId,
+                dto.QuantityAdded,
+                dto.UserId,
+                dto.ExpiryDate,
+                dto.Remarks
+            };
 
             await connection.ExecuteAsync("sp_AddStockItemBatch", parameters, commandType: CommandType.StoredProcedure);
         }
@@ -61,8 +65,7 @@ namespace happykopiAPI.Services.Implementations
         {
             await using var connection = new SqlConnection(_connectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@StockItemId", id);
+            var parameters = new { StockItemId = id };
 
             var jsonResult = await connection.ExecuteScalarAsync<string>("sp_GetStockItemById", parameters, commandType: CommandType.StoredProcedure);
 
@@ -72,17 +75,14 @@ namespace happykopiAPI.Services.Implementations
             }
 
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var resultDto = JsonSerializer.Deserialize<StockItemDetailsDto>(jsonResult, options);
-
-            return resultDto;
+            return JsonSerializer.Deserialize<StockItemDetailsDto>(jsonResult, options);
         }
 
         public async Task<IEnumerable<StockItemBatchDetailsDto>> GetBatchesByStockItemIdAsync(int stockItemId)
         {
             await using var connection = new SqlConnection(_connectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@StockItemId", stockItemId);
+            var parameters = new { StockItemId = stockItemId };
 
             return await connection.QueryAsync<StockItemBatchDetailsDto>("sp_GetBatchesByStockItemId", parameters, commandType: CommandType.StoredProcedure);
         }
@@ -90,14 +90,12 @@ namespace happykopiAPI.Services.Implementations
         public async Task<IEnumerable<LowStockItemDto>> GetLowStockItemsAsync()
         {
             await using var connection = new SqlConnection(_connectionString);
-
             return await connection.QueryAsync<LowStockItemDto>("sp_GetLowStockItems", commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<StockItemTypeCountDto>> GetStockItemCountByItemTypeAsync()
         {
             await using var connection = new SqlConnection(_connectionString);
-
             return await connection.QueryAsync<StockItemTypeCountDto>("sp_GetStockItemCountByItemType", commandType: CommandType.StoredProcedure);
         }
 
@@ -105,8 +103,7 @@ namespace happykopiAPI.Services.Implementations
         {
             await using var connection = new SqlConnection(_connectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@ItemType", itemType);
+            var parameters = new { ItemType = itemType };
 
             return await connection.QueryAsync<StockItemSummaryDto>("sp_GetStockItemsByItemType", parameters, commandType: CommandType.StoredProcedure);
         }
@@ -117,14 +114,16 @@ namespace happykopiAPI.Services.Implementations
         {
             await using var connection = new SqlConnection(_connectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@StockItemId", id);
-            parameters.Add("@Name", dto.Name);
-            parameters.Add("@Unit", dto.Unit);
-            parameters.Add("@AlertLevel", dto.AlertLevel);
-            parameters.Add("@IsPerishable", dto.IsPerishable);
-            parameters.Add("@ItemType", dto.ItemType);
-            parameters.Add("@UserId", dto.UserId);
+            var parameters = new
+            {
+                StockItemId = id,
+                dto.Name,
+                dto.Unit,
+                dto.AlertLevel,
+                dto.IsPerishable,
+                dto.ItemType,
+                dto.UserId
+            };
 
             await connection.ExecuteAsync("sp_UpdateStockItem", parameters, commandType: CommandType.StoredProcedure);
         }
@@ -133,11 +132,13 @@ namespace happykopiAPI.Services.Implementations
         {
             await using var connection = new SqlConnection(_connectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@StockItemBatchId", dto.StockItemBatchId);
-            parameters.Add("@NewQuantity", dto.NewQuantity);
-            parameters.Add("@UserId", dto.UserId);
-            parameters.Add("@Remarks", dto.Remarks);
+            var parameters = new
+            {
+                dto.StockItemBatchId,
+                dto.NewQuantity,
+                dto.UserId,
+                dto.Remarks
+            };
 
             await connection.ExecuteAsync("sp_AdjustStockQuantity", parameters, commandType: CommandType.StoredProcedure);
         }
@@ -148,9 +149,7 @@ namespace happykopiAPI.Services.Implementations
         {
             await using var connection = new SqlConnection(_connectionString);
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@StockItemId", id);
-            parameters.Add("@UserId", userId);
+            var parameters = new { StockItemId = id, UserId = userId };
 
             await connection.ExecuteAsync("sp_DeactivateStockItem", parameters, commandType: CommandType.StoredProcedure);
         }
