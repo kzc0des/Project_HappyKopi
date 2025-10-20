@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using happykopiAPI.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace happykopiAPI.Models
 {
-    public class AddOn
+    public class Modifier
     {
         [Key]
         public int Id { get; set; }
@@ -11,6 +12,9 @@ namespace happykopiAPI.Models
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
+
+        [Required]
+        public ModifierType Type { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
@@ -22,6 +26,6 @@ namespace happykopiAPI.Models
         [Required]
         public DateTime LastUpdated { get; set; }
 
-        public ICollection<OrderItemAddOn> OrderItemAddOns { get; set; }
+        public ICollection<OrderItemModifier> OrderItemModifiers { get; set; }
     }
 }

@@ -32,6 +32,6 @@ namespace happykopiAPI.Models
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
 
-        public ICollection<OrderItemAddOn> AddOns { get; set; }
+        public ICollection<OrderItemModifier> AddOns { get; set; }
     }
 }
