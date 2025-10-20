@@ -5,10 +5,10 @@ namespace happykopiAPI.Services.Interfaces
 {
     public interface IModifierService
     {
-        Task<IEnumerable<ModifierDto>> GetAllModifiersAsync();
-        Task<IEnumerable<ModifierDto>> GetAvailableModifiersAsync();
+        Task<IEnumerable<ModifierSummaryDto>> GetAllModifiersAsync();
+        Task<IEnumerable<ModifierSummaryDto>> GetAvailableModifiersAsync();
 
-        Task<ModifierDto> CreateModifierAsync(ModifierForCreateDto modifierForCreateDto);
+        Task<ModifierSummaryDto> CreateModifierAsync(ModifierForCreateDto modifierForCreateDto);
         Task<bool> UpdateModifierAsync(int modifierId, ModifierForUpdateDto modifierForUpdateDto);
 
         Task<bool> LinkStockItemAsync(int modifierId, ModifierStockItemLinkDto linkDto);

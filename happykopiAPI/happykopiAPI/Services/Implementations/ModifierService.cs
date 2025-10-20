@@ -27,72 +27,65 @@ namespace happykopiAPI.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ModifierDto>> GetAllModifiersAsync()
+        public async Task<IEnumerable<ModifierSummaryDto>> GetAllModifiersAsync()
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var modifiers = await connection.QueryAsync<Modifier>("sp_GetModifiers", commandType: CommandType.StoredProcedure);
-                return _mapper.Map<IEnumerable<ModifierDto>>(modifiers);
-            }
+            using var connection = new SqlConnection(_connectionString);
+            var modifiers = await connection.QueryAsync<Modifier>("sp_GetModifiers", commandType: CommandType.StoredProcedure);
+            return _mapper.Map<IEnumerable<ModifierSummaryDto>>(modifiers);
         }
 
-        public async Task<IEnumerable<ModifierDto>> GetAvailableModifiersAsync()
+        public async Task<IEnumerable<ModifierSummaryDto>> GetAvailableModifiersAsync()
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var modifiers = await connection.QueryAsync<Modifier>("sp_GetAvailableModifiers", commandType: CommandType.StoredProcedure);
-                return _mapper.Map<IEnumerable<ModifierDto>>(modifiers);
-            }
+            using var connection = new SqlConnection(_connectionString);
+            var modifiers = await connection.QueryAsync<Modifier>("sp_GetAvailableModifiers", commandType: CommandType.StoredProcedure);
+            return _mapper.Map<IEnumerable<ModifierSummaryDto>>(modifiers);
         }
 
-        public async Task<ModifierDto> CreateModifierAsync(ModifierForCreateDto modifierForCreateDto)
+        public async Task<ModifierSummaryDto> CreateModifierAsync(ModifierForCreateDto dto)
         {
-            var parameters = _mapper.Map<DynamicParameters>(modifierForCreateDto);
-            parameters.Add("Type", modifierForCreateDto.Type.ToString(), DbType.String);
+            var parameters = new DynamicParameters();
+            parameters.Add("Name", dto.Name, DbType.String);
+            parameters.Add("Price", dto.Price, DbType.Decimal);
+            parameters.Add("IsAvailable", true, DbType.Boolean);
+            parameters.Add("Type", dto.Type.ToString(), DbType.String);
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var newId = await connection.QuerySingleAsync<int>("sp_AddNewModifier", parameters, commandType: CommandType.StoredProcedure);
+            using var connection = new SqlConnection(_connectionString);
+            var newId = await connection.QuerySingleAsync<int>("sp_AddNewModifier", parameters, commandType: CommandType.StoredProcedure);
 
-                var newModifier = _mapper.Map<ModifierDto>(modifierForCreateDto);
-                newModifier.Id = newId;
-                newModifier.IsAvailable = true;
+            var newModifier = _mapper.Map<ModifierSummaryDto>(dto);
+            newModifier.Id = newId;
+            newModifier.IsAvailable = true;
 
-                await _notificationService.NotifyModifiersUpdatedAsync();
-                return newModifier;
-            }
+            await _notificationService.NotifyModifiersUpdatedAsync();
+            return newModifier;
         }
 
-        public async Task<bool> UpdateModifierAsync(int modifierId, ModifierForUpdateDto modifierForUpdateDto)
+        public async Task<bool> UpdateModifierAsync(int modifierId, ModifierForUpdateDto dto)
         {
-            var parameters = _mapper.Map<DynamicParameters>(modifierForUpdateDto);
+            var parameters = _mapper.Map<DynamicParameters>(dto);
             parameters.Add("ModifierId", modifierId, DbType.Int32);
-            parameters.Add("Type", modifierForUpdateDto.Type.ToString(), DbType.String);
+            parameters.Add("Type", dto.Type.ToString(), DbType.String);
 
-            using (var connection = new SqlConnection(_connectionString))
+            using var connection = new SqlConnection(_connectionString);
+            var affectedRows = await connection.ExecuteAsync("sp_UpdateModifier", parameters, commandType: CommandType.StoredProcedure);
+            if (affectedRows > 0)
             {
-                var affectedRows = await connection.ExecuteAsync("sp_UpdateModifier", parameters, commandType: CommandType.StoredProcedure);
-                if (affectedRows > 0)
-                {
-                    await _notificationService.NotifyModifiersUpdatedAsync();
-                    return true;
-                }
-                return false;
+                await _notificationService.NotifyModifiersUpdatedAsync();
+                return true;
             }
+            return false;
         }
 
-        public async Task<bool> LinkStockItemAsync(int modifierId, ModifierStockItemLinkDto linkDto)
+        public async Task<bool> LinkStockItemAsync(int modifierId, ModifierStockItemLinkDto dto)
         {
             var parameters = new DynamicParameters();
             parameters.Add("ModifierId", modifierId, DbType.Int32);
-            parameters.Add("StockItemId", linkDto.StockItemId, DbType.Int32);
-            parameters.Add("QuantityNeeded", linkDto.QuantityNeeded, DbType.Decimal);
+            parameters.Add("StockItemId", dto.StockItemId, DbType.Int32);
+            parameters.Add("QuantityNeeded", dto.QuantityNeeded, DbType.Decimal);
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.ExecuteAsync("sp_LinkModifierToStockItem", parameters, commandType: CommandType.StoredProcedure);
-                return true;
-            }
+            using var connection = new SqlConnection(_connectionString);
+            await connection.ExecuteAsync("sp_LinkModifierToStockItem", parameters, commandType: CommandType.StoredProcedure);
+            return true;
         }
 
         public async Task<bool> UnlinkStockItemAsync(int modifierId, int stockItemId)
@@ -101,11 +94,9 @@ namespace happykopiAPI.Services.Implementations
             parameters.Add("ModifierId", modifierId, DbType.Int32);
             parameters.Add("StockItemId", stockItemId, DbType.Int32);
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.ExecuteAsync("sp_UnlinkModifierFromStockItem", parameters, commandType: CommandType.StoredProcedure);
-                return true;
-            }
+            using var connection = new SqlConnection(_connectionString);
+            await connection.ExecuteAsync("sp_UnlinkModifierFromStockItem", parameters, commandType: CommandType.StoredProcedure);
+            return true;
         }
     }
 }
