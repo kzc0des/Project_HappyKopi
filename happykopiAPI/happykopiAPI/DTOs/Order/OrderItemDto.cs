@@ -1,4 +1,4 @@
-﻿using happykopiAPI.DTOs.AddOn;
+﻿using happykopiAPI.Models;
 
 namespace happykopiAPI.DTOs.Order
 {
@@ -8,6 +8,6 @@ namespace happykopiAPI.DTOs.Order
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Subtotal { get; set; }
-        public ICollection<OrderItemAddOnDto> OrderItemAddOns { get; set; }
+        public ICollection<OrderItemModifier> OrderItemModifier { get; set; }
     }
 }

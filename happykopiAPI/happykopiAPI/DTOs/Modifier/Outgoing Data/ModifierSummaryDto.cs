@@ -1,10 +1,11 @@
-﻿namespace happykopiAPI.DTOs.AddOn
+﻿namespace happykopiAPI.DTOs.Modifier.Outgoing_Data
 {
-    public class AddOnDto
+    public class ModifierSummaryDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+        public string Type { get; set; }
         public bool IsAvailable { get; set; }
     }
 }

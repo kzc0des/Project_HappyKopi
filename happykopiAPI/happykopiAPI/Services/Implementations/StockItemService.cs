@@ -1,92 +1,70 @@
-﻿using happykopiAPI.DTOs.Inventory;
+﻿using Dapper;
+using happykopiAPI.DTOs.Inventory;
 using happykopiAPI.DTOs.Inventory.Outgoing_Data;
 using happykopiAPI.Enums;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Text.Json;
+using System.Text.Json; 
 
 namespace happykopiAPI.Services.Implementations
 {
     public class StockItemService : IStockItemService
     {
         private readonly string _connectionString;
-        public StockItemService(IConfiguration config) {
+
+        public StockItemService(IConfiguration config)
+        {
             _connectionString = config.GetConnectionString("LocalDB");
         }
 
         public async Task AddNewStockItemAsync(StockItemForCreateDto dto)
         {
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_AddNewStockItem", connection);
 
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@Name", dto.Name);
-            command.Parameters.AddWithValue("@Unit", dto.Unit);
-            command.Parameters.AddWithValue("@AlertLevel", dto.AlertLevel);
-            command.Parameters.AddWithValue("@IsPerishable", dto.IsPerishable);
-            command.Parameters.AddWithValue("@ItemType", dto.ItemType);
-            command.Parameters.AddWithValue("@InitialStockQuantity", dto.InitialStockQuantity);
-            command.Parameters.AddWithValue("@ExpiryDate", (object)dto.ExpiryDate ?? DBNull.Value);
-            command.Parameters.AddWithValue("@UserId", dto.UserId);
+            var parameters = new DynamicParameters();
+            parameters.Add("@Name", dto.Name);
+            parameters.Add("@Unit", dto.Unit);
+            parameters.Add("@AlertLevel", dto.AlertLevel);
+            parameters.Add("@IsPerishable", dto.IsPerishable);
+            parameters.Add("@ItemType", dto.ItemType);
+            parameters.Add("@InitialStockQuantity", dto.InitialStockQuantity);
+            parameters.Add("@ExpiryDate", dto.ExpiryDate); 
+            parameters.Add("@UserId", dto.UserId);
 
-            await connection.OpenAsync();
-            await command.ExecuteNonQueryAsync();
+            await connection.ExecuteAsync("sp_AddNewStockItem", parameters, commandType: CommandType.StoredProcedure);
         }
 
         public async Task AddStockItemBatchAsync(StockItemBatchForCreateDto dto)
         {
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_AddStockItemBatch", connection);
 
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@StockItemId", dto.StockItemId);
-            command.Parameters.AddWithValue("@QuantityAdded", dto.QuantityAdded);
-            command.Parameters.AddWithValue("@UserId", dto.UserId);
-            command.Parameters.AddWithValue("@ExpiryDate", (object)dto.ExpiryDate ?? DBNull.Value);
-            command.Parameters.AddWithValue("@Remarks", (object)dto.Remarks ?? DBNull.Value);
+            var parameters = new DynamicParameters();
+            parameters.Add("@StockItemId", dto.StockItemId);
+            parameters.Add("@QuantityAdded", dto.QuantityAdded);
+            parameters.Add("@UserId", dto.UserId);
+            parameters.Add("@ExpiryDate", dto.ExpiryDate);
+            parameters.Add("@Remarks", dto.Remarks);
 
-            await connection.OpenAsync();
-            await command.ExecuteNonQueryAsync();
+            await connection.ExecuteAsync("sp_AddStockItemBatch", parameters, commandType: CommandType.StoredProcedure);
         }
 
         // === READ / GET METHODS ===
 
         public async Task<IEnumerable<StockItemSummaryDto>> GetAllStockItemsAsync()
         {
-            var stockItems = new List<StockItemSummaryDto>();
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_GetAllStockItems", connection);
-            command.CommandType = CommandType.StoredProcedure;
-
-            await connection.OpenAsync();
-            await using var reader = await command.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                stockItems.Add(new StockItemSummaryDto
-                {
-                    Id = reader.GetInt32("Id"),
-                    Name = reader.GetString("Name"),
-                    UnitOfMeasure = reader.GetString("UnitOfMeasure"),
-                    AlertLevel = reader.GetDecimal("AlertLevel"),
-                    TotalStockQuantity = reader.GetDecimal("TotalStockQuantity"),
-                    IsActive = reader.GetBoolean("IsActive"),
-                    BatchCount = reader.GetInt32("BatchCount")
-                });
-            }
-            return stockItems;
+            return await connection.QueryAsync<StockItemSummaryDto>("sp_GetAllStockItems", commandType: CommandType.StoredProcedure);
         }
 
         public async Task<StockItemDetailsDto> GetStockItemByIdAsync(int id)
         {
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_GetStockItemById", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@StockItemId", id);
 
-            await connection.OpenAsync();
-            var jsonResult = await command.ExecuteScalarAsync() as string;
+            var parameters = new DynamicParameters();
+            parameters.Add("@StockItemId", id);
+
+            var jsonResult = await connection.ExecuteScalarAsync<string>("sp_GetStockItemById", parameters, commandType: CommandType.StoredProcedure);
 
             if (string.IsNullOrEmpty(jsonResult))
             {
@@ -101,99 +79,36 @@ namespace happykopiAPI.Services.Implementations
 
         public async Task<IEnumerable<StockItemBatchDetailsDto>> GetBatchesByStockItemIdAsync(int stockItemId)
         {
-            var batches = new List<StockItemBatchDetailsDto>();
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_GetBatchesByStockItemId", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@StockItemId", stockItemId);
 
-            await connection.OpenAsync();
-            await using var reader = await command.ExecuteReaderAsync();
+            var parameters = new DynamicParameters();
+            parameters.Add("@StockItemId", stockItemId);
 
-            while (await reader.ReadAsync())
-            {
-                batches.Add(new StockItemBatchDetailsDto
-                {
-                    Id = reader.GetInt32("Id"),
-                    StockQuantity = reader.GetDecimal("StockQuantity"),
-                    ExpiryDate = reader.IsDBNull("ExpiryDate") ? (DateTime?)null : reader.GetDateTime("ExpiryDate")
-                });
-            }
-            return batches;
+            return await connection.QueryAsync<StockItemBatchDetailsDto>("sp_GetBatchesByStockItemId", parameters, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<LowStockItemDto>> GetLowStockItemsAsync()
         {
-            var lowStockItems = new List<LowStockItemDto>();
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_GetLowStockItems", connection);
-            command.CommandType = CommandType.StoredProcedure;
 
-            await connection.OpenAsync();
-            await using var reader = await command.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                lowStockItems.Add(new LowStockItemDto
-                {
-                    Id = reader.GetInt32("Id"),
-                    Name = reader.GetString("Name"),
-                    UnitOfMeasure = reader.GetString("UnitOfMeasure"),
-                    TotalStockQuantity = reader.GetDecimal("TotalStockQuantity"),
-                    AlertLevel = reader.GetDecimal("AlertLevel")
-                });
-            }
-            return lowStockItems;
+            return await connection.QueryAsync<LowStockItemDto>("sp_GetLowStockItems", commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<StockItemTypeCountDto>> GetStockItemCountByItemTypeAsync()
         {
-            var counts = new List<StockItemTypeCountDto>();
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_GetStockItemCountByItemType", connection);
 
-            command.CommandType = CommandType.StoredProcedure;
-
-            await connection.OpenAsync();
-            await using var reader = await command.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                counts.Add(new StockItemTypeCountDto
-                {
-                    ItemTypeName = reader.GetString("ItemTypeName"),
-                    StockItemCount = reader.GetInt32("StockItemCount")
-                });
-            }
-            return counts;
+            return await connection.QueryAsync<StockItemTypeCountDto>("sp_GetStockItemCountByItemType", commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<StockItemSummaryDto>> GetStockItemsByItemTypeAsync(StockItemType itemType)
         {
-            var stockItems = new List<StockItemSummaryDto>();
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_GetStockItemsByItemType", connection);
 
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ItemType", itemType);
+            var parameters = new DynamicParameters();
+            parameters.Add("@ItemType", itemType);
 
-            await connection.OpenAsync();
-            await using var reader = await command.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                stockItems.Add(new StockItemSummaryDto
-                {
-                    Id = reader.GetInt32("Id"),
-                    Name = reader.GetString("Name"),
-                    UnitOfMeasure = reader.GetString("UnitOfMeasure"),
-                    AlertLevel = reader.GetDecimal("AlertLevel"),
-                    TotalStockQuantity = reader.GetDecimal("TotalStockQuantity"),
-                    IsActive = reader.GetBoolean("IsActive"),
-                    BatchCount = reader.GetInt32("BatchCount")
-                });
-            }
-            return stockItems;
+            return await connection.QueryAsync<StockItemSummaryDto>("sp_GetStockItemsByItemType", parameters, commandType: CommandType.StoredProcedure);
         }
 
         // === UPDATE METHODS ===
@@ -201,34 +116,30 @@ namespace happykopiAPI.Services.Implementations
         public async Task UpdateStockItemAsync(int id, StockItemUpdateDto dto)
         {
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_UpdateStockItem", connection);
 
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@StockItemId", id);
-            command.Parameters.AddWithValue("@Name", dto.Name);
-            command.Parameters.AddWithValue("@Unit", dto.Unit);
-            command.Parameters.AddWithValue("@AlertLevel", dto.AlertLevel);
-            command.Parameters.AddWithValue("@IsPerishable", dto.IsPerishable);
-            command.Parameters.AddWithValue("@ItemType", dto.ItemType);
-            command.Parameters.AddWithValue("@UserId", dto.UserId);
+            var parameters = new DynamicParameters();
+            parameters.Add("@StockItemId", id);
+            parameters.Add("@Name", dto.Name);
+            parameters.Add("@Unit", dto.Unit);
+            parameters.Add("@AlertLevel", dto.AlertLevel);
+            parameters.Add("@IsPerishable", dto.IsPerishable);
+            parameters.Add("@ItemType", dto.ItemType);
+            parameters.Add("@UserId", dto.UserId);
 
-            await connection.OpenAsync();
-            await command.ExecuteNonQueryAsync();
+            await connection.ExecuteAsync("sp_UpdateStockItem", parameters, commandType: CommandType.StoredProcedure);
         }
 
         public async Task AdjustStockQuantityAsync(StockAdjustmentDto dto)
         {
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_AdjustStockQuantity", connection);
 
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@StockItemBatchId", dto.StockItemBatchId);
-            command.Parameters.AddWithValue("@NewQuantity", dto.NewQuantity);
-            command.Parameters.AddWithValue("@UserId", dto.UserId);
-            command.Parameters.AddWithValue("@Remarks", dto.Remarks);
+            var parameters = new DynamicParameters();
+            parameters.Add("@StockItemBatchId", dto.StockItemBatchId);
+            parameters.Add("@NewQuantity", dto.NewQuantity);
+            parameters.Add("@UserId", dto.UserId);
+            parameters.Add("@Remarks", dto.Remarks);
 
-            await connection.OpenAsync();
-            await command.ExecuteNonQueryAsync();
+            await connection.ExecuteAsync("sp_AdjustStockQuantity", parameters, commandType: CommandType.StoredProcedure);
         }
 
         // === DELETE (SOFT) METHOD ===
@@ -236,14 +147,12 @@ namespace happykopiAPI.Services.Implementations
         public async Task DeactivateStockItemAsync(int id, int userId)
         {
             await using var connection = new SqlConnection(_connectionString);
-            await using var command = new SqlCommand("sp_DeactivateStockItem", connection);
 
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@StockItemId", id);
-            command.Parameters.AddWithValue("@UserId", userId);
+            var parameters = new DynamicParameters();
+            parameters.Add("@StockItemId", id);
+            parameters.Add("@UserId", userId);
 
-            await connection.OpenAsync();
-            await command.ExecuteNonQueryAsync();
+            await connection.ExecuteAsync("sp_DeactivateStockItem", parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

@@ -156,6 +156,10 @@ namespace happykopiAPI.Data
             modelBuilder.Entity<StockItem>()
                 .Property(i => i.IsActive)
                 .HasDefaultValue(true);
+
+            modelBuilder.Entity<ModifierStockItem>()
+                .Property(m => m.QuantityNeeded)
+                .HasDefaultValue(1);
         }
     }
 }
