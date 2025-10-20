@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-edit-category-page',
@@ -12,9 +13,15 @@ import { FormsModule } from '@angular/forms';
 export class EditCategoryPage {
   categories: string = '';
 
-  constructor(private route: ActivatedRoute) {}
-
   ngOnInit() {
     this.categories = this.route.snapshot.paramMap.get('categories') || '';
   }
+
+  category: any
+
+  constructor(private route: ActivatedRoute, private router: Router) {
+    const nav = this.router.getCurrentNavigation();
+    this.category = nav?.extras.state?.['category'] || { name: '', count: 0 };
+  }
+
 }
