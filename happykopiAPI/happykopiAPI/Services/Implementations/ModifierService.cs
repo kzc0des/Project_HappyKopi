@@ -22,6 +22,15 @@ namespace happykopiAPI.Services.Implementations
             _notificationService = notificationService;
         }
 
+        public async Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync()
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var result = await connection.QueryAsync<ModifierCountDto>(
+                "sp_GetModifierCountByType",
+                commandType: CommandType.StoredProcedure
+            );
+            return result;
+        }
         public async Task<IEnumerable<ModifierSummaryDto>> GetAllModifiersAsync()
         {
             using var connection = new SqlConnection(_connectionString);
@@ -35,7 +44,26 @@ namespace happykopiAPI.Services.Implementations
 
             return await connection.QueryAsync<ModifierSummaryDto>("sp_GetAvailableModifiers", commandType: CommandType.StoredProcedure);
         }
+        public async Task<ModifierDetailsDto> GetModifierByIdAsync(int modifierId)
+        {
+            await using var connection = new SqlConnection(_connectionString);
 
+            var parameters = new { ModifierId = modifierId };
+
+            var jsonResult = await connection.ExecuteScalarAsync<string>(
+                "sp_GetModifierById",
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            if (string.IsNullOrEmpty(jsonResult))
+            {
+                return null;
+            }
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<ModifierDetailsDto>(jsonResult, options);
+        }
         public async Task<ModifierSummaryDto> CreateModifierAsync(ModifierForCreateDto dto)
         {
             var parameters = new
@@ -109,27 +137,6 @@ namespace happykopiAPI.Services.Implementations
             using var connection = new SqlConnection(_connectionString);
             await connection.ExecuteAsync("sp_UnlinkModifierFromStockItem", parameters, commandType: CommandType.StoredProcedure);
             return true;
-        }
-
-        public async Task<ModifierDetailsDto> GetModifierByIdAsync(int modifierId)
-        {
-            await using var connection = new SqlConnection(_connectionString);
-
-            var parameters = new { ModifierId = modifierId };
-
-            var jsonResult = await connection.ExecuteScalarAsync<string>(
-                "sp_GetModifierById",
-                parameters,
-                commandType: CommandType.StoredProcedure
-            );
-
-            if (string.IsNullOrEmpty(jsonResult))
-            {
-                return null;
-            }
-
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<ModifierDetailsDto>(jsonResult, options);
         }
     }
 }
