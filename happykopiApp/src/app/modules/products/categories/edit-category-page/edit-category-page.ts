@@ -24,4 +24,9 @@ export class EditCategoryPage {
     this.category = nav?.extras.state?.['category'] || { name: '', count: 0 };
   }
 
+   goToCreateDrink() {
+    this.router.navigate(['/create-drink-page'], {
+      state: { category: this.category }
+    });
+  }
 }

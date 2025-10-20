@@ -50,6 +50,7 @@ import { ProductsPage } from './modules/modifiers/products-page/products-page';
 import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
 import { CategoriesPage } from './modules/modifiers/categories-page/categories-page';
 import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
+import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
 
 export const routes: Routes = [
     {
@@ -259,5 +260,9 @@ export const routes: Routes = [
     {
         path: 'edit-addons',
         component: EditAddOnsPage
+    },
+    {
+        path: 'create-drink-page',
+        component: CreateDrinkPage
     }
 ];
