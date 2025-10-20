@@ -25,6 +25,6 @@ namespace happykopiAPI.Models
         public decimal Subtotal { get; set; }
 
         public OrderItem OrderItem { get; set; }
-        public AddOn AddOn { get; set; }
+        public Modifier AddOn { get; set; }
     }
 }

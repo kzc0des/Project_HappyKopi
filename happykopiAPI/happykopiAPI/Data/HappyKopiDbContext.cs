@@ -20,7 +20,7 @@ namespace happykopiAPI.Data
         public DbSet<StockLog> StockLogs { get; set; }
         public DbSet<DailyIngredientSummary> DailyIngredientSummaries { get; set; }
         public DbSet<StockItemBatch> StockItemBatches { get; set; }
-        public DbSet<AddOn> AddOns { get; set; }
+        public DbSet<Modifier> AddOns { get; set; }
         public DbSet<OrderItemAddOn> OrderItemAddOns { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -125,7 +125,7 @@ namespace happykopiAPI.Data
                 .Property(i => i.LastUpdated)
                 .HasDefaultValueSql("GETUTCDATE()");
 
-            modelBuilder.Entity<AddOn>()
+            modelBuilder.Entity<Modifier>()
                 .Property(a => a.LastUpdated)
                 .IsRequired()
                 .HasDefaultValueSql("GETUTCDATE()");
