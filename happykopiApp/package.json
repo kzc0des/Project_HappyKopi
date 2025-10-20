@@ -33,6 +33,7 @@
     "@capacitor/app": "^7.1.0",
     "@capacitor/cli": "^7.4.3",
     "@capacitor/core": "^7.4.3",
+    "@microsoft/signalr": "^9.0.6",
     "@tailwindcss/postcss": "^4.1.13",
     "font-awesome": "^4.7.0",
     "jwt-decode": "^4.0.0",
