@@ -44,9 +44,12 @@ import { AddDrinkPage } from './modules/products/drinks/add-drink-page/add-drink
 import { DrinkCard } from './modules/products/components/drink-card/drink-card';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
 import { EditCategoryPage } from './modules/products/categories/edit-category-page/edit-category-page';
+import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/drinks/edit-drink-page/edit-drink-page';
-
-
+import { ProductsPage } from './modules/modifiers/products-page/products-page';
+import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
+import { CategoriesPage } from './modules/modifiers/categories-page/categories-page';
+import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
 
 export const routes: Routes = [
     {
@@ -118,6 +121,13 @@ export const routes: Routes = [
                     {
                         path: 'item/:itemId',
                         component: InventoryItemDetail,
+                        resolve: {
+                            stockitemdetail: stockitemdetailResolver
+                        }
+                    },
+                    {
+                        path: 'edit/item/:itemId',
+                        component: InventoryEditItem,
                         resolve: {
                             stockitemdetail: stockitemdetailResolver
                         }
@@ -233,5 +243,21 @@ export const routes: Routes = [
     {
         path: 'edit-drink-page',
         component: EditDrinkPage
+    },
+    {
+        path: 'products',
+        component: ProductsPage
+    },
+    {
+        path: 'edit-products',
+        component: EditProductsPage
+    },
+    {
+        path: 'categories',
+        component: CategoriesPage
+    },
+    {
+        path: 'edit-addons',
+        component: EditAddOnsPage
     }
 ];
