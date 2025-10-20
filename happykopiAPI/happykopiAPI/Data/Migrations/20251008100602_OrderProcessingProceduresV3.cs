@@ -12,6 +12,7 @@ namespace happykopiAPI.Data.Migrations
         {
             var dbo_OrderItemType = @"
             CREATE TYPE dbo.OrderItemsType AS TABLE (
+                OrderItemIdentifier UNIQUEIDENTIFIER,
                 ProductId INT,
                 Quantity INT
             );";
@@ -19,7 +20,7 @@ namespace happykopiAPI.Data.Migrations
             migrationBuilder.Sql(dbo_OrderItemType);
 
             var dbo_OrderItemAddOnType = @"
-                        CREATE TYPE dbo.OrderItemAddOnsType AS TABLE (
+            CREATE TYPE dbo.OrderItemAddOnsType AS TABLE (
                             OrderItemIdentifier UNIQUEIDENTIFIER,
                             AddOnId INT,
                             Quantity INT

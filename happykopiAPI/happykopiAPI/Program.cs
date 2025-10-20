@@ -23,7 +23,7 @@ builder.WebHost.ConfigureKestrel(options =>
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddDbContext<HappyKopiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDB"), sqlServerOptionsAction: sqlOptions =>
+builder.Services.AddDbContext<HappyKopiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test"), sqlServerOptionsAction: sqlOptions =>
 {
     sqlOptions.EnableRetryOnFailure();
 }));
@@ -56,7 +56,8 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:4200", "http://192.168.1.14:4200")
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod()
+                  .AllowCredentials();
         });
 });
 
@@ -77,6 +78,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<UpdateHub>("/updateHub");
+app.MapHub<UpdateHub>("/api/updateHub");
 
 app.Run();
