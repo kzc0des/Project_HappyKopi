@@ -6,6 +6,7 @@ import { ModifierForCreate } from '../../../core/dtos/modifier/modifier-for-crea
 import { ModifierForUpdate } from '../../../core/dtos/modifier/modifier-for-update.model';
 import { ModifierLinkStockItem } from '../../../core/dtos/modifier/modifier-link-stock-item.model';
 import { SignalRService } from '../../../core/services/signalR/signal-r.service';
+import { ModifierCount } from '../../../core/dtos/modifier/modifier-count.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,10 @@ export class ModifierService {
     this.signalrService.on('ReceiveModifierUpdate', () => {
       this.getModifiers(true).subscribe();
     });
+  }
+
+  getModifierCountByType(): Observable<ModifierCount[]> {
+    return this.apiService.get<ModifierCount[]>('modifiers/count-by-type');
   }
 
   getModifiers(availableOnly: boolean = false): Observable<Modifier[]> {

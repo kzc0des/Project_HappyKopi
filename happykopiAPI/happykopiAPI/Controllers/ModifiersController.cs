@@ -23,6 +23,13 @@ namespace happykopiAPI.Controllers
             _modifierService = modifierService;
         }
 
+        [HttpGet("count-by-type")]
+        public async Task<IActionResult> GetModifierCounts()
+        {
+            var counts = await _modifierService.GetModifierCountByTypeAsync();
+            return Ok(counts);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetModifiers([FromQuery] bool availableOnly = false)
         {
