@@ -52,6 +52,7 @@ import { CategoriesPage } from './modules/modifiers/categories-page/categories-p
 import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
 import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
+import { AssignDrinkPage } from './modules/products/categories/assign-drink-page/assign-drink-page';
 
 export const routes: Routes = [
     {
@@ -269,5 +270,9 @@ export const routes: Routes = [
     {
         path: 'save-drink',
         component: SaveDrinkComponent
+    },
+    {
+        path: 'assign-drink-page',
+        component: AssignDrinkPage
     }
 ];

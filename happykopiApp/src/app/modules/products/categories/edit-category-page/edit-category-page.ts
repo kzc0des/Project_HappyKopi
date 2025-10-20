@@ -29,4 +29,8 @@ export class EditCategoryPage {
       state: { category: this.category }
     });
   }
+
+  goToAssignDrink() {
+    this.router.navigate(['/assign-drink-page']);
+  }
 }
