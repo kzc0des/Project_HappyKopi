@@ -12,7 +12,6 @@ namespace happykopiAPI.Data.Migrations
         {
             var dbo_OrderItemType = @"
             CREATE TYPE dbo.OrderItemsType AS TABLE (
-                a
                 ProductId INT,
                 Quantity INT
             );";
