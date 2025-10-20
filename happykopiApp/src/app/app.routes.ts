@@ -159,7 +159,7 @@ export const routes: Routes = [
         component: CategoriesListPage
     },
     {
-        path: 'drink-detail',
+        path: 'drink-detail/:id',
         component: DrinkDetailPage
     },
     {
