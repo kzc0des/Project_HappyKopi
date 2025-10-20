@@ -51,6 +51,7 @@ import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-pr
 import { CategoriesPage } from './modules/modifiers/categories-page/categories-page';
 import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
 import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
+import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
 
 export const routes: Routes = [
     {
@@ -264,5 +265,9 @@ export const routes: Routes = [
     {
         path: 'create-drink-page',
         component: CreateDrinkPage
+    },
+    {
+        path: 'save-drink',
+        component: SaveDrinkComponent
     }
 ];
