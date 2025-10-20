@@ -30,7 +30,7 @@ namespace happykopiAPI.Data.Migrations
                 LEFT JOIN
                     dbo.StockItemBatches sib ON si.Id = sib.StockItemId
                 WHERE
-                    si.ItemType = @ItemType AND si.IsActive = 1 -- Eto yung filter
+                    si.ItemType = @ItemType AND si.IsActive = 1
                 GROUP BY
                     si.Id, si.Name, si.UnitOfMeasure, si.AlertLevel, si.IsActive
                 ORDER BY

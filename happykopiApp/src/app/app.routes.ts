@@ -136,6 +136,16 @@ export const routes: Routes = [
                         }
                     }
                 ]
+            },
+            {
+                path: 'modifiers',
+                children: [
+                    {
+                        path: '',
+                        component: ModifierPage,
+                        pathMatch: 'full'
+                    }
+                ]
             }
         ]
     },
