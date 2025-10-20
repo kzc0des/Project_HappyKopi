@@ -38,7 +38,6 @@
                     type="text"
                     class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
                     [value]="drink?.baseprice | number:'1.2-2'"
-                    readonly
                 />
             </div>
         </div>
@@ -75,7 +74,7 @@
             <div>  
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" class="sr-only peer">
-                    <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-[#F3B72C] peer transition-all duration-300"></div>
+                    <div class="w-11 h-6 bg-gray-300 inset-shadow-2xs rounded-full peer-checked:bg-[#F3B72C] peer transition-all duration-300"></div>
                     <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-all duration-300 peer-checked:translate-x-5"></div>
                 </label>
             </div>
