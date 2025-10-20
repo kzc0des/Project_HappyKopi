@@ -1,4 +1,5 @@
 using happykopiAPI.Data;
+using happykopiAPI.Hubs;
 using happykopiAPI.Services.Implementations;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,8 +42,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddSignalR();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStockItemService, StockItemService>();
+builder.Services.AddScoped<IModifierService, ModifierService>();
+builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
 
 builder.Services.AddCors(options =>
 {
@@ -72,5 +76,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<UpdateHub>("/updateHub");
 
 app.Run();

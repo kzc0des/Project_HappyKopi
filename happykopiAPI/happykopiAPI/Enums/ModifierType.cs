@@ -3,7 +3,6 @@
     public enum ModifierType
     {
         Size,
-        Syrup,
         AddOn
     }
 }
