@@ -22,6 +22,7 @@ namespace happykopiAPI.Data
         public DbSet<StockItemBatch> StockItemBatches { get; set; }
         public DbSet<Modifier> Modifiers { get; set; }
         public DbSet<OrderItemModifier> OrderItemModifiers { get; set; }
+        public DbSet<ModifierStockItem> ModifierStockItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
