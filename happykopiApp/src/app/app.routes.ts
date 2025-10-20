@@ -53,6 +53,7 @@ import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-o
 import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
 import { AssignDrinkPage } from './modules/products/categories/assign-drink-page/assign-drink-page';
+import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
 
 export const routes: Routes = [
     {
@@ -143,7 +144,10 @@ export const routes: Routes = [
                     {
                         path: '',
                         component: ModifierPage,
-                        pathMatch: 'full'
+                        pathMatch: 'full',
+                        resolve: {
+                            modifiertypecount: modifierTypeCountResolver
+                        }
                     }
                 ]
             }
