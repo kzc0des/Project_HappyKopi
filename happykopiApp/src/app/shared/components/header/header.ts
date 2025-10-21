@@ -151,7 +151,6 @@ export class Header implements OnInit, OnDestroy {
 
   onSaveItemClick(): void {
     this.headerActionService.emitAction('SAVE');
-    this.showDeleteButton = true;
     this.headerActionService.resetValueChangedState();
 
     this.showEditButton = false;

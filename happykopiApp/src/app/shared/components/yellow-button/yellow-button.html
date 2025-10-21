@@ -1,9 +1,8 @@
-<div class="add-item-btn">
-    <div class="add-item-icon">
+<button (click)="notifyClickButton()" class="flex items-center justify-center gap-3 bg-hapikopi-yellow px-5 py-3 rounded-lg">
+    <div class="">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="25"
+        class="w-4"
         viewBox="0 0 20 25"
         fill="none"
       >
@@ -16,5 +15,5 @@
         />
       </svg>
     </div>
-    <div class="add-item-text">Add Item</div>
-  </div>
+    <div class="text-[#765302]">{{ buttonTitle }}</div>
+</button>

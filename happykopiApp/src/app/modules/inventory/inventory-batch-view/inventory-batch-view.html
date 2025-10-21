@@ -4,6 +4,6 @@
         <app-date-card class="flex-1 text-end" itemTitle="Date Added"
             [itemValue]="batchDetail.dateReceived"></app-date-card>
     </div>
-    <app-itemcard itemTitle="Quantity" [isEditing]="true" [(ngModel)]="batchDetail.stockQuantity"></app-itemcard>
+    <app-itemcard itemTitle="Quantity" [isEditing]="true" type="number" [(ngModel)]="batchDetail.stockQuantity"></app-itemcard>
     <app-expiry-date-card></app-expiry-date-card>
 </div>
