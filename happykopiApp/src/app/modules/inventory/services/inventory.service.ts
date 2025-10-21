@@ -8,6 +8,7 @@ import { StockItemForCreateDto } from '../../../core/dtos/stockitem/stock-item-f
 import { StockItemBatchForCreateDto } from '../../../core/dtos/stockitem/stock-item-batch-for-create-dto';
 import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-for-update-dto';
 import { StockItemForAdjustmentDto } from '../../../core/dtos/stockitem/stock-item-for-adjustment-dto';
+import { StockItemBatchDetailsDto } from '../../../core/dtos/stockitem/stock-item-batch-details-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,8 @@ export class InventoryService {
     return this.apiService.get<StockItemTypeCountDto[]>(`${this.controllerPath}/stock-items/count-by-itemtype`);
   }
 
-  getStockItemBatch(stockItemId: number, batchId: number): Observable<StockItemDetailsDto> {
-    return this.apiService.get<StockItemDetailsDto>(`${this.controllerPath}/stock-items/${stockItemId}/batches/${batchId}`);
+  getStockItemBatch(stockItemId: number, batchId: number): Observable<StockItemBatchDetailsDto> {
+    return this.apiService.get<StockItemBatchDetailsDto>(`${this.controllerPath}/stock-items/${stockItemId}/batches/${batchId}`);
   }
 
   createStockItem(item: StockItemForCreateDto): Observable<{ message: string }> {
