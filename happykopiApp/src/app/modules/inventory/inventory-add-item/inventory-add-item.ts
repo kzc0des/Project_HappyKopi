@@ -111,35 +111,35 @@ export class InventoryAddItem implements OnInit, OnDestroy {
   }
 
   updateUnitsBasedOnCategory(itemType: Stockitemtype) {
-  let unitGroup: string[] = [];
+    let unitGroup: string[] = [];
 
-  switch(itemType) {
-    case Stockitemtype.Liquid:
-      unitGroup = UnitGrouping.Liquid;
-      break;
-    case Stockitemtype.Powder:
-      unitGroup = UnitGrouping.Powder;
-      break;
-    case Stockitemtype.Miscellaneous:
-      unitGroup = UnitGrouping.Miscellaneous;
-      break;
-    default:
-      unitGroup = [];
-      this.stockitemdetail.unit = '';
-      break;
+    switch (itemType) {
+      case Stockitemtype.Liquid:
+        unitGroup = UnitGrouping.Liquid;
+        break;
+      case Stockitemtype.Powder:
+        unitGroup = UnitGrouping.Powder;
+        break;
+      case Stockitemtype.Miscellaneous:
+        unitGroup = UnitGrouping.Miscellaneous;
+        break;
+      default:
+        unitGroup = [];
+        this.stockitemdetail.unit = '';
+        break;
+    }
+
+    this.units = this.inventoryService.loadCategoryOptions(unitGroup);
+
+    if (unitGroup.length > 0) {
+      this.stockitemdetail.unit = unitGroup[0];
+    }
+
+    // console.log(`
+    // ItemType Selected: ${itemType}
+    // Units Available: ${unitGroup}
+    // Units variable: ${this.units}
+    // `);
+
   }
-
-  this.units = this.inventoryService.loadCategoryOptions(unitGroup);
-  
-  if (unitGroup.length > 0) {
-    this.stockitemdetail.unit = unitGroup[0];
-  }
-
-  console.log(`
-    ItemType Selected: ${itemType}
-    Units Available: ${unitGroup}
-    Units variable: ${this.units}
-    `);
-
-}
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, forwardRef, HostListener, Input } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostListener, Input, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DropdownOption } from './dropdown-option';
 import { CommonModule, TitleCasePipe } from '@angular/common';
@@ -17,7 +17,7 @@ import { HeaderService } from '../../../core/services/header/header.service';
     },
   ],
 })
-export class DropdownButton {
+export class DropdownButton implements OnInit {
   @Input() options: DropdownOption[] = [];
   @Input() placeholder: string = 'Select an option';
   @Input() selected!: number | string;
@@ -33,6 +33,14 @@ export class DropdownButton {
   private onTouched: () => void = () => { };
 
   constructor(private _elementRef: ElementRef, private headerService: HeaderService) { }
+
+  ngOnInit(): void {
+    const changed = this.options.some(opt => opt.value !== this.selected);
+    if (changed) {
+      console.log("Changed OnLoad: " + changed);
+      this.headerService.notifyValueChanged(this.placeholder, true);
+    }
+  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {

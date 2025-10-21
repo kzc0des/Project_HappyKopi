@@ -57,7 +57,7 @@ export class InventoryService {
     if (Array.isArray(arr)) {
       return arr.map(item => ({
         // The value is the string from the enum (ml, l)
-        value: item,  // 'ml'
+        value: item,  // 'MILLILITERS'
         label: item   // 'MILLILITERS'
       }));
     }

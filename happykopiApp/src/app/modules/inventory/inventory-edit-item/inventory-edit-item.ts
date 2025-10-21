@@ -13,6 +13,7 @@ import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-f
 import { FormsModule } from '@angular/forms';
 import { Stockitemtype } from '../../../core/enums/stockitemtype';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
+import { UnitGrouping } from '../../../core/enums/unit';
 
 @Component({
   selector: 'app-inventory-edit-item',
@@ -25,6 +26,7 @@ export class InventoryEditItem implements OnInit, OnDestroy {
   private stockitemDetailForUpdate!: StockItemForUpdateDto;
 
   categories!: DropdownOption[];
+  units !: DropdownOption[];
   stockitemType!: number;
 
   private actionSubscription!: Subscription;
@@ -41,6 +43,7 @@ export class InventoryEditItem implements OnInit, OnDestroy {
     this.stockitemdetail = this.route.snapshot.data['stockitemdetail'];
     this.stockitemType = this.stockitemdetail.itemType;
     this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
+    this.updateUnitsBasedOnCategory(this.stockitemdetail.itemType);
 
     this.actionSubscription = this.headerActionService.action$.subscribe(async action => {
       switch (action) {
@@ -104,4 +107,30 @@ export class InventoryEditItem implements OnInit, OnDestroy {
       }
     })
   }
+
+  updateUnitsBasedOnCategory(itemType: Stockitemtype) {
+      let unitGroup: string[] = [];
+  
+      switch (itemType) {
+        case Stockitemtype.Liquid:
+          unitGroup = UnitGrouping.Liquid;
+          break;
+        case Stockitemtype.Powder:
+          unitGroup = UnitGrouping.Powder;
+          break;
+        case Stockitemtype.Miscellaneous:
+          unitGroup = UnitGrouping.Miscellaneous;
+          break;
+        default:
+          unitGroup = [];
+          this.stockitemdetail.unitOfMeasure = '';
+          break;
+      }
+  
+      this.units = this.inventoryService.loadCategoryOptions(unitGroup);
+  
+      if (unitGroup.length > 0) {
+        this.stockitemdetail.unitOfMeasure = unitGroup[0];
+      }
+    }
 }

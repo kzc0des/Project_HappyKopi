@@ -6,7 +6,7 @@
         <app-itemcard itemTitle="Ingredient Name" [isEditing]="true" [(ngModel)]="stockitemdetail.name">
         </app-itemcard>
         <app-dropdown-button [options]="categories" itemTitle="Category" [(ngModel)]="stockitemType"
-            [selected]="stockitemdetail.itemType" placeholder="Choose an item type">
+            [selected]="stockitemdetail.itemType" (ngModelChange)="updateUnitsBasedOnCategory($event)" placeholder="Choose an item type">
         </app-dropdown-button>
     </div>
 
@@ -43,8 +43,9 @@
             <app-itemcard itemTitle="Alert Level" type="number" [isEditing]="true"
                 [(ngModel)]="stockitemdetail.alertLevel">
             </app-itemcard>
-            <app-itemcard itemTitle="Measurement" [isEditing]="true" [(ngModel)]="stockitemdetail.unitOfMeasure">
-            </app-itemcard>
+            <app-dropdown-button [options]="units" itemTitle="Measurement" [(ngModel)]="stockitemdetail.unitOfMeasure"
+                [selected]="stockitemdetail.unitOfMeasure" placeholder="Choose a measurement unit">
+            </app-dropdown-button>
         </div>
     </div>
 

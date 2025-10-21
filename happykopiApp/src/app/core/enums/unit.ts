@@ -1,11 +1,11 @@
 export enum Unit {
-    MILLILITER = 'ml',
-    LITER = 'l',
+    MILLILITER = 'milliliter',
+    LITER = 'liter',
 
-    GRAM = 'g',
-    KILOGRAM = 'kg',
+    GRAM = 'gram',
+    KILOGRAM = 'kilogram',
 
-    PIECE = 'pc',
+    PIECE = 'piece',
     PACK = 'pack'
 }
 
