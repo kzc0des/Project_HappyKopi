@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Location } from '@angular/common';
 import { ExpiryDateCard } from '../components/expiry-date-card/expiry-date-card';
+import { UnitGrouping } from '../../../core/enums/unit';
 
 @Component({
   selector: 'app-inventory-add-item',
@@ -21,6 +22,9 @@ import { ExpiryDateCard } from '../components/expiry-date-card/expiry-date-card'
 export class InventoryAddItem implements OnInit, OnDestroy {
   stockitemdetail !: StockItemForCreateDto;
   categories !: DropdownOption[];
+  units !: DropdownOption[];
+
+  unitSelected !: string;
   stockitemType !: number;
   private actionSubscription!: Subscription;
 
@@ -52,6 +56,8 @@ export class InventoryAddItem implements OnInit, OnDestroy {
         this.stockitemdetail.itemType = selectedCategory.value;
       }
     }
+
+    this.updateUnitsBasedOnCategory(this.stockitemdetail.itemType);
 
     this.actionSubscription = this.headerActionService.action$.subscribe(action => {
       switch (action) {
@@ -91,7 +97,6 @@ export class InventoryAddItem implements OnInit, OnDestroy {
         console.error('Failed to create item:', err);
       }
     });
-
   }
 
   private initializeEmptyDto(): void {
@@ -104,4 +109,37 @@ export class InventoryAddItem implements OnInit, OnDestroy {
       initialStockQuantity: 0,
     }
   }
+
+  updateUnitsBasedOnCategory(itemType: Stockitemtype) {
+  let unitGroup: string[] = [];
+
+  switch(itemType) {
+    case Stockitemtype.Liquid:
+      unitGroup = UnitGrouping.Liquid;
+      break;
+    case Stockitemtype.Powder:
+      unitGroup = UnitGrouping.Powder;
+      break;
+    case Stockitemtype.Miscellaneous:
+      unitGroup = UnitGrouping.Miscellaneous;
+      break;
+    default:
+      unitGroup = [];
+      this.stockitemdetail.unit = '';
+      break;
+  }
+
+  this.units = this.inventoryService.loadCategoryOptions(unitGroup);
+  
+  if (unitGroup.length > 0) {
+    this.stockitemdetail.unit = unitGroup[0];
+  }
+
+  console.log(`
+    ItemType Selected: ${itemType}
+    Units Available: ${unitGroup}
+    Units variable: ${this.units}
+    `);
+
+}
 }

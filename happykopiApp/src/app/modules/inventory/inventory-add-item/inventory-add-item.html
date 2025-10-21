@@ -23,8 +23,9 @@
             <app-itemcard itemTitle="Alert Level" type="number" [isEditing]="true"
                 [(ngModel)]="stockitemdetail.alertLevel">
             </app-itemcard>
-            <app-itemcard itemTitle="Measurement" [isEditing]="true" [(ngModel)]="stockitemdetail.unit">
-            </app-itemcard>
+            <app-dropdown-button [options]="units" itemTitle="Measurement" [(ngModel)]="stockitemdetail.unit"
+            [selected]="stockitemdetail.unit" placeholder="Choose a measurement unit">
+        </app-dropdown-button>
         </div>
     </div>
 

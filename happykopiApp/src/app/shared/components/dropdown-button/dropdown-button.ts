@@ -20,11 +20,12 @@ import { HeaderService } from '../../../core/services/header/header.service';
 export class DropdownButton {
   @Input() options: DropdownOption[] = [];
   @Input() placeholder: string = 'Select an option';
-  @Input() selected!: number;
+  @Input() selected!: number | string;
   @Input() itemTitle!: string;
+  @Input() isTitleCasePipeOn: boolean = false;
 
   selectedValue!: number;
-  originalValue!: number;
+  originalValue!: number | string;
   isOpen = false;
   isDisabled = false;
 
