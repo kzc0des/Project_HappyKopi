@@ -18,6 +18,7 @@ import { TitleCasePipe } from '@angular/common';
 })
 export class Itemcard implements ControlValueAccessor {
   @Input() itemTitle: string = 'Item Title';
+  @Input() showIcon: boolean = false;
   @Input() isEditing: boolean = false;
   @Input() type!: string;
 

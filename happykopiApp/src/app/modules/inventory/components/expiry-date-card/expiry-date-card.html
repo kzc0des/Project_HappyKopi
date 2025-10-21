@@ -1,5 +1,5 @@
 <div class="
-relative py-3 px-3
+relative py-4 px-3
 flex items-center justify-between gap-2
 rounded-xl border border-gray-300 bg-white p-2 
 transition duration-200 shadow-sm
@@ -7,9 +7,9 @@ focus-within:border-hapikopi-yellow
 focus-within:ring-2 
 focus-within:ring-hapikopi-yellow">
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-5 flex-1">
         <p class="text-gray-500">Expiry Date</p>
-        <div class="flex">
+        <div class="flex pb-2 border-b-1 border-gray-300">
             <input id="month-input" type="text" inputmode="numeric" placeholder="mm" maxlength="2" [(ngModel)]="month"
                 (input)="focusNext($event, 'day')" (blur)="handleBlur()" class="border-0 bg-transparent w-11
       text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-0" /> <span
