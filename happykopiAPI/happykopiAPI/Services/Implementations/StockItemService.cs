@@ -77,6 +77,22 @@ namespace happykopiAPI.Services.Implementations
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             return JsonSerializer.Deserialize<StockItemDetailsDto>(jsonResult, options);
         }
+        public async Task<StockItemBatchDetailsDto> GetStockItemBatchByIdAsync(int stockItemId, int batchId)
+        {
+            await using var connection = new SqlConnection(_connectionString);
+
+            var parameters = new
+            {
+                StockItemId = stockItemId,
+                BatchId = batchId
+            };
+
+            return await connection.QuerySingleOrDefaultAsync<StockItemBatchDetailsDto>(
+                "sp_GetBatchByStockItemId",
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+        }
 
         public async Task<IEnumerable<StockItemBatchDetailsDto>> GetBatchesByStockItemIdAsync(int stockItemId)
         {

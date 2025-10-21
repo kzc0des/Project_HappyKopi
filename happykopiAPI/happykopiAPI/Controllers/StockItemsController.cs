@@ -102,6 +102,26 @@ namespace happykopiAPI.Controllers
             }
         }
 
+        [HttpGet("stock-items/{stockItemId}/batches/{batchId}")]
+        public async Task<IActionResult> GetStockItemBatch(int stockItemId, int batchId)
+        {
+            try
+            {
+                var batch = await _stockItemService.GetStockItemBatchByIdAsync(stockItemId, batchId);
+
+                if (batch == null)
+                {
+                    return NotFound(new { message = "Batch not found." });
+                }
+
+                return Ok(batch);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+            }
+        }
+
         [HttpGet("stock-items/{stockItemId}/batches")]
         public async Task<IActionResult> GetStockItemBatches(int stockItemId)
         {
