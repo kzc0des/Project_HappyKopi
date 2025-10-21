@@ -1,18 +1,26 @@
 <div class="relative overflow-x-auto sm:rounded-lg w-[100vw] max-h-min">
   <table class="w-full text-gray-500">
+
     <thead class="text-lg text-white bg-hapikopi-yellow w-full">
       <tr class="grid grid-cols-3">
-        </tr>
+        <th class="py-3">
+          Batch
+        </th>
+        <th class="py-3">
+          Quantity
+        </th>
+        <th class="py-3">
+          Expiry Date
+        </th>
+      </tr>
     </thead>
 
     <tbody>
       @for(batch of batches; track $index) {
-      
-      <tr 
-        [routerLink]="['/item', stockItemId, 'batch', batch.id]" 
-        class="border-b grid grid-cols-3 w-full items-center text-center 
+
+      <tr [routerLink]="['batch', batch.id]" class="border-b grid grid-cols-3 w-full items-center text-center 
                cursor-pointer hover:bg-gray-100 transition-colors">
-        
+
         <td class=" py-3 font-medium text-gray-900">
           {{ batch.id }}
         </td>
@@ -23,12 +31,13 @@
           {{ batch.expiryDate | date }}
         </td>
       </tr>
-      
+
       }@empty {
       <tr>
         <td colspan="3" class="px-6 py-4 text-center">No batches found.</td>
       </tr>
       }
     </tbody>
+
   </table>
 </div>

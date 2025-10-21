@@ -12,5 +12,4 @@ import { RouterLink } from "@angular/router";
 export class IngredientBatchCard {
   @Input() batches: StockItemBatchDetailsDto[] = [];
   @Input() unit!: string;
-  @Input() stockItemId!: number;
 }

@@ -7,7 +7,7 @@ import { EMPTY, Observable, of } from 'rxjs';
 export const stockItemBatchResolver: ResolveFn<StockItemBatchDetailsDto> = (route, state) : Observable<StockItemBatchDetailsDto> => {
   const inventoryService = inject(InventoryService);
 
-  const stockItemIdParam = route.paramMap.get('stockitemid');
+  const stockItemIdParam = route.paramMap.get('itemid');
   const batchIdParam = route.paramMap.get('batchid');
 
   if (!stockItemIdParam || !batchIdParam) {

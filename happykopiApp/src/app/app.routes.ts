@@ -139,7 +139,7 @@ export const routes: Routes = [
                         }
                     },
                     {
-                        path: 'item/:   itemid/batch/:batchid',
+                        path: 'item/:itemid/batch/:batchid',
                         component: InventoryBatchView,
                         resolve: {
                             batchdetail: stockItemBatchResolver
