@@ -33,6 +33,10 @@ export class InventoryService {
     return this.apiService.get<StockItemTypeCountDto[]>(`${this.controllerPath}/stock-items/count-by-itemtype`);
   }
 
+  getStockItemBatch(stockItemId: number, batchId: number): Observable<StockItemDetailsDto> {
+    return this.apiService.get<StockItemDetailsDto>(`${this.controllerPath}/stock-items/${stockItemId}/batches/${batchId}`);
+  }
+
   createStockItem(item: StockItemForCreateDto): Observable<{ message: string }> {
     return this.apiService.post<{ message: string }>(`${this.controllerPath}/stock-items`, item);
   }
