@@ -77,6 +77,7 @@ export class Header implements OnInit, OnDestroy {
     this.headerTitle = null;
     this.onSelected = false;
     this.showSaveButton = false;
+    this.showEditButton = false;
 
     if (url.includes('/inventory/add-item')) {
       this.showBackButton = true;
@@ -85,6 +86,12 @@ export class Header implements OnInit, OnDestroy {
 
       // this.onAdd = true;
       // this.onEdit = false;
+    }
+    else if (url.includes('/inventory/item/') && url.includes('/batch/')) {
+      this.showBackButton = true;
+      this.showDeleteButton = true;
+      this.onSelected = true;
+      console.log('youre here')
     }
     else if (url.includes('/inventory/item/')) {
       this.showBackButton = true;
