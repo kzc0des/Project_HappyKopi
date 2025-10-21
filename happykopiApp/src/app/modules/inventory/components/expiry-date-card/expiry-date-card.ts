@@ -1,5 +1,6 @@
 import { Component, ElementRef, forwardRef, HostListener, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { HeaderService } from '../../../../core/services/header/header.service';
 
 @Component({
   selector: 'app-expiry-date-card',
@@ -24,7 +25,7 @@ export class ExpiryDateCard implements ControlValueAccessor {
   private onChange: (value: Date | null) => void = () => {};
   private onTouched: () => void = () => {};
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef, private headerService: HeaderService) {}
 
   writeValue(value: Date | string | null): void {
     if (value instanceof Date && !isNaN(value.getTime())) {
@@ -78,6 +79,8 @@ export class ExpiryDateCard implements ControlValueAccessor {
     } else {
       this.onChange(null);
     }
+
+    this.headerService.notifyValueChanged('changed date', true);
   }
 
   focusNext(event: Event, nextField: 'day' | 'year'): void {

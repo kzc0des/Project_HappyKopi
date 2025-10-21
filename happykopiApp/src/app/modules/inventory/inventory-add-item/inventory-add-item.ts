@@ -13,10 +13,11 @@ import { Location } from '@angular/common';
 import { ExpiryDateCard } from '../components/expiry-date-card/expiry-date-card';
 import { UnitGrouping } from '../../../core/enums/unit';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
+import { YellowButton } from "../../../shared/components/yellow-button/yellow-button";
 
 @Component({
   selector: 'app-inventory-add-item',
-  imports: [ToggleButton, Itemcard, FormsModule, DropdownButton, ExpiryDateCard],
+  imports: [ToggleButton, Itemcard, FormsModule, DropdownButton, ExpiryDateCard, YellowButton],
   templateUrl: './inventory-add-item.html',
   styleUrl: './inventory-add-item.css'
 })
@@ -24,6 +25,7 @@ export class InventoryAddItem implements OnInit, OnDestroy {
   stockitemdetail !: StockItemForCreateDto;
   categories !: DropdownOption[];
   units !: DropdownOption[];
+  showInitialStockInput : boolean = false;
 
   unitSelected !: string;
   stockitemType !: number;
@@ -145,5 +147,10 @@ export class InventoryAddItem implements OnInit, OnDestroy {
     // Units variable: ${this.units}
     // `);
 
+  }
+
+  receiveNotifyClick() {
+    this.showInitialStockInput = !this.showInitialStockInput;
+    console.log(this.showInitialStockInput);
   }
 }

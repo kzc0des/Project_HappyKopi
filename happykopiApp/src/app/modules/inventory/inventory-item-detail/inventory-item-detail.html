@@ -1,8 +1,8 @@
 <div class="h-full">
     <div class="flex flex-col gap-2 px-5 py-3">
-        <app-itemcard itemTitle="Ingredient Name" [isEditing]="false" [(ngModel)]="stockitemdetail.name">
+        <app-itemcard itemTitle="Ingredient Name" [showIcon]="true" [isEditing]="false" [(ngModel)]="stockitemdetail.name">
         </app-itemcard>
-        <app-itemcard itemTitle="Measurement" [isEditing]="false" [(ngModel)]="stockitemdetail.unitOfMeasure">
+        <app-itemcard itemTitle="Measurement" [showIcon]="true" [isEditing]="false" [(ngModel)]="stockitemdetail.unitOfMeasure">
         </app-itemcard>
     </div>
     <app-ingredient-batch-card [batches]="stockitemdetail.batches"
