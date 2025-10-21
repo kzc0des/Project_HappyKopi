@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-modifier-page',
@@ -6,6 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: './modifier-page.html',
   styleUrl: './modifier-page.css'
 })
-export class ModifierPage {
+export class ModifierPage implements OnInit{
 
+  constructor (
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+  const datalist = this.route.snapshot.data['modifiertypecount'];
+  console.log(datalist);
+  }
 }

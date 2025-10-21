@@ -54,6 +54,14 @@ export class InventoryService {
   }
 
   public loadCategoryOptions(arr: any): any {
+    if (Array.isArray(arr)) {
+      return arr.map(item => ({
+        // The value is the string from the enum (ml, l)
+        value: item,  // 'MILLILITERS'
+        label: item   // 'MILLILITERS'
+      }));
+    }
+
     return Object.keys(arr)
       .filter(key => isNaN(Number(key)))
       .map(key => ({

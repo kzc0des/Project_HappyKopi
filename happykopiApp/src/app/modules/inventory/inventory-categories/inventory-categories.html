@@ -1,5 +1,5 @@
 <div class="flex flex-col w-full">
-    @for(item of stockItemTypes; track $index){
+    @for(item of stockItemTypeDisplay; track $index){
         <app-inventory-category-card 
         [categoryName]="item.itemTypeName" 
         [categoryNumberOfItems]="item.stockItemCount"></app-inventory-category-card>

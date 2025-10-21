@@ -11,6 +11,8 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Location } from '@angular/common';
 import { ExpiryDateCard } from '../components/expiry-date-card/expiry-date-card';
+import { UnitGrouping } from '../../../core/enums/unit';
+import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-inventory-add-item',
@@ -21,13 +23,17 @@ import { ExpiryDateCard } from '../components/expiry-date-card/expiry-date-card'
 export class InventoryAddItem implements OnInit, OnDestroy {
   stockitemdetail !: StockItemForCreateDto;
   categories !: DropdownOption[];
+  units !: DropdownOption[];
+
+  unitSelected !: string;
   stockitemType !: number;
   private actionSubscription!: Subscription;
 
   constructor(
     private inventoryService: InventoryService,
     private headerActionService: HeaderService,
-    private location: Location
+    private location: Location,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -53,14 +59,18 @@ export class InventoryAddItem implements OnInit, OnDestroy {
       }
     }
 
-    this.actionSubscription = this.headerActionService.action$.subscribe(action => {
-      switch (action) {
-        case 'SAVE':
+    this.updateUnitsBasedOnCategory(this.stockitemdetail.itemType);
+
+    this.actionSubscription = this.headerActionService.action$.subscribe(async action => {
+      if (action === 'SAVE') {
+        const confirmedSave = await this.confirmationService.confirm(
+          'Confirm Save',
+          `Are you sure you want to save these changes?`,
+          'primary'
+        );
+        if (confirmedSave) {
           this.saveNewItem();
-          break;
-        case 'CANCEL':
-          this.location.back();
-          break;
+        }
       }
     })
   }
@@ -91,7 +101,6 @@ export class InventoryAddItem implements OnInit, OnDestroy {
         console.error('Failed to create item:', err);
       }
     });
-
   }
 
   private initializeEmptyDto(): void {
@@ -103,5 +112,38 @@ export class InventoryAddItem implements OnInit, OnDestroy {
       itemType: Stockitemtype.Liquid,
       initialStockQuantity: 0,
     }
+  }
+
+  updateUnitsBasedOnCategory(itemType: Stockitemtype) {
+    let unitGroup: string[] = [];
+
+    switch (itemType) {
+      case Stockitemtype.Liquid:
+        unitGroup = UnitGrouping.Liquid;
+        break;
+      case Stockitemtype.Powder:
+        unitGroup = UnitGrouping.Powder;
+        break;
+      case Stockitemtype.Miscellaneous:
+        unitGroup = UnitGrouping.Miscellaneous;
+        break;
+      default:
+        unitGroup = [];
+        this.stockitemdetail.unit = '';
+        break;
+    }
+
+    this.units = this.inventoryService.loadCategoryOptions(unitGroup);
+
+    if (unitGroup.length > 0) {
+      this.stockitemdetail.unit = unitGroup[0];
+    }
+
+    // console.log(`
+    // ItemType Selected: ${itemType}
+    // Units Available: ${unitGroup}
+    // Units variable: ${this.units}
+    // `);
+
   }
 }
