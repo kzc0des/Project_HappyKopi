@@ -54,6 +54,8 @@ import { CreateDrinkPage } from './modules/products/categories/create-drink-page
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
 import { AssignDrinkPage } from './modules/products/categories/assign-drink-page/assign-drink-page';
 import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
+import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inventory-batch-view';
+import { stockItemBatchResolver } from './modules/inventory/resolver/stockitembatch/stock-item-batch-resolver';
 
 export const routes: Routes = [
     {
@@ -134,6 +136,13 @@ export const routes: Routes = [
                         component: InventoryEditItem,
                         resolve: {
                             stockitemdetail: stockitemdetailResolver
+                        }
+                    },
+                    {
+                        path: 'item/:itemid/batch/:batchid',
+                        component: InventoryBatchView,
+                        resolve: {
+                            batchdetail: stockItemBatchResolver
                         }
                     }
                 ]
