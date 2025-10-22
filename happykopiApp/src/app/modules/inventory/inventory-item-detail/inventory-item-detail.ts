@@ -8,8 +8,8 @@ import { HeaderService } from '../../../core/services/header/header.service';
 import { InventoryService } from '../services/inventory.service';
 import { FormsModule } from '@angular/forms';
 import { DropdownOption } from '../../../shared/components/dropdown-button/dropdown-option';
-import { Stockitemtype } from '../../../core/enums/stockitemtype';
 import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-for-update-dto';
+import { StockItemType } from '../../../core/enums/stock-item-type';
 
 
 @Component({
@@ -50,7 +50,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
 
     });
 
-    this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
+    this.categories = this.inventoryService.loadCategoryOptions(StockItemType);
 
   }
 

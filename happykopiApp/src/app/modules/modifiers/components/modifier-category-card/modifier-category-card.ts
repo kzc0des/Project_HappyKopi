@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-modifier-category-card',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './modifier-category-card.html',
   styleUrl: './modifier-category-card.css'
 })

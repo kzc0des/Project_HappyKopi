@@ -34,7 +34,6 @@ import { Order } from './modules/pos/forms/order/order';
 import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-category-on';
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { SizesPage } from './modules/modifiers/sizes-page/sizes-page'
-import { AddOnsPage } from './modules/modifiers/add-ons-page/add-ons-page'
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
 import { YellowButton } from './shared/components/yellow-button/yellow-button';
@@ -56,6 +55,8 @@ import { AssignDrinkPage } from './modules/products/categories/assign-drink-page
 import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
 import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inventory-batch-view';
 import { stockItemBatchResolver } from './modules/inventory/resolver/stockitembatch/stock-item-batch-resolver';
+import { ModifierList } from './modules/modifiers/modifier-list/modifier-list';
+import { modifierSummaryResolver } from './modules/modifiers/resolver/modifiersummary/modifier-summary-resolver';
 
 export const routes: Routes = [
     {
@@ -157,7 +158,14 @@ export const routes: Routes = [
                         resolve: {
                             modifiertypecount: modifierTypeCountResolver
                         }
-                    }
+                    },
+                    {
+                        path: ':type',
+                        component: ModifierList,
+                        resolve: {
+                            modifiers: modifierSummaryResolver
+                        }
+                    },
                 ]
             }
         ]
@@ -225,10 +233,6 @@ export const routes: Routes = [
     {
         path: 'sizes',
         component: SizesPage
-    },
-    {
-        path: 'addons',
-        component: AddOnsPage
     },
     {
         path: 'view-order',

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
@@ -18,8 +18,8 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   // Generic GET method
-  get<T>(path: string): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}/${path}`, this.httpOptions)
+  get<T>(path: string, params: HttpParams = new HttpParams()): Observable<T> {
+    return this.http.get<T>(`${this.baseUrl}/${path}`, { headers: this.httpOptions.headers, params })
       .pipe(
         catchError(this.handleError)
       );

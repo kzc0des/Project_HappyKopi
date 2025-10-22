@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InventoryCategoryCard } from "../components/inventory-category-card/inventory-category-card";
-import { InventoryService } from '../services/inventory.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StockItemTypeCountDto } from '../../../core/dtos/stockitem/stock-item-type-count-dto';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
-import { Stockitemtype } from '../../../core/enums/stockitemtype';
 
 @Component({
   selector: 'app-inventory-categories',
