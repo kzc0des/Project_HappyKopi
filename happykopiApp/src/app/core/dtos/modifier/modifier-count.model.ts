@@ -1,4 +1,4 @@
 export interface ModifierCount {
-    type: string;
-    count: number;
+    modifierType: string;
+    modifierCount: number;
 }

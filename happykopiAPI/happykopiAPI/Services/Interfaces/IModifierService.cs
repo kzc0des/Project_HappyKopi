@@ -1,5 +1,6 @@
 ﻿using happykopiAPI.DTOs.Modifier.Incoming_Data;
 using happykopiAPI.DTOs.Modifier.Outgoing_Data;
+using happykopiAPI.Enums;
 
 namespace happykopiAPI.Services.Interfaces
 {
@@ -8,6 +9,7 @@ namespace happykopiAPI.Services.Interfaces
         Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync();
         Task<IEnumerable<ModifierSummaryDto>> GetAllModifiersAsync();
         Task<IEnumerable<ModifierSummaryDto>> GetAvailableModifiersAsync();
+        Task<IEnumerable<ModifierSummaryDto>> GetModifiersByTypeAsync(ModifierType modifierType);
         Task<ModifierDetailsDto> GetModifierByIdAsync(int modifierId);
 
         Task<ModifierSummaryDto> CreateModifierAsync(ModifierForCreateDto modifierForCreateDto);

@@ -7,6 +7,9 @@ import { ModifierForUpdate } from '../../../core/dtos/modifier/modifier-for-upda
 import { ModifierLinkStockItem } from '../../../core/dtos/modifier/modifier-link-stock-item.model';
 import { SignalRService } from '../../../core/services/signalR/signal-r.service';
 import { ModifierCount } from '../../../core/dtos/modifier/modifier-count.model';
+import { ModifierType } from '../../../core/enums/modifier-type';
+import { ModifierSummaryDto } from '../../../core/dtos/modifier/modifier-summary-dto';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +20,8 @@ export class ModifierService {
 
   constructor(
     private apiService: ApiService,
-    private signalrService: SignalRService
+    private signalrService: SignalRService,
+    private http: HttpClient
   ) {
     this.signalrService.startConnection();
     this.listenForModifierUpdates();
@@ -31,6 +35,11 @@ export class ModifierService {
 
   getModifierCountByType(): Observable<ModifierCount[]> {
     return this.apiService.get<ModifierCount[]>('modifiers/count-by-type');
+  }
+
+  getModifiersByType(type: ModifierType): Observable<ModifierSummaryDto[]> {
+    const params = new HttpParams().set('modifierType', type.toString());
+    return this.apiService.get<ModifierSummaryDto[]>(`modifiers`, params);
   }
 
   getModifiers(availableOnly: boolean = false): Observable<Modifier[]> {

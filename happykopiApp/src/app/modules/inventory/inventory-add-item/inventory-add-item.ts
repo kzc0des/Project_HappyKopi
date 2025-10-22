@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { StockItemForCreateDto } from '../../../core/dtos/stockitem/stock-item-for-create-dto';
 import { InventoryService } from '../services/inventory.service';
 import { DropdownOption } from '../../../shared/components/dropdown-button/dropdown-option';
-import { Stockitemtype } from '../../../core/enums/stockitemtype';
 import { DropdownButton } from '../../../shared/components/dropdown-button/dropdown-button';
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
@@ -14,6 +13,7 @@ import { ExpiryDateCard } from '../components/expiry-date-card/expiry-date-card'
 import { UnitGrouping } from '../../../core/enums/unit';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 import { YellowButton } from "../../../shared/components/yellow-button/yellow-button";
+import { StockItemType } from '../../../core/enums/stock-item-type';
 
 @Component({
   selector: 'app-inventory-add-item',
@@ -39,7 +39,7 @@ export class InventoryAddItem implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
+    this.categories = this.inventoryService.loadCategoryOptions(StockItemType);
     // console.log(this.categories);
 
     this.initializeEmptyDto();
@@ -111,22 +111,22 @@ export class InventoryAddItem implements OnInit, OnDestroy {
       unit: '',
       alertLevel: 10,
       isPerishable: false,
-      itemType: Stockitemtype.Liquid,
+      itemType: StockItemType.Liquid,
       initialStockQuantity: 0,
     }
   }
 
-  updateUnitsBasedOnCategory(itemType: Stockitemtype) {
+  updateUnitsBasedOnCategory(itemType: StockItemType) {
     let unitGroup: string[] = [];
 
     switch (itemType) {
-      case Stockitemtype.Liquid:
+      case StockItemType.Liquid:
         unitGroup = UnitGrouping.Liquid;
         break;
-      case Stockitemtype.Powder:
+      case StockItemType.Powder:
         unitGroup = UnitGrouping.Powder;
         break;
-      case Stockitemtype.Miscellaneous:
+      case StockItemType.Miscellaneous:
         unitGroup = UnitGrouping.Miscellaneous;
         break;
       default:

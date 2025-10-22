@@ -11,9 +11,9 @@ import { InventoryService } from '../services/inventory.service';
 import { Location } from '@angular/common';
 import { StockItemForUpdateDto } from '../../../core/dtos/stockitem/stock-item-for-update-dto';
 import { FormsModule } from '@angular/forms';
-import { Stockitemtype } from '../../../core/enums/stockitemtype';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 import { UnitGrouping } from '../../../core/enums/unit';
+import { StockItemType } from '../../../core/enums/stock-item-type';
 
 @Component({
   selector: 'app-inventory-edit-item',
@@ -42,7 +42,7 @@ export class InventoryEditItem implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.stockitemdetail = this.route.snapshot.data['stockitemdetail'];
     this.stockitemType = this.stockitemdetail.itemType;
-    this.categories = this.inventoryService.loadCategoryOptions(Stockitemtype);
+    this.categories = this.inventoryService.loadCategoryOptions(StockItemType);
     this.updateUnitsBasedOnCategory(this.stockitemdetail.itemType);
 
     this.actionSubscription = this.headerActionService.action$.subscribe(async action => {
@@ -108,17 +108,17 @@ export class InventoryEditItem implements OnInit, OnDestroy {
     })
   }
 
-  updateUnitsBasedOnCategory(itemType: Stockitemtype) {
+  updateUnitsBasedOnCategory(itemType: StockItemType) {
       let unitGroup: string[] = [];
   
       switch (itemType) {
-        case Stockitemtype.Liquid:
+        case StockItemType.Liquid:
           unitGroup = UnitGrouping.Liquid;
           break;
-        case Stockitemtype.Powder:
+        case StockItemType.Powder:
           unitGroup = UnitGrouping.Powder;
           break;
-        case Stockitemtype.Miscellaneous:
+        case StockItemType.Miscellaneous:
           unitGroup = UnitGrouping.Miscellaneous;
           break;
         default:

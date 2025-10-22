@@ -1,5 +1,6 @@
 ﻿using happykopiAPI.Data;
 using happykopiAPI.DTOs.Modifier.Incoming_Data;
+using happykopiAPI.Enums;
 using happykopiAPI.Models;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -31,8 +32,14 @@ namespace happykopiAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetModifiers([FromQuery] bool availableOnly = false)
+        public async Task<IActionResult> GetModifiers([FromQuery] ModifierType? modifierType = null, [FromQuery] bool availableOnly = false)
         {
+            if (modifierType.HasValue)
+            {
+                var modifiersByType = await _modifierService.GetModifiersByTypeAsync(modifierType.Value);
+                return Ok(modifiersByType);
+            }
+
             var modifiers = availableOnly
                 ? await _modifierService.GetAvailableModifiersAsync()
                 : await _modifierService.GetAllModifiersAsync();

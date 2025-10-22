@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddOnsPage } from './add-ons-page';
+import { ModifierItemCard } from './modifier-item-card';
 
-describe('AddOnsPage', () => {
-  let component: AddOnsPage;
-  let fixture: ComponentFixture<AddOnsPage>;
+describe('ModifierItemCard', () => {
+  let component: ModifierItemCard;
+  let fixture: ComponentFixture<ModifierItemCard>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddOnsPage]
+      imports: [ModifierItemCard]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddOnsPage);
+    fixture = TestBed.createComponent(ModifierItemCard);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
