@@ -32,7 +32,7 @@ namespace happykopiAPI.Models
 
         [Required]
         public StockItemType ItemType { get; set; }
-        public ICollection<ProductIngredient> Recipe { get; set; }
+        public ICollection<ProductVariantIngredient> ProductVariantIngredients { get; set; }
         public ICollection<StockItemBatch> Batches { get; set; }
         public ICollection<StockLog> StockLogs { get; set; }
     }

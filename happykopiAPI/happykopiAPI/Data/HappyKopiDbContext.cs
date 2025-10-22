@@ -11,12 +11,13 @@ namespace happykopiAPI.Data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductVariant> ProductVariants { get; set; }
+        public DbSet<ProductVariantIngredient> ProductVariantIngredients { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<StockItem> StockItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<ProductIngredient> ProductIngredients { get; set; }
         public DbSet<StockLog> StockLogs { get; set; }
         public DbSet<DailyIngredientSummary> DailyIngredientSummaries { get; set; }
         public DbSet<StockItemBatch> StockItemBatches { get; set; }
@@ -28,18 +29,23 @@ namespace happykopiAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ProductIngredient>()
-                .HasKey(pi => new { pi.ProductId, pi.StockItemId });
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Variants)
+                .WithOne(pv => pv.Product)
+                .HasForeignKey(pv => pv.ProductId);
 
-            modelBuilder.Entity<ProductIngredient>()
-                .HasOne(pi => pi.Product)
-                .WithMany(p => p.Recipe)
-                .HasForeignKey(pi => pi.ProductId);
+            modelBuilder.Entity<ProductVariantIngredient>()
+                .HasKey(pvi => new { pvi.ProductVariantId, pvi.StockItemId }); 
 
-            modelBuilder.Entity<ProductIngredient>()
-                .HasOne(pi => pi.StockItem)
-                .WithMany(i => i.Recipe)
-                .HasForeignKey(pi => pi.StockItemId);
+            modelBuilder.Entity<ProductVariantIngredient>()
+                .HasOne(pvi => pvi.ProductVariant)
+                .WithMany(pv => pv.Recipe) 
+                .HasForeignKey(pvi => pvi.ProductVariantId);
+
+            modelBuilder.Entity<ProductVariantIngredient>()
+                .HasOne(pvi => pvi.StockItem)
+                .WithMany(si => si.ProductVariantIngredients)
+                .HasForeignKey(pvi => pvi.StockItemId);
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderItems)
