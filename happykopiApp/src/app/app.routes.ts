@@ -163,7 +163,7 @@ export const routes: Routes = [
                         path: ':type',
                         component: ModifierList,
                         resolve: {
-                            modifiers: modifierSummaryResolver
+                            modifierlist: modifierSummaryResolver
                         }
                     },
                 ]
