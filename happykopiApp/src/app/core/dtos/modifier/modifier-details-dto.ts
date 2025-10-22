@@ -1,6 +1,6 @@
 import { ModifierLinkStockItem } from "./modifier-link-stock-item.model";
 
-export interface ModifierDetails {
+export interface ModifierDetailsDto {
     id: number;
     name: string;
     price: number;

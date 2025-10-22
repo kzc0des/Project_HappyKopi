@@ -9,13 +9,13 @@ import { ModifierCount } from '../../../core/dtos/modifier/modifier-count.model'
 import { ModifierType } from '../../../core/enums/modifier-type';
 import { ModifierSummaryDto } from '../../../core/dtos/modifier/modifier-summary-dto';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ModifierDetails } from '../../../core/dtos/modifier/modifier-details';
+import { ModifierDetailsDto } from '../../../core/dtos/modifier/modifier-details-dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModifierService {
-  private modifiersSubject = new BehaviorSubject<ModifierDetails[]>([]);
+  private modifiersSubject = new BehaviorSubject<ModifierDetailsDto[]>([]);
   public modifiers$ = this.modifiersSubject.asObservable();
 
   constructor(
@@ -42,24 +42,24 @@ export class ModifierService {
     return this.apiService.get<ModifierSummaryDto[]>(`modifiers`, params);
   }
 
-  getModifiers(availableOnly: boolean = false): Observable<ModifierDetails[]> {
-    return this.apiService.get<ModifierDetails[]>(`modifiers?availableOnly=${availableOnly}`).pipe(
+  getModifiers(availableOnly: boolean = false): Observable<ModifierDetailsDto[]> {
+    return this.apiService.get<ModifierDetailsDto[]>(`modifiers?availableOnly=${availableOnly}`).pipe(
       tap(modifiers => {
         this.modifiersSubject.next(modifiers);
       })
     );
   }
 
-  getModifierById(id: number): Observable<ModifierDetails> {
-    return this.apiService.get<ModifierDetails>(`modifiers/${id}`);
+  getModifierById(id: number): Observable<ModifierDetailsDto> {
+    return this.apiService.get<ModifierDetailsDto>(`modifiers/${id}`);
   }
 
-  createModifier(modifier: ModifierForCreate): Observable<ModifierDetails> {
-    return this.apiService.post<ModifierDetails>('modifiers', modifier);
+  createModifier(modifier: ModifierForCreate): Observable<ModifierDetailsDto> {
+    return this.apiService.post<ModifierDetailsDto>('modifiers', modifier);
   }
 
-  updateModifier(id: number, modifier: ModifierForUpdate): Observable<ModifierDetails> {
-    return this.apiService.put<ModifierDetails>(`modifiers/${id}`, modifier);
+  updateModifier(id: number, modifier: ModifierForUpdate): Observable<ModifierDetailsDto> {
+    return this.apiService.put<ModifierDetailsDto>(`modifiers/${id}`, modifier);
   }
 
   linkStockItem(modifierId: number, link: ModifierLinkStockItem): Observable<any> {

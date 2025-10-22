@@ -33,7 +33,6 @@ import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-do
 import { Order } from './modules/pos/forms/order/order';
 import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-category-on';
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
-import { SizesPage } from './modules/modifiers/sizes-page/sizes-page'
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
 import { YellowButton } from './shared/components/yellow-button/yellow-button';
@@ -45,9 +44,7 @@ import { InventoryAddItem } from './modules/inventory/inventory-add-item/invento
 import { EditCategoryPage } from './modules/products/categories/edit-category-page/edit-category-page';
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/drinks/edit-drink-page/edit-drink-page';
-import { ProductsPage } from './modules/modifiers/products-page/products-page';
 import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
-import { CategoriesPage } from './modules/modifiers/categories-page/categories-page';
 import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
 import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
@@ -57,6 +54,8 @@ import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inv
 import { stockItemBatchResolver } from './modules/inventory/resolver/stockitembatch/stock-item-batch-resolver';
 import { ModifierList } from './modules/modifiers/modifier-list/modifier-list';
 import { modifierSummaryResolver } from './modules/modifiers/resolver/modifiersummary/modifier-summary-resolver';
+import { ModifierView } from './modules/modifiers/modifier-view/modifier-view';
+import { modifierDetailsResolver } from './modules/modifiers/resolver/modifierdetails/modifier-details-resolver';
 
 export const routes: Routes = [
     {
@@ -166,6 +165,13 @@ export const routes: Routes = [
                             modifierlist: modifierSummaryResolver
                         }
                     },
+                    {
+                        path: 'item/:itemId',
+                        component: ModifierView,
+                        resolve: {
+                            modifierdetail: modifierDetailsResolver
+                        }
+                    }
                 ]
             }
         ]
@@ -231,10 +237,6 @@ export const routes: Routes = [
         component: ModifierPage
     },
     {
-        path: 'sizes',
-        component: SizesPage
-    },
-    {
         path: 'view-order',
         component: ViewOrder
     },
@@ -275,16 +277,8 @@ export const routes: Routes = [
         component: EditDrinkPage
     },
     {
-        path: 'products',
-        component: ProductsPage
-    },
-    {
         path: 'edit-products',
         component: EditProductsPage
-    },
-    {
-        path: 'categories',
-        component: CategoriesPage
     },
     {
         path: 'edit-addons',
