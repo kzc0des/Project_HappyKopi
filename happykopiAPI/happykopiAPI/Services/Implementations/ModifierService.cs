@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using happykopiAPI.DTOs.Modifier.Incoming_Data;
 using happykopiAPI.DTOs.Modifier.Outgoing_Data;
+using happykopiAPI.Enums;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -31,6 +32,7 @@ namespace happykopiAPI.Services.Implementations
             );
             return result;
         }
+
         public async Task<IEnumerable<ModifierSummaryDto>> GetAllModifiersAsync()
         {
             using var connection = new SqlConnection(_connectionString);
@@ -38,11 +40,19 @@ namespace happykopiAPI.Services.Implementations
             return await connection.QueryAsync<ModifierSummaryDto>("sp_GetModifiers", commandType: CommandType.StoredProcedure);
         }
 
+        // order process query only available modifiers
         public async Task<IEnumerable<ModifierSummaryDto>> GetAvailableModifiersAsync()
         {
             using var connection = new SqlConnection(_connectionString);
 
             return await connection.QueryAsync<ModifierSummaryDto>("sp_GetAvailableModifiers", commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<IEnumerable<ModifierSummaryDto>> GetModifiersByTypeAsync(ModifierType modifierType)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var parameters = new { ModifierType = (int)modifierType };
+            return await connection.QueryAsync<ModifierSummaryDto>("sp_GetModifiersByType", parameters, commandType: CommandType.StoredProcedure);
         }
         public async Task<ModifierDetailsDto> GetModifierByIdAsync(int modifierId)
         {
@@ -81,9 +91,7 @@ namespace happykopiAPI.Services.Implementations
             {
                 Id = newId,
                 Name = dto.Name,
-                Price = dto.Price,
-                Type = dto.Type.ToString(),
-                IsAvailable = true
+                Price = dto.Price
             };
 
             await _notificationService.NotifyModifiersUpdatedAsync();
