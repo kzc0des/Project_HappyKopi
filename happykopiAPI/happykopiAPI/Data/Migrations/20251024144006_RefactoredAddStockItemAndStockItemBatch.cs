@@ -5,15 +5,13 @@
 namespace happykopiAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ProductsInventoryProceduresV3 : Migration
+    public partial class RefactoredAddStockItemAndStockItemBatch : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            #region Commented Out Procedures
-            /*
-			var sp_AddNewStockItem = @"
-			CREATE PROCEDURE sp_AddNewStockItem
+            var sp_AddNewStockItem = @"
+			CREATE OR ALTER PROCEDURE [dbo].[sp_AddNewStockItem]
 			@Name NVARCHAR(255),
 			@Unit NVARCHAR(255),
 			@AlertLevel DECIMAL(18, 2),
@@ -96,8 +94,8 @@ namespace happykopiAPI.Data.Migrations
 
 			migrationBuilder.Sql(sp_AddNewStockItem);
 
-			var sp_AddStockItemBatch = @"
-			CREATE PROCEDURE sp_AddStockItemBatch
+			var sp_AddNewStockItemBatch = @"
+			CREATE OR ALTER PROCEDURE [dbo].[sp_AddStockItemBatch]
 			@StockItemId INT,
 			@QuantityAdded DECIMAL(18, 2),
 			@UserId INT,
@@ -160,74 +158,14 @@ namespace happykopiAPI.Data.Migrations
 				END CATCH
 			END";
 
-			migrationBuilder.Sql(sp_AddStockItemBatch);
-			*/
-            #endregion
-
-            var sp_AddNewProduct = @"
-			CREATE PROCEDURE sp_AddNewProduct
-			@Name NVARCHAR(150),
-			@Description NVARCHAR(MAX) = NULL,
-			@Price DECIMAL(18, 2),
-			@ImageUrl NVARCHAR(MAX),
-			@CategoryId INT,
-			@Recipe dbo.ProductRecipeType READONLY
-			AS
-			BEGIN
-				SET NOCOUNT ON;
-
-				IF EXISTS (SELECT 1 FROM dbo.Products WHERE Name = @Name)
-					THROW 50001, 'The product is already existing.', 1;
-		
-				BEGIN TRANSACTION
-				BEGIN TRY
-					INSERT INTO dbo.Products (
-						Name, 
-						Description, 
-						Price, 
-						ImageUrl,
-						CategoryId
-					)
-					VALUES (
-						@Name,
-						@Description,
-						@Price,
-						@ImageUrl,
-						@CategoryId
-					);
-		
-					DECLARE @NewProductId INT;
-					SET @NewProductId = SCOPE_IDENTITY();
-		
-					INSERT INTO dbo.ProductIngredients (
-						ProductId,
-						StockItemId,
-						QuantityNeeded
-					)
-					SELECT 
-						@NewProductId,
-						IngredientId,
-						QuantityNeeded
-					FROM @Recipe;
-		
-					COMMIT TRANSACTION
-				END TRY
-				BEGIN CATCH
-					IF @@TRANCOUNT > 0
-						ROLLBACK TRANSACTION
-					THROW;
-				END CATCH
-			END";
-
-			migrationBuilder.Sql(sp_AddNewProduct);
+			migrationBuilder.Sql(sp_AddNewStockItemBatch);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-			migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddNewStockItem");
-			migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddStockItemBatch");
-			migrationBuilder.Sql("DROP PROCEDURE IF EXISTS sp_AddNewProduct");
+			migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_AddNewStockItem]");
+			migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_AddStockItemBatch]");
         }
     }
 }
