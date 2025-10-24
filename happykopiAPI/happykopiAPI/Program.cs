@@ -23,7 +23,7 @@ builder.WebHost.ConfigureKestrel(options =>
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddDbContext<HappyKopiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDB"), sqlServerOptionsAction: sqlOptions =>
+builder.Services.AddDbContext<HappyKopiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test"), sqlServerOptionsAction: sqlOptions =>
 {
     sqlOptions.EnableRetryOnFailure();
 }));
