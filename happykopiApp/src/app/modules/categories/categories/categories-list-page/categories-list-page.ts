@@ -13,6 +13,7 @@ export class CategoriesListPage {
   constructor(private router: Router) {}
 
   categories = [
+    { name: 'All Drinks', count: 33 },
     { name: 'Milk Tea', count: 9 },
     { name: 'Fruit Tea', count: 6 },
     { name: 'Hot Kopi', count: 9 },

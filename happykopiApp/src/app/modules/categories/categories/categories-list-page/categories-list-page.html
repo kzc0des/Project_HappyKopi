@@ -8,20 +8,17 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=chevron_right" />
 </head>
 <body>
-    <div class="card bg-white p-10 rounded-0 shadow-sm flex items-center gap-6"
+    <div class="card bg-white pb-10 pt-10 pl-12 pr-12 rounded-0 shadow-sm flex items-center gap-6"
     *ngFor="let category of categories"
     (click)="goToCategory(category)"
     style="cursor: pointer;"
-    >    
-        <div class="ingredient-icon" style="color: white;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 48 48"><g fill="none"><rect width="36" height="14" x="6" y="28" stroke="currentColor" stroke-width="4" rx="4"/><path stroke="currentColor" stroke-linecap="round" stroke-width="4" d="M20 7H10a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h10"/><circle cx="34" cy="14" r="8" stroke="currentColor" stroke-width="4"/><circle cx="34" cy="14" r="3" fill="currentColor"/></g></svg>
-        </div>
+    >           
         <div class="flex flex-1 justify-between items-center gap-6">
-            <div>
-                <div class="text-2xl font-bold text-gray-800">
+            <div class="flex flex-col gap-1">
+                <div class="text-lg font-semibold text-gray-800">
                     {{ category.name }}
                 </div>
-                <div class="text-sm text-gray-400"> 
+                <div class="text-lg text-gray-400"> 
                     {{ category.count + ' Drinks'}}
                 </div>
             </div>
