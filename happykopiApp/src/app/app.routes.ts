@@ -57,6 +57,7 @@ import { ModifierView } from './modules/modifiers/modifier-view/modifier-view';
 import { modifierDetailsResolver } from './modules/modifiers/resolver/modifierdetails/modifier-details-resolver';
 import { DashboardCard } from './modules/dashboard/components/dashboard-card/dashboard-card';
 import { IndividualTransactionCard } from './modules/dashboard/components/individual-transaction-card/individual-transaction-card';
+import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
 
 export const routes: Routes = [
     {
@@ -300,5 +301,9 @@ export const routes: Routes = [
     {
         path: 'indtracard',
         component: IndividualTransactionCard
+    },
+    {
+        path: 'charge-item',
+        component: ChargeItem
     }
 ];

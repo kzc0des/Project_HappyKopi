@@ -3,16 +3,20 @@
 
   <div class="drink-info">
     <div class="drink-header">
-      <div class="drink-name">Karamel Macchiato</div>
-      <div class="drink-price">₱73.00</div>
+      <div class="drink-name">
+        {{chargeItem.Name}}
+        <div class="drink-qty">({{chargeItem.DrinkQuantity}})</div>
+      </div>
+      <div class="drink-price">{{chargeItem.Subtotal}}</div>
     </div>
 
-    <div class="drink-size">Grande (16 oz)</div>
+    <div class="drink-size">{{chargeItem.Size}}</div>
 
     <div class="addon-list">
-      <div>Cream Cheese (4)</div>
-      <div>Nata De Coco</div>
-      <div>Espresso Shot</div>
+      <div class="addon">
+        {{chargeItem.AddOn}}
+        <div class="addon-qty">({{chargeItem.AddOnQuantity}})</div>
+      </div> 
     </div>
   </div>
 </div>

@@ -6,7 +6,8 @@ export interface cartItemDto {
  Size: string,
  AddOn: string,
  Subtotal: number,
- Quantity: number
+ DrinkQuantity: number,
+ AddOnQuantity: number
 }
 
 @Component({

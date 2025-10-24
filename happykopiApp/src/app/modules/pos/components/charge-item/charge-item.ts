@@ -1,4 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+export interface chargeItemDto {
+ Name: string,
+ Size: string,
+ AddOn: string,
+ Subtotal: number,
+ DrinkQuantity: number,
+ AddOnQuantity: number,
+} 
 
 @Component({
   selector: 'app-charge-item',
@@ -7,5 +16,5 @@ import { Component } from '@angular/core';
   styleUrl: './charge-item.css'
 })
 export class ChargeItem {
-
+@Input() chargeItem!: chargeItemDto;
 }
