@@ -4,6 +4,6 @@ export interface StockItemForCreateDto {
     alertLevel: number;
     isPerishable: boolean;
     itemType: number;
-    initialStockQuantity: number;
+    initialStockQuantity?: number;
     expiryDate?: Date | null;
 }

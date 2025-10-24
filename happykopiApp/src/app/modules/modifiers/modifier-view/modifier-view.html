@@ -1,3 +1,8 @@
 <app-itemcard itemTitle="Name" [(ngModel)]="modifierDetails.name"></app-itemcard>
 <app-itemcard itemTitle="Price" [(ngModel)]="modifierDetails.price"></app-itemcard>
-<app-itemcard itemTitle="Quantity (oz)"></app-itemcard>
+@if(modifierDetails.ozAmount) {
+    <app-itemcard itemTitle="Quantity (oz)" [(ngModel)]="modifierDetails.ozAmount"></app-itemcard>
+}
+@if(modifierDetails.linkedItems) {
+    <app-itemcard itemTitle="Miscellaneous Ingredient" [(ngModel)]="modifierDetails.linkedItems"></app-itemcard>
+}
