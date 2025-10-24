@@ -16,4 +16,10 @@ export class CreateDrinkPage {
     const navigation = this.router.getCurrentNavigation();
     this.category = navigation?.extras?.state?.['category'];
   }
+
+  selectedSize: string | null = null;
+
+  selectSize(size: string) {
+    this.selectedSize = size;
+  }
 }

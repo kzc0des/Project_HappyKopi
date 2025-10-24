@@ -22,7 +22,6 @@ import { TextBoxPrice } from './shared/components/text-box-price/text-box-price'
 import { AddIngredient } from './shared/components/add-ingredient/add-ingredient';
 import { SearchDrink } from './shared/components/search-drink/search-drink';
 import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
-import { ProductPage } from './modules/products/product-pages/product-page/product-page';
 import { DrinkListPage } from './modules/products/product-pages/drink-list-page/drink-list-page';
 import { CategoriesListPage } from './modules/categories/categories/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
@@ -195,10 +194,6 @@ export const routes: Routes = [
     {
         path: 'searchdrink',
         component: SearchDrink
-    },
-    {
-        path: 'product-page',
-        component: ProductPage
     },
     {
         path: 'drink-list-page',

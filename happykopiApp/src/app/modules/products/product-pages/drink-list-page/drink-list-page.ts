@@ -11,10 +11,6 @@ import { Router } from '@angular/router';
 export class DrinkListPage {
   isDropdownOpen = false;
 
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
   drinks = [
     { name: 'Thai', category: 'Milk Tea', baseprice: 45.00, available: true},  //image: (wala akong malinaw na copy ng image kaya di ko na nilagyan)
     { name: 'Hokkaido', category: 'Milk Tea', baseprice: 45.00, available: false},
@@ -28,5 +24,9 @@ export class DrinkListPage {
 
   goToDrink(drink: any) {
     this.router.navigate(['/drink-detail', drink.name], { state: { drink } });
+  }
+
+  goToCategory() {
+    this.router.navigate(['/categories-list-page'])
   }
 }
