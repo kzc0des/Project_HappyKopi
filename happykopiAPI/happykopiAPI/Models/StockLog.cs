@@ -13,7 +13,7 @@ namespace happykopiAPI.Models
         public int StockItemId { get; set; }
 
         [Required]
-        public int BatchId { get; set; }
+        public int StockItemBatchId { get; set; }
 
         [Required]
         public int UserId { get; set; } 
@@ -41,7 +41,7 @@ namespace happykopiAPI.Models
         [ForeignKey("StockItemId")]
         public StockItem StockItem { get; set; }
 
-        [ForeignKey("BatchId")]
+        [ForeignKey("StockItemBatchId")]
         public StockItemBatch Batch { get; set; }
 
         [ForeignKey("UserId")]

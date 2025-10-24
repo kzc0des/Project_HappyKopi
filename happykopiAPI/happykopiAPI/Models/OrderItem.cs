@@ -9,28 +9,27 @@ namespace happykopiAPI.Models
         public int Id { get; set; }
 
         [Required]
-        public int OrderId { get; set; } 
+        public int OrderId { get; set; }
 
         [Required]
-        public int ProductId { get; set; } 
+        public int ProductVariantId { get; set; }
 
         [Required]
-        public int Quantity { get; set; } 
-
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; } 
+        public int Quantity { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Subtotal { get; set; } 
+        public decimal Price { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Subtotal { get; set; }
 
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
 
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        [ForeignKey("ProductVariantId")]
+        public ProductVariant ProductVariant { get; set; }
 
         public ICollection<OrderItemModifier> AddOns { get; set; }
     }

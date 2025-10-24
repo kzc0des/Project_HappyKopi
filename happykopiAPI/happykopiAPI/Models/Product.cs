@@ -14,10 +14,6 @@ namespace happykopiAPI.Models
 
         public string Description { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; }
-
         public string ImageUrl { get; set; } 
 
         public bool IsAvailable { get; set; }  
@@ -28,6 +24,6 @@ namespace happykopiAPI.Models
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-        public ICollection<ProductIngredient> Recipe { get; set; }
+        public ICollection<ProductVariant> Variants { get; set; }
     }
 }

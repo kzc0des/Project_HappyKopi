@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using happykopiAPI.Data;
 
@@ -11,9 +12,11 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    partial class HappyKopiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251022093413_RefactoredProductTableAndAddedProductVariantAndProductVariantIngredientTables")]
+    partial class RefactoredProductTableAndAddedProductVariantAndProductVariantIngredientTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,7 +202,7 @@ namespace happykopiAPI.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductVariantId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -212,7 +215,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductVariantId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });
@@ -415,6 +418,9 @@ namespace happykopiAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ChangeType")
                         .HasColumnType("int");
 
@@ -431,9 +437,6 @@ namespace happykopiAPI.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("StockItemBatchId")
-                        .HasColumnType("int");
-
                     b.Property<int>("StockItemId")
                         .HasColumnType("int");
 
@@ -448,7 +451,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StockItemBatchId");
+                    b.HasIndex("BatchId");
 
                     b.HasIndex("StockItemId");
 
@@ -598,15 +601,15 @@ namespace happykopiAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("happykopiAPI.Models.ProductVariant", "ProductVariant")
+                    b.HasOne("happykopiAPI.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductVariantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
 
-                    b.Navigation("ProductVariant");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.OrderItemModifier", b =>
@@ -684,7 +687,7 @@ namespace happykopiAPI.Data.Migrations
                 {
                     b.HasOne("happykopiAPI.Models.StockItemBatch", "Batch")
                         .WithMany("StockLogs")
-                        .HasForeignKey("StockItemBatchId")
+                        .HasForeignKey("BatchId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
