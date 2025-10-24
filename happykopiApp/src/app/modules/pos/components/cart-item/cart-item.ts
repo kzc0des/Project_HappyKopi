@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { Component, Input } from '@angular/core';
+
+export interface cartItemDto {
+ Name: string,
+ Size: string,
+ AddOn: string,
+ Subtotal: number,
+ Quantity: number
+}
 
 @Component({
   selector: 'app-cart-item',
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './cart-item.html',
   styleUrl: './cart-item.css'
 })
 export class CartItem {
-
+@Input() cartItem!: cartItemDto;
 }
