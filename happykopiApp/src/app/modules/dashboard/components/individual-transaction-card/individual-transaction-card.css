@@ -1,0 +1,60 @@
+.card {
+  display: flex;
+  flex-direction: row;
+
+  height: 142px;
+  background-color: #fafafa;
+}
+
+.left-content {
+  width: 92px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-content {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* pushes texts left and details right */
+  padding-right: 24px; 
+}
+
+.right-texts {
+  display: flex;  
+  flex-direction: column; 
+  justify-content: flex-start;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  flex: 1;
+}
+
+.right-details {
+  text-align: right; /* aligns text to the right */
+}
+
+
+.transaction-id {
+    margin-bottom: 17px;
+    font-weight: bold;
+    color: #282828;
+    
+}
+.transaction-date, .transaction-who {
+    color: #777777;
+}
+
+.amount {
+  font-weight: bold;
+  color: #282828;
+  margin-bottom: 20px;
+}
+.mop {
+  background-color: #578AD8;
+  color: #FAFAFA;
+  padding: 5px 10px 5px 10px;
+  border-radius: 12px;
+}
