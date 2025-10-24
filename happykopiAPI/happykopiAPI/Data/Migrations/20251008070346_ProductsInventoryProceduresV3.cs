@@ -64,7 +64,7 @@ namespace happykopiAPI.Data.Migrations
 
 						INSERT INTO dbo.StockLogs (
 							StockItemId,
-							BatchId,
+							StockItemBatchId,
 							UserId,
 							ChangeType,
 							QuantityChanged,
@@ -131,7 +131,7 @@ namespace happykopiAPI.Data.Migrations
 
 					INSERT INTO dbo.StockLogs (
 					StockItemId,
-					BatchId,
+					StockItemBatchId,
 					UserId,
 					ChangeType,
 					QuantityChanged,

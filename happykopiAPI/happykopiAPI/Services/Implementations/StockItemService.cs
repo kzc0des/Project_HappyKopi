@@ -13,6 +13,7 @@ namespace happykopiAPI.Services.Implementations
     {
         private readonly string _connectionString;
 
+
         public StockItemService(IConfiguration config)
         {
             _connectionString = config.GetConnectionString("LocalDB");
