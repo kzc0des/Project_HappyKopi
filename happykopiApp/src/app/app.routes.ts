@@ -55,6 +55,10 @@ import { ModifierList } from './modules/modifiers/modifier-list/modifier-list';
 import { modifierSummaryResolver } from './modules/modifiers/resolver/modifiersummary/modifier-summary-resolver';
 import { ModifierView } from './modules/modifiers/modifier-view/modifier-view';
 import { modifierDetailsResolver } from './modules/modifiers/resolver/modifierdetails/modifier-details-resolver';
+import { DashboardCard } from './modules/dashboard/components/dashboard-card/dashboard-card';
+import { IndividualTransactionCard } from './modules/dashboard/components/individual-transaction-card/individual-transaction-card';
+import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
+import { AddonCardActive } from './modules/pos/components/addon-card-active/addon-card-active'; 
 
 export const routes: Routes = [
     {
@@ -290,5 +294,21 @@ export const routes: Routes = [
     {
         path: 'assign-drink-page',
         component: AssignDrinkPage
+    },
+    {
+        path: 'dbcard',
+        component: DashboardCard
+    },
+    {
+        path: 'indtracard',
+        component: IndividualTransactionCard
+    },
+    {
+        path: 'charge-item',
+        component: ChargeItem
+    },
+    {
+        path: 'addon-card-active',
+        component: AddonCardActive
     }
 ];
