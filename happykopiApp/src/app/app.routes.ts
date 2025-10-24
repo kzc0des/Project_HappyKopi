@@ -23,7 +23,7 @@ import { AddIngredient } from './shared/components/add-ingredient/add-ingredient
 import { SearchDrink } from './shared/components/search-drink/search-drink';
 import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
 import { DrinkListPage } from './modules/products/product-pages/drink-list-page/drink-list-page';
-import { CategoriesListPage } from './modules/categories/categories/categories-list-page/categories-list-page';
+import { CategoriesListPage } from './modules/categories/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
 import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
@@ -40,14 +40,14 @@ import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary
 import { AddDrinkPage } from './modules/products/product-pages/add-drink-page/add-drink-page';
 import { DrinkCard } from './modules/products/components/drink-card/drink-card';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
-import { EditCategoryPage } from './modules/categories/categories/edit-category-page/edit-category-page';
+import { EditCategoryPage } from './modules/categories/edit-category-page/edit-category-page';
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/product-pages/edit-drink-page/edit-drink-page';
 import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
 import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
-import { CreateDrinkPage } from './modules/categories/categories/create-drink-page/create-drink-page';
+import { CreateDrinkPage } from './modules/categories/create-drink-page/create-drink-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
-import { AssignDrinkPage } from './modules/categories/categories/assign-drink-page/assign-drink-page';
+import { AssignDrinkPage } from './modules/categories/assign-drink-page/assign-drink-page';
 import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
 import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inventory-batch-view';
 import { stockItemBatchResolver } from './modules/inventory/resolver/stockitembatch/stock-item-batch-resolver';
