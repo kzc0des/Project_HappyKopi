@@ -24,4 +24,10 @@ export class DrinkDetailPage {
     const nav = this.router.getCurrentNavigation();
     this.drink = nav?.extras.state?.['drink'];
   }
+
+  selectedSize: string | null = null;
+
+  selectSize(size: string) {
+    this.selectedSize = size;
+  }
 }

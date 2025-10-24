@@ -37,4 +37,10 @@ export class EditDrinkPage {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('name');
   }
+
+  selectedSize: string | null = null;
+
+  selectSize(size: string) {
+    this.selectedSize = size;
+  }
 }
