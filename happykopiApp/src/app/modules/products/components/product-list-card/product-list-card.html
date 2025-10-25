@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="product-list-card.css">
+</head>
+<body>
+    <div
+    class="card bg-white p-8 shadow-sm flex items-center gap-9 rounded-0 cursor-pointer hover:bg-gray-50 transition"
+    (click)="onCardClick()"
+    >
+        <div class="menu-image"></div>
+        <div class="flex flex-1 justify-between items-center gap-6">
+            <div>
+            <div class="text-lg font-semibold text-gray-800">{{ name }}</div>
+            <div class="text-lg text-gray-400">{{ category }}</div>
+            </div>
+            <span class="material-symbols-outlined">{{ icon }}</span>
+        </div>
+    </div>
+</body>
+</html>
