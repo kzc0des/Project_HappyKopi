@@ -5,13 +5,12 @@ import { ConfirmationState, ConfirmButtonType } from '../../../core/models/confi
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-confirmation-dialog',
+  selector: 'app-test-component',
   imports: [CommonModule],
-  templateUrl: './confirmation-dialog.html',
-  styleUrl: './confirmation-dialog.css'
+  templateUrl: './test-component.html',
+  styleUrl: './test-component.css'
 })
-export class ConfirmationDialog implements OnInit, OnDestroy {
-  
+export class TestComponent implements OnInit, OnDestroy {
   show = false;
   title = 'Delete Item?';
   message = 'This will be permanently removed to your system.';

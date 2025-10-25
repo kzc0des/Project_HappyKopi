@@ -4,7 +4,6 @@ import { AddonCardActive } from '../../components/addon-card-active/addon-card-a
 import { PosCategoryOn } from '../../components/pos-category-on/pos-category-on';
 import { PosCategoryOff } from "../../components/pos-category-off/pos-category-off";
 import { SearchDrink } from '../../../../shared/components/search-drink/search-drink';
-import { DrinkCard } from '../../../products/components/drink-card/drink-card';
 import { OrderCard } from '../../components/order-card/order-card';
 import { Header } from '../../../../shared/components/header/header';
 

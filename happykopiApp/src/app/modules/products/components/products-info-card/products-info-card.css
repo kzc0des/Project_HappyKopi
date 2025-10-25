@@ -1,0 +1,13 @@
+.card
+{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.menu-image {
+  width: 156px;
+  height: 230px;
+  background: #F0F0F0;
+  border-radius: 12px;
+  position: relative;
+}
