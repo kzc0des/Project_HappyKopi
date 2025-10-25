@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="edit-ingredient-card.css">
+</head>
+<body>
+    <div class="card bg-white p-10 rounded-0 flex flex-1 items-center gap-7">
+        <div class="ingredient-icon">
+            <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="23"
+            height="21"
+            viewBox="0 0 23 21"
+            fill="none"
+            >
+            <path
+                d="M17.167 1.86914H21.1668L20.199 8.86914H17.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M3.66669 1.86914H17.1668V18.8691C17.1668 19.4214 16.7191 19.8691 16.1668 19.8691H4.66664C4.11438 19.8691 3.66667 19.4214 3.66665 18.8692L3.66629 7.11909C3.66628 6.64699 3.44471 6.20514 3.08639 5.89774C1.74087 4.74354 -1.12847 1.86914 3.66669 1.86914Z"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M12.167 6.36914H14.167M12.167 10.3691H14.167M12.167 14.3691H14.167"
+                stroke="#FAFAFA"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            </svg>
+        </div>
+
+        <div class="flex flex-1 flex-col gap-4">
+            <div class="text-xl font-medium text-gray-400 text-md">
+            {{ name }}
+            </div>
+
+            <div class="relative w-full">
+                <input
+                    type="text"
+                    [value]="value"
+                    (input)="onValueChange($event)"
+                    class="flex-1 w-full text-lg font-semibold border-b border-gray-300 outline-none focus:ring-0 text-gray-800 pr-10"
+                />
+                <div
+                    class="absolute right-0 -top-2 text-xl font-medium text-gray-400"
+                >
+                    {{ unit }}
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="w-15 h-15 bg-[#D9D9D9]/50 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-300 transition"
+            (click)="onRemoveClick()"
+        >
+            <span class="material-symbols-outlined" style="color: black">
+            delete
+            </span>
+        </div>
+    </div>
+</body>
+</html>

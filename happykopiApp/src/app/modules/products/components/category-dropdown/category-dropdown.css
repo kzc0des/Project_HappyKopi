@@ -1,7 +1,6 @@
-body
-{
-    background-color: white;
-    font-family: Outfit;
+.category {
+  position: relative;
+  transition: all 0.2s ease;
 }
 
 .dropdown-list {
@@ -58,44 +57,10 @@ body
   }
 }
 
-.menu-card {
-  width: 540px;
-  height: 123px;
-  position: relative;
-  background: #FAFAFA;
-  font-family: "Outfit", sans-serif;
-}
- 
-.menu-title {
-  left: 124px;
-  top: 33px;
-  position: absolute;
-  color: #282828;
-  font-size: 16px;
-  font-weight: 600;
-  word-wrap: break-word;
-}
- 
-.menu-subtitle {
-  left: 124px;
-  top: 66px;
-  position: absolute;
-  color: #777777;
-  font-size: 16px;
-  font-weight: 400;
-  word-wrap: break-word;
-} 
-
-.card {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-}
-
-.card:active {
-  transform: scale(0.98);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.category-bg
+{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div
+    class="category bg-white p-4 rounded-2xl shadow-sm flex items-center gap-6 cursor-pointer relative"
+    (click)="toggleDropdown()"
+    >
+        <div class="flex flex-1 justify-between items-center gap-6">
+            <div class="flex flex-col flex-1 gap-4 px-2">
+            <div class="text-lg font-medium text-gray-400">{{ label }}</div>
+            <div class="text-lg font-bold text-gray-800">{{ selectedItem || 'Select' }}</div>
+            </div>
+
+            <span
+            class="material-symbols-outlined"
+            [style.transform]="isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)'"
+            style="transition: transform 0.2s ease;"
+            >
+            keyboard_arrow_down
+            </span>
+        </div>
+
+        <div
+            class="dropdown-list absolute left-0 right-0 top-full mt-2 bg-white shadow-md rounded-xl z-10"
+            *ngIf="isDropdownOpen"
+        >
+            <div
+            *ngFor="let item of items"
+            class="dropdown-item px-5 py-3 text-gray-700 hover:bg-gray-100 cursor-pointer"
+            (click)="selectItem(item, $event)"
+            >
+            {{ item }}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
