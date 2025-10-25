@@ -2,10 +2,13 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SizeCard } from '../../components/size-card/size-card';
+import { AddButtonCard } from '../../components/add-button-card/add-button-card';
+import { FieldCard } from '../../components/field-card/field-card';
 
 @Component({
   selector: 'app-edit-drink-page',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard],
   templateUrl: './edit-drink-page.html',
   styleUrl: './edit-drink-page.css'
 })
@@ -38,9 +41,14 @@ export class EditDrinkPage {
     const id = this.route.snapshot.paramMap.get('name');
   }
 
-  selectedSize: string | null = null;
+  selectedSize = 'grande'; 
 
-  selectSize(size: string) {
-    this.selectedSize = size;
+  onSizeChange(newSize: string) {
+    this.selectedSize = newSize;
+    console.log('Parent got:', this.selectedSize);
+  }
+
+  onAddIngredient() {
+    //----
   }
 }

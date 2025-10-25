@@ -24,23 +24,21 @@
                     </span>
                 </div>
             </div>
-            <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
-                <div class="font-medium text-gray-400 text-lg">Drink Name</div>
-                <input
-                    type="text"
-                    class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
-                    [value]="drink?.name"
-                    />
-            </div>
-            <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
-                <div class="font-medium text-gray-400 text-lg">Base Price (PHP)</div>
-                <input
-                    type="text"
-                    class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
-                    [value]="drink?.baseprice | number:'1.2-2'"
-                />
-            </div>
         </div>
+
+        <app-field-card
+        label="Drink Name"
+        [value]="drink?.name"
+        placeholder=""
+        (valueChange)="drink.name = $event"
+        ></app-field-card>
+
+        <app-field-card
+        label="Base Price (PHP)"
+        [value]="drink?.baseprice"
+        placeholder=""
+        (valueChange)="drink.baseprice = $event"
+        ></app-field-card>
 
         <div class="category bg-white p-4 rounded-2xl shadow-sm flex items-center gap-6"
         (click)="toggleDropdown()"
@@ -82,112 +80,33 @@
     </div>
  
     <div>
-        <div class="p-10 bg-white flex flex-col gap-8 justify-center">
-            <div class="text-2xl font-semibold pl-4 pb-2">
-                Ingredients
-            </div>
-            <div class="flex flex-1 items-center gap-4 text-lg justify-center">
-                <div
-                    class="p-7 rounded-2xl flex shadow-sm gap-2 items-center flex-1 justify-center cursor-pointer transition-all duration-200 border-2"
-                    [ngClass]="{
-                    'border-[#F3B72C] bg-[#FFF8E5] text-[#F3B72C]': selectedSize === 'grande',
-                    'border-transparent bg-[#EDEDED] text-black': selectedSize !== 'grande'
-                    }"
-                    (click)="selectSize('grande')"
-                >
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="25"
-                    height="25"
-                    viewBox="0 0 48 48"
-                    [ngClass]="{
-                        'text-[#F3B72C]': selectedSize === 'grande',
-                        'text-black': selectedSize !== 'grande'
-                    }"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="3.5"
-                    style="transform: scaleY(0.85);"
-                    >
-                    <g>
-                        <path stroke-linecap="round" d="M10 16h28" />
-                        <path
-                        d="M14.153 18.143A2 2 0 0 1 16.148 16h15.704a2 2 0 0 1 1.995 2.142l-1.714 24A2 2 0 0 1 30.138 44H17.862a2 2 0 0 1-1.995-1.858z"
-                        />
-                        <path stroke-linecap="round" d="M24 10V6a2 2 0 0 1 2-2h3" />
-                        <path
-                        d="M14.722 11.671A2 2 0 0 1 16.694 10h14.612a2 2 0 0 1 1.973 1.671L34 16H14z"
-                        />
-                    </g>
-                    </svg>
-                    Grande (16 oz)
-                </div>
+        <div class="bg-white flex flex-col justify-center">
+            <div class="flex flex-col gap-5 pl-10 pr-10 pb-5">
+                <app-size-card
+                    [selectedSize]="selectedSize"
+                    (sizeChange)="onSizeChange($event)"
+                ></app-size-card>
 
-                <div
-                    class="p-7 rounded-2xl flex shadow-sm gap-2 items-center flex-1 justify-center cursor-pointer transition-all duration-200 border-2"
-                    [ngClass]="{
-                    'border-[#F3B72C] bg-[#FFF8E5] text-[#F3B72C]': selectedSize === 'venti',
-                    'border-transparent bg-[#EDEDED] text-black': selectedSize !== 'venti'
-                    }"
-                    (click)="selectSize('venti')"
-                >
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="25"
-                    height="25"
-                    viewBox="0 0 48 48"
-                    [ngClass]="{
-                        'text-[#F3B72C]': selectedSize === 'venti',
-                        'text-black': selectedSize !== 'venti'
-                    }"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="3.5"
-                    >
-                    <g>
-                        <path stroke-linecap="round" d="M10 16h28" />
-                        <path
-                        d="M14.153 18.143A2 2 0 0 1 16.148 16h15.704a2 2 0 0 1 1.995 2.142l-1.714 24A2 2 0 0 1 30.138 44H17.862a2 2 0 0 1-1.995-1.858z"
-                        />
-                        <path stroke-linecap="round" d="M24 10V6a2 2 0 0 1 2-2h3" />
-                        <path
-                        d="M14.722 11.671A2 2 0 0 1 16.694 10h14.612a2 2 0 0 1 1.973 1.671L34 16H14z"
-                        />
-                    </g>
-                    </svg>
-                    Venti (22 oz)
-                </div>
-            </div>
+                <app-add-button-card 
+                    label="Add an Ingredient"
+                    icon="add"
+                    bgColor="#EDEDED"
+                    textColor="#1f2937"
+                    (clicked)="onAddIngredient()"
+                ></app-add-button-card>
 
-            <div class="add bg-[#EDEDED] p-6 rounded-2xl flex shadow-sm gap-9 items-center">
-                <div class="w-15 h-15 bg-[#D9D9D9] rounded-2xl flex items-center justify-center">
-                    <div>
-                    <span class="material-symbols-outlined">
-                            add
-                    </span>
-                    </div>
-                </div>
-                <div class="text-lg text-gray-800">
-                    Add an Ingredient
-                </div>
-            </div>
-
-            <div class="add bg-[#EDEDED] p-6 rounded-2xl flex shadow-sm gap-9 items-center">
-                <div class="w-15 h-15 bg-[#D9D9D9] rounded-2xl flex items-center justify-center">
-                    <div>
-                    <span class="material-symbols-outlined">
-                            add
-                    </span>
-                    </div>
-                </div>
-                <div class="text-lg text-gray-800">
-                    Add an Ingredient
-                </div>
-            </div>
+                <app-add-button-card 
+                    label="Add an Add-on"
+                    icon="add"
+                    bgColor="#EDEDED"
+                    textColor="#1f2937"
+                    (clicked)="onAddIngredient()"
+                ></app-add-button-card>
+            </div> 
         </div>
     
 
-        <div class="card bg-white p-10 rounded-0 shadow-sm flex flex-1 items-center gap-7"
+        <div class="card bg-white p-10 rounded-0 flex flex-1 items-center gap-7"
         *ngFor="let ingredient of ingredients">
             <div class="ingredient-icon">
                 <svg

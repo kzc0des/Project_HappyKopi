@@ -28,7 +28,7 @@ export class DrinkDetailPage {
     this.drink = nav?.extras.state?.['drink'];
   }
 
-  selectedSize = ''; 
+  selectedSize = 'grande'; 
 
   onSizeChange(newSize: string) {
     this.selectedSize = newSize;

@@ -13,6 +13,6 @@ export class SizeCard {
 
   selectSize(size: string) {
     this.selectedSize = size;
-    this.sizeChange.emit(size); 
+    this.sizeChange.emit(size);
   }
 }
