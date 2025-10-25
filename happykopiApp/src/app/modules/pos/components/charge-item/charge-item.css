@@ -49,6 +49,7 @@ body {
   font-weight: 700;
   font-size: 16px;
   color: #282828;
+  display: flex; 
 }
 
 .drink-price {
@@ -72,4 +73,12 @@ body {
 .addon-list div {
   font-size: 16px;
   color: #777777;
+}
+
+.addon {
+  display:flex;
+}
+
+.addon-qty, .drink-qty {
+  margin-left: 8px;
 }

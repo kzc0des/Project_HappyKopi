@@ -25,7 +25,7 @@ export class InventoryAddItem implements OnInit, OnDestroy {
   stockitemdetail !: StockItemForCreateDto;
   categories !: DropdownOption[];
   units !: DropdownOption[];
-  showInitialStockInput : boolean = false;
+  showInitialStockInput: boolean = false;
 
   unitSelected !: string;
   stockitemType !: number;
@@ -71,6 +71,8 @@ export class InventoryAddItem implements OnInit, OnDestroy {
           'primary'
         );
         if (confirmedSave) {
+          console.log(this.stockitemdetail);
+
           this.saveNewItem();
         }
       }
@@ -88,6 +90,7 @@ export class InventoryAddItem implements OnInit, OnDestroy {
       alert('Please fill out all required fields.');
       return;
     }
+
 
     this.inventoryService.createStockItem(this.stockitemdetail).subscribe({
       next: (response) => {

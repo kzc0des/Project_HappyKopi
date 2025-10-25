@@ -13,10 +13,12 @@ namespace happykopiAPI.Controllers
     public class StockItemsController : ControllerBase
     {
         private readonly IStockItemService _stockItemService;
+        private readonly ILogger<StockItemsController> _logger;
 
-        public StockItemsController(IStockItemService stockItemService)
+        public StockItemsController(IStockItemService stockItemService, ILogger<StockItemsController> logger)
         {
             _stockItemService = stockItemService;
+            _logger = logger;
         }
 
         [HttpPost("stock-items")]
@@ -42,6 +44,7 @@ namespace happykopiAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error creating stock item.");
                 return StatusCode(500, $"An internal error occurred: {ex.Message}");
             }
         }

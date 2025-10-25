@@ -24,7 +24,7 @@ namespace happykopiAPI.DTOs.Inventory
         public int ItemType { get; set; }
 
         [Range(0, double.MaxValue)]
-        public decimal InitialStockQuantity { get; set; }
+        public decimal? InitialStockQuantity { get; set; }
 
         public DateTime? ExpiryDate { get; set; }
 
