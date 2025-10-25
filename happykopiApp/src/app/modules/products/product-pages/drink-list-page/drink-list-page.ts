@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { SearchFieldCard } from '../../components/search-field-card/search-field-card';
+import { CategoryButtonField } from '../../components/category-button-field/category-button-field';
+import { ProductListCard } from '../../components/product-list-card/product-list-card';
 
 @Component({
   selector: 'app-drink-list-page',
-  imports: [CommonModule],
+  imports: [CommonModule, SearchFieldCard, CategoryButtonField, ProductListCard],
   templateUrl: './drink-list-page.html',
   styleUrl: './drink-list-page.css'
 })

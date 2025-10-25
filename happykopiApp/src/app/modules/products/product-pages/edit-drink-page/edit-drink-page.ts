@@ -5,10 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SizeCard } from '../../components/size-card/size-card';
 import { AddButtonCard } from '../../components/add-button-card/add-button-card';
 import { FieldCard } from '../../components/field-card/field-card';
+import { ToggleCard } from '../../components/toggle-card/toggle-card';
 
 @Component({
   selector: 'app-edit-drink-page',
-  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard],
+  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard, ToggleCard],
   templateUrl: './edit-drink-page.html',
   styleUrl: './edit-drink-page.css'
 })
