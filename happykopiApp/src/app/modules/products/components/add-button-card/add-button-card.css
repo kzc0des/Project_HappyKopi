@@ -1,0 +1,17 @@
+.add
+{
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 800,
+  'GRAD' 0,
+  'opsz' 48;
+  font-size: 30px;
+  color: gray;
+  border-radius: 12px;
+}
