@@ -1,12 +1,12 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({
   selector: 'app-sidebar-button',
-  imports: [RouterLink, TitleCasePipe],
+  imports: [RouterLink, RouterLinkActive, TitleCasePipe],
   templateUrl: './sidebar-button.html',
-  styleUrl: './sidebar-button.css'
+  styleUrls: ['./sidebar-button.css']
 })
 export class SidebarButton {
   @Input() page!: string;
