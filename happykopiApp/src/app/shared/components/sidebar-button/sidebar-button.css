@@ -1,0 +1,11 @@
+/* Only change the background color when the router marks this button active.
+	 Do not change icon or text color here. */
+
+button.active {
+	background-color: #DFA92C !important;
+}
+
+/* Optional: keep contrast — if you want to slightly darken on hover while active */
+button.active:hover {
+	filter: brightness(0.95);
+}

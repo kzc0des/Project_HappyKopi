@@ -2,7 +2,7 @@
     transform: translateX(-100%);
     transition: transform .5s ease-in-out;
     position: absolute;
-    background-color: #fafafa;
+    background-color: #FAFAFA;
     border-radius: 50%;
     padding: 5px;
 }
@@ -16,6 +16,10 @@ aside {
     z-index: 50;
     transition: transform 0.3s ease-in-out;
     transform: translateX(-100%);
+    background-color: #F3B72C;
+    /* Typography for sidebar */
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    color: #FAFAFA; /* make labels and icons white by default */
 }
 
 aside.open {
@@ -37,8 +41,11 @@ aside.open {
 .selected {
     background-color: #FFFBF2;
     border: none;
-    color: #333;
+    color: #FAFAFA;
     font-weight: 700;
+
+    /* slightly larger to match reference */
+    font-size: 1.125rem; /* ~18px */
 
     padding-block: 16px;
     padding-left: 10px;

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddonCardInactive } from './addon-card-inactive';
+import { DashboardCard } from './dashboard-card';
 
-describe('AddonCardInactive', () => {
-  let component: AddonCardInactive;
-  let fixture: ComponentFixture<AddonCardInactive>;
+describe('DashboardCard', () => {
+  let component: DashboardCard;
+  let fixture: ComponentFixture<DashboardCard>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddonCardInactive]
+      imports: [DashboardCard]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddonCardInactive);
+    fixture = TestBed.createComponent(DashboardCard);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
