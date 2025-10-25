@@ -55,6 +55,8 @@ import { ModifierList } from './modules/modifiers/modifier-list/modifier-list';
 import { modifierSummaryResolver } from './modules/modifiers/resolver/modifiersummary/modifier-summary-resolver';
 import { ModifierView } from './modules/modifiers/modifier-view/modifier-view';
 import { modifierDetailsResolver } from './modules/modifiers/resolver/modifierdetails/modifier-details-resolver';
+import { ModifierAdd } from './modules/modifiers/modifier-add/modifier-add';
+import { ModifierEdit } from './modules/modifiers/modifier-edit/modifier-edit';
 
 export const routes: Routes = [
     {
@@ -156,7 +158,7 @@ export const routes: Routes = [
                         resolve: {
                             modifiertypecount: modifierTypeCountResolver
                         }
-                    },
+                    },                    
                     {
                         path: ':type',
                         component: ModifierList,
@@ -165,11 +167,19 @@ export const routes: Routes = [
                         }
                     },
                     {
-                        path: 'item/:itemId',
+                        path: ':type/create',
+                        component: ModifierAdd
+                    },
+                    {
+                        path: ':type/:itemId',
                         component: ModifierView,
                         resolve: {
                             modifierdetail: modifierDetailsResolver
                         }
+                    },
+                    {
+                        path: ':type/:itemId/edit',
+                        component: ModifierEdit
                     }
                 ]
             }

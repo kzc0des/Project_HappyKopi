@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { ApiService } from '../../../core/services/api/api.service';
-import { ModifierForCreate } from '../../../core/dtos/modifier/modifier-for-create.model';
 import { ModifierForUpdate } from '../../../core/dtos/modifier/modifier-for-update.model';
 import { ModifierLinkStockItem } from '../../../core/dtos/modifier/modifier-link-stock-item.model';
 import { SignalRService } from '../../../core/services/signalR/signal-r.service';
@@ -10,6 +9,7 @@ import { ModifierType } from '../../../core/enums/modifier-type';
 import { ModifierSummaryDto } from '../../../core/dtos/modifier/modifier-summary-dto';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ModifierDetailsDto } from '../../../core/dtos/modifier/modifier-details-dto';
+import { ModifierForCreateDto } from '../../../core/dtos/modifier/modifier-for-create-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +54,7 @@ export class ModifierService {
     return this.apiService.get<ModifierDetailsDto>(`modifiers/${id}`);
   }
 
-  createModifier(modifier: ModifierForCreate): Observable<ModifierDetailsDto> {
+  createModifier(modifier: ModifierForCreateDto): Observable<ModifierDetailsDto> {
     return this.apiService.post<ModifierDetailsDto>('modifiers', modifier);
   }
 

@@ -7,7 +7,7 @@ shadow">
 
     <div class="flex items-center justify-between w-full">
 
-        <div class="flex items-center gap-3 flex-1">
+        <div class="flex items-center gap-6 flex-1">
 
             @if (showBackButton) {
             <button (click)="onBackClick()">
@@ -18,9 +18,9 @@ shadow">
             </button>
             } @else {
             <button (click)="toggleSidebar()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
-                    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 8h12M6 12h12M6 16h12" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="18" viewBox="0 0 29 22" fill="none">
+                    <path d="M2 2H27M2 10.7907H27M2 20H27" stroke="#F0F0F0" stroke-width="4" stroke-linecap="round"
+                        stroke-linejoin="round" />
                 </svg>
             </button>
             }
@@ -31,7 +31,7 @@ shadow">
                 {{ headerTitle | titlecase }}
             </h1>
             }@else{
-            <h1 class="font-[800] text-2xl">
+            <h1 class="font-[800] text-xl">
                 {{ (currentPageSelected | async) | titlecase }}
             </h1>
             }

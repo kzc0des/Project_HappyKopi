@@ -109,18 +109,20 @@ export class Header implements OnInit, OnDestroy {
 
       this.onSelected = true;
     }
-    else if (url.includes('/inventory/') && !url.includes('/item/')) {
+    else if ( 
+      (url.includes('/inventory/') && !url.includes('/item/')) || 
+      (url.includes('/modifiers/') && !url.includes('/item/')) 
+    )
+    {
       this.showAddButton = true;
       this.showBackButton = true;
 
       this.showSaveButton = false;
       this.showEditButton = false;
 
-
       // getting the last link segment
       const urlSegments = url.split('/');
-
-      // console.log(`Url Segment Result: ${urlSegments}`);
+      console.log(urlSegments[urlSegments.length - 1]);
       this.headerTitle = decodeURIComponent(urlSegments[urlSegments.length - 1]);
     }
     else if (url.includes('/inventory')) {
