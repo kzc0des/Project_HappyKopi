@@ -15,7 +15,6 @@ import { InventoryCategoryCard } from './modules/inventory/components/inventory-
 import { AddOrderModal } from './modules/pos/modal/add-order-modal/add-order-modal';
 import { stockItemTypeCountResolver } from './modules/inventory/resolver/stockitemtype/stock-item-type-count-resolver';
 import { IngredientBatchCard } from './modules/inventory/components/ingredient-batch-card/ingredient-batch-card';
-import { IngredientInputCard } from './modules/products/components/ingredient-input-card/ingredient-input-card';
 import { stockItemSummaryResolver } from './modules/inventory/resolver/stockitemsummary/stock-item-summary-resolver';
 import { TextBoxComponent } from './shared/components/text-box/text-box';
 import { TextBoxPrice } from './shared/components/text-box-price/text-box-price';
@@ -38,7 +37,6 @@ import { YellowButton } from './shared/components/yellow-button/yellow-button';
 import { Charge } from './modules/pos/forms/charge/charge';
 import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary';
 import { AddDrinkPage } from './modules/products/product-pages/add-drink-page/add-drink-page';
-import { DrinkCard } from './modules/products/components/drink-card/drink-card';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
 import { EditCategoryPage } from './modules/categories/edit-category-page/edit-category-page';
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
@@ -57,6 +55,8 @@ import { ModifierView } from './modules/modifiers/modifier-view/modifier-view';
 import { modifierDetailsResolver } from './modules/modifiers/resolver/modifierdetails/modifier-details-resolver';
 import { ModifierAdd } from './modules/modifiers/modifier-add/modifier-add';
 import { ModifierEdit } from './modules/modifiers/modifier-edit/modifier-edit';
+import { ConfirmationDialog } from './shared/components/confirmation-dialog/confirmation-dialog';
+import { TestComponent } from './shared/components/test-component/test-component';
 
 export const routes: Routes = [
     {
@@ -186,10 +186,6 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'sample',
-        component: DrinkCard
-    },
-    {
         path: 'textbox',
         component: TextBoxComponent
     },
@@ -300,5 +296,13 @@ export const routes: Routes = [
     {
         path: 'assign-drink-page',
         component: AssignDrinkPage
+    },
+    {
+        path: 'confirmation-dialog',
+        component: ConfirmationDialog
+    },
+    {
+        path: 'test-component',
+        component: TestComponent
     }
 ];

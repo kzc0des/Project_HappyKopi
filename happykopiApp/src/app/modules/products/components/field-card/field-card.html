@@ -1,0 +1,10 @@
+<div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
+  <div class="font-medium text-gray-400 text-lg">{{ label }}</div>
+    <input
+      type="text"
+      [placeholder]="placeholder"
+      [value]="value"
+      (input)="onInputChange($event)"
+      class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
+    />
+</div>

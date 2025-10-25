@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="add-button-card.css">
+</head>
+<body>
+    <div
+    class="add p-6 rounded-2xl flex shadow-sm gap-9 items-center cursor-pointer transition-all duration-200 hover:opacity-90"
+    [style.backgroundColor]="bgColor"
+    (click)="onClick()"
+    >
+    <div class="w-15 h-15 bg-[#D9D9D9] rounded-2xl flex items-center justify-center">
+        <span class="material-symbols-outlined text-gray-700 text-3xl">
+        {{ icon }}
+        </span>
+    </div>
+    <div class="text-lg font-medium" [style.color]="textColor">
+        {{ label }}
+    </div>
+    </div>
+</body>
+</html>

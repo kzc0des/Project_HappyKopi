@@ -116,3 +116,11 @@
 .quantity-btn.plus {
   right: 2px;
 }
+
+.addon {
+  display:flex;
+}
+
+.addon-qty{
+  margin-left: 8px;
+}

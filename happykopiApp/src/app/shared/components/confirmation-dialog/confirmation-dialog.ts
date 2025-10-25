@@ -11,12 +11,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './confirmation-dialog.css'
 })
 export class ConfirmationDialog implements OnInit, OnDestroy {
-
+  
   show = false;
-  title = 'Are you sure?';
-  message = 'Do you really want to perform this action?';
-  confirmText = 'Yes';
-  cancelText = 'No';
+  title = 'Delete Item?';
+  message = 'This will be permanently removed to your system.';
+  confirmText = 'Delete';
+  cancelText = 'Cancel';
   confirmButtonType: ConfirmButtonType = 'danger';
 
   private resolve!: (value: boolean) => void;

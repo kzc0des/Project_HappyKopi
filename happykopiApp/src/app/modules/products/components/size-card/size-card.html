@@ -1,0 +1,78 @@
+<div class="flex flex-col gap-6 pt-6 pb-1">
+    <div class="text-2xl font-semibold pt-5 pl-4 pb-5">
+        Ingredients
+    </div>
+
+    <div class="flex flex-1 items-center gap-6 text-lg justify-center">
+    <div
+        class="p-7 rounded-2xl flex shadow-sm gap-2 items-center flex-1 justify-center cursor-pointer transition-all duration-200 border-2"
+        [ngClass]="{
+        'border-[#F3B72C] bg-[#FFF8E5] text-[#F3B72C]': selectedSize === 'grande',
+        'border-transparent bg-[#EDEDED] text-black': selectedSize !== 'grande'
+        }"
+        (click)="selectSize('grande')"
+    >
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        viewBox="0 0 48 48"
+        [ngClass]="{
+            'text-[#F3B72C]': selectedSize === 'grande',
+            'text-black': selectedSize !== 'grande'
+        }"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3.5"
+        style="transform: scaleY(0.85);"
+        >
+        <g>
+            <path stroke-linecap="round" d="M10 16h28" />
+            <path
+            d="M14.153 18.143A2 2 0 0 1 16.148 16h15.704a2 2 0 0 1 1.995 2.142l-1.714 24A2 2 0 0 1 30.138 44H17.862a2 2 0 0 1-1.995-1.858z"
+            />
+            <path stroke-linecap="round" d="M24 10V6a2 2 0 0 1 2-2h3" />
+            <path
+            d="M14.722 11.671A2 2 0 0 1 16.694 10h14.612a2 2 0 0 1 1.973 1.671L34 16H14z"
+            />
+        </g>
+        </svg>
+        Grande (16 oz)
+    </div>
+
+    <div
+        class="p-7 rounded-2xl flex shadow-sm gap-2 items-center flex-1 justify-center cursor-pointer transition-all duration-200 border-2"
+        [ngClass]="{
+        'border-[#F3B72C] bg-[#FFF8E5] text-[#F3B72C]': selectedSize === 'venti',
+        'border-transparent bg-[#EDEDED] text-black': selectedSize !== 'venti'
+        }"
+        (click)="selectSize('venti')"
+    >
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        viewBox="0 0 48 48"
+        [ngClass]="{
+            'text-[#F3B72C]': selectedSize === 'venti',
+            'text-black': selectedSize !== 'venti'
+        }"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3.5"
+        >
+        <g>
+            <path stroke-linecap="round" d="M10 16h28" />
+            <path
+            d="M14.153 18.143A2 2 0 0 1 16.148 16h15.704a2 2 0 0 1 1.995 2.142l-1.714 24A2 2 0 0 1 30.138 44H17.862a2 2 0 0 1-1.995-1.858z"
+            />
+            <path stroke-linecap="round" d="M24 10V6a2 2 0 0 1 2-2h3" />
+            <path
+            d="M14.722 11.671A2 2 0 0 1 16.694 10h14.612a2 2 0 0 1 1.973 1.671L34 16H14z"
+            />
+        </g>
+        </svg>
+        Venti (22 oz)
+    </div>
+    </div>
+</div>

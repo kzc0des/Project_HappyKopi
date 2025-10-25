@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { AddonCardInactive } from '../../components/addon-card-inactive/addon-card-inactive';
+import { Component } from '@angular/core'; 
 import { AddonCardActive } from "../../components/addon-card-active/addon-card-active";
 
 @Component({
