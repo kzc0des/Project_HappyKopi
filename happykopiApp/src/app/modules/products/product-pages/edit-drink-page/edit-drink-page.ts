@@ -6,10 +6,13 @@ import { SizeCard } from '../../components/size-card/size-card';
 import { AddButtonCard } from '../../components/add-button-card/add-button-card';
 import { FieldCard } from '../../components/field-card/field-card';
 import { ToggleCard } from '../../components/toggle-card/toggle-card';
+import { EditPhotoCard } from '../../components/edit-photo-card/edit-photo-card';
+import { CategoryDropdown } from '../../components/category-dropdown/category-dropdown';
+import { EditIngredientCard } from '../../components/edit-ingredient-card/edit-ingredient-card';
 
 @Component({
   selector: 'app-edit-drink-page',
-  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard, ToggleCard],
+  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard, ToggleCard, EditPhotoCard, CategoryDropdown, EditIngredientCard],
   templateUrl: './edit-drink-page.html',
   styleUrl: './edit-drink-page.css'
 })
@@ -21,11 +24,15 @@ export class EditDrinkPage {
   }
 
   ingredients = [
-    { name: 'Milk', unit: 'mL'},
-    { name: 'Sugar Syrup', unit: 'mL'},
-    { name: 'Water', unit: 'mL'},
-    { name: 'Ice', unit: 'g'}
+    { name: 'Milk', unit: 'mL', value: ''},
+    { name: 'Sugar Syrup', unit: 'mL', value: ''},
+    { name: 'Water', unit: 'mL', value: ''},
+    { name: 'Ice', unit: 'g', value: ''}
   ];
+
+  onIngredientValueChange(index: number, newValue: string) {
+    this.ingredients[index].value = newValue;
+  }
 
   removeIngredient(ingredient: any) {
     this.ingredients = this.ingredients.filter(i => i !== ingredient);
@@ -51,5 +58,11 @@ export class EditDrinkPage {
 
   onAddIngredient() {
     //----
+  }
+
+  selectedCategory = 'Milk Tea';
+
+  onCategorySelected(category: string) {
+    console.log('Selected:', category);
   }
 }
