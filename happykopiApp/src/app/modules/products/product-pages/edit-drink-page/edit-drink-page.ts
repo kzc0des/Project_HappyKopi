@@ -57,7 +57,7 @@ export class EditDrinkPage {
   }
 
   onAddIngredient() {
-    //----
+    //redirect to another page...
   }
 
   selectedCategory = 'Milk Tea';

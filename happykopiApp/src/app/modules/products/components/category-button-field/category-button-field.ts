@@ -8,8 +8,6 @@ import { Router } from '@angular/router';
   styleUrl: './category-button-field.css'
 })
 export class CategoryButtonField {
-  
-
     constructor(private router: Router) {}
 
     goToCategory() {
