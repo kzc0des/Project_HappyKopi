@@ -58,6 +58,7 @@ import { ModifierEdit } from './modules/modifiers/modifier-edit/modifier-edit';
 import { ConfirmationDialog } from './shared/components/confirmation-dialog/confirmation-dialog';
 import { TestComponent } from './shared/components/test-component/test-component';
 import { ChargeCashSummaryCard } from './modules/pos/components/charge-cash-summary-card/charge-cash-summary-card';
+import { GrandeActive } from './modules/pos/components/grande-active/grande-active';
 
 export const routes: Routes = [
     {
@@ -289,5 +290,9 @@ export const routes: Routes = [
     {
         path: 'charge-summary-card',
         component: ChargeCashSummaryCard
+    },
+    {
+        path: 'grande',
+        component: GrandeActive
     }
 ];
