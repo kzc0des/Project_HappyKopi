@@ -21,12 +21,11 @@ namespace happykopiAPI.Data.Migrations
                     m.Id,
                     m.Name,
                     m.Price,
-                    -- DITO ANG PAGBABAGO --
-                    -- I-convert ang INT (0, 1) sa String ('AddOn', 'Option')
+                    m.OzAmount,
                     Type = CASE m.Type
                                WHEN 0 THEN 'AddOn'
                                WHEN 1 THEN 'Option'
-                               ELSE 'Unknown' -- Fallback para kung may ibang value
+                               ELSE 'Unknown' 
                            END,
                     m.IsAvailable,
                     (

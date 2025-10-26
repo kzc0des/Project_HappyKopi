@@ -26,8 +26,8 @@ namespace happykopiAPI.Data.Migrations
                     IF EXISTS (SELECT 1 FROM dbo.Modifiers WHERE Name = @Name)
                         THROW 50005, 'A modifier with this name already exists.', 1;
 
-                    INSERT INTO dbo.Modifiers (Name, Price, Type, OzAmount, IsAvailable, LastUpdated) -- IDAGDAG ANG OzAmount
-                    VALUES (@Name, @Price, @Type, @OzAmount, @IsAvailable, GETDATE()); -- IDAGDAG ANG @OzAmount
+                    INSERT INTO dbo.Modifiers (Name, Price, Type, OzAmount, IsAvailable, LastUpdated)
+                    VALUES (@Name, @Price, @Type, @OzAmount, @IsAvailable, GETDATE());
 
                     DECLARE @NewModifierId INT = SCOPE_IDENTITY();
                     COMMIT TRANSACTION;
