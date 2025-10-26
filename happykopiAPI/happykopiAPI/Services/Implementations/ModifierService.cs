@@ -106,7 +106,8 @@ namespace happykopiAPI.Services.Implementations
                 ModifierId = modifierId,
                 dto.Name,
                 dto.Price,
-                Type = dto.Type.ToString(),
+                dto.OzAmount,
+                Type = dto.Type,
                 dto.IsAvailable
             };
 
