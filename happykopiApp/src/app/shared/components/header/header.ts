@@ -191,8 +191,11 @@ private resetHeaderState(): void {
       this.location.back();
     } else {
       const confirmed = await this.confirmationService.confirm(
-        'Discard Changes?',
-        'You have unsaved changes. Are you sure you want to discard them?'
+        'Cancel Edit?',
+        'All new details you entered will be removed.',
+        'primary',
+        'Cancel Edit',
+        'Keep Editing'
       );
 
       if (confirmed) {

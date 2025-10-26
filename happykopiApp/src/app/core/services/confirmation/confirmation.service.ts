@@ -15,7 +15,7 @@ export class ConfirmationService {
     title: string, 
     message: string, 
     confirmButtonType: ConfirmButtonType = "danger",
-    confirmButtonText: string = 'Confirm', 
+    confirmButtonText: string = 'Delete', 
     cancelButtonText: string = 'Cancel'   
   ): Promise<boolean> {
     return new Promise((resolve) => {
@@ -24,7 +24,9 @@ export class ConfirmationService {
         title,
         message,
         resolve,
-        confirmButtonType
+        confirmButtonType,
+        confirmButtonText,
+        cancelButtonText
       });
     });
   }
