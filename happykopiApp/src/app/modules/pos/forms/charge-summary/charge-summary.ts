@@ -5,10 +5,11 @@ import { ChargeCashSummaryCard } from '../../components/charge-cash-summary-card
 import { ChargeGcashSummaryCard } from '../../components/charge-gcash-summary-card/charge-gcash-summary-card';
 import { ChargePesoSummaryCard } from '../../components/charge-peso-summary-card/charge-peso-summary-card';
 import { ChargeTransactionSummary } from '../../components/charge-transaction-summary/charge-transaction-summary';
+import { LongYellowButton } from "../../../../shared/components/long-yellow-button/long-yellow-button";
 
 @Component({
   selector: 'app-charge-summary',
-  imports: [Header, YellowButton, ChargeCashSummaryCard, ChargeGcashSummaryCard, ChargePesoSummaryCard, ChargeTransactionSummary],
+  imports: [Header, YellowButton, ChargeCashSummaryCard, ChargeGcashSummaryCard, ChargePesoSummaryCard, ChargeTransactionSummary, LongYellowButton],
   templateUrl: './charge-summary.html',
   styleUrl: './charge-summary.css'
 })
