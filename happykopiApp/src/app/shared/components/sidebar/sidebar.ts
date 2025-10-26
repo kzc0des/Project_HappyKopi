@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
@@ -9,30 +9,45 @@ import { SidebarButton } from "../sidebar-button/sidebar-button";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [AsyncPipe, SidebarButton, TitleCasePipe],
+  imports: [AsyncPipe, SidebarButton],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
-export class Sidebar {
+export class Sidebar implements OnDestroy{
   isSidebarOpen$: Observable<boolean>;
-  currentUser:Observable<UserDto | null>;
-
   selectedPage: Observable<string>;
+  
+  currentUser$:Observable<UserDto | null>;
+  private userSubscription !: Subscription;
 
   pages!:{page: string, route: string}[];
 
   constructor(private sidebarService: SidebarService, private authService: AuthService, private router: Router) {
     this.isSidebarOpen$ = sidebarService.isSidebarOpen$;
     this.selectedPage = sidebarService.currentSelectedPage$;
-    this.currentUser = authService.getCurrentUser$();
+    this.currentUser$ = authService.getCurrentUser$();
 
-    this.pages = [
-      {page: 'dashboard', route: 'dashboard'},
-      {page: 'order', route: 'dashboard'},
-      {page: 'product', route: 'dashboard'},
-      {page: 'modifier', route: 'modifiers'},
-      {page: 'inventory', route: 'inventory'},
-    ];
+    this.userSubscription = this.currentUser$.subscribe(user => {
+      if(user && user.role) {
+        if(user.role.toLowerCase() === 'admin') {
+          this.pages = [
+            {page: 'products', route: '/products'},
+            {page: 'modifiers', route: '/modifiers'},
+            {page: 'inventory', route: '/inventory'}
+          ]
+        }else if(user.role.toLowerCase() === 'barista') {
+          this.pages = [
+            {page: 'orders', route: '/orders'},
+            {page: 'transactions', route: '/transactions'},
+            {page: 'print', route: '/print'}
+          ]
+        }else {
+          this.pages = [];
+        }
+      }else{
+        this.pages = []
+      }
+    })
   }
 
   close() {
@@ -47,5 +62,9 @@ export class Sidebar {
     }
   }
 
-  
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
 }
