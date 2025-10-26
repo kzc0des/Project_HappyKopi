@@ -80,6 +80,7 @@ namespace happykopiAPI.Services.Implementations
             {
                 dto.Name,
                 dto.Price,
+                dto.OzAmount,
                 IsAvailable = true, 
                 Type = dto.Type
             };

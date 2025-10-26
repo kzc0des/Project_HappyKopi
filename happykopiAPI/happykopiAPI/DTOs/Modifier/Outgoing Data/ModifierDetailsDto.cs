@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+        public decimal OzAmount { get; set; }
         public string Type { get; set; }
         public bool IsAvailable { get; set; }
         public List<ModifierStockItemDetailsDto> LinkedItems { get; set; }
