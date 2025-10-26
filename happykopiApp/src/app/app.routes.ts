@@ -26,10 +26,8 @@ import { CategoriesListPage } from './modules/categories/categories-list-page/ca
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
 import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
-import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
-import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
-import { Order } from './modules/pos/forms/order/order';
-import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-category-on';
+import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
+import { Order } from './modules/pos/forms/order/order'; 
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
@@ -202,19 +200,11 @@ export const routes: Routes = [
     {
         path: 'order-quick-view',
         component: OrderQuickView
-    },
-    {
-        path: 'order-quick-view-down',
-        component: OrderQuickViewDown
-    },
+    }, 
     {
         path: 'order',
         component: Order
-    },
-    {
-        path: 'poson',
-        component: PosCategoryOn
-    },
+    }, 
     {
         path: 'posoff',
         component: PosCategoryOff
@@ -246,11 +236,7 @@ export const routes: Routes = [
     {
         path: 'charge-summary',
         component: ChargeSummary
-    },
-    {
-        path: 'oqvd',
-        component: OrderQuickViewDown
-    },
+    }, 
     {
         path: 'add-drink-page',
         component: AddDrinkPage
