@@ -59,6 +59,7 @@ import { ConfirmationDialog } from './shared/components/confirmation-dialog/conf
 import { TestComponent } from './shared/components/test-component/test-component';
 import { ChargeCashSummaryCard } from './modules/pos/components/charge-cash-summary-card/charge-cash-summary-card';
 import { GrandeActive } from './modules/pos/components/grande-active/grande-active';
+import { OrderCard } from './modules/pos/components/order-card/order-card';
 
 export const routes: Routes = [
     {
@@ -294,5 +295,9 @@ export const routes: Routes = [
     {
         path: 'grande',
         component: GrandeActive
+    },
+    {
+        path: 'order-card',
+        component: OrderCard
     }
 ];

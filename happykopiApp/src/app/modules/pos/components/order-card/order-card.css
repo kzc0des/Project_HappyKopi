@@ -11,8 +11,10 @@ body {
   background: #FAFAFA;
   overflow: hidden;
   font-family: "Outfit", sans-serif;
+  border-radius: 24px;
 }
 
+/* 🔝 Upper content area */
 .oc-upper-content {
   width: 133px;
   height: 154px;
@@ -21,8 +23,27 @@ body {
   position: absolute;
   background: #F0F0F0;
   border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* 🖼️ Image styling */
+.oc-drink-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 📷 Placeholder if no image */
+.oc-placeholder {
+  color: #777;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 🔻 Lower content */
 .oc-lower-content {
   width: 136px;
   left: 21px;
