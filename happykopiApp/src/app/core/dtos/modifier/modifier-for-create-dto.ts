@@ -1,6 +1,6 @@
 export interface ModifierForCreateDto {
     name: string,
     price: number,
-    ozAmount: number,
+    ozAmount?: number,
     type: number
 }
