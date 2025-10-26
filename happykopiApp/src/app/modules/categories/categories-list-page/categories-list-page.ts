@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CategoryListCard } from '../component/category-list-card/category-list-card';
 
 @Component({
   selector: 'app-categories-list-page',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CategoryListCard],
   templateUrl: './categories-list-page.html',
   styleUrl: './categories-list-page.css'
 })
