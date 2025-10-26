@@ -126,7 +126,7 @@ export class Header implements OnInit, OnDestroy {
 
     else if (segments.includes('inventory') && segments.length === 3) {
       const itemType = segments[2];
-      this.headerTitle = itemType; 
+      this.headerTitle = itemType;
       this.showBackButton = true;
       this.showAddButton = true;
     }
@@ -138,11 +138,24 @@ export class Header implements OnInit, OnDestroy {
 
     // modifiers routing
 
+    else if (segments.includes('modifiers') && segments.includes('edit') && segments.length >= 5) {
+      this.showBackButton = true;
+      this.showSaveButton = true;
+      this.showDeleteButton = true;
+      this.onSelected = true;
+    }
+
     else if (segments.includes('modifiers') && segments.includes('create') && segments.length >= 4) {
       const itemType = this.removeTrailingS(segments[2]);
       this.headerTitle = `Create ${itemType}`;
       this.showBackButton = true;
       this.showSaveButton = true;
+    }
+
+    else if (segments.includes('modifiers') && segments.length === 4) {
+      this.showBackButton = true;
+      this.showEditButton = true;
+      this.onSelected = true;
     }
 
     else if (segments.includes('modifiers') && segments.length === 3) {

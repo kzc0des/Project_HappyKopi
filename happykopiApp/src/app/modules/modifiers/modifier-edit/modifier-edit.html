@@ -1,1 +1,8 @@
-<p>modifier-edit works!</p>
+<div class="flex flex-col w-full gap-7 bg-white px-4 py-7">
+    <app-itemcard [isEditing]="true" [(ngModel)]="modifierDetails.name" [itemTitle]="itemTitle"></app-itemcard>
+    <app-itemcard [isEditing]="true" type="number" [(ngModel)]="modifierDetails.price" itemTitle="Price"></app-itemcard>
+    @if(currentUrl.includes('Sizes')){
+    <app-itemcard [isEditing]="true" type="number" [(ngModel)]="modifierDetails.ozAmount"
+        itemTitle="Oz Amount"></app-itemcard>
+    }
+</div>
