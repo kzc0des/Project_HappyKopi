@@ -21,6 +21,6 @@ export class CategoriesListPage {
   ];
 
   goToCategory(category: any) {
-    this.router.navigate(['/edit-category', category.name], { state: { category } });
+    this.router.navigate(['/drink-list-page'], { state: { category } });
   }
 }
