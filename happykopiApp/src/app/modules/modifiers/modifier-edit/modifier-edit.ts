@@ -7,6 +7,9 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 import { ModifierService } from '../services/modifier.service';
+import { ModifierForUpdate } from '../../../core/dtos/modifier/modifier-for-update.model';
+import { Location } from '@angular/common';
+import { ModifierType } from '../../../core/enums/modifier-type';
 
 @Component({
   selector: 'app-modifier-edit',
@@ -19,14 +22,16 @@ export class ModifierEdit implements OnInit {
   modifierDetails !: ModifierDetailsDto
   currentUrl !: string;
   itemTitle !: string;
-  actionSubscription !: Subscription
+  actionSubscription !: Subscription;
+  modifierDetailForUpdate !: ModifierForUpdate;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private headerService: HeaderService,
     private confirmationService: ConfirmationService,
-    private modifierService: ModifierService
+    private modifierService: ModifierService,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -38,7 +43,7 @@ export class ModifierEdit implements OnInit {
       switch (action) {
         case 'SAVE':
           const confirmedSave = await this.confirmationService.confirm(
-            'Add Item?',
+            'Save Changes?',
             `Are you sure you want to save these changes?`,
             'primary',
             'Add Item',
@@ -46,6 +51,7 @@ export class ModifierEdit implements OnInit {
           );
           if (confirmedSave) {
             this.updateModfier();
+            this.location.back();
           }
           break;
         case 'DELETE':
@@ -83,6 +89,27 @@ export class ModifierEdit implements OnInit {
 
   private updateModfier() {
 
+    this.modifierDetailForUpdate = {
+      name: this.modifierDetails.name,
+      price: this.modifierDetails.price,
+      type: this.modifierDetails.type,
+      isAvailable: this.modifierDetails.isAvailable,
+      ozAmount: this.modifierDetails.ozAmount
+    };
+
+    console.log(this.modifierDetails);
+    console.log(this.modifierDetailForUpdate);
+
+    this.modifierService.updateModifier(this.modifierDetails.id, this.modifierDetailForUpdate)
+      .subscribe({
+        next: response => {
+          console.log(`Update successful. ${response}`);
+          this.location.back();
+        },
+        error: err => {
+          console.error(`Update failed ${err}`);
+        }
+      })
   }
 
   private deleteModifier() {

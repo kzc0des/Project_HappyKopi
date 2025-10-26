@@ -1,6 +1,7 @@
 export interface ModifierForUpdate {
     name: string;
     price: number;
-    type: string;
+    ozAmount?: number;
+    type: number;
     isAvailable: boolean;
 }

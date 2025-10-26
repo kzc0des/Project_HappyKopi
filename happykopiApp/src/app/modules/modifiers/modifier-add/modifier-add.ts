@@ -71,9 +71,11 @@ export class ModifierAdd implements OnInit {
   }
 
   private initializeEmptyDto(): void {
-    const type = this.itemTitle.toLowerCase().includes('add-on')
+    const type = this.currentUrl.toLowerCase().includes('add-ons')
       ? ModifierType.AddOns
       : ModifierType.Sizes;
+
+    console.log(`Modifier Type: ${type}`);
 
     this.modifierDetails = {
       name: '',
