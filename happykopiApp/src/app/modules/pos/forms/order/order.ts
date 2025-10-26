@@ -9,8 +9,8 @@ import { Header } from '../../../../shared/components/header/header';
 import { PaymentMethodCash } from "../../components/payment-method-cash/payment-method-cash";
 
 @Component({
-  selector: 'app-order',
-  imports: [OrderQuickView, PosCategoryOn, PosCategoryOff, SearchDrink, OrderCard, Header, PaymentMethodCash],
+  selector: 'app-order', 
+  imports: [OrderQuickView, PosCategoryOff, SearchDrink, OrderCard],
   templateUrl: './order.html',
   styleUrl: './order.css'
 })

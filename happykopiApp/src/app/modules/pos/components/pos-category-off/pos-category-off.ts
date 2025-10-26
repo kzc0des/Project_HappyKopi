@@ -14,5 +14,5 @@ export interface categoryDto {
 })
 export class PosCategoryOff {
   @Input() mode: 'active' | 'inactive' = 'inactive';
-  @Input() category!: categoryDto;
+  @Input() categoryCard!: categoryDto;
 }
