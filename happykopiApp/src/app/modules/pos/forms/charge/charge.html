@@ -1,5 +1,3 @@
-<app-header></app-header>
-
 <div class="order-body">
   <div class="upper-content">
     <div class="total-price">
@@ -11,7 +9,17 @@
   </div>
 
   <div class="btns">
-    <app-yellow-button></app-yellow-button>
-    <app-yellow-button></app-yellow-button>
+    <app-long-yellow-button
+      [longYellowButton]="{
+        ButtonType: 'cash-payment',
+        ButtonTitle: 'Cash'
+      }"
+    ></app-long-yellow-button>
+    <app-long-yellow-button
+      [longYellowButton]="{
+        ButtonType: 'cash-payment',
+        ButtonTitle: 'G-Cash'
+      }"
+    ></app-long-yellow-button>
   </div>
 </div>

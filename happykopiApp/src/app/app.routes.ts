@@ -62,6 +62,7 @@ import { GrandeActive } from './modules/pos/components/grande-active/grande-acti
 import { OrderCard } from './modules/pos/components/order-card/order-card';
 import { OrderQuantityModifier } from './modules/pos/components/order-quantity-modifier/order-quantity-modifier';
 import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
+import { LongYellowButton } from './shared/components/long-yellow-button/long-yellow-button';
 
 export const routes: Routes = [
     {
@@ -309,5 +310,9 @@ export const routes: Routes = [
     {
         path: 'payment-method',
         component: PaymentMethodCash
+    },
+    {
+        path: 'long-yellow-btn',
+        component: LongYellowButton
     }
 ];
