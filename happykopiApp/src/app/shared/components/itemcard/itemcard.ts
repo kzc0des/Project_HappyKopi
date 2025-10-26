@@ -16,7 +16,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
   ]
 })
 export class Itemcard implements ControlValueAccessor {
-  @Input() itemTitle: string = 'Item Title';
+  @Input() itemTitle: string = '';
   @Input() showIcon: boolean = false;
   @Input() isEditing: boolean = false;
   @Input() type!: string;

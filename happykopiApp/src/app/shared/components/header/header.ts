@@ -82,10 +82,7 @@ export class Header implements OnInit, OnDestroy {
   }
 
   private removeTrailingS(word: string): string {
-    if (word.endsWith('s')) {
-      return word.slice(0, -1);
-    }
-    return word;
+    return word.endsWith('s') ? word.slice(0, -1) : word;
   }
 
   private updateHeaderButtons(url: string): void {
