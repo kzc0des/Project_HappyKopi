@@ -70,7 +70,7 @@ export class Header implements OnInit, OnDestroy {
     console.log(`show isEditing state: ${this.isEditing}`);
   }
 
-private resetHeaderState(): void {
+  private resetHeaderState(): void {
     this.showAddButton = false;
     this.showEditButton = false;
     this.showBackButton = false;
@@ -81,12 +81,19 @@ private resetHeaderState(): void {
     this.headerActionService.resetValueChangedState();
   }
 
+  private removeTrailingS(word: string): string {
+    if (word.endsWith('s')) {
+      return word.slice(0, -1);
+    }
+    return word;
+  }
+
   private updateHeaderButtons(url: string): void {
     this.resetHeaderState();
-    const segments = url.split('/').filter(segment => segment); // Clean empty segments
+    const segments = url.split('/').filter(segment => segment);
 
-    // Example URL: /app/inventory/drinks/create
-    // Segments: ['app', 'inventory', 'drinks', 'create']
+    // Example URL: /app/inventory/liquid/create
+    // Segments: ['app', 'inventory', 'liquid', 'create']
 
     // Most specific routes first
     // Route: ':itemType/:itemId/edit'
@@ -113,16 +120,16 @@ private resetHeaderState(): void {
       this.showBackButton = true;
       this.showEditButton = true;
     }
-    // Route: ':itemType/:itemId'
+
     else if (segments.includes('inventory') && segments.length === 4) {
       this.showBackButton = true;
       this.showEditButton = true;
       this.onSelected = true;
     }
-    // Route: ':itemType' (e.g., /inventory/drinks)
+
     else if (segments.includes('inventory') && segments.length === 3) {
       const itemType = segments[2];
-      this.headerTitle = itemType; // Automatically sets title like "drinks"
+      this.headerTitle = itemType; 
       this.showBackButton = true;
       this.showAddButton = true;
     }
@@ -130,6 +137,22 @@ private resetHeaderState(): void {
     else if (segments.includes('inventory') && segments.length === 2) {
       this.headerTitle = 'Inventory';
       this.showBackButton = false;
+    }
+
+    // modifiers routing
+
+    else if (segments.includes('modifiers') && segments.includes('create') && segments.length >= 4) {
+      const itemType = this.removeTrailingS(segments[2]);
+      this.headerTitle = `Create ${itemType}`;
+      this.showBackButton = true;
+      this.showSaveButton = true;
+    }
+
+    else if (segments.includes('modifiers') && segments.length === 3) {
+      const modifierType = segments[2]
+      this.headerTitle = modifierType
+      this.showBackButton = true;
+      this.showAddButton = true;
     }
   }
 
