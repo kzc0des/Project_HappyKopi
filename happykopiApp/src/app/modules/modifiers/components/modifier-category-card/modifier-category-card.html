@@ -1,4 +1,4 @@
-<div class="flex w-full bg-white gap-4 px-6 py-8 items-center" [routerLink]="[itemTitle]">
+<div class="flex w-full bg-white gap-6 p-6 items-center" [routerLink]="[itemTitle]">
     <div class="p-3 bg-hapikopi-yellow rounded-xl flex items-center justify-center">
         @if(itemTitle.toLowerCase() === 'add-ons'){
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 512 512">
@@ -15,7 +15,7 @@
         }
     </div>
     <div class="flex flex-col gap-1 flex-1">
-        <p class="font-bold">{{ itemTitle }}</p>
+        <p class="font-bold text-hapikopi-dark">{{ itemTitle }}</p>
         <p class="text-gray-500">{{ itemValue }}&nbsp;&nbsp;{{unit}}</p>
     </div>
     <svg class="w-[1em] text-gray-400 text-xl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"

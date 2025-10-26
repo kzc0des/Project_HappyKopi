@@ -1,4 +1,4 @@
-<button [routerLink]="['/app/inventory', categoryName]" class="w-full flex gap-4 items-center px-6 py-8 bg-white">
+<button [routerLink]="['/app/inventory', categoryName]" class="w-full flex gap-6 items-center p-6 bg-white">
   <div class="bg-hapikopi-yellow flex items-center justify-center p-3 rounded-xl">
     @if(categoryName === 'Liquid'){
     <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 24 24">
@@ -27,7 +27,7 @@
     }
   </div>
   <div class="flex-1 flex flex-col gap-1 text-start">
-    <p class="font-bold">{{ categoryName }}</p>
+    <p class="text-hapikopi-dark font-bold">{{ categoryName }}</p>
     <p class="text-gray-500">{{ categoryNumberOfItems }} {{(categoryNumberOfItems > 1) ? 'items' : 'item'}}</p>
   </div>
   <div>
