@@ -25,7 +25,7 @@ export class InventoryList implements OnInit, OnDestroy{
       if (action === 'ADD') {
         const currentCategory = this.route.snapshot.paramMap.get('itemType');
 
-        this.router.navigate(['../add-item'], {
+        this.router.navigate(['create'], {
           relativeTo: this.route, 
           state: { itemType: currentCategory}
         });

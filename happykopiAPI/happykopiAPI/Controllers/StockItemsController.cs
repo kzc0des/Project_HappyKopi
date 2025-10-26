@@ -163,7 +163,9 @@ namespace happykopiAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An internal error occurred: {ex.Message}");
+                Console.WriteLine($"An error occurred: {ex.ToString()}");
+
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 

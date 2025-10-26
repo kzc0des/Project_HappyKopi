@@ -1,7 +1,6 @@
-import { Component, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-itemcard',
@@ -17,7 +16,7 @@ import { TitleCasePipe } from '@angular/common';
   ]
 })
 export class Itemcard implements ControlValueAccessor {
-  @Input() itemTitle: string = 'Item Title';
+  @Input() itemTitle: string = '';
   @Input() showIcon: boolean = false;
   @Input() isEditing: boolean = false;
   @Input() type!: string;

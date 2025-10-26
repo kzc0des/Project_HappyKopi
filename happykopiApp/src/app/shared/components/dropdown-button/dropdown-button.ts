@@ -17,7 +17,7 @@ import { HeaderService } from '../../../core/services/header/header.service';
     },
   ],
 })
-export class DropdownButton implements OnInit {
+export class DropdownButton {
   @Input() options: DropdownOption[] = [];
   @Input() placeholder: string = 'Select an option';
   @Input() selected!: number | string;
@@ -33,14 +33,6 @@ export class DropdownButton implements OnInit {
   private onTouched: () => void = () => { };
 
   constructor(private _elementRef: ElementRef, private headerService: HeaderService) { }
-
-  ngOnInit(): void {
-    const changed = this.options.some(opt => opt.value !== this.selected);
-    if (changed) {
-      console.log("Changed OnLoad: " + changed);
-      this.headerService.notifyValueChanged(this.placeholder, true);
-    }
-  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {

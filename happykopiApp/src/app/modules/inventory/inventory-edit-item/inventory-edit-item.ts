@@ -49,7 +49,7 @@ export class InventoryEditItem implements OnInit, OnDestroy {
       switch (action) {
         case 'SAVE':
           const confirmedSave = await this.confirmationService.confirm(
-            'Confirm Save',
+            'Add Item?',
             `Are you sure you want to save these changes?`,
             'primary'
           );
@@ -59,8 +59,9 @@ export class InventoryEditItem implements OnInit, OnDestroy {
           break;
         case 'DELETE':
           const confirmedDelete = await this.confirmationService.confirm(
-            'Confirm Deletion',
-            `Are you sure you want to delete ${this.stockitemdetail.name}? This action cannot be undone.`
+            'Delete Item?',
+            `Are you sure you want to delete ${this.stockitemdetail.name}? This action cannot be undone.`,
+            'danger'
           );
           if (confirmedDelete) {
             this.deleteStockItem();

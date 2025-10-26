@@ -19,7 +19,7 @@
     <div class="
     flex flex-col w-full gap-2
     rounded-2xl">
-        <p class="text-gray-500">{{itemTitle || 'Item Title'}}</p>
+        <p class="text-gray-500">{{itemTitle}}</p>
         <h1 class="font-bold">
             {{ internalValue }}
         </h1>
@@ -31,7 +31,7 @@
 @if(isEditing){
 <div class="
     flex flex-col px-3 py-4 w-full gap-2 bg-white
-    border-1 rounded-2xl border-gray-300">
+    border-1 rounded-xl border-gray-300">
     <p class="text-gray-500">{{itemTitle || 'Item Title'}}</p>
 
     @if(type === 'number'){

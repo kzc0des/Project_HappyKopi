@@ -76,32 +76,8 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'dashboard',
+                redirectTo: 'inventory',
                 pathMatch: 'full'
-            },
-            {
-                path: 'dashboard',
-                component: DashboardHost,
-                children: [
-                    {
-                        path: '',
-                        pathMatch: 'full',
-                        component: DashboardHost,
-                        canActivate: [dashboardRedirectGuard]
-                    },
-                    {
-                        path: 'admin',
-                        component: AdminDashboard,
-                        canActivate: [roleGuard],
-                        data: { roles: ['Admin'] }
-                    },
-                    {
-                        path: 'barista',
-                        component: BaristaDashboard,
-                        canActivate: [roleGuard],
-                        data: { roles: ['Barista'] }
-                    }
-                ]
             },
             {
                 path: 'inventory',
@@ -115,35 +91,39 @@ export const routes: Routes = [
                         }
                     },
                     {
-                        path: 'add-item',
+                        path: ':itemType/create',
                         component: InventoryAddItem
                     },
                     {
-                        path: ':itemType',
-                        component: InventoryList,
-                        resolve: {
-                            stockitemlist: stockItemSummaryResolver
-                        }
-                    },
-                    {
-                        path: 'item/:itemId',
-                        component: InventoryItemDetail,
-                        resolve: {
-                            stockitemdetail: stockitemdetailResolver
-                        }
-                    },
-                    {
-                        path: 'edit/item/:itemId',
+                        path: ':itemType/:itemId/edit',
                         component: InventoryEditItem,
                         resolve: {
                             stockitemdetail: stockitemdetailResolver
                         }
                     },
                     {
+                        path: 'item/:itemid/batch/add',
+                        component: InventoryBatchView
+                    },
+                    {
                         path: 'item/:itemid/batch/:batchid',
                         component: InventoryBatchView,
                         resolve: {
                             batchdetail: stockItemBatchResolver
+                        }
+                    },
+                    {
+                        path: ':itemType/:itemId',
+                        component: InventoryItemDetail,
+                        resolve: {
+                            stockitemdetail: stockitemdetailResolver
+                        }
+                    },
+                    {
+                        path: ':itemType',
+                        component: InventoryList,
+                        resolve: {
+                            stockitemlist: stockItemSummaryResolver
                         }
                     }
                 ]
@@ -158,17 +138,14 @@ export const routes: Routes = [
                         resolve: {
                             modifiertypecount: modifierTypeCountResolver
                         }
-                    },                    
-                    {
-                        path: ':type',
-                        component: ModifierList,
-                        resolve: {
-                            modifierlist: modifierSummaryResolver
-                        }
                     },
                     {
                         path: ':type/create',
                         component: ModifierAdd
+                    },
+                    {
+                        path: ':type/:itemId/edit',
+                        component: ModifierEdit
                     },
                     {
                         path: ':type/:itemId',
@@ -176,10 +153,13 @@ export const routes: Routes = [
                         resolve: {
                             modifierdetail: modifierDetailsResolver
                         }
-                    },
+                    },                    
                     {
-                        path: ':type/:itemId/edit',
-                        component: ModifierEdit
+                        path: ':type',
+                        component: ModifierList,
+                        resolve: {
+                            modifierlist: modifierSummaryResolver
+                        }
                     }
                 ]
             }

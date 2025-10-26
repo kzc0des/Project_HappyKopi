@@ -70,66 +70,87 @@ export class Header implements OnInit, OnDestroy {
     console.log(`show isEditing state: ${this.isEditing}`);
   }
 
-  private updateHeaderButtons(url: string): void {
+  private resetHeaderState(): void {
     this.showAddButton = false;
-    this.showDeleteButton = false;
-    this.showBackButton = false;
-    this.headerTitle = null;
-    this.onSelected = false;
-    this.showSaveButton = false;
     this.showEditButton = false;
+    this.showBackButton = false;
+    this.showSaveButton = false;
+    this.showDeleteButton = false;
+    this.onSelected = false;
+    this.headerTitle = null;
+    this.headerActionService.resetValueChangedState();
+  }
 
-    if (url.includes('/inventory/add-item')) {
+  private removeTrailingS(word: string): string {
+    return word.endsWith('s') ? word.slice(0, -1) : word;
+  }
+
+  private updateHeaderButtons(url: string): void {
+    this.resetHeaderState();
+    const segments = url.split('/').filter(segment => segment);
+
+    // Example URL: /app/inventory/liquid/create
+    // Segments: ['app', 'inventory', 'liquid', 'create']
+
+    // Most specific routes first
+    // Route: ':itemType/:itemId/edit'
+    if (segments.includes('inventory') && segments.includes('edit') && segments.length >= 5) {
       this.showBackButton = true;
       this.showSaveButton = true;
-      this.headerTitle = "Add New Item"
-
-      // this.onAdd = true;
-      // this.onEdit = false;
-    }
-    else if (url.includes('/inventory/item/') && url.includes('/batch/')) {
-      this.showBackButton = true;
       this.showDeleteButton = true;
       this.onSelected = true;
-      console.log('youre here')
     }
-    else if (url.includes('/inventory/item/')) {
+    // Route: ':itemType/create'
+    else if (segments.includes('inventory') && segments.includes('create') && segments.length >= 4) {
+      this.headerTitle = 'Add Ingredient';
+      this.showBackButton = true;
+      this.showSaveButton = true;
+    }
+    // Route: 'item/:itemid/batch/add'
+    else if (segments.includes('item') && segments.includes('batch') && segments.includes('add')) {
+      this.headerTitle = 'Add Batch';
+      this.showBackButton = true;
+      this.showSaveButton = true;
+    }
+    // Route: 'item/:itemid/batch/:batchid'
+    else if (segments.includes('item') && segments.includes('batch') && segments.length >= 5) {
       this.showBackButton = true;
       this.showEditButton = true;
-
-      this.onSelected = true;
-
-      // this.onEdit = true;
-      // this.onAdd = false;
     }
-    else if (url.includes('/inventory/edit/item')) {
+
+    else if (segments.includes('inventory') && segments.length === 4) {
+      this.showBackButton = true;
+      this.showEditButton = true;
+      this.onSelected = true;
+    }
+
+    else if (segments.includes('inventory') && segments.length === 3) {
+      const itemType = segments[2];
+      this.headerTitle = itemType; 
+      this.showBackButton = true;
+      this.showAddButton = true;
+    }
+    // Route: '' (main inventory page)
+    else if (segments.includes('inventory') && segments.length === 2) {
+      this.headerTitle = 'Inventory';
+      this.showBackButton = false;
+    }
+
+    // modifiers routing
+
+    else if (segments.includes('modifiers') && segments.includes('create') && segments.length >= 4) {
+      const itemType = this.removeTrailingS(segments[2]);
+      this.headerTitle = `Create ${itemType}`;
       this.showBackButton = true;
       this.showSaveButton = true;
-      this.showDeleteButton = true;
-
-      this.onSelected = true;
     }
-    else if ( 
-      (url.includes('/inventory/') && !url.includes('/item/')) || 
-      (url.includes('/modifiers/') && !url.includes('/item/')) 
-    )
-    {
-      this.showAddButton = true;
+
+    else if (segments.includes('modifiers') && segments.length === 3) {
+      const modifierType = segments[2]
+      this.headerTitle = modifierType
       this.showBackButton = true;
-
-      this.showSaveButton = false;
-      this.showEditButton = false;
-
-      // getting the last link segment
-      const urlSegments = url.split('/');
-      console.log(urlSegments[urlSegments.length - 1]);
-      this.headerTitle = decodeURIComponent(urlSegments[urlSegments.length - 1]);
-    }
-    else if (url.includes('/inventory')) {
       this.showAddButton = true;
     }
-
-    this.headerActionService.resetValueChangedState();
   }
 
   onAddItemClick(): void {
@@ -138,7 +159,6 @@ export class Header implements OnInit, OnDestroy {
     this.showBackButton = true;
     this.showSaveButton = true;
 
-    // console.log(this.isEditing);
   }
 
   onEditItemClick(): void {
@@ -191,8 +211,11 @@ export class Header implements OnInit, OnDestroy {
       this.location.back();
     } else {
       const confirmed = await this.confirmationService.confirm(
-        'Discard Changes?',
-        'You have unsaved changes. Are you sure you want to discard them?'
+        'Cancel Edit?',
+        'All new details you entered will be removed.',
+        'primary',
+        'Cancel Edit',
+        'Keep Editing'
       );
 
       if (confirmed) {

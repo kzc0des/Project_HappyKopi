@@ -4,24 +4,28 @@ import { inject } from '@angular/core';
 import { InventoryService } from '../../services/inventory.service';
 import { catchError, Observable, of } from 'rxjs';
 
-export const stockitemdetailResolver: ResolveFn<StockItemDetailsDto> = (route, state): Observable<StockItemDetailsDto> => {
+export const stockitemdetailResolver: ResolveFn<StockItemDetailsDto | null> = (route, state): Observable<StockItemDetailsDto | null> => {
   const inventoryService = inject(InventoryService);
 
-  const itemIdParam = route.paramMap.get('itemId');
-  const itemId = Number(itemIdParam);
+const itemIdParam = route.paramMap.get('itemId');
 
-  // console.log("Item Type Param:" + itemId);
-
-  if (!itemId) {
-    console.error('ItemType parameter not found in route!');
-    return of();
+  if (itemIdParam === null) {
+    console.error('Resolver Error: The "itemId" parameter was not found in the route. Full URL:', state.url);
+    return of(null); 
   }
 
+  const itemId = parseInt(itemIdParam, 10);
 
+  if (isNaN(itemId)) {
+    console.error(`Resolver Error: The "itemId" parameter ("${itemIdParam}") is not a valid number. Full URL:`, state.url);
+    return of(null);
+  }
+
+  console.log(`Resolver: Fetching details for itemId: ${itemId}`);
   return inventoryService.getStockItemDetailsById(itemId).pipe(
     catchError(err => {
-      console.error('Failed to load specific item', err);
-      return of ();
+      console.error(`Resolver Error: Failed to fetch data for item ID ${itemId}.`, err);
+      return of(null);
     })
-  )
+  );
 };

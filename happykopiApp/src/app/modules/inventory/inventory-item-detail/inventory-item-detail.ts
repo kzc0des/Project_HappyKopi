@@ -45,7 +45,7 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
 
       if(action === 'EDIT') {
           this.isEditing = !this.isEditing;
-          this.router.navigate(['../../edit/item', this.stockitemdetail.id], {relativeTo: this.route});
+          this.router.navigate(['edit'], {relativeTo: this.route});
       }
 
     });

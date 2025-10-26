@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './confirmation-dialog.css'
 })
 export class ConfirmationDialog implements OnInit, OnDestroy {
-  
+
   show = false;
   title = 'Delete Item?';
   message = 'This will be permanently removed to your system.';
@@ -31,6 +31,8 @@ export class ConfirmationDialog implements OnInit, OnDestroy {
         this.title = state.title;
         this.message = state.message;
         this.confirmButtonType = state.confirmButtonType;
+        this.confirmText = state.confirmButtonText || 'Delete';
+        this.cancelText = state.cancelButtonText || 'Cancel';
         this.resolve = state.resolve;
       }
     });

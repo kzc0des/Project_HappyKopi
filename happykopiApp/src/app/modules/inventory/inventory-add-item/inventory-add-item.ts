@@ -68,7 +68,8 @@ export class InventoryAddItem implements OnInit, OnDestroy {
         const confirmedSave = await this.confirmationService.confirm(
           'Confirm Save',
           `Are you sure you want to save these changes?`,
-          'primary'
+          'primary',
+          'Add Item'
         );
         if (confirmedSave) {
           console.log(this.stockitemdetail);
