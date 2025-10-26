@@ -70,66 +70,67 @@ export class Header implements OnInit, OnDestroy {
     console.log(`show isEditing state: ${this.isEditing}`);
   }
 
-  private updateHeaderButtons(url: string): void {
+private resetHeaderState(): void {
     this.showAddButton = false;
-    this.showDeleteButton = false;
-    this.showBackButton = false;
-    this.headerTitle = null;
-    this.onSelected = false;
-    this.showSaveButton = false;
     this.showEditButton = false;
+    this.showBackButton = false;
+    this.showSaveButton = false;
+    this.showDeleteButton = false;
+    this.onSelected = false;
+    this.headerTitle = null;
+    this.headerActionService.resetValueChangedState();
+  }
 
-    if (url.includes('/inventory/add-item')) {
+  private updateHeaderButtons(url: string): void {
+    this.resetHeaderState();
+    const segments = url.split('/').filter(segment => segment); // Clean empty segments
+
+    // Example URL: /app/inventory/drinks/create
+    // Segments: ['app', 'inventory', 'drinks', 'create']
+
+    // Most specific routes first
+    // Route: ':itemType/:itemId/edit'
+    if (segments.includes('inventory') && segments.includes('edit') && segments.length >= 5) {
       this.showBackButton = true;
       this.showSaveButton = true;
-      this.headerTitle = "Add New Item"
-
-      // this.onAdd = true;
-      // this.onEdit = false;
-    }
-    else if (url.includes('/inventory/item/') && url.includes('/batch/')) {
-      this.showBackButton = true;
       this.showDeleteButton = true;
       this.onSelected = true;
-      console.log('youre here')
     }
-    else if (url.includes('/inventory/item/')) {
+    // Route: ':itemType/create'
+    else if (segments.includes('inventory') && segments.includes('create') && segments.length >= 4) {
+      this.headerTitle = 'Add Ingredient';
+      this.showBackButton = true;
+      this.showSaveButton = true;
+    }
+    // Route: 'item/:itemid/batch/add'
+    else if (segments.includes('item') && segments.includes('batch') && segments.includes('add')) {
+      this.headerTitle = 'Add Batch';
+      this.showBackButton = true;
+      this.showSaveButton = true;
+    }
+    // Route: 'item/:itemid/batch/:batchid'
+    else if (segments.includes('item') && segments.includes('batch') && segments.length >= 5) {
       this.showBackButton = true;
       this.showEditButton = true;
-
-      this.onSelected = true;
-
-      // this.onEdit = true;
-      // this.onAdd = false;
     }
-    else if (url.includes('/inventory/edit/item')) {
+    // Route: ':itemType/:itemId'
+    else if (segments.includes('inventory') && segments.length === 4) {
       this.showBackButton = true;
-      this.showSaveButton = true;
-      this.showDeleteButton = true;
-
+      this.showEditButton = true;
       this.onSelected = true;
     }
-    else if ( 
-      (url.includes('/inventory/') && !url.includes('/item/')) || 
-      (url.includes('/modifiers/') && !url.includes('/item/')) 
-    )
-    {
-      this.showAddButton = true;
+    // Route: ':itemType' (e.g., /inventory/drinks)
+    else if (segments.includes('inventory') && segments.length === 3) {
+      const itemType = segments[2];
+      this.headerTitle = itemType; // Automatically sets title like "drinks"
       this.showBackButton = true;
-
-      this.showSaveButton = false;
-      this.showEditButton = false;
-
-      // getting the last link segment
-      const urlSegments = url.split('/');
-      console.log(urlSegments[urlSegments.length - 1]);
-      this.headerTitle = decodeURIComponent(urlSegments[urlSegments.length - 1]);
-    }
-    else if (url.includes('/inventory')) {
       this.showAddButton = true;
     }
-
-    this.headerActionService.resetValueChangedState();
+    // Route: '' (main inventory page)
+    else if (segments.includes('inventory') && segments.length === 2) {
+      this.headerTitle = 'Inventory';
+      this.showBackButton = false;
+    }
   }
 
   onAddItemClick(): void {
@@ -138,7 +139,6 @@ export class Header implements OnInit, OnDestroy {
     this.showBackButton = true;
     this.showSaveButton = true;
 
-    // console.log(this.isEditing);
   }
 
   onEditItemClick(): void {

@@ -26,7 +26,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<HappyKopiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDB"), sqlServerOptionsAction: sqlOptions =>
 {
     sqlOptions.EnableRetryOnFailure();
-}));
+})
+.LogTo(Console.WriteLine, LogLevel.Information) 
+.EnableSensitiveDataLogging());
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
