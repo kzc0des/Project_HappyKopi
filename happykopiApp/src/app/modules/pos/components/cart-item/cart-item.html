@@ -3,7 +3,10 @@
 
   <div class="drink-info">
     <div class="drink-header">
-      <div class="drink-name">{{ cartItem.Name }}</div>
+      <div class="drink-name">
+        {{ cartItem.Name }}
+        <div class="drink-qty">{{ cartItem.DrinkQuantity }}</div>
+      </div>
     </div>
 
     <div class="drink-size">{{ cartItem.Size }}</div>
@@ -11,18 +14,13 @@
     <div class="addon-list">
       <div class="addon">
         {{ cartItem.AddOn }}
-        <div class="addon-qty">{{cartItem.AddOnQuantity}}</div>
+        <div class="addon-qty">{{ cartItem.AddOnQuantity }}</div>
       </div>
     </div>
   </div>
 
   <div class="price-and-qty">
     <div class="drink-price">{{ cartItem.Subtotal | currency : 'PHP' }}</div>
-
-    <div class="quantity-control">
-      <div class="quantity-btn minus">−</div>
-      <div class="count">{{ cartItem.DrinkQuantity}}</div>
-      <div class="quantity-btn plus">+</div>
-    </div>
+    <div class="quantity-control">Edit</div>
   </div>
 </div>
