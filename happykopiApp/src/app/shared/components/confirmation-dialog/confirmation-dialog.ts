@@ -11,13 +11,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './confirmation-dialog.css'
 })
 export class ConfirmationDialog implements OnInit, OnDestroy {
-
   show = false;
-  title = 'Delete Item?';
-  message = 'This will be permanently removed to your system.';
-  confirmText = 'Delete';
+  title = '';
+  message = '';
+  confirmText = 'Confirm';
   cancelText = 'Cancel';
-  confirmButtonType: ConfirmButtonType = 'danger';
+  confirmButtonType: ConfirmButtonType = 'primary';
 
   private resolve!: (value: boolean) => void;
   private subscription!: Subscription;
@@ -28,10 +27,10 @@ export class ConfirmationDialog implements OnInit, OnDestroy {
     this.subscription = this.confirmationService.state$.subscribe((state: ConfirmationState) => {
       this.show = state.show;
       if (this.show) {
-        this.title = state.title;
-        this.message = state.message;
-        this.confirmButtonType = state.confirmButtonType;
-        this.confirmText = state.confirmButtonText || 'Delete';
+        this.title = state.title || '';
+        this.message = state.message || '';
+        this.confirmButtonType = state.confirmButtonType || 'primary';
+        this.confirmText = state.confirmButtonText || 'Confirm';
         this.cancelText = state.cancelButtonText || 'Cancel';
         this.resolve = state.resolve;
       }
