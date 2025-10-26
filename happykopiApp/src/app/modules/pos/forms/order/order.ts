@@ -6,10 +6,11 @@ import { PosCategoryOff } from "../../components/pos-category-off/pos-category-o
 import { SearchDrink } from '../../../../shared/components/search-drink/search-drink';
 import { OrderCard } from '../../components/order-card/order-card';
 import { Header } from '../../../../shared/components/header/header';
+import { PaymentMethodCash } from "../../components/payment-method-cash/payment-method-cash";
 
 @Component({
   selector: 'app-order',
-  imports: [OrderQuickView, PosCategoryOn, PosCategoryOff, SearchDrink, OrderCard, Header],
+  imports: [OrderQuickView, PosCategoryOn, PosCategoryOff, SearchDrink, OrderCard, Header, PaymentMethodCash],
   templateUrl: './order.html',
   styleUrl: './order.css'
 })

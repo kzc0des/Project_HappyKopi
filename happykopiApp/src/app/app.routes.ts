@@ -61,6 +61,7 @@ import { ChargeCashSummaryCard } from './modules/pos/components/charge-cash-summ
 import { GrandeActive } from './modules/pos/components/grande-active/grande-active';
 import { OrderCard } from './modules/pos/components/order-card/order-card';
 import { OrderQuantityModifier } from './modules/pos/components/order-quantity-modifier/order-quantity-modifier';
+import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
 
 export const routes: Routes = [
     {
@@ -304,5 +305,9 @@ export const routes: Routes = [
     {
         path: 'oqm',
         component: OrderQuantityModifier
+    },
+    {
+        path: 'payment-method',
+        component: PaymentMethodCash
     }
 ];
