@@ -1,34 +1,40 @@
 <app-header></app-header>
 <div class="order-body">
-    <app-order-quick-view></app-order-quick-view>
+  <app-order-quick-view
+    [oqv]="{
+      OrderNumber: 18,
+      OrderQuantity: 909,
+      OrderTotal: 2000
+    }"
+  ></app-order-quick-view>
 
-    <div class="categories">
-        <app-pos-category-on></app-pos-category-on> 
-        <app-pos-category-off></app-pos-category-off>
-        <app-pos-category-off></app-pos-category-off>
-        <app-pos-category-off></app-pos-category-off>
-    </div>
+  <div class="categories">
+    <app-pos-category-on></app-pos-category-on>
+    <app-pos-category-off></app-pos-category-off>
+    <app-pos-category-off></app-pos-category-off>
+    <app-pos-category-off></app-pos-category-off>
+  </div>
 
-    <app-search-drink></app-search-drink>
+  <app-search-drink></app-search-drink>
 
-    <div class="drinks-table">
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card>
-        <app-order-card></app-order-card> 
-    </div>
+  <div class="drinks-table">
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+    <app-order-card></app-order-card>
+  </div>
 </div>
