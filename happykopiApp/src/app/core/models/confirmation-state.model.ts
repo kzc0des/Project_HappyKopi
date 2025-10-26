@@ -6,4 +6,6 @@ export interface ConfirmationState {
     message: string;
     resolve: (value: boolean) => void;
     confirmButtonType: ConfirmButtonType;
+    confirmButtonText?: string;
+    cancelButtonText?: string;
 }

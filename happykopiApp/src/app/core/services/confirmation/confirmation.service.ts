@@ -11,7 +11,13 @@ export class ConfirmationService {
 
   constructor() { }
 
-  confirm(title: string, message: string, confirmButtonType: ConfirmButtonType = "danger"): Promise<boolean> {
+  confirm(
+    title: string, 
+    message: string, 
+    confirmButtonType: ConfirmButtonType = "danger",
+    confirmButtonText: string = 'Confirm', 
+    cancelButtonText: string = 'Cancel'   
+  ): Promise<boolean> {
     return new Promise((resolve) => {
       this.state.next({
         show: true,
