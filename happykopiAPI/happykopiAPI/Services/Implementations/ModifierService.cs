@@ -40,6 +40,12 @@ namespace happykopiAPI.Services.Implementations
             return await connection.QueryAsync<ModifierSummaryDto>("sp_GetModifiers", commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<ModifierSummaryDto>> GetInactiveModifiersAsync()
+        {
+            using var connection = new SqlConnection(_connectionString);
+            return await connection.QueryAsync<ModifierSummaryDto>("sp_GetInactiveModifiers", commandType: CommandType.StoredProcedure);
+        }
+
         // order process query only available modifiers
         public async Task<IEnumerable<ModifierSummaryDto>> GetAvailableModifiersAsync()
         {
@@ -82,7 +88,8 @@ namespace happykopiAPI.Services.Implementations
                 dto.Price,
                 dto.OzAmount,
                 IsAvailable = true, 
-                Type = dto.Type
+                Type = dto.Type,
+                IsActive = true
             };
 
             using var connection = new SqlConnection(_connectionString);
@@ -113,6 +120,21 @@ namespace happykopiAPI.Services.Implementations
 
             using var connection = new SqlConnection(_connectionString);
             var affectedRows = await connection.ExecuteAsync("sp_UpdateModifier", parameters, commandType: CommandType.StoredProcedure);
+
+            if (affectedRows > 0)
+            {
+                await _notificationService.NotifyModifiersUpdatedAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteModifierAsync(int modifierId)
+        {
+            var parameters = new { ModifierId = modifierId };
+
+            using var connection = new SqlConnection(_connectionString);
+            var affectedRows = await connection.ExecuteAsync("sp_DeleteModifier", parameters, commandType: CommandType.StoredProcedure);
 
             if (affectedRows > 0)
             {

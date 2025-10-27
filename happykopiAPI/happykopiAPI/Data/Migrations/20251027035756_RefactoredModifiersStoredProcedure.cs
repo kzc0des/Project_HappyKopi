@@ -95,6 +95,7 @@ namespace happykopiAPI.Data.Migrations
                     m.OzAmount,
                     m.Type,
                     m.IsAvailable,
+                    m.IsActive,
                     (
                         SELECT
                             msi.StockItemId,
@@ -146,6 +147,32 @@ namespace happykopiAPI.Data.Migrations
             END";
 
             migrationBuilder.Sql(sp_DeleteModifier);
+
+            var sp_GetModifiers = @"
+            CREATE OR ALTER PROCEDURE [dbo].[sp_GetModifiers]
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+                SELECT Id, Name, Price, Type, IsAvailable
+                FROM dbo.Modifiers
+                WHERE IsActive = 1
+                ORDER BY Name;
+            END";
+
+            migrationBuilder.Sql(sp_GetModifiers);
+
+            var sp_GetInactiveModifiers = @"
+            CREATE OR ALTER PROCEDURE [dbo].[sp_GetInactiveModifiers]
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+                SELECT Id, Name, Price, Type, OzAmount, IsAvailable, IsActive, LastUpdated
+                FROM dbo.Modifiers
+                WHERE IsActive = 0
+                ORDER BY Name;
+            END";
+
+            migrationBuilder.Sql(sp_GetInactiveModifiers);
         }
 
         /// <inheritdoc />
@@ -155,6 +182,7 @@ namespace happykopiAPI.Data.Migrations
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_UpdateModifier]");
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_GetModifierById]");
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_DeleteModifier]");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_GetModifiers]");
         }
     }
 }

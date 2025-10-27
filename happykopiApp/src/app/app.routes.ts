@@ -21,10 +21,6 @@ import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-p
 import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
 import { Order } from './modules/pos/forms/order/order'; 
-import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
-import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
-import { Order } from './modules/pos/forms/order/order';
-import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-category-on';
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
