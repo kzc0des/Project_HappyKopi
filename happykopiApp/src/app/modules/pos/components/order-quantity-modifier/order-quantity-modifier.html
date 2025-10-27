@@ -1,7 +1,8 @@
 <div class="quantity-container">
   <div class="quantity-bg"></div>
-  <div class="quantity-value">{{oqm.Quantity}}</div>
 
-  <div class="quantity-btn minus">−</div>
-  <div class="quantity-btn plus">+</div>
+  <div class="quantity-value">{{ oqm.Quantity }}</div>
+
+  <div class="quantity-btn minus" (click)="decrease()">−</div>
+  <div class="quantity-btn plus" (click)="increase()">+</div>
 </div>

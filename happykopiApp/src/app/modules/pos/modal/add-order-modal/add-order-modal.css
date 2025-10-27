@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
 .modal-card {
-  width: 465px;
-  height: 691px;
+  width: 465px;  
   background: #fff;
   border-radius: 20px;
   padding: 24px;
@@ -44,109 +43,32 @@
   font-size: 20px;
   font-weight: 600;
 }
-
-/* Quantity Selector */
-.quantity-container {
-  width: 418px;
-  height: 54px;
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.quantity-bg {
-  width: 416px;
-  height: 54px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  background: #fafafa;
-  border-radius: 90px;
-  outline: 2px solid #d9d9d9;
-}
  
-.quantity-value {
-  position: absolute;
-  left: 205px;
-  top: 12px;
-  text-align: center;
-  color: #282828;
-  font-size: 20px;
-  font-family: 'Outfit', sans-serif;
-  font-weight: 600;
-  word-wrap: break-word;
-}
- 
-.quantity-btn {
-  width: 49px;
-  height: 49px;
-  position: absolute;
-  top: 2px;
-  background: #f3b72c;
-  border-radius: 9999px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 28px; 
-  color: #765302;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
- 
-.quantity-btn.minus {
-  left: 3px;
-}
-
-.quantity-btn.plus {
-  left: 364px;
-}
 
 /* Sizes */
 .size-container {
-  width: 414px;
-  height: 77px;
-  position: relative;
   display: flex;
-  gap: 12px;
-}
- 
-.size-option {
-  width: 201px;
-  height: 77px;
-  border-radius: 12px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
   gap: 15px;
-  background: #ededed;
-  padding: 17px 26px; 
-  cursor: pointer;
+  overflow-x: auto;       /* horizontal scroll */
+  overflow-y: hidden;     /* hide vertical overflow */
+  box-sizing: border-box; 
+  flex-wrap: nowrap;       /* prevent items from wrapping */
+  padding: 10px;          /* optional spacing inside container */
+  scroll-behavior: smooth; 
+
+  flex: 0 0 auto;  /* prevent shrinking */
+  min-width: 120px; /* example width */
+}
+
+.size-container::-webkit-scrollbar {
+  width: 0;                
 }
  
-.size-option.active {
-  background: #fffbf2;
-  outline: 2px solid #f3b72c;
-  outline-offset: -2px;
-}
- 
-.size-icon svg {
-  display: block;
-}
- 
-.size-label {
-  font-size: 16px;
-  font-weight: 400;
-  color: #282828;
-  text-align: center;
-}
- 
-.size-option.active .size-label {
-  color: #f3b72c;
-}
 
 /* Add-ons */
 .addons-section {
   margin-top: 33px;
-  margin-bottom: 53px;
+  margin-bottom: 30px;
 }
 
 .addons-title {
@@ -219,28 +141,11 @@
 }
 
 /* Add Item Button */
-.add-item-btn {
-  width: 413px;
-  height: 77px;
-  padding: 26px 126px;
-  background: #F3B72C;
-  border-radius: 12px;
-  display: inline-flex;
+app-long-yellow-button {
+  display: block;         /* ensure it takes width of its content */
+  width: 100%;            /* make it expand across the flex center */
+  display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 20px;
 }
 
-.add-item-icon svg {
-  width: 20px;
-  height: 25px;
-}
-
-.add-item-text {
-  text-align: center;
-  color: #765302;
-  font-size: 20px; 
-  font-weight: 600;
-  word-wrap: break-word;
-}
 

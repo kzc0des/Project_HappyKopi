@@ -2,120 +2,37 @@
   <!-- Header -->
   <div class="product-header">
     <div>
-      <h3 class="product-title">Hot Choco</h3>
-      <p class="product-subtitle">Hot Kopi</p>
+      <h3 class="product-title">{{addOrderModal?.DrinkName}}</h3>
+      <p class="product-subtitle">{{addOrderModal?.DrinkCategory}}</p>
     </div>
-    <div class="product-price">₱73.00</div>
+    <div class="product-price">{{addOrderModal?.Total | currency: 'PHP'}}</div>
   </div>
 
   <!-- Quantity Selector -->
-  <div class="quantity-container">
-    <div class="quantity-bg"></div>
-    <div class="quantity-value">1</div>
+  <app-order-quantity-modifier></app-order-quantity-modifier>
 
-    <div class="quantity-btn minus">−</div>
-    <div class="quantity-btn plus">+</div>
-  </div>
- 
   <div class="size-container">
-    <!-- Grande -->
-    <div class="size-option active">
-      <div class="size-icon grande">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="19"
-          height="19"
-          viewBox="0 0 19 19"
-          fill="none"
-        >
-          <path d="M1.5 7.16699H17.5" stroke="#F3B72C" stroke-width="2" stroke-linecap="round" />
-          <path
-            d="M4.00289 8.10307C3.95673 7.6896 4.46864 7.33789 5.11661 7.33789H13.8834C14.5314 7.33789 15.0433 7.6896 14.9971 8.10307L14.0401 16.6745C13.9983 17.0483 13.5122 17.3379 12.9264 17.3379H6.07356C5.48784 17.3379 5.00166 17.0483 4.95991 16.6745L4.00289 8.10307Z"
-            stroke="#F3B72C"
-            stroke-width="2"
-          />
-          <path
-            d="M9.5 4.41373V2.57801C9.5 2.07109 10.0117 1.66016 10.6429 1.66016H12.3571"
-            stroke="#F3B72C"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-          <path
-            d="M4.19842 5.18102C4.29025 4.73843 4.76705 4.41406 5.32573 4.41406H13.6751C14.2338 4.41406 14.7106 4.73843 14.8024 5.18102L15.2147 7.16763H3.78613L4.19842 5.18102Z"
-            stroke="#F3B72C"
-            stroke-width="2"
-          />
-        </svg>
-      </div>
-      <div class="size-label">Grande (16 oz)</div>
-    </div>
+  @for (size of sizes; track size.SizeName) {
+    <app-grande-active
+      [sizeButton]="size"
+      [isActive]="activeSize === size.SizeName"
+      (selected)="selectSize(size)"
+    ></app-grande-active>
+  }
+</div>
 
-    <!-- Venti -->
-    <div class="size-option">
-      <div class="size-icon venti">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="25"
-          viewBox="0 0 18 25"
-          fill="none"
-        >
-          <path d="M1 7.92871H17" stroke="#282828" stroke-width="2" stroke-linecap="round" />
-          <path
-            d="M3.37308 9.153C3.32582 8.49145 3.84982 7.92871 4.51308 7.92871H13.4868C14.1501 7.92871 14.6741 8.49145 14.6268 9.153L13.6472 22.8673C13.6045 23.4653 13.1068 23.9287 12.5073 23.9287H5.49262C4.89308 23.9287 4.39542 23.4653 4.35268 22.8673L3.37308 9.153Z"
-            stroke="#282828"
-            stroke-width="2"
-          />
-          <path
-            d="M9 4.49986V2.21415C9 1.58296 9.51166 1.07129 10.1429 1.07129H11.8571"
-            stroke="#282828"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-          <path
-            d="M3.69842 5.45497C3.79025 4.90389 4.26705 4.5 4.82573 4.5H13.1751C13.7338 4.5 14.2106 4.90389 14.3024 5.45497L14.7147 7.92857H3.28613L3.69842 5.45497Z"
-            stroke="#282828"
-            stroke-width="2"
-          />
-        </svg>
-      </div>
-      <div class="size-label">Venti (22 oz)</div>
-    </div>
-  </div>
 
   <!-- Add-ons -->
   <div class="addons-section">
     <h4 class="addons-title">Add-ons</h4>
 
     <div class="addons-list">
-      <app-addon-card-active></app-addon-card-active>
-      <app-addon-card-active></app-addon-card-active>
-      <app-addon-card-active></app-addon-card-active>
-      <app-addon-card-active></app-addon-card-active>
-      <app-addon-card-active></app-addon-card-active>
-      <app-addon-card-active></app-addon-card-active>
+      <app-addon-card-active [addonCard]="{Name: 'Cream Cheese', Quantity: 0}"></app-addon-card-active>
+      <app-addon-card-active [addonCard]="{Name: 'Nata De Coco', Quantity: 0}"></app-addon-card-active> 
+      <app-addon-card-active [addonCard]="{Name: 'Espresso Shot', Quantity: 0}"></app-addon-card-active>  
+      <app-addon-card-active [addonCard]="{Name: 'Kiss ni Neo', Quantity: 0}"></app-addon-card-active>
+      <app-addon-card-active [addonCard]="{Name: 'Miss na Kita', Quantity: 0}"></app-addon-card-active>   
     </div>
-  </div>
-
-  <!-- Add Item Button -->
-  <div class="add-item-btn">
-    <div class="add-item-icon">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="25"
-        viewBox="0 0 20 25"
-        fill="none"
-      >
-        <path
-          d="M12.2488 8.00339H5.50421M14.497 12.4998H5.50421M11.1247 16.9962H5.50421M1.00781 1.25879V23.7408L3.25601 22.6167L5.50421 23.7408L7.75241 22.6167L10.0006 23.7408L12.2488 22.6167L14.497 23.7408L16.7452 22.6167L18.9934 23.7408V1.25879L16.7452 2.38289L14.497 1.25879L12.2488 2.38289L10.0006 1.25879L7.75241 2.38289L5.50421 1.25879L3.25601 2.38289L1.00781 1.25879Z"
-          stroke="#765302"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </div>
-    <div class="add-item-text">Add Item</div>
-  </div>
+  </div> 
+  <app-long-yellow-button buttonTitle="Add Drink"></app-long-yellow-button>
 </div>
