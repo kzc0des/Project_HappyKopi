@@ -103,6 +103,7 @@ export class InventoryEditItem implements OnInit, OnDestroy {
     this.inventoryService.deactivateStockItem(this.stockitemdetail.id).subscribe({
       next: response => {
         console.log(`Update successful. ${response}`);
+        this.headerActionService.notifyItemDeleted(true);
         this.router.navigate(['../../'], { relativeTo: this.route,  replaceUrl: true })
       },
       error: err => {

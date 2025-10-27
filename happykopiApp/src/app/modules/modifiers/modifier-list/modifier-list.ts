@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModifierSummaryDto } from '../../../core/dtos/modifier/modifier-summary-dto';
 import { ModifierItemCard } from '../components/modifier-item-card/modifier-item-card';
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
   templateUrl: './modifier-list.html',
   styleUrl: './modifier-list.css'
 })
-export class ModifierList implements OnInit {
+export class ModifierList implements OnInit, OnDestroy{
 
   modifiersItem !: ModifierSummaryDto[];
   actionSubscription !: Subscription;
@@ -28,11 +28,10 @@ export class ModifierList implements OnInit {
 
   ngOnInit(): void {
     this.modifiersItem = this.route.snapshot.data['modifierlist'];
-    console.log(`is deleted: ${this.isDeleted}`);
 
     this.isDeleteSubscription = this.headerService.isItemDeleted$.subscribe(isdel => {
       this.isDeleted = isdel;
-      console.log(isdel);
+      console.log(`is deleted: ${this.isDeleted}`);
     })
 
     this.actionSubscription = this.headerService.action$.subscribe(action => {
@@ -42,9 +41,14 @@ export class ModifierList implements OnInit {
 
       else if (action === 'BACK') {
         if (this.isDeleted) {
-          this.router.navigate(['../'], {relativeTo: this.route});
+          this.router.navigate(['../'], { relativeTo: this.route });
         }
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.headerService.notifyItemDeleted(false);
+    this.isDeleteSubscription.unsubscribe();
   }
 }
