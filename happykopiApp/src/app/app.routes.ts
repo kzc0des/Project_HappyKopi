@@ -54,6 +54,9 @@ import { OrderCard } from './modules/pos/components/order-card/order-card';
 import { OrderQuantityModifier } from './modules/pos/components/order-quantity-modifier/order-quantity-modifier';
 import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
 import { LongYellowButton } from './shared/components/long-yellow-button/long-yellow-button';
+import { TransactionCard } from './modules/transactions/components/transaction-card/transaction-card';
+import { TransactionIndividualCard } from './modules/transactions/components/transaction-individual-card/transaction-individual-card';
+import { TransactionPaymentCard } from './modules/transactions/components/transaction-payment-card/transaction-payment-card';
 
 export const routes: Routes = [
     {
@@ -296,5 +299,17 @@ export const routes: Routes = [
     {
         path: 'long-yellow-btn',
         component: LongYellowButton
+    },
+    {
+        path: 'transaction-card',
+        component: TransactionCard
+    },
+    {
+        path: 'transaction-indiv-card',
+        component: TransactionIndividualCard
+    },
+    {
+        path: 'transaction-payment-card',
+        component: TransactionPaymentCard
     }
 ];
