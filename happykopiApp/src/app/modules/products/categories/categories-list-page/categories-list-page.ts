@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CategoryListCard } from '../component/category-list-card/category-list-card';
+import { CategoryListCard } from '../../components/category-list-card/category-list-card';
 
 @Component({
   selector: 'app-categories-list-page',
