@@ -1,1 +1,89 @@
-<p>transaction-individual-card works!</p>
+<div class="relative w-[540px] h-[116px] bg-[#FAFAFA] font-outfit">
+  <!-- Icon -->
+  <div
+    class="absolute left-[30px] top-[31px] w-[55px] h-[55px] bg-[#F3B72C] rounded-[12px] flex items-center justify-center"
+  >
+    @if (cardMode == 'cash') {
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="17" viewBox="0 0 26 17" fill="none">
+      <path d="M1 1H24.5V15.1H1V1Z" stroke="#F0F0F0" stroke-width="2" stroke-linejoin="round" />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M1 5.7C3.59574 5.7 5.7 3.59575 5.7 1H1V5.7Z"
+        stroke="#F0F0F0"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M1 10.3999C3.59574 10.3999 5.7 12.5042 5.7 15.0999H1V10.3999Z"
+        stroke="#F0F0F0"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M24.5 10.3999V15.0999H19.8C19.8 12.5042 21.9043 10.3999 24.5 10.3999Z"
+        stroke="#F0F0F0"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M24.5 5.7C21.9043 5.7 19.8 3.59575 19.8 1H24.5V5.7Z"
+        stroke="#F0F0F0"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M12.75 11.5749C14.3723 11.5749 15.6875 9.9967 15.6875 8.0499C15.6875 6.1031 14.3723 4.5249 12.75 4.5249C11.1277 4.5249 9.8125 6.1031 9.8125 8.0499C9.8125 9.9967 11.1277 11.5749 12.75 11.5749Z"
+        stroke="#F0F0F0"
+        stroke-width="2"
+        stroke-linejoin="round"
+      />
+    </svg>
+    } @else if (cardMode == 'gcash') {
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="19" viewBox="0 0 26 19" fill="none">
+      <path
+        d="M1 6.875H24.5M3.35 1H22.15C23.4479 1 24.5 2.05213 24.5 3.35V15.1C24.5 16.3979 23.4479 17.45 22.15 17.45H3.35C2.05213 17.45 1 16.3979 1 15.1V3.35C1 2.05213 2.05213 1 3.35 1Z"
+        stroke="#F0F0F0"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+    }
+  </div>
+
+  <!-- Title -->
+  @if (cardMode == 'cash') {
+  <div class="absolute left-[116px] top-[25px] text-[#909090] text-[16px] font-normal">
+    Cash Transactions
+  </div>
+  } @else if (cardMode == 'gcash') {
+  <div class="absolute left-[116px] top-[25px] text-[#909090] text-[16px] font-normal">
+    G-Cash Transactions
+  </div>
+  }
+
+  <!-- Count -->
+  <div
+    class="absolute left-[116px] top-[62px] text-[#282828] text-[20px] font-semibold flex flex-col justify-center"
+  >
+    {{transactionCard?.TotalTransactions}}
+  </div>
+
+  <!-- Amount -->
+  <div
+    class="absolute right-[30px] top-[43px] text-[#282828] text-[20px] font-semibold flex flex-col justify-center text-right"
+  >
+    {{transactionCard?.TotalAmount | currency: 'PHP'}}
+  </div>
+</div>
