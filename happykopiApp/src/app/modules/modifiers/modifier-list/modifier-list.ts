@@ -4,11 +4,11 @@ import { ModifierSummaryDto } from '../../../core/dtos/modifier/modifier-summary
 import { ModifierItemCard } from '../components/modifier-item-card/modifier-item-card';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
-import { Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-modifier-list',
-  imports: [ModifierItemCard],
+  imports: [ModifierItemCard, CommonModule],
   templateUrl: './modifier-list.html',
   styleUrl: './modifier-list.css'
 })
@@ -18,16 +18,18 @@ export class ModifierList implements OnInit, OnDestroy{
   actionSubscription !: Subscription;
   isDeleteSubscription !: Subscription;
   isDeleted = false;
+  modifierType !: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private headerService: HeaderService,
-    private location: Location
+    private headerService: HeaderService
   ) { }
 
   ngOnInit(): void {
     this.modifiersItem = this.route.snapshot.data['modifierlist'];
+    const segments = this.router.url.split('/');
+    this.modifierType = segments[3];
 
     this.isDeleteSubscription = this.headerService.isItemDeleted$.subscribe(isdel => {
       this.isDeleted = isdel;
