@@ -31,7 +31,7 @@ export class Sidebar implements OnDestroy{
       if(user && user.role) {
         if(user.role.toLowerCase() === 'admin') {
           this.pages = [
-            {page: 'products', route: '/products'},
+            {page: 'products', route: 'products'},
             {page: 'modifiers', route: 'modifiers'},
             {page: 'inventory', route: 'inventory'}
           ]

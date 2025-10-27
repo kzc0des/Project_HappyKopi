@@ -162,6 +162,20 @@ export const routes: Routes = [
                         }
                     }
                 ]
+            },
+            {
+                path: 'products',
+                children: [
+                    {
+                        path: '',
+                        component: DrinkListPage,
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'category',
+                        component: CategoriesListPage
+                    }
+                ]
             }
         ]
     },
