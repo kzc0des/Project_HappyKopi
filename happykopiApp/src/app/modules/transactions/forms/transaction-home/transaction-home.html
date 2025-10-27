@@ -1,1 +1,21 @@
-<p>transaction-home works!</p>
+<div class="body">
+    <div class="cards">
+        <app-transaction-card cardMode="sales"></app-transaction-card>
+        <app-transaction-card cardMode="transactions"></app-transaction-card>
+    </div>
+
+    <div class="payment-cards">
+        <app-transaction-individual-card cardMode="cash"></app-transaction-individual-card>
+        <app-transaction-individual-card cardMode="gcash"></app-transaction-individual-card>
+    </div>
+
+    <div class="transaction-list">
+        <div class="transaction-list-header">Transaction History</div>
+        <app-transaction-payment-card paymentType="cash"></app-transaction-payment-card>
+        <app-transaction-payment-card paymentType="cash"></app-transaction-payment-card>
+        <app-transaction-payment-card paymentType="cash"></app-transaction-payment-card>
+        <app-transaction-payment-card paymentType="cash"></app-transaction-payment-card>
+        <app-transaction-payment-card paymentType="cash"></app-transaction-payment-card>
+        <app-transaction-payment-card paymentType="cash"></app-transaction-payment-card>
+    </div>
+</div>
