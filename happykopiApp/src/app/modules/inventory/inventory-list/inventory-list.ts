@@ -4,10 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BatchOrganizerCard } from "../components/batch-organizer-card/batch-organizer-card";
 import { HeaderService } from '../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-inventory-list',
-  imports: [BatchOrganizerCard],
+  imports: [BatchOrganizerCard, CommonModule],
   templateUrl: './inventory-list.html',
   styleUrl: './inventory-list.css'
 })
