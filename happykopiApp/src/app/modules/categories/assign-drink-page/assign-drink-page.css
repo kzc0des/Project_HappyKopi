@@ -4,29 +4,12 @@ body
     font-family: Outfit;
 }
 
-.category-bg
-{
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-
 .menu-card {
   width: 540px;
   height: 123px;
   position: relative;
   background: #FAFAFA;
   font-family: "Outfit", sans-serif;
-}
- 
-.menu-image {
-  width: 57px;
-  height: 84.74px;
-  left: 36px;
-  top: 19px;
-  background: #F0F0F0;
-  border-radius: 12px;
 }
  
 .menu-title {
@@ -48,3 +31,9 @@ body
   font-weight: 400;
   word-wrap: break-word;
 } 
+
+.category-bg
+{
+    padding-top: 30px;
+    padding-bottom: 30px;
+}

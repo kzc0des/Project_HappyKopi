@@ -12,7 +12,7 @@ import { EditPhotoCard } from '../../components/edit-photo-card/edit-photo-card'
 
 @Component({
   selector: 'app-add-drink-page',
-  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard, ToggleCard, EditPhotoCard, EditCategoryPage, CategoryDropdown],
+  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard, EditPhotoCard, CategoryDropdown],
   templateUrl: './add-drink-page.html',
   styleUrl: './add-drink-page.css'
 })

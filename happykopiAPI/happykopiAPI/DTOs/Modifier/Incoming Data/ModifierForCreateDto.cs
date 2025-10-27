@@ -14,7 +14,7 @@ namespace happykopiAPI.DTOs.Modifier.Incoming_Data
         public decimal Price { get; set; }
 
         [Required]
-        [Range(1, double.MaxValue)]
+        [Range(0, double.MaxValue)]
         public decimal? OzAmount { get; set; }
 
         [Required]

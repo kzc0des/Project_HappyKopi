@@ -4,8 +4,8 @@ export interface ModifierDetailsDto {
     id: number;
     name: string;
     price: number;
-    type: string;
+    type: number;
     isAvailable: boolean;
-    ozAmount: number;
+    ozAmount?: number;
     linkedItems?: ModifierLinkStockItem[];
 }

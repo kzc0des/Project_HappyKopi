@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { SearchFieldCard } from '../../products/components/search-field-card/search-field-card';
+import { SelectableCardList } from '../component/selectable-card-list/selectable-card-list';
 
 @Component({
   selector: 'app-assign-drink-page',
-  imports: [CommonModule],
+  imports: [CommonModule, SearchFieldCard, SelectableCardList],
   templateUrl: './assign-drink-page.html',
   styleUrl: './assign-drink-page.css'
 })
@@ -28,6 +30,11 @@ export class AssignDrinkPage {
     } else {
       this.selectedDrinks.splice(index, 1);
     }
+  }
+
+  onSelectionChange(selected: any[]) {
+    this.selectedDrinks = selected;
+    console.log('Selected:', selected);
   }
 
   isSelected(drink: any): boolean {

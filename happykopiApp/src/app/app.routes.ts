@@ -2,19 +2,12 @@ import { Routes } from '@angular/router';
 import { Login } from './modules/auth/login/login';
 import { authGuard } from './core/guards/auth-guard';
 import { MainLayout } from './layouts/main-layout/main-layout';
-import { AdminDashboard } from './modules/dashboard/admin-dashboard/admin-dashboard';
-import { roleGuard } from './core/guards/role-guard';
-import { BaristaDashboard } from './modules/dashboard/barista-dashboard/barista-dashboard';
-import { DashboardHost } from './modules/dashboard/dashboard-host/dashboard-host';
 import { loginGuard } from './core/guards/login-guard';
 import { InventoryCategories } from './modules/inventory/inventory-categories/inventory-categories';
 import { InventoryList } from './modules/inventory/inventory-list/inventory-list';
 import { InventoryItemDetail } from './modules/inventory/inventory-item-detail/inventory-item-detail';
-import { BatchOrganizerCard } from './modules/inventory/components/batch-organizer-card/batch-organizer-card';
-import { InventoryCategoryCard } from './modules/inventory/components/inventory-category-card/inventory-category-card';
 import { AddOrderModal } from './modules/pos/modal/add-order-modal/add-order-modal';
 import { stockItemTypeCountResolver } from './modules/inventory/resolver/stockitemtype/stock-item-type-count-resolver';
-import { IngredientBatchCard } from './modules/inventory/components/ingredient-batch-card/ingredient-batch-card';
 import { stockItemSummaryResolver } from './modules/inventory/resolver/stockitemsummary/stock-item-summary-resolver';
 import { TextBoxComponent } from './shared/components/text-box/text-box';
 import { TextBoxPrice } from './shared/components/text-box-price/text-box-price';
@@ -28,6 +21,10 @@ import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-p
 import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
 import { Order } from './modules/pos/forms/order/order'; 
+import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
+import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
+import { Order } from './modules/pos/forms/order/order';
+import { PosCategoryOn } from './modules/pos/components/pos-category-on/pos-category-on';
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
@@ -149,7 +146,10 @@ export const routes: Routes = [
                     },
                     {
                         path: ':type/:itemId/edit',
-                        component: ModifierEdit
+                        component: ModifierEdit,
+                        resolve: {
+                            modifierdetail: modifierDetailsResolver
+                        }
                     },
                     {
                         path: ':type/:itemId',

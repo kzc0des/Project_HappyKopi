@@ -4,6 +4,11 @@ import { FormsModule } from "@angular/forms";
 import { Router } from '@angular/router';
 import { ModifierForCreateDto } from '../../../core/dtos/modifier/modifier-for-create-dto';
 import { ModifierType } from '../../../core/enums/modifier-type';
+import { HeaderService } from '../../../core/services/header/header.service';
+import { Subscription } from 'rxjs';
+import { ModifierService } from '../services/modifier.service';
+import { Location } from '@angular/common';
+import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-modifier-add',
@@ -15,14 +20,37 @@ export class ModifierAdd implements OnInit {
   modifierDetails!: ModifierForCreateDto;
   itemTitle!: string;
   currentUrl !: string;
+  actionSubscription !: Subscription;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private headerService: HeaderService,
+    private modifierService: ModifierService,
+    private location: Location,
+    private confirmationService: ConfirmationService
+  ) { }
 
   ngOnInit(): void {
     this.currentUrl = this.router.url;
     this.updateItemTitle(this.currentUrl);
 
     this.initializeEmptyDto();
+
+    this.actionSubscription = this.headerService.action$.subscribe(async action => {
+      if (action === 'SAVE') {
+        const confirmation = await this.confirmationService.confirm(
+          'Add Item?',
+          'Make sure that all the details are correct and complete.',
+          'primary',
+          'Add Item',
+          'Cancel'
+        )
+
+        if (confirmation) {
+          this.saveNewModifier();
+        }
+      }
+    })
   }
 
   private removeTrailingS(word: string): string {
@@ -43,9 +71,11 @@ export class ModifierAdd implements OnInit {
   }
 
   private initializeEmptyDto(): void {
-    const type = this.itemTitle.toLowerCase().includes('add-on') 
-                 ? ModifierType.AddOns 
-                 : ModifierType.Sizes;
+    const type = this.currentUrl.toLowerCase().includes('add-ons')
+      ? ModifierType.AddOns
+      : ModifierType.Sizes;
+
+    console.log(`Modifier Type: ${type}`);
 
     this.modifierDetails = {
       name: '',
@@ -53,5 +83,28 @@ export class ModifierAdd implements OnInit {
       ozAmount: 0,
       type: type
     };
+  }
+
+  private saveNewModifier(): void {
+    if (!this.modifierDetails.name || !this.modifierDetails.price) {
+      alert('Please fill out all required fields.');
+      return;
+    }
+
+
+    this.modifierService.createModifier(this.modifierDetails).subscribe({
+      next: (response) => {
+        console.log('Item created successfully!', response);
+        this.location.back();
+      },
+      error: (err) => {
+        if (err.status === 409) {
+          alert(`Error: ${err.error.message}`);
+        } else {
+          alert('An unexpected error occurred. Please try again.');
+        }
+        console.error('Failed to create item:', err);
+      }
+    });
   }
 }
