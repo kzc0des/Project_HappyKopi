@@ -59,6 +59,7 @@ import { TransactionIndividualCard } from './modules/transactions/components/tra
 import { TransactionPaymentCard } from './modules/transactions/components/transaction-payment-card/transaction-payment-card';
 import { TransactionHome } from './modules/transactions/forms/transaction-home/transaction-home';
 import { DescriptionCard } from './shared/components/description-card/description-card';
+import { TransactionIndividual } from './modules/transactions/forms/transaction-individual/transaction-individual';
 
 export const routes: Routes = [
     {
@@ -321,6 +322,11 @@ export const routes: Routes = [
     {
         path: 'description-card',
         component: DescriptionCard
+    },
+    {
+        path: 'transaction-individual',
+        component: TransactionIndividual
     }
+    
     
 ];

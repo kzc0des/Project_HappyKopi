@@ -13,7 +13,7 @@ export interface descriptionCardDto {
   styleUrl: './description-card.css',
 })
 export class DescriptionCard implements OnInit {
-  @Input() descriptionType: 'text' | 'money' = 'text';
+  @Input() descriptionType: 'text' | 'money' | "number" = 'text';
   @Input() description!: descriptionCardDto;
 
   ngOnInit() { 
