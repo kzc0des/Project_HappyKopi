@@ -1,8 +1,29 @@
-<div class="button">
-    <div class="button-icon">
-        @if (buttonType == "cash") {
-            
-        } 
-    </div>
-    <div class="button-title">{{buttonTitle}}</div>
+@if (buttonSize == "modal") {
+<div
+  class="w-5/5 h-[77px] rounded-lg bg-yellow-400 shadow-md flex justify-center items-center font-outfit"
+>
+  <div class="button-icon mr-2">
+    @if (buttonType == "cash") {
+    <!-- icon goes here -->
+    }
+  </div>
+  <div class="text-[20px] font-bold text-[#765302]">
+    {{ buttonTitle }}
+  </div>
 </div>
+}
+
+@if (buttonSize == "long") {
+<div
+  class="w-4/5 h-[77px] rounded-lg bg-yellow-400 shadow-md flex justify-center items-center font-outfit"
+>
+  <div class="button-icon mr-2">
+    @if (buttonType == "cash") {
+    <!-- icon goes here -->
+    }
+  </div>
+  <div class="text-[20px] font-bold text-[#765302]">
+    {{ buttonTitle }}
+  </div>
+</div>
+} 
