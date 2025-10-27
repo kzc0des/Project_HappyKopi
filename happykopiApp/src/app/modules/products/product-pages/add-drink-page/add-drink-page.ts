@@ -6,7 +6,6 @@ import { SizeCard } from '../../components/size-card/size-card';
 import { AddButtonCard } from '../../components/add-button-card/add-button-card';
 import { FieldCard } from '../../components/field-card/field-card';
 import { ToggleCard } from '../../components/toggle-card/toggle-card';
-import { EditCategoryPage } from '../../../categories/edit-category-page/edit-category-page';
 import { CategoryDropdown } from '../../components/category-dropdown/category-dropdown';
 import { EditPhotoCard } from '../../components/edit-photo-card/edit-photo-card';
 
