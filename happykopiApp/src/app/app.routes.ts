@@ -58,6 +58,7 @@ import { TransactionCard } from './modules/transactions/components/transaction-c
 import { TransactionIndividualCard } from './modules/transactions/components/transaction-individual-card/transaction-individual-card';
 import { TransactionPaymentCard } from './modules/transactions/components/transaction-payment-card/transaction-payment-card';
 import { TransactionHome } from './modules/transactions/forms/transaction-home/transaction-home';
+import { DescriptionCard } from './shared/components/description-card/description-card';
 
 export const routes: Routes = [
     {
@@ -312,10 +313,14 @@ export const routes: Routes = [
     {
         path: 'transaction-payment-card',
         component: TransactionPaymentCard
-    }
-    ,
+    },
     {
         path: 'transaction-home',
         component: TransactionHome
+    },
+    {
+        path: 'description-card',
+        component: DescriptionCard
     }
+    
 ];

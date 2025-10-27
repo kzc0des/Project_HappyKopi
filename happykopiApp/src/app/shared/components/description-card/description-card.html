@@ -1,0 +1,14 @@
+@if (descriptionType === 'text') {
+<div class="w-full bg-[#FAFAFA] text-[#282828] font-[Outfit]">
+  <div class="text-[16px] py-[20px] pl-[35px]">
+    <div class="mb-[5px]">{{description.Title}}</div>
+    <div class="font-bold">{{description.Content}}</div>
+  </div>
+</div>
+} @else if (descriptionType === 'money') { }
+<div class="w-full bg-[#FAFAFA] text-[#282828] font-[Outfit]">
+  <div class="text-[16px] py-[20px] pl-[35px]">
+    <div class="mb-[5px]">{{description.Title}}</div>
+    <div class="font-bold">{{ description.Content | currency : 'PHP' }}</div>
+  </div>
+</div>
