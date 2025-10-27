@@ -1,5 +1,3 @@
-<app-header></app-header>
-
 <div class="order-body">
   <div class="upper-content">
     <div class="amount-received">
@@ -13,13 +11,34 @@
   </div>
 
   <div class="middle-content">
-    <app-charge-transaction-summary></app-charge-transaction-summary>
-    <app-charge-cash-summary-card></app-charge-cash-summary-card>
-    <app-charge-peso-summary-card></app-charge-peso-summary-card>
+    <app-charge-cash-summary-card
+      mode="order-number"
+      [chargeSummary]="{
+        Total: 0,
+        ModeOfPayment: '',
+        OrderNumber: '1'
+      }"
+    ></app-charge-cash-summary-card>
+    <app-charge-cash-summary-card
+      mode="total"
+      [chargeSummary]="{
+        Total: 230,
+        ModeOfPayment: '',
+        OrderNumber: ''
+      }"
+    ></app-charge-cash-summary-card>
+    <app-charge-cash-summary-card
+      mode="payment_cash"
+      [chargeSummary]="{
+        Total: 0,
+        ModeOfPayment: 'Cash',
+        OrderNumber: ''
+      }"
+    ></app-charge-cash-summary-card>
   </div>
 
   <div class="btns">
-    <app-yellow-button></app-yellow-button>
-    <app-yellow-button></app-yellow-button>
+    <app-long-yellow-button buttonTitle="Print Transaction"></app-long-yellow-button>
+    <app-long-yellow-button buttonTitle="New Order"></app-long-yellow-button>
   </div>
 </div>

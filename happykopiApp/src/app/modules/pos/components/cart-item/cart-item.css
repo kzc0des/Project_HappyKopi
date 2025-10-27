@@ -77,50 +77,25 @@
   width: 134px;
   height: 54px;
   background: #FAFAFA;
-  border-radius: 90px;
-  outline: 2px solid #D9D9D9;
+  border-radius: 12px;
+  outline: 3px solid #F3B72C;
   position: relative;
   flex-shrink: 0;
-}
-
-.count {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: 600;
-  font-size: 16px;
-  color: #282828;
-  text-align: center;
-}
-
-.quantity-btn {
-  width: 49px;
-  height: 49px;
-  background: #F3B72C;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  cursor: pointer;
+  color: #F3B72C;
+  font-weight: bold;
+  font-size: 20px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 28px;
-  color: #765302;
+  justify-content: center;
 }
 
-.quantity-btn.minus {
-  left: 2px;
-}
-
-.quantity-btn.plus {
-  right: 2px;
-}
-
-.addon {
+.addon, .drink-name {
   display:flex;
 }
 
 .addon-qty{
+  margin-left: 8px;
+}
+.drink-qty{
   margin-left: 8px;
 }

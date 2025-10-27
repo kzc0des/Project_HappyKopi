@@ -18,6 +18,9 @@ import { DrinkListPage } from './modules/products/product-pages/drink-list-page/
 import { CategoriesListPage } from './modules/categories/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
+import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
+import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
+import { Order } from './modules/pos/forms/order/order'; 
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
 import { OrderQuickViewDown } from './modules/pos/components/order-quick-view-down/order-quick-view-down';
 import { Order } from './modules/pos/forms/order/order';
@@ -49,6 +52,12 @@ import { ModifierAdd } from './modules/modifiers/modifier-add/modifier-add';
 import { ModifierEdit } from './modules/modifiers/modifier-edit/modifier-edit';
 import { ConfirmationDialog } from './shared/components/confirmation-dialog/confirmation-dialog';
 import { TestComponent } from './shared/components/test-component/test-component';
+import { ChargeCashSummaryCard } from './modules/pos/components/charge-cash-summary-card/charge-cash-summary-card';
+import { GrandeActive } from './modules/pos/components/grande-active/grande-active';
+import { OrderCard } from './modules/pos/components/order-card/order-card';
+import { OrderQuantityModifier } from './modules/pos/components/order-quantity-modifier/order-quantity-modifier';
+import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
+import { LongYellowButton } from './shared/components/long-yellow-button/long-yellow-button';
 
 export const routes: Routes = [
     {
@@ -191,19 +200,11 @@ export const routes: Routes = [
     {
         path: 'order-quick-view',
         component: OrderQuickView
-    },
-    {
-        path: 'order-quick-view-down',
-        component: OrderQuickViewDown
-    },
+    }, 
     {
         path: 'order',
         component: Order
-    },
-    {
-        path: 'poson',
-        component: PosCategoryOn
-    },
+    }, 
     {
         path: 'posoff',
         component: PosCategoryOff
@@ -235,11 +236,7 @@ export const routes: Routes = [
     {
         path: 'charge-summary',
         component: ChargeSummary
-    },
-    {
-        path: 'oqvd',
-        component: OrderQuickViewDown
-    },
+    }, 
     {
         path: 'add-drink-page',
         component: AddDrinkPage
@@ -279,5 +276,29 @@ export const routes: Routes = [
     {
         path: 'test-component',
         component: TestComponent
+    },
+    {
+        path: 'charge-summary-card',
+        component: ChargeCashSummaryCard
+    },
+    {
+        path: 'grande',
+        component: GrandeActive
+    },
+    {
+        path: 'order-card',
+        component: OrderCard
+    },
+    {
+        path: 'oqm',
+        component: OrderQuantityModifier
+    },
+    {
+        path: 'payment-method',
+        component: PaymentMethodCash
+    },
+    {
+        path: 'long-yellow-btn',
+        component: LongYellowButton
     }
 ];

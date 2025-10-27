@@ -3,8 +3,7 @@
 .order-body {
   width: 100%;
   background-color: #f0f0f0;  
-  position: fixed;
-  top: 110px;
+  position: fixed; 
   display: flex;
   flex-direction: column;
   height: 100vh; /* full viewport height */
@@ -47,10 +46,19 @@
 .btns {
   position: fixed;
   bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
+  left: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 19px 0;
+  gap: 19px;
+  justify-content: center;
+  z-index: 999;
+}
+
+
+app-long-yellow-button {
+  display: block;         /* ensure it takes width of its content */
+  width: 100%;            /* make it expand across the flex center */
+  display: flex;
+  justify-content: center;
 }

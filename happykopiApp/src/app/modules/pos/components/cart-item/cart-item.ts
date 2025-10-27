@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
 export interface cartItemDto {
  Name: string,
  Size: string,
+ DrinkImage: string,
  AddOn: string,
  Subtotal: number,
  DrinkQuantity: number,

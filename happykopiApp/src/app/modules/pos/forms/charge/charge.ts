@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { Header } from '../../../../shared/components/header/header';
 import { YellowButton } from '../../../../shared/components/yellow-button/yellow-button';
 import { TextBoxPrice } from '../../../../shared/components/text-box-price/text-box-price';
+import { LongYellowButton } from "../../../../shared/components/long-yellow-button/long-yellow-button";
 
 @Component({
   selector: 'app-charge',
-  imports: [Header, YellowButton, TextBoxPrice],
+  imports: [Header, YellowButton, TextBoxPrice, LongYellowButton],
   templateUrl: './charge.html',
   styleUrl: './charge.css'
 })

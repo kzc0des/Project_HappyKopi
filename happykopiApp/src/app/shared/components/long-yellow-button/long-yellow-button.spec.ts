@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChargeGcashSummaryCard } from './charge-gcash-summary-card';
+import { LongYellowButton } from './long-yellow-button';
 
-describe('ChargeGcashSummaryCard', () => {
-  let component: ChargeGcashSummaryCard;
-  let fixture: ComponentFixture<ChargeGcashSummaryCard>;
+describe('LongYellowButton', () => {
+  let component: LongYellowButton;
+  let fixture: ComponentFixture<LongYellowButton>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChargeGcashSummaryCard]
+      imports: [LongYellowButton]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ChargeGcashSummaryCard);
+    fixture = TestBed.createComponent(LongYellowButton);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

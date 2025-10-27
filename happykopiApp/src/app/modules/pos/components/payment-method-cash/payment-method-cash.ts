@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
+
+export interface paymentMethodDto { 
+  Value: number
+}
 
 @Component({
   selector: 'app-payment-method-cash',
@@ -7,5 +11,7 @@ import { Component } from '@angular/core';
   styleUrl: './payment-method-cash.css'
 })
 export class PaymentMethodCash {
+  @Input() paymentMethod!: paymentMethodDto;
+  @Input() mode: 'cash' | 'gcash' = 'cash';
 
 }

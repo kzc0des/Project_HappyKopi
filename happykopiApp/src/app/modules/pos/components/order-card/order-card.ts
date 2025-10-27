@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+export interface orderCardDto {
+  DrinkName: string,
+  DrinkCategory: string,
+  DrinkImage: string // podi palitan
+}
 
 @Component({
   selector: 'app-order-card',
@@ -7,5 +13,5 @@ import { Component } from '@angular/core';
   styleUrl: './order-card.css'
 })
 export class OrderCard {
-
+  @Input() orderCard!: orderCardDto
 }
