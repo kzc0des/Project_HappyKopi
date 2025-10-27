@@ -8,7 +8,6 @@
         public decimal OzAmount { get; set; }
         public int Type { get; set; }
         public bool IsAvailable { get; set; }
-
         public bool IsActive { get; set; }
         public List<ModifierStockItemDetailsDto> LinkedItems { get; set; }
     }
