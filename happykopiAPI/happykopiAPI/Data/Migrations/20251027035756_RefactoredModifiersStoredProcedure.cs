@@ -123,7 +123,6 @@ namespace happykopiAPI.Data.Migrations
                 @ModifierId INT
             AS
             BEGIN
-                SET NOCOUNT ON;
                 SET XACT_ABORT ON;
 
                 BEGIN TRANSACTION;
