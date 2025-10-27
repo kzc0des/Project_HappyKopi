@@ -116,11 +116,12 @@ export class ModifierEdit implements OnInit, OnDestroy {
     this.modifierService.deleteModifier(this.modifierDetails.id).subscribe({
       next: response => {
         console.log(`Delete successfully.`);
-        this.router.navigate(['../../'], { relativeTo: this.route });
+        this.headerService.notifyItemDeleted(true);
+        this.router.navigate(['../../'], {relativeTo: this.route})
       },
       error: err => {
-        console.error(`Failed to delete. ${err}`); 
-        this.isDeleting = false; 
+        console.error(`Failed to delete. ${err}`);
+        this.isDeleting = false;
       }
     });
   }

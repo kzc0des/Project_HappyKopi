@@ -65,13 +65,13 @@ export class ModifierAdd implements OnInit {
   private updateItemTitle(url: string): void {
     const segments = url.split('/');
     if (segments.length > 2) {
-      const modifierType = this.removeTrailingS(segments[2]);
+      const modifierType = this.removeTrailingS(segments[3]);
       this.itemTitle = `${this.capitalizeFirstLetter(modifierType)} Name`;
     }
   }
 
   private initializeEmptyDto(): void {
-    const type = this.currentUrl.toLowerCase().includes('add-ons')
+    const type = this.currentUrl.toLowerCase().includes('addon')
       ? ModifierType.AddOns
       : ModifierType.Sizes;
 
@@ -91,7 +91,7 @@ export class ModifierAdd implements OnInit {
       return;
     }
 
-
+    console.log(this.modifierDetails);
     this.modifierService.createModifier(this.modifierDetails).subscribe({
       next: (response) => {
         console.log('Item created successfully!', response);

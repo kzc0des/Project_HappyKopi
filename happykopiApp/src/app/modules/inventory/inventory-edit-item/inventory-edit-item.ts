@@ -5,7 +5,7 @@ import { ToggleButton } from "../../../shared/components/toggle-button/toggle-bu
 import { DropdownOption } from '../../../shared/components/dropdown-button/dropdown-option';
 import { StockItemDetailsDto } from '../../../core/dtos/stockitem/stock-item-details-dto';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { InventoryService } from '../services/inventory.service';
 import { Location } from '@angular/common';
@@ -36,7 +36,8 @@ export class InventoryEditItem implements OnInit, OnDestroy {
     private headerActionService: HeaderService,
     private inventoryService: InventoryService,
     private location: Location,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -90,6 +91,7 @@ export class InventoryEditItem implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           console.log("Update successful.", response);
+          this.location.back();
         },
         error: err => {
           console.error('Update failed: ' + err);
@@ -101,7 +103,7 @@ export class InventoryEditItem implements OnInit, OnDestroy {
     this.inventoryService.deactivateStockItem(this.stockitemdetail.id).subscribe({
       next: response => {
         console.log(`Update successful. ${response}`);
-        this.location.back();
+        this.router.navigate(['../../'], { relativeTo: this.route,  replaceUrl: true })
       },
       error: err => {
         console.error(`Update failed ${err}`);
@@ -110,28 +112,28 @@ export class InventoryEditItem implements OnInit, OnDestroy {
   }
 
   updateUnitsBasedOnCategory(itemType: StockItemType) {
-      let unitGroup: string[] = [];
-  
-      switch (itemType) {
-        case StockItemType.Liquid:
-          unitGroup = UnitGrouping.Liquid;
-          break;
-        case StockItemType.Powder:
-          unitGroup = UnitGrouping.Powder;
-          break;
-        case StockItemType.Miscellaneous:
-          unitGroup = UnitGrouping.Miscellaneous;
-          break;
-        default:
-          unitGroup = [];
-          this.stockitemdetail.unitOfMeasure = '';
-          break;
-      }
-  
-      this.units = this.inventoryService.loadCategoryOptions(unitGroup);
-  
-      if (unitGroup.length > 0) {
-        this.stockitemdetail.unitOfMeasure = unitGroup[0];
-      }
+    let unitGroup: string[] = [];
+
+    switch (itemType) {
+      case StockItemType.Liquid:
+        unitGroup = UnitGrouping.Liquid;
+        break;
+      case StockItemType.Powder:
+        unitGroup = UnitGrouping.Powder;
+        break;
+      case StockItemType.Miscellaneous:
+        unitGroup = UnitGrouping.Miscellaneous;
+        break;
+      default:
+        unitGroup = [];
+        this.stockitemdetail.unitOfMeasure = '';
+        break;
     }
+
+    this.units = this.inventoryService.loadCategoryOptions(unitGroup);
+
+    if (unitGroup.length > 0) {
+      this.stockitemdetail.unitOfMeasure = unitGroup[0];
+    }
+  }
 }

@@ -30,12 +30,16 @@ export class Header implements OnInit, OnDestroy {
 
   headerTitle!: string | null;
   hasValueChanged = false;
+  isItemDeleted = false;
 
   // for getting the router navigations
   private routerSubscription!: Subscription;
 
   // detection for itemcard component
   private valueChangeSubscription!: Subscription;
+
+  // detection for deletion
+  private isDeleteItemSubscription !: Subscription;
 
   currentPageSelected: Observable<string>;
 
@@ -64,6 +68,10 @@ export class Header implements OnInit, OnDestroy {
     this.valueChangeSubscription = this.headerActionService.isItemCardValueChanged$.subscribe(changed => {
       this.hasValueChanged = changed;
       // console.log(changed);
+    });
+
+    this.isDeleteItemSubscription = this.headerActionService.isItemDeleted$.subscribe(deleted => {
+      this.isItemDeleted = deleted;
     });
 
     console.log(`show back button state: ${this.showBackButton}`);
@@ -219,22 +227,26 @@ export class Header implements OnInit, OnDestroy {
     this.sidebarService.toggleSidebar();
   }
 
-  async onBackClick() {
-    if (!this.hasValueChanged) {
+  onBackClick() {
+    this.headerActionService.emitAction('BACK');
+    if(!this.isItemDeleted){
       this.location.back();
-    } else {
-      const confirmed = await this.confirmationService.confirm(
-        'Cancel Edit?',
-        'All new details you entered will be removed.',
-        'primary',
-        'Cancel Edit',
-        'Keep Editing'
-      );
-
-      if (confirmed) {
-        this.location.back();
-      }
     }
+    // if (!this.hasValueChanged) {
+    //   this.location.back();
+    // } else {
+    //   const confirmed = await this.confirmationService.confirm(
+    //     'Cancel Edit?',
+    //     'All new details you entered will be removed.',
+    //     'primary',
+    //     'Cancel Edit',
+    //     'Keep Editing'
+    //   );
+
+    //   if (confirmed) {
+    //     this.location.back();
+    //   }
+    // }
   }
 
 }

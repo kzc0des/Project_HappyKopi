@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-export type HeaderAction = 'ADD' | 'DELETE' | 'EDIT' | 'SAVE' | 'CANCEL';
+export type HeaderAction = 'ADD' | 'DELETE' | 'EDIT' | 'SAVE' | 'CANCEL' | 'BACK';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,9 @@ export class HeaderService {
 
   private isValueChange = new BehaviorSubject<boolean>(false);
   public isItemCardValueChanged$ = this.isValueChange.asObservable();
+
+  private isDelete = new BehaviorSubject<boolean>(false);
+  public isItemDeleted$ = this.isDelete.asObservable();
 
   private changedInputs = new Set<string>();
 
@@ -31,6 +34,10 @@ export class HeaderService {
 
     console.log(this.changedInputs);
     console.log("may bagyo? o may bago?", overallState);
+  }
+
+  notifyItemDeleted(status: boolean): void {
+    this.isDelete.next(status);
   }
 
   resetValueChangedState(): void {
