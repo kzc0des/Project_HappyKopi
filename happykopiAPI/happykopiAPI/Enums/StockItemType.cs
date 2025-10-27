@@ -2,8 +2,8 @@
 {
     public enum StockItemType
     {
-        Liquid,
-        Powder,
-        Miscellaneous
+        Liquid = 0,
+        Powder = 1,
+        Miscellaneous = 2
     }
 }

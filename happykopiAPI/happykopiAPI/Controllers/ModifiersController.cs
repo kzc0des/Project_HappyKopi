@@ -47,6 +47,13 @@ namespace happykopiAPI.Controllers
             return Ok(modifiers);
         }
 
+        [HttpGet("inactive")]
+        public async Task<IActionResult> GetInactiveModifiers()
+        {
+            var inactiveModifiers = await _modifierService.GetInactiveModifiersAsync();
+            return Ok(inactiveModifiers);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetModifier(int id)
         {
@@ -76,6 +83,17 @@ namespace happykopiAPI.Controllers
                 return NotFound();
             }
             return Ok(updatedModifier);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteModifier(int id)
+        {
+            var success = await _modifierService.DeleteModifierAsync(id);
+            if (!success)
+            {
+                return NotFound(new { message = "Modifier not found or already deleted." });
+            }
+            return NoContent();
         }
 
         [HttpPost("{modifierId}/stockItems")]

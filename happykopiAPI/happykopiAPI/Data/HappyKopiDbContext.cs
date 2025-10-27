@@ -138,11 +138,6 @@ namespace happykopiAPI.Data
                 .Property(i => i.LastUpdated)
                 .HasDefaultValueSql("GETUTCDATE()");
 
-            modelBuilder.Entity<Modifier>()
-                .Property(a => a.LastUpdated)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()");
-
             modelBuilder.Entity<OrderItemModifier>()
                 .HasOne(oia => oia.OrderItem)
                 .WithMany(oi => oi.AddOns)
@@ -172,6 +167,27 @@ namespace happykopiAPI.Data
             modelBuilder.Entity<ModifierStockItem>()
                 .Property(m => m.QuantityNeeded)
                 .HasDefaultValue(1);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.IsAvailable)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.IsActive)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Modifier>()
+                .Property(a => a.LastUpdated)
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Modifier>()
+                .Property(m => m.IsActive)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Modifier>()
+                .Property(p => p.IsAvailable)
+                .HasDefaultValue(true);
         }
     }
 }

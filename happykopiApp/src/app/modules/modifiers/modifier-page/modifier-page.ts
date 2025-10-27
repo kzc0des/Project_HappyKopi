@@ -14,11 +14,11 @@ export class ModifierPage implements OnInit {
   modifierRaw !: ModifierCount[];
   modifierDisplay: ModifierCount[] = [
     {
-      modifierType: 'Sizes',
+      modifierType: 'Size', 
       modifierCount: 0
     },
     {
-      modifierType: 'Add-Ons',
+      modifierType: 'AddOn',
       modifierCount: 0
     }
   ];
@@ -28,12 +28,10 @@ export class ModifierPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const datalist = this.route.snapshot.data['modifiertypecount'];
     this.modifierRaw = this.route.snapshot.data['modifiertypecount'];
-    console.log(datalist);
-
+    
     this.modifierDisplay.forEach(data => {
-      const target = this.modifierRaw.find(t => t.modifierType === data.modifierType);
+      const target = this.modifierRaw.find(t => t.modifierType.toLowerCase() === data.modifierType.toLowerCase());
       if(target){
         data.modifierCount = target.modifierCount;
       }

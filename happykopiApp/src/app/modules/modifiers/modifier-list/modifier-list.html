@@ -1,5 +1,18 @@
-<div class="flex flex-col gap-0.5">
-    @for(item of modifiersItem; track $index) {
-        <app-modifier-item-card [itemTitle]="item.name" [itemId]="item.id" [itemValue]="item.price"></app-modifier-item-card>
+<div class="h-full w-full items-center flex flex-col gap-0.5" [ngClass]="{
+    'justify-center' : modifiersItem.length === 0
+}">
+    @if(modifiersItem.length > 0){
+        @for(item of modifiersItem; track $index) {
+        <app-modifier-item-card class="w-full" [itemTitle]="item.name" [itemId]="item.id"
+            [itemValue]="item.price"></app-modifier-item-card>
+        }
     }
+    
+    @else {
+    <div class="flex flex-col gap-3 items-center justify-center w-[50%]">
+        <h3 class="text-[#777777] font-bold">No {{modifierType}} Found!</h3>
+        <p class="text-[#777777] text-sm text-center">The {{modifierType.toLowerCase()}}s you will be adding will appear here.</p>
+    </div>
+    }
+
 </div>

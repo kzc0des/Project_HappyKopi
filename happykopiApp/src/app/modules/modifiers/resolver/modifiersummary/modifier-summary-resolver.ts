@@ -23,10 +23,10 @@ export const modifierSummaryResolver: ResolveFn<ModifierSummaryDto[]> = (
   let modifierType: ModifierType;
 
   switch (typeParam.toLowerCase()) {
-    case 'add-ons': 
+    case 'addon': 
       modifierType = ModifierType.AddOns;
       break;
-    case 'sizes':
+    case 'size':
       modifierType = ModifierType.Sizes;
       break;
     default:

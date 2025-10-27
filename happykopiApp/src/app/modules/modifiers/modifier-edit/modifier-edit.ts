@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModifierDetailsDto } from '../../../core/dtos/modifier/modifier-details-dto';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Itemcard } from '../../../shared/components/itemcard/itemcard';
@@ -9,7 +9,6 @@ import { ConfirmationService } from '../../../core/services/confirmation/confirm
 import { ModifierService } from '../services/modifier.service';
 import { ModifierForUpdate } from '../../../core/dtos/modifier/modifier-for-update.model';
 import { Location } from '@angular/common';
-import { ModifierType } from '../../../core/enums/modifier-type';
 
 @Component({
   selector: 'app-modifier-edit',
@@ -17,13 +16,15 @@ import { ModifierType } from '../../../core/enums/modifier-type';
   templateUrl: './modifier-edit.html',
   styleUrl: './modifier-edit.css'
 })
-export class ModifierEdit implements OnInit {
+export class ModifierEdit implements OnInit, OnDestroy {
 
   modifierDetails !: ModifierDetailsDto
   currentUrl !: string;
   itemTitle !: string;
   actionSubscription !: Subscription;
   modifierDetailForUpdate !: ModifierForUpdate;
+
+  isDeleting = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,12 +47,11 @@ export class ModifierEdit implements OnInit {
             'Save Changes?',
             `Are you sure you want to save these changes?`,
             'primary',
-            'Add Item',
+            'Save',
             'Cancel'
           );
           if (confirmedSave) {
             this.updateModfier();
-            this.location.back();
           }
           break;
         case 'DELETE':
@@ -113,6 +113,22 @@ export class ModifierEdit implements OnInit {
   }
 
   private deleteModifier() {
+    this.modifierService.deleteModifier(this.modifierDetails.id).subscribe({
+      next: response => {
+        console.log(`Delete successfully.`);
+        this.headerService.notifyItemDeleted(true);
+        this.router.navigate(['../../'], {relativeTo: this.route})
+      },
+      error: err => {
+        console.error(`Failed to delete. ${err}`);
+        this.isDeleting = false;
+      }
+    });
+  }
 
+  ngOnDestroy(): void {
+    if (this.actionSubscription) {
+      this.actionSubscription.unsubscribe();
+    }
   }
 }

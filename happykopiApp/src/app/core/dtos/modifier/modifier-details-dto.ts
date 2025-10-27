@@ -6,6 +6,7 @@ export interface ModifierDetailsDto {
     price: number;
     type: number;
     isAvailable: boolean;
+    isActive: boolean;
     ozAmount?: number;
     linkedItems?: ModifierLinkStockItem[];
 }

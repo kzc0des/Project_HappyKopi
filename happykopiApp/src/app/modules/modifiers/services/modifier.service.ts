@@ -21,7 +21,6 @@ export class ModifierService {
   constructor(
     private apiService: ApiService,
     private signalrService: SignalRService,
-    private http: HttpClient
   ) {
     this.signalrService.startConnection();
     this.listenForModifierUpdates();
@@ -50,6 +49,10 @@ export class ModifierService {
     );
   }
 
+  getInactiveModifiers(): Observable<ModifierDetailsDto[]> {
+    return this.apiService.get<ModifierDetailsDto[]>('modifiers/inactive');
+  }
+
   getModifierById(id: number): Observable<ModifierDetailsDto> {
     return this.apiService.get<ModifierDetailsDto>(`modifiers/${id}`);
   }
@@ -60,6 +63,10 @@ export class ModifierService {
 
   updateModifier(id: number, modifier: ModifierForUpdate): Observable<ModifierDetailsDto> {
     return this.apiService.put<ModifierDetailsDto>(`modifiers/${id}`, modifier);
+  }
+
+  deleteModifier(id: number): Observable<any> {
+    return this.apiService.delete(`modifiers/${id}`);
   }
 
   linkStockItem(modifierId: number, link: ModifierLinkStockItem): Observable<any> {

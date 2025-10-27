@@ -14,7 +14,7 @@ export class ModifierCategoryCard implements OnInit {
 
   ngOnInit(): void {
 
-    if(this.itemTitle.toLowerCase() === 'sizes') {
+    if(this.itemTitle.toLowerCase() === 'size') {
       this.unit = (this.itemValue > 1) ? 'Sizes' : 'Size'
     }else{
       this.unit = (this.itemValue > 1) ? 'Add-Ons' : 'Add-On'

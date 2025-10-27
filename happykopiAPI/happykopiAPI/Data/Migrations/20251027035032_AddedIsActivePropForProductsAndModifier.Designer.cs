@@ -12,8 +12,8 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    [Migration("20251020142057_Addedsp_GetModifierCountByType")]
-    partial class Addedsp_GetModifierCountByType
+    [Migration("20251027035032_AddedIsActivePropForProductsAndModifier")]
+    partial class AddedIsActivePropForProductsAndModifier
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,8 +95,15 @@ namespace happykopiAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAdd()
@@ -107,6 +114,9 @@ namespace happykopiAPI.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("OzAmount")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
@@ -199,7 +209,7 @@ namespace happykopiAPI.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductVariantId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -212,7 +222,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductVariantId");
 
                     b.ToTable("OrderItems");
                 });
@@ -268,6 +278,11 @@ namespace happykopiAPI.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<bool>("IsAvailable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -278,9 +293,6 @@ namespace happykopiAPI.Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -288,22 +300,50 @@ namespace happykopiAPI.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("happykopiAPI.Models.ProductIngredient", b =>
+            modelBuilder.Entity("happykopiAPI.Models.ProductVariant", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductVariants");
+                });
+
+            modelBuilder.Entity("happykopiAPI.Models.ProductVariantIngredient", b =>
+                {
+                    b.Property<int>("ProductVariantId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
                     b.Property<int>("StockItemId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<decimal>("QuantityNeeded")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ProductId", "StockItemId");
+                    b.HasKey("ProductVariantId", "StockItemId");
 
                     b.HasIndex("StockItemId");
 
-                    b.ToTable("ProductIngredients");
+                    b.ToTable("ProductVariantIngredients");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.StockItem", b =>
@@ -390,9 +430,6 @@ namespace happykopiAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BatchId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ChangeType")
                         .HasColumnType("int");
 
@@ -409,6 +446,9 @@ namespace happykopiAPI.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("StockItemBatchId")
+                        .HasColumnType("int");
+
                     b.Property<int>("StockItemId")
                         .HasColumnType("int");
 
@@ -423,7 +463,7 @@ namespace happykopiAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BatchId");
+                    b.HasIndex("StockItemBatchId");
 
                     b.HasIndex("StockItemId");
 
@@ -573,15 +613,15 @@ namespace happykopiAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("happykopiAPI.Models.Product", "Product")
+                    b.HasOne("happykopiAPI.Models.ProductVariant", "ProductVariant")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductVariant");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.OrderItemModifier", b =>
@@ -614,21 +654,32 @@ namespace happykopiAPI.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("happykopiAPI.Models.ProductIngredient", b =>
+            modelBuilder.Entity("happykopiAPI.Models.ProductVariant", b =>
                 {
                     b.HasOne("happykopiAPI.Models.Product", "Product")
-                        .WithMany("Recipe")
+                        .WithMany("Variants")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("happykopiAPI.Models.StockItem", "StockItem")
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("happykopiAPI.Models.ProductVariantIngredient", b =>
+                {
+                    b.HasOne("happykopiAPI.Models.ProductVariant", "ProductVariant")
                         .WithMany("Recipe")
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("happykopiAPI.Models.StockItem", "StockItem")
+                        .WithMany("ProductVariantIngredients")
                         .HasForeignKey("StockItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductVariant");
 
                     b.Navigation("StockItem");
                 });
@@ -648,7 +699,7 @@ namespace happykopiAPI.Data.Migrations
                 {
                     b.HasOne("happykopiAPI.Models.StockItemBatch", "Batch")
                         .WithMany("StockLogs")
-                        .HasForeignKey("BatchId")
+                        .HasForeignKey("StockItemBatchId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -707,6 +758,11 @@ namespace happykopiAPI.Data.Migrations
 
             modelBuilder.Entity("happykopiAPI.Models.Product", b =>
                 {
+                    b.Navigation("Variants");
+                });
+
+            modelBuilder.Entity("happykopiAPI.Models.ProductVariant", b =>
+                {
                     b.Navigation("Recipe");
                 });
 
@@ -714,7 +770,7 @@ namespace happykopiAPI.Data.Migrations
                 {
                     b.Navigation("Batches");
 
-                    b.Navigation("Recipe");
+                    b.Navigation("ProductVariantIngredients");
 
                     b.Navigation("StockLogs");
                 });
