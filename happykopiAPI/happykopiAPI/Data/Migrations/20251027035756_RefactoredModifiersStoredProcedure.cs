@@ -173,6 +173,47 @@ namespace happykopiAPI.Data.Migrations
             END";
 
             migrationBuilder.Sql(sp_GetInactiveModifiers);
+
+            var sp_GetModifierCountByType = @"
+            CREATE OR ALTER PROCEDURE [dbo].[sp_GetModifierCountByType]
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                SELECT
+                    Type AS ModifierType,
+                    COUNT(Id) AS ModifierCount
+                FROM
+                    dbo.Modifiers
+                WHERE IsActive = 1
+                GROUP BY
+                    Type
+                ORDER BY
+                    Type;
+            END";
+
+            migrationBuilder.Sql(sp_GetModifierCountByType);
+
+            var sp_GetModifiersByType = @"
+            CREATE OR ALTER PROCEDURE [dbo].[sp_GetModifiersByType]
+                @ModifierType INT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                SELECT
+                    Id,
+                    Name,
+                    Price
+                FROM
+                    Modifiers
+                WHERE
+                    Type = @ModifierType 
+                    AND IsAvailable = 1
+                    AND IsActive = 1;
+            END";
+
+            migrationBuilder.Sql(sp_GetModifiersByType);
         }
 
         /// <inheritdoc />
@@ -183,6 +224,9 @@ namespace happykopiAPI.Data.Migrations
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_GetModifierById]");
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_DeleteModifier]");
             migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_GetModifiers]");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_GetInactiveModifiers]");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_GetModifierCountByType]");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS [dbo].[sp_GetModifiersByType]");
         }
     }
 }

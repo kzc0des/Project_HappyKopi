@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using happykopiAPI.DTOs.Modifier.Incoming_Data;
+using happykopiAPI.DTOs.Modifier.Internal;
 using happykopiAPI.DTOs.Modifier.Outgoing_Data;
 using happykopiAPI.Enums;
 using happykopiAPI.Services.Interfaces;
@@ -26,10 +27,20 @@ namespace happykopiAPI.Services.Implementations
         public async Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync()
         {
             using var connection = new SqlConnection(_connectionString);
-            var result = await connection.QueryAsync<ModifierCountDto>(
+            var resultsFromDb = await connection.QueryAsync<ModifierCountFromDbDto>(
                 "sp_GetModifierCountByType",
                 commandType: CommandType.StoredProcedure
             );
+
+            var result = resultsFromDb
+                .Select(r => new ModifierCountDto
+                {
+                    ModifierType = ((ModifierType)r.ModifierType).ToString(),
+                    ModifierCount = r.ModifierCount
+                })
+                .ToList();
+
+
             return result;
         }
 

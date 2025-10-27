@@ -46,7 +46,7 @@ export class ModifierEdit implements OnInit {
             'Save Changes?',
             `Are you sure you want to save these changes?`,
             'primary',
-            'Add Item',
+            'Save',
             'Cancel'
           );
           if (confirmedSave) {
@@ -64,6 +64,7 @@ export class ModifierEdit implements OnInit {
           );
           if (confirmedDelete) {
             this.deleteModifier();
+            this.location.back();
           }
           break;
       }
@@ -113,6 +114,13 @@ export class ModifierEdit implements OnInit {
   }
 
   private deleteModifier() {
-
+    this.modifierService.deleteModifier(this.modifierDetails.id).subscribe({
+      next: response => {
+        console.log(`Delete successfully. ${response}`);
+      },
+      error: err => {
+        console.log(`Failed to delete. ${err}`);
+      }
+    })
   }
 }
