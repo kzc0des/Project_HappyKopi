@@ -24,7 +24,10 @@ namespace happykopiAPI.Models
         public decimal? OzAmount { get; set; }
 
         [Required]
-        public bool IsAvailable { get; set; } 
+        public bool IsAvailable { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
 
         [Required]
         public DateTime LastUpdated { get; set; }

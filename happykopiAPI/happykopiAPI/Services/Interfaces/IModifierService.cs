@@ -9,12 +9,12 @@ namespace happykopiAPI.Services.Interfaces
         Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync();
         Task<IEnumerable<ModifierSummaryDto>> GetAllModifiersAsync();
         Task<IEnumerable<ModifierSummaryDto>> GetAvailableModifiersAsync();
+        Task<IEnumerable<ModifierSummaryDto>> GetInactiveModifiersAsync();
         Task<IEnumerable<ModifierSummaryDto>> GetModifiersByTypeAsync(ModifierType modifierType);
         Task<ModifierDetailsDto> GetModifierByIdAsync(int modifierId);
-
         Task<ModifierSummaryDto> CreateModifierAsync(ModifierForCreateDto modifierForCreateDto);
         Task<bool> UpdateModifierAsync(int modifierId, ModifierForUpdateDto modifierForUpdateDto);
-
+        Task<bool> DeleteModifierAsync(int modifierId);
         Task<bool> LinkStockItemAsync(int modifierId, ModifierStockItemLinkDto linkDto);
         Task<bool> UnlinkStockItemAsync(int modifierId, int stockItemId);
     }

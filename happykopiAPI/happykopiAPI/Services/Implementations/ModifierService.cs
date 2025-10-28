@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using happykopiAPI.DTOs.Modifier.Incoming_Data;
+using happykopiAPI.DTOs.Modifier.Internal;
 using happykopiAPI.DTOs.Modifier.Outgoing_Data;
 using happykopiAPI.Enums;
 using happykopiAPI.Services.Interfaces;
@@ -26,10 +27,20 @@ namespace happykopiAPI.Services.Implementations
         public async Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync()
         {
             using var connection = new SqlConnection(_connectionString);
-            var result = await connection.QueryAsync<ModifierCountDto>(
+            var resultsFromDb = await connection.QueryAsync<ModifierCountFromDbDto>(
                 "sp_GetModifierCountByType",
                 commandType: CommandType.StoredProcedure
             );
+
+            var result = resultsFromDb
+                .Select(r => new ModifierCountDto
+                {
+                    ModifierType = ((ModifierType)r.ModifierType).ToString(),
+                    ModifierCount = r.ModifierCount
+                })
+                .ToList();
+
+
             return result;
         }
 
@@ -38,6 +49,12 @@ namespace happykopiAPI.Services.Implementations
             using var connection = new SqlConnection(_connectionString);
 
             return await connection.QueryAsync<ModifierSummaryDto>("sp_GetModifiers", commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<IEnumerable<ModifierSummaryDto>> GetInactiveModifiersAsync()
+        {
+            using var connection = new SqlConnection(_connectionString);
+            return await connection.QueryAsync<ModifierSummaryDto>("sp_GetInactiveModifiers", commandType: CommandType.StoredProcedure);
         }
 
         // order process query only available modifiers
@@ -82,7 +99,8 @@ namespace happykopiAPI.Services.Implementations
                 dto.Price,
                 dto.OzAmount,
                 IsAvailable = true, 
-                Type = dto.Type
+                Type = dto.Type,
+                IsActive = true
             };
 
             using var connection = new SqlConnection(_connectionString);
@@ -113,6 +131,21 @@ namespace happykopiAPI.Services.Implementations
 
             using var connection = new SqlConnection(_connectionString);
             var affectedRows = await connection.ExecuteAsync("sp_UpdateModifier", parameters, commandType: CommandType.StoredProcedure);
+
+            if (affectedRows > 0)
+            {
+                await _notificationService.NotifyModifiersUpdatedAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteModifierAsync(int modifierId)
+        {
+            var parameters = new { ModifierId = modifierId };
+
+            using var connection = new SqlConnection(_connectionString);
+            var affectedRows = await connection.ExecuteAsync("sp_DeleteModifier", parameters, commandType: CommandType.StoredProcedure);
 
             if (affectedRows > 0)
             {

@@ -2,7 +2,7 @@
 {
     public enum ModifierType
     {
-        Size,
-        AddOn
+        Size = 0,
+        AddOn = 1
     }
 }
