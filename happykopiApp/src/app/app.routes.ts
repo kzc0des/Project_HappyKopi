@@ -20,7 +20,7 @@ import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemd
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
 import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
-import { Order } from './modules/pos/forms/order/order'; 
+import { Order } from './modules/pos/forms/order/order';  
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
@@ -54,6 +54,12 @@ import { OrderCard } from './modules/pos/components/order-card/order-card';
 import { OrderQuantityModifier } from './modules/pos/components/order-quantity-modifier/order-quantity-modifier';
 import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
 import { LongYellowButton } from './shared/components/long-yellow-button/long-yellow-button';
+import { TransactionCard } from './modules/transactions/components/transaction-card/transaction-card';
+import { TransactionIndividualCard } from './modules/transactions/components/transaction-individual-card/transaction-individual-card';
+import { TransactionPaymentCard } from './modules/transactions/components/transaction-payment-card/transaction-payment-card';
+import { TransactionHome } from './modules/transactions/forms/transaction-home/transaction-home';
+import { DescriptionCard } from './shared/components/description-card/description-card';
+import { TransactionIndividual } from './modules/transactions/forms/transaction-individual/transaction-individual';
 
 export const routes: Routes = [
     {
@@ -296,5 +302,31 @@ export const routes: Routes = [
     {
         path: 'long-yellow-btn',
         component: LongYellowButton
+    },
+    {
+        path: 'transaction-card',
+        component: TransactionCard
+    },
+    {
+        path: 'transaction-indiv-card',
+        component: TransactionIndividualCard
+    },
+    {
+        path: 'transaction-payment-card',
+        component: TransactionPaymentCard
+    },
+    {
+        path: 'transaction-home',
+        component: TransactionHome
+    },
+    {
+        path: 'description-card',
+        component: DescriptionCard
+    },
+    {
+        path: 'transaction-individual',
+        component: TransactionIndividual
     }
+    
+    
 ];

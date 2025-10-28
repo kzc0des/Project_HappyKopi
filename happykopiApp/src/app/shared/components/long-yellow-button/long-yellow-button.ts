@@ -8,5 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class LongYellowButton {
 @Input() buttonTitle!: string;
+@Input() buttonSize: 'modal' | 'long' = 'long'
 @Input() buttonType: 'cash' | 'gcash' | 'transaction' = 'cash';
 }

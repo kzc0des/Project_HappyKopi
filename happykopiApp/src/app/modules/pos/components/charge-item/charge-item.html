@@ -7,7 +7,7 @@
         {{chargeItem.Name}}
         <div class="drink-qty">({{chargeItem.DrinkQuantity}})</div>
       </div>
-      <div class="drink-price">{{chargeItem.Subtotal}}</div>
+      <div class="drink-price">{{chargeItem.Subtotal | currency: 'PHP'}}</div>
     </div>
 
     <div class="drink-size">{{chargeItem.Size}}</div>

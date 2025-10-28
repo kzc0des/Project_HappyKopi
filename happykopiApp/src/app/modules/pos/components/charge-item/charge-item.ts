@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 export interface chargeItemDto {
@@ -11,7 +12,7 @@ export interface chargeItemDto {
 
 @Component({
   selector: 'app-charge-item',
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './charge-item.html',
   styleUrl: './charge-item.css'
 })
