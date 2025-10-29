@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CategoryCard } from '../../components/category-card/category-card';
+import { ActionButton } from '../../components/action-button/action-button';
 
 
 @Component({
   selector: 'app-edit-category-page',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CategoryCard, ActionButton],
   templateUrl: './edit-category-page.html',
   styleUrl: './edit-category-page.css'
 })
