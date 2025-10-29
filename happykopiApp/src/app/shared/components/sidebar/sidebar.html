@@ -3,21 +3,20 @@
 }
 
 <aside [class.open]="isSidebarOpen$ | async" class="w-[65vw] h-screen bg-hapikopi-bg pt-5 flex flex-col absolute">
-    <section class="p-5">
-        <div class="flex justify-center items-center gap-2">
-            <img class="w-10" src="../../../../assets/download.png" alt="happykopi_logo">
-            <p class="font-bold text-2xl text-[#FAFAFA]">happykopi</p>
+    <section class="px-8 py-4">
+        <div class="flex justify-center items-center gap-2 text-2xl">
+            <img class="w-44" src="../../../../assets/Group 34497.png" alt="happykopi_logo">
         </div>
     </section>
 
-    <section class="flex flex-col flex-1">
+    <section class="flex flex-col flex-1 mt-3">
         @for (item of pages; track $index) {
             @if (item.page !== 'print') {
                 <app-sidebar-button [page]="item.page" [route]="item.route" (action)="close()"></app-sidebar-button>
             }
         }
     </section>
-    <section class="flex flex-col mb-5">
+    <section class="flex flex-col mb-16">
         @if (isBarista) {
             <app-sidebar-button page="print" route="/print" (action)="close()"></app-sidebar-button>
         }
