@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface sizeButtonDto {
@@ -13,10 +13,11 @@ export interface sizeButtonDto {
   styleUrl: './grande-active.css'
 })
 export class GrandeActive {
-  isActive = false;
-  @Input() sizeButton!: sizeButtonDto
+  @Input() sizeButton!: sizeButtonDto;
+  @Input() isActive = false;   // <-- now controlled by parent
+  @Output() selected = new EventEmitter<void>(); // emit click to parent
 
-  toggleActive() {
-    this.isActive = !this.isActive;
+  handleClick() {
+    this.selected.emit();
   }
 }

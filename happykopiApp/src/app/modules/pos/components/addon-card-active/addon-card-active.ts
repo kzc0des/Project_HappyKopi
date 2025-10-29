@@ -12,8 +12,15 @@ export interface addonCardDto {
   templateUrl: './addon-card-active.html',
   styleUrls: ['./addon-card-active.css'],
 })
-export class AddonCardActive {
+export class AddonCardActive implements OnInit {
   @Input() addonCard!: addonCardDto;
+
+  ngOnInit() {
+    // Set default quantity to 0 if not provided
+    if (this.addonCard.Quantity === undefined || this.addonCard.Quantity === null) {
+      this.addonCard.Quantity = 0;
+    }
+  }
 
   // ✅ Increase quantity
   increase(): void {
