@@ -1,4 +1,4 @@
-<button class="flex items-center w-full gap-5 p-5" [routerLink]="route" routerLinkActive="active"
+<button class="flex items-center w-full gap-5 p-5 cursor-pointer" [routerLink]="route" routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }" (click)="handleClick()">
     @if(page === 'orders') {
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -19,25 +19,33 @@
         <path d="m12 8 1-6h2" />
     </svg>
     }
+    @if(page === 'category') {
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <g fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5">
+            <path stroke-linejoin="round"
+                d="m18.058 8.536l-1-.613C16.055 7.308 15.554 7 15 7s-1.055.308-2.058.923l-1 .613c-.949.582-1.423.873-1.682 1.342c-.26.47-.26 1.035-.26 2.166v5.865c0 1.929 0 2.893.586 3.492S12.114 22 14 22h2c1.886 0 2.828 0 3.414-.6c.586-.598.586-1.562.586-3.49v-5.866c0-1.131 0-1.697-.26-2.166s-.733-.76-1.682-1.342" />
+            <path stroke-linejoin="round"
+                d="M14 7.108c-.639-.613-1.02-.935-1.503-1.056c-.56-.141-1.148.017-2.325.333L9 6.699c-1.113.3-1.67.448-2.056.817c-.387.37-.537.894-.836 1.943l-1.554 5.438c-.51 1.788-.766 2.682-.332 3.387c.372.605 1.862 1.35 3.279 1.716" />
+            <path
+                d="M14.495 10c.841-.56 1.588-1.457 2.052-2.573c.958-2.305.347-4.67-1.363-5.281c-1.711-.612-3.875.76-4.833 3.065A6 6 0 0 0 10 6.364" />
+        </g>
+    </svg>
+    }
     @if(page === 'modifiers') {
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-package-icon lucide-package">
-        <path
-            d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
-        <path d="M12 22V12" />
-        <polyline points="3.29 7 12 12 20.71 7" />
-        <path d="m7.5 4.27 9 5.15" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <g fill="none" fill-rule="evenodd">
+            <path
+                d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" />
+            <path fill="#fff"
+                d="M12 3a6 6 0 0 1 5.678 4.057a4.001 4.001 0 0 1 2.31 6.603q-.015.088-.045.174l-.035.085l-2.464 5.338a3 3 0 0 1-2.53 1.737L14.72 21H9.28a3 3 0 0 1-2.637-1.57l-.087-.173l-2.464-5.338a1 1 0 0 1-.08-.259a4.001 4.001 0 0 1 2.31-6.603A6 6 0 0 1 12 3m5 12H7c-.077 0-.045.182.05.462l.097.263l.189.46l.222.503l.31.672l.504 1.06a1 1 0 0 0 .908.58h5.44a1 1 0 0 0 .908-.58l.658-1.391l.232-.51l.146-.334l.131-.314l.11-.282c.128-.352.183-.589.095-.589M12 5a4 4 0 0 0-3.92 3.2a1 1 0 0 1-1.013.801L7 9a2 2 0 0 0-.15 3.995L7 13h10a2 2 0 0 0 .15-3.995L17 9l-.067.001a1 1 0 0 1-1.013-.8A4 4 0 0 0 12 5" />
+        </g>
     </svg>
     }
     @if(page === 'inventory') {
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tags-icon lucide-tags">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="none">
         <path
-            d="M13.172 2a2 2 0 0 1 1.414.586l6.71 6.71a2.4 2.4 0 0 1 0 3.408l-4.592 4.592a2.4 2.4 0 0 1-3.408 0l-6.71-6.71A2 2 0 0 1 6 9.172V3a1 1 0 0 1 1-1z" />
-        <path d="M2 7v6.172a2 2 0 0 0 .586 1.414l6.71 6.71a2.4 2.4 0 0 0 3.191.193" />
-        <circle cx="10.5" cy="6.5" r=".5" fill="currentColor" data-darkreader-inline-fill=""
-            style="--darkreader-inline-fill: currentColor;" />
+            d="M10 1.00005V7.00005M1.054 7.01305H18.947M14.76 1.00005C15.1327 0.997454 15.4988 1.09907 15.8168 1.29344C16.1349 1.4878 16.3923 1.76718 16.56 2.10005L18.79 6.57905C18.9279 6.85582 18.9998 7.16081 19 7.47005V17C19 17.5305 18.7893 18.0392 18.4142 18.4143C18.0391 18.7893 17.5304 19 17 19H3C2.46957 19 1.96086 18.7893 1.58579 18.4143C1.21071 18.0392 1 17.5305 1 17V7.47205C1.00002 7.16171 1.07226 6.85564 1.211 6.57805L3.45 2.10005C3.61696 1.7687 3.87281 1.49034 4.18893 1.29607C4.50504 1.10181 4.86897 0.999317 5.24 1.00005H14.76Z"
+            stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
     }
     @if(page === 'settings') {

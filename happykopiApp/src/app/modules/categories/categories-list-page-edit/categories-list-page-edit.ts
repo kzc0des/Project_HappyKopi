@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { CategoryListCardEdit } from "../../components/category-list-card-edit/category-list-card-edit";
+import { CategoryListCardEdit } from '../../products/components/category-list-card-edit/category-list-card-edit';
+
 
 @Component({
   selector: 'app-categories-list-page-edit',

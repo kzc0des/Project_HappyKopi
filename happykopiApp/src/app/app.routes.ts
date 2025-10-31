@@ -171,17 +171,13 @@ export const routes: Routes = [
                         pathMatch: 'full'
                     },
                     {
-                        path: 'category',
+                        path: 'filter',
                         component: CategoriesListPage
-                    },
-                    {
-                        path: 'edit',
-                        component: CategoriesListPageEdit
                     }
                 ]
             },
             {
-                path: 'categories',
+                path: 'category',
                 children: [
                     {
                         path: '',
