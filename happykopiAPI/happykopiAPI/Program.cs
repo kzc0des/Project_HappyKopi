@@ -50,6 +50,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStockItemService, StockItemService>();
 builder.Services.AddScoped<IModifierService, ModifierService>();
 builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddCors(options =>
 {

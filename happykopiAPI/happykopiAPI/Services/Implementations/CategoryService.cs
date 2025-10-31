@@ -34,57 +34,49 @@ namespace happykopiAPI.Services.Implementations
 
         public async Task<bool> DeleteCategoryAsync(int id)
         {
-            using (var connection = CreateConnection())
-            {
-                var parameters = new { CategoryId = id };
-                var rowsAffected = await connection.ExecuteAsync(
-                    "dbo.sp_DeleteCategory",
-                    parameters,
-                    commandType: CommandType.StoredProcedure);
+            using var connection = CreateConnection();
+            var parameters = new { CategoryId = id };
+            var rowsAffected = await connection.ExecuteAsync(
+                "dbo.sp_DeleteCategory",
+                parameters,
+                commandType: CommandType.StoredProcedure);
 
-                return rowsAffected > 0;
-            }
+            return rowsAffected > 0;
         }
 
         public async Task<IEnumerable<CategoryWithProductCountDto>> GetCategoriesWithProductCountAsync()
         {
-            using (var connection = CreateConnection())
-            {
-                return await connection.QueryAsync<CategoryWithProductCountDto>(
-                    "dbo.sp_GetCategoriesWithProductCount",
-                    commandType: CommandType.StoredProcedure);
-            }
+            using var connection = CreateConnection();
+            return await connection.QueryAsync<CategoryWithProductCountDto>(
+                "dbo.sp_GetCategoriesWithProductCount",
+                commandType: CommandType.StoredProcedure);
         }
 
         public async Task<CategoryDto> GetCategoryByIdAsync(int id)
         {
-            using (var connection = CreateConnection())
-            {
-                var parameters = new { CategoryId = id };
-                return await connection.QuerySingleOrDefaultAsync<CategoryDto>(
-                    "dbo.sp_GetCategoryWithProductCountById",
-                    parameters,
-                    commandType: CommandType.StoredProcedure);
-            }
+            using var connection = CreateConnection();
+            var parameters = new { CategoryId = id };
+            return await connection.QuerySingleOrDefaultAsync<CategoryDto>(
+                "dbo.sp_GetCategoryWithProductCountById",
+                parameters,
+                commandType: CommandType.StoredProcedure);
         }
 
         public async Task<CategoryDto> UpdateCategoryAsync(int id, CategoryForCreateUpdateDto categoryDto)
         {
-            using (var connection = CreateConnection())
+            using var connection = CreateConnection();
+            var parameters = new
             {
-                var parameters = new
-                {
-                    CategoryId = id,
-                    CategoryName = categoryDto.Name
-                };
+                CategoryId = id,
+                CategoryName = categoryDto.Name
+            };
 
-                await connection.ExecuteAsync(
-                    "dbo.sp_UpdateCategory",
-                    parameters,
-                    commandType: CommandType.StoredProcedure);
+            await connection.ExecuteAsync(
+                "dbo.sp_UpdateCategory",
+                parameters,
+                commandType: CommandType.StoredProcedure);
 
-                return new CategoryDto { Id = id, Name = categoryDto.Name };
-            }
+            return new CategoryDto { Id = id, Name = categoryDto.Name };
         }
     }
 }
