@@ -326,7 +326,6 @@ export const routes: Routes = [
     {
         path: 'transaction-individual',
         component: TransactionIndividual
-    }
-    
-    
+    },
+    // save drink component
 ];

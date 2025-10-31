@@ -1,8 +1,7 @@
 <header class="
-flex items-end w-full 
+flex items-center w-full 
 bg-hapikopi-yellow text-white 
-h-[13vh] pb-4 px-4
-lg:h-[0] lg:items-center lg:py-10
+h-[4.5rem] px-4
 shadow">
 
     <div class="flex items-center justify-between w-full">
@@ -27,11 +26,11 @@ shadow">
 
             @if(!onSelected){
             @if(headerTitle){
-            <h1 class="font-[800] text-xl">
+            <h1 class="font-semibold text-xl">
                 {{ headerTitle | titlecase }}
             </h1>
             }@else{
-            <h1 class="font-[800] text-xl">
+            <h1 class="font-semibold text-xl">
                 {{ (currentPageSelected | async) | titlecase }}
             </h1>
             }
