@@ -18,7 +18,6 @@ import { DrinkListPage } from './modules/products/product-pages/drink-list-page/
 import { CategoriesListPage } from './modules/products/categories/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
-import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
 import { Order } from './modules/pos/forms/order/order'; 
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
@@ -33,7 +32,6 @@ import { EditCategoryPage } from './modules/products/categories/edit-category-pa
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/product-pages/edit-drink-page/edit-drink-page';
 import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
-import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
 import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
 import { AssignDrinkPage } from './modules/products/categories/assign-drink-page/assign-drink-page';
@@ -54,6 +52,7 @@ import { OrderCard } from './modules/pos/components/order-card/order-card';
 import { OrderQuantityModifier } from './modules/pos/components/order-quantity-modifier/order-quantity-modifier';
 import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
 import { LongYellowButton } from './shared/components/long-yellow-button/long-yellow-button';
+import { CategoriesListPageEdit } from './modules/products/categories/categories-list-page-edit/categories-list-page-edit';
 
 export const routes: Routes = [
     {
@@ -174,6 +173,10 @@ export const routes: Routes = [
                     {
                         path: 'category',
                         component: CategoriesListPage
+                    },
+                    {
+                        path: 'edit',
+                        component: CategoriesListPageEdit
                     }
                 ]
             }
@@ -200,10 +203,6 @@ export const routes: Routes = [
         component: DrinkListPage
     },
     {
-        path: 'categories-list-page',
-        component: CategoriesListPage
-    },
-    {
         path: 'drink-detail/:id',
         component: DrinkDetailPage
     },
@@ -218,10 +217,6 @@ export const routes: Routes = [
     {
         path: 'posoff',
         component: PosCategoryOff
-    },
-    {
-        path: 'modifier-page',
-        component: ModifierPage
     },
     {
         path: 'view-order',
@@ -252,7 +247,7 @@ export const routes: Routes = [
         component: AddDrinkPage
     },
     {
-        path: 'edit-category/:categories',
+        path: 'edit-category',
         component: EditCategoryPage
     },
     {
@@ -262,10 +257,6 @@ export const routes: Routes = [
     {
         path: 'edit-products',
         component: EditProductsPage
-    },
-    {
-        path: 'edit-addons',
-        component: EditAddOnsPage
     },
     {
         path: 'create-drink-page',

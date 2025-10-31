@@ -1,15 +1,2 @@
-body{
-    font-family: Outfit;
-}
 
-.ingredient-icon {
-  width: 55px;
-  height: 55px;
-  position: relative;
-  background: #f3b72c;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 

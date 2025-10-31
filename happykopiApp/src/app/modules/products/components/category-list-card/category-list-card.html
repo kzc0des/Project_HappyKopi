@@ -1,24 +1,5 @@
-<!-- <div class="card pb-10 pt-10 pl-12 pr-12 rounded-0 shadow-sm flex items-center gap-6" *ngFor="let item of items"
-    (click)="onClick(item)" [style.cursor]="clickable ? 'pointer' : 'default'">
-    <div class="flex flex-1 justify-between items-center gap-6">
-        <div class="flex flex-col gap-1">
-            <div class="text-lg font-semibold text-gray-800">
-                {{ item[labelKey] }}
-            </div>
-            <div *ngIf="subLabelKey" class="text-lg text-gray-400">
-                {{ item[subLabelKey] + ' ' + (subLabelSuffix || '') }}
-            </div>
-        </div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path fill="#333" fill-rule="evenodd"
-                d="M8.512 4.43a.75.75 0 0 1 1.057.082l6 7a.75.75 0 0 1 0 .976l-6 7a.75.75 0 0 1-1.138-.976L14.012 12L8.431 5.488a.75.75 0 0 1 .08-1.057"
-                clip-rule="evenodd" />
-        </svg>
-    </div>
-</div> -->
-
-<button class="card pb-10 pt-10 pl-12 pr-12 rounded-0 shadow-sm flex items-center gap-6 cursor-pointer justify-between w-full">
-    <div class="flex flex-col gap-2">
+<button class="card px-8 py-6 rounded-0 shadow-sm flex items-center cursor-pointer justify-between w-full bg-white">
+    <div class="flex flex-col gap-2 items-start">
         <p class="text-hapikopi-dark font-bold">{{ itemTitle }}</p>
         <p class="text-gray-500">{{ itemValue }} {{ itemUnit }}</p>
     </div>

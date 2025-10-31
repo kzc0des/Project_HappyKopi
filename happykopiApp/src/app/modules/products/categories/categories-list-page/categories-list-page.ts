@@ -20,8 +20,4 @@ export class CategoriesListPage {
     { name: 'Hot Kopi', count: 9 },
     { name: 'Iced Kopi', count: 9 },
   ];
-
-  goToCategory(category: any) {
-    this.router.navigate(['/drink-list-page'], { state: { category } });
-  }
 }
