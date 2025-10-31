@@ -179,6 +179,15 @@ export const routes: Routes = [
                         component: CategoriesListPageEdit
                     }
                 ]
+            },
+            {
+                path: 'categories',
+                children: [
+                    {
+                        path: '',
+                        component: CategoriesListPageEdit
+                    }
+                ]
             }
         ]
     },
