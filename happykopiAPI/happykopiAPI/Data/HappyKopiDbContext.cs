@@ -188,6 +188,10 @@ namespace happykopiAPI.Data
             modelBuilder.Entity<Modifier>()
                 .Property(p => p.IsAvailable)
                 .HasDefaultValue(true);
+
+            modelBuilder.Entity<Category>()
+                .Property(c => c.IsActive)
+                .HasDefaultValue(true);
         }
     }
 }

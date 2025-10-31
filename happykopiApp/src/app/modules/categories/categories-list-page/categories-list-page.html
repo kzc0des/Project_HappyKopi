@@ -1,0 +1,11 @@
+<!-- <app-category-list-card
+    [items]="categories"
+    labelKey="name"
+    subLabelKey="count"
+    subLabelSuffix="Drinks"
+    (itemClick)="goToCategory($event)">
+    </app-category-list-card> -->
+
+@for(item of categories; track $index) {
+<app-category-list-card [itemTitle]="item.name" [itemValue]="item.count" itemUnit="Drinks"></app-category-list-card>
+}

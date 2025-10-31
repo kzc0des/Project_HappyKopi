@@ -15,12 +15,10 @@ import { AddIngredient } from './shared/components/add-ingredient/add-ingredient
 import { SearchDrink } from './shared/components/search-drink/search-drink';
 import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
 import { DrinkListPage } from './modules/products/product-pages/drink-list-page/drink-list-page';
-import { CategoriesListPage } from './modules/products/categories/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
-import { dashboardRedirectGuard } from './core/guards/dashboard-redirect-guard';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
-import { Order } from './modules/pos/forms/order/order';  
+import { Order } from './modules/pos/forms/order/order'; 
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
@@ -29,14 +27,10 @@ import { Charge } from './modules/pos/forms/charge/charge';
 import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary';
 import { AddDrinkPage } from './modules/products/product-pages/add-drink-page/add-drink-page';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
-import { EditCategoryPage } from './modules/products/categories/edit-category-page/edit-category-page';
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/product-pages/edit-drink-page/edit-drink-page';
 import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
-import { EditAddOnsPage } from './modules/modifiers/edit-add-ons-page/edit-add-ons-page';
-import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
-import { AssignDrinkPage } from './modules/products/categories/assign-drink-page/assign-drink-page';
 import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
 import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inventory-batch-view';
 import { stockItemBatchResolver } from './modules/inventory/resolver/stockitembatch/stock-item-batch-resolver';
@@ -54,12 +48,13 @@ import { OrderCard } from './modules/pos/components/order-card/order-card';
 import { OrderQuantityModifier } from './modules/pos/components/order-quantity-modifier/order-quantity-modifier';
 import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
 import { LongYellowButton } from './shared/components/long-yellow-button/long-yellow-button';
-import { TransactionCard } from './modules/transactions/components/transaction-card/transaction-card';
-import { TransactionIndividualCard } from './modules/transactions/components/transaction-individual-card/transaction-individual-card';
-import { TransactionPaymentCard } from './modules/transactions/components/transaction-payment-card/transaction-payment-card';
-import { TransactionHome } from './modules/transactions/forms/transaction-home/transaction-home';
-import { DescriptionCard } from './shared/components/description-card/description-card';
-import { TransactionIndividual } from './modules/transactions/forms/transaction-individual/transaction-individual';
+import { CategoriesListPage } from './modules/categories/categories-list-page/categories-list-page';
+import { CategoriesListPageEdit } from './modules/categories/categories-list-page-edit/categories-list-page-edit';
+import { CreateDrinkPage } from './modules/categories/create-drink-page/create-drink-page';
+import { AssignDrinkPage } from './modules/categories/assign-drink-page/assign-drink-page';
+import { EditCategoryPage } from './modules/categories/edit-category-page/edit-category-page';
+import { categoriesListWithCountResolver } from './modules/categories/resolver/categorieswithcount/categories-list-with-count-resolver';
+import { categoryWithCountResolver } from './modules/categories/resolver/categorywithcount/category-with-count-resolver';
 
 export const routes: Routes = [
     {
@@ -168,6 +163,39 @@ export const routes: Routes = [
                         }
                     }
                 ]
+            },
+            {
+                path: 'products',
+                children: [
+                    {
+                        path: '',
+                        component: DrinkListPage,
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'filter',
+                        component: CategoriesListPage
+                    }
+                ]
+            },
+            {
+                path: 'category',
+                children: [
+                    {
+                        path: '',
+                        component: CategoriesListPageEdit,
+                        resolve: {
+                            categorylist: categoriesListWithCountResolver
+                        }
+                    },
+                    {
+                        path: ':categoryId',
+                        component: EditCategoryPage,
+                        resolve: {
+                            categoryDetail: categoryWithCountResolver
+                        }
+                    }
+                ]
             }
         ]
     },
@@ -192,10 +220,6 @@ export const routes: Routes = [
         component: DrinkListPage
     },
     {
-        path: 'categories-list-page',
-        component: CategoriesListPage
-    },
-    {
         path: 'drink-detail/:id',
         component: DrinkDetailPage
     },
@@ -210,10 +234,6 @@ export const routes: Routes = [
     {
         path: 'posoff',
         component: PosCategoryOff
-    },
-    {
-        path: 'modifier-page',
-        component: ModifierPage
     },
     {
         path: 'view-order',
@@ -244,7 +264,7 @@ export const routes: Routes = [
         component: AddDrinkPage
     },
     {
-        path: 'edit-category/:categories',
+        path: 'edit-category',
         component: EditCategoryPage
     },
     {
@@ -254,10 +274,6 @@ export const routes: Routes = [
     {
         path: 'edit-products',
         component: EditProductsPage
-    },
-    {
-        path: 'edit-addons',
-        component: EditAddOnsPage
     },
     {
         path: 'create-drink-page',

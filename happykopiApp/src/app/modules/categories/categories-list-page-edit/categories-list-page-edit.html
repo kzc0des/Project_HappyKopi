@@ -1,0 +1,8 @@
+@for(item of categories; track $index){
+    <app-category-list-card-edit
+    [categoryId]="item.id"
+    [itemTitle]="item.name"
+    [itemValue]="item.productCount"
+    itemUnit="Drinks"
+    ></app-category-list-card-edit>
+}

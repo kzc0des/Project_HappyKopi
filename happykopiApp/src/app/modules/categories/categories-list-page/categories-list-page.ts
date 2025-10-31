@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CategoryListCard } from '../../components/category-list-card/category-list-card';
+import { CategoryListCard } from '../../products/components/category-list-card/category-list-card';
 
 @Component({
   selector: 'app-categories-list-page',
@@ -20,8 +20,4 @@ export class CategoriesListPage {
     { name: 'Hot Kopi', count: 9 },
     { name: 'Iced Kopi', count: 9 },
   ];
-
-  goToCategory(category: any) {
-    this.router.navigate(['/drink-list-page'], { state: { category } });
-  }
 }

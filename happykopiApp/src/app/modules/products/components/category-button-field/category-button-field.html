@@ -1,28 +1,15 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="category-button-field.css">
-  </head>
-  <body>
-          <div class="category-bg flex flex-col gap-9 sticky top-0">
-        <div
-            class="category bg-white p-10 rounded-2xl shadow-md flex flex-col gap-2"
-            (click)="goToCategory()"
-            style="cursor: pointer;"
-        >
-            <div class="flex justify-between items-center">
-                <div class="flex items-center gap-9">
-                    <div class="text-2xl font-bold text-gray-800">All Drinks</div>
-                    <div class="text-lg text-gray-400">33 drinks</div>
-                </div>
-                <span class="material-symbols-outlined">
-                    chevron_right
-                </span>
+<div class="category-bg flex flex-col gap-9 sticky top-0 p-[30px]">
+    <div class="category p-5 rounded-2xl shadow-md flex flex-col gap-2 cursor-pointer" routerLink="category">
+        <div class="flex justify-between items-center bg-white">
+            <div class="flex items-center gap-9">
+                <div class="text-lg font-bold text-hapikopi-dark">All Drinks</div>
+                <div class="text-[#777777]">33 drinks</div>
             </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#333" fill-rule="evenodd"
+                    d="M8.512 4.43a.75.75 0 0 1 1.057.082l6 7a.75.75 0 0 1 0 .976l-6 7a.75.75 0 0 1-1.138-.976L14.012 12L8.431 5.488a.75.75 0 0 1 .08-1.057"
+                    clip-rule="evenodd" />
+            </svg>
         </div>
-        </div>
-  </body>
-  </html>
+    </div>
+</div>

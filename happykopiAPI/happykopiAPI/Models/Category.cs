@@ -11,6 +11,9 @@ namespace happykopiAPI.Models
         [MaxLength(100)]
         public string Name { get; set; } 
 
+        [Required]
+        public bool IsActive { get; set; }
+
         public ICollection<Product> Products { get; set; }
     }
 }
