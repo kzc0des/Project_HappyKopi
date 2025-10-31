@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0&icon_names=photo_camera" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet"
+    />
+</head>
+<body class="flex flex-col gap-4">
+    <div class="card bg-white p-4 shadow-sm flex flex-col gap-8 w-full">
+        <div class="flex flex-col gap-6 items-center w-full">
+            <div class="menu-image w-20 h-20 mb-6 bg-gray-200 rounded-md flex items-center justify-center">
+                <div class="w-20 h-20 bg-[#F3B72C]/50 rounded-2xl flex items-center justify-center">
+                    <span class="material-symbols-rounded text-white">
+                        photo_camera
+                    </span>
+                </div>
+            </div>
+            <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
+                <div class="font-medium text-gray-400 text-md">Drink Name</div>
+                <input
+                    type="text"
+                    class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
+                    />
+            </div>
+            <div class="flex flex-col border border-gray-300 rounded-2xl px-5 py-4 gap-2 w-full">
+                <div class="font-medium text-gray-400 text-md">Base Price (PHP)</div>
+                <input
+                    type="text"
+                    class="flex-1 w-full text-lg font-semibold border-none outline-none focus:ring-0 text-gray-800"
+                />
+            </div>
+        </div>
+
+        <div class="flex flex-1 items-center pt-0 pb-2 pl-4 gap-8 w-full">
+            <div class="w-14 h-14 bg-[#F3B72C] rounded-xl flex items-center justify-center">
+                <div style="color: white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 48 48"><rect width="48" height="48" fill="none"/><g fill="none"><rect width="36" height="14" x="6" y="28" stroke="currentColor" stroke-width="4" rx="4"/><path stroke="currentColor" stroke-linecap="round" stroke-width="4" d="M20 7H10a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h10"/><circle cx="34" cy="14" r="8" stroke="currentColor" stroke-width="4"/><circle cx="34" cy="14" r="3" fill="currentColor"/></g></svg>
+                </div>
+            </div>
+            <div class="flex flex-col gap-1">
+                <div class="font-medium text-gray-400 text-lg"> Category </div>
+                <div class="font-semibold text-lg"> {{ category?.name || 'No category selected' }} </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-bg flex flex-col pt-8 pl-10 pr-10 pb-10 gap-8 bg-white">
+        <div class="text-2xl font-semibold pl-4 pb-2">
+            Ingredients
+        </div>
+        <div class="flex flex-1 items-center gap-4 justify-center">
+            <div
+                class="p-7 rounded-2xl flex shadow-sm gap-2 items-center flex-1 justify-center cursor-pointer transition-all duration-200 border-2"
+                [ngClass]="{
+                'border-[#F3B72C] bg-[#FFF8E5] text-[#F3B72C]': selectedSize === 'grande',
+                'border-transparent bg-[#EDEDED] text-black': selectedSize !== 'grande'
+                }"
+                (click)="selectSize('grande')"
+            >
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                viewBox="0 0 48 48"
+                [ngClass]="{
+                    'text-[#F3B72C]': selectedSize === 'grande',
+                    'text-black': selectedSize !== 'grande'
+                }"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3.5"
+                style="transform: scaleY(0.85);"
+                >
+                <g>
+                    <path stroke-linecap="round" d="M10 16h28" />
+                    <path
+                    d="M14.153 18.143A2 2 0 0 1 16.148 16h15.704a2 2 0 0 1 1.995 2.142l-1.714 24A2 2 0 0 1 30.138 44H17.862a2 2 0 0 1-1.995-1.858z"
+                    />
+                    <path stroke-linecap="round" d="M24 10V6a2 2 0 0 1 2-2h3" />
+                    <path
+                    d="M14.722 11.671A2 2 0 0 1 16.694 10h14.612a2 2 0 0 1 1.973 1.671L34 16H14z"
+                    />
+                </g>
+                </svg>
+                Grande (16 oz)
+            </div>
+
+            <div
+                class="p-7 rounded-2xl flex shadow-sm gap-2 items-center flex-1 justify-center cursor-pointer transition-all duration-200 border-2"
+                [ngClass]="{
+                'border-[#F3B72C] bg-[#FFF8E5] text-[#F3B72C]': selectedSize === 'venti',
+                'border-transparent bg-[#EDEDED] text-black': selectedSize !== 'venti'
+                }"
+                (click)="selectSize('venti')"
+            >
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                viewBox="0 0 48 48"
+                [ngClass]="{
+                    'text-[#F3B72C]': selectedSize === 'venti',
+                    'text-black': selectedSize !== 'venti'
+                }"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3.5"
+                >
+                <g>
+                    <path stroke-linecap="round" d="M10 16h28" />
+                    <path
+                    d="M14.153 18.143A2 2 0 0 1 16.148 16h15.704a2 2 0 0 1 1.995 2.142l-1.714 24A2 2 0 0 1 30.138 44H17.862a2 2 0 0 1-1.995-1.858z"
+                    />
+                    <path stroke-linecap="round" d="M24 10V6a2 2 0 0 1 2-2h3" />
+                    <path
+                    d="M14.722 11.671A2 2 0 0 1 16.694 10h14.612a2 2 0 0 1 1.973 1.671L34 16H14z"
+                    />
+                </g>
+                </svg>
+                Venti (22 oz)
+            </div>
+        </div>
+
+
+
+        <div class="add bg-[#EDEDED] p-6 rounded-2xl flex shadow-sm gap-9 items-center">
+            <div class="w-15 h-15 bg-[#D9D9D9] rounded-2xl flex items-center justify-center">
+                <div>
+                   <span class="material-symbols-outlined">
+                        add
+                   </span>
+                </div>
+            </div>
+            <div class="text-xl text-gray-800">
+                Add an Ingredient
+            </div>
+        </div>
+
+        <div class="add bg-[#EDEDED] p-6 rounded-2xl flex shadow-sm gap-9 items-center">
+            <div class="w-15 h-15 bg-[#D9D9D9] rounded-2xl flex items-center justify-center">
+                <div>
+                   <span class="material-symbols-outlined">
+                        add
+                   </span>
+                </div>
+            </div>
+            <div class="text-xl text-gray-800">
+                Add an Add-on
+            </div>
+        </div>
+    </div>
+</body>
+</html>

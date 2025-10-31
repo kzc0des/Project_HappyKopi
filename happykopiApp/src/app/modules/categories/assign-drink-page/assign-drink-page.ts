@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { SearchFieldCard } from '../../components/search-field-card/search-field-card';
-import { SelectableCardList } from '../../components/selectable-card-list/selectable-card-list';
+import { SearchFieldCard } from '../../products/components/search-field-card/search-field-card';
+import { SelectableCardList } from '../../products/components/selectable-card-list/selectable-card-list';
 
 @Component({
   selector: 'app-assign-drink-page',
