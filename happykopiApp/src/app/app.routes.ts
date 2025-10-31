@@ -55,6 +55,13 @@ import { AssignDrinkPage } from './modules/categories/assign-drink-page/assign-d
 import { EditCategoryPage } from './modules/categories/edit-category-page/edit-category-page';
 import { categoriesListWithCountResolver } from './modules/categories/resolver/categorieswithcount/categories-list-with-count-resolver';
 import { categoryWithCountResolver } from './modules/categories/resolver/categorywithcount/category-with-count-resolver';
+import { TransactionIndividual } from './modules/transactions/forms/transaction-individual/transaction-individual';
+import { DescriptionCard } from './shared/components/description-card/description-card';
+import { TransactionHome } from './modules/transactions/forms/transaction-home/transaction-home';
+import { TransactionPaymentCard } from './modules/transactions/components/transaction-payment-card/transaction-payment-card';
+import { TransactionIndividualCard } from './modules/transactions/components/transaction-individual-card/transaction-individual-card';
+import { TransactionCard } from './modules/transactions/components/transaction-card/transaction-card';
+import { allDrinksCategoryWithCountResolver } from './modules/categories/resolver/alldrinkscategorywithcount/all-drinks-category-with-count-resolver';
 
 export const routes: Routes = [
     {
@@ -193,6 +200,13 @@ export const routes: Routes = [
                         component: EditCategoryPage,
                         resolve: {
                             categoryDetail: categoryWithCountResolver
+                        }
+                    },
+                    {
+                        path: 'all',
+                        component: EditCategoryPage,
+                        resolve: {
+                            categoryDetail: allDrinksCategoryWithCountResolver
                         }
                     }
                 ]

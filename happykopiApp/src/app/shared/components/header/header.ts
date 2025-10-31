@@ -172,6 +172,12 @@ export class Header implements OnInit, OnDestroy {
       this.showBackButton = true;
       this.showAddButton = true;
     }
+
+    else if (segments.includes('category') && segments.length === 3) {
+      this.showBackButton = true;
+      this.showAddButton = true;
+      this.onSelected = true;
+    }
   }
 
   onAddItemClick(): void {
@@ -229,7 +235,7 @@ export class Header implements OnInit, OnDestroy {
 
   onBackClick() {
     this.headerActionService.emitAction('BACK');
-    if(!this.isItemDeleted){
+    if (!this.isItemDeleted) {
       this.location.back();
     }
     // if (!this.hasValueChanged) {

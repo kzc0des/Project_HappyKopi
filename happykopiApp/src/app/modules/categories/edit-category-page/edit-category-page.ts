@@ -1,27 +1,28 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CategoryWithProductCountDto } from '../../../core/dtos/category/category-with-product-count-dto';
+import { Itemcard } from "../../../shared/components/itemcard/itemcard";
+import { YellowButton } from "../../../shared/components/yellow-button/yellow-button";
 
 
 @Component({
   selector: 'app-edit-category-page',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Itemcard, YellowButton],
   templateUrl: './edit-category-page.html',
   styleUrl: './edit-category-page.css'
 })
 export class EditCategoryPage {
-  categories: string = '';
+  category !: CategoryWithProductCountDto;
 
   ngOnInit() {
-    this.categories = this.route.snapshot.paramMap.get('categories') || '';
+    this.category = this.route.snapshot.data['categoryDetail'];
   }
 
-  category: any
-
-  constructor(private route: ActivatedRoute, private router: Router) {
-    const nav = this.router.getCurrentNavigation();
-    this.category = nav?.extras.state?.['category'] || { name: '', count: 0 };
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router) {
   }
 
    goToCreateDrink() {
