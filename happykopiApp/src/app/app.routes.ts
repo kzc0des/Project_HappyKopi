@@ -318,5 +318,30 @@ export const routes: Routes = [
     {
         path: 'long-yellow-btn',
         component: LongYellowButton
-    }
+    },
+    {
+        path: 'transaction-card',
+        component: TransactionCard
+    },
+    {
+        path: 'transaction-indiv-card',
+        component: TransactionIndividualCard
+    },
+    {
+        path: 'transaction-payment-card',
+        component: TransactionPaymentCard
+    },
+    {
+        path: 'transaction-home',
+        component: TransactionHome
+    },
+    {
+        path: 'description-card',
+        component: DescriptionCard
+    },
+    {
+        path: 'transaction-individual',
+        component: TransactionIndividual
+    },
+    // save drink component
 ];
