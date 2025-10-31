@@ -12,10 +12,8 @@ export class CategoryListCard {
   // @Input() labelKey = 'name';       
   // @Input() subLabelKey?: string;   
   // @Input() subLabelSuffix?: string;   
-  // @Input() clickable = true;          
-
-  isEditingProducts: boolean = false;
-  
+  // @Input() clickable = true
+    
   @Input() itemTitle !: string;
   @Input() itemValue !: number;
   @Input() itemUnit !: string;

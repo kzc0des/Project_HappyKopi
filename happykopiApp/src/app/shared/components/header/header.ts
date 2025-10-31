@@ -232,21 +232,6 @@ export class Header implements OnInit, OnDestroy {
     if(!this.isItemDeleted){
       this.location.back();
     }
-    // if (!this.hasValueChanged) {
-    //   this.location.back();
-    // } else {
-    //   const confirmed = await this.confirmationService.confirm(
-    //     'Cancel Edit?',
-    //     'All new details you entered will be removed.',
-    //     'primary',
-    //     'Cancel Edit',
-    //     'Keep Editing'
-    //   );
-
-    //   if (confirmed) {
-    //     this.location.back();
-    //   }
-    // }
   }
 
 }
