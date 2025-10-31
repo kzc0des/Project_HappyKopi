@@ -15,7 +15,6 @@ import { AddIngredient } from './shared/components/add-ingredient/add-ingredient
 import { SearchDrink } from './shared/components/search-drink/search-drink';
 import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
 import { DrinkListPage } from './modules/products/product-pages/drink-list-page/drink-list-page';
-import { CategoriesListPage } from './modules/products/categories/categories-list-page/categories-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
 import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
@@ -28,13 +27,10 @@ import { Charge } from './modules/pos/forms/charge/charge';
 import { ChargeSummary } from './modules/pos/forms/charge-summary/charge-summary';
 import { AddDrinkPage } from './modules/products/product-pages/add-drink-page/add-drink-page';
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
-import { EditCategoryPage } from './modules/products/categories/edit-category-page/edit-category-page';
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/product-pages/edit-drink-page/edit-drink-page';
 import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
-import { CreateDrinkPage } from './modules/products/categories/create-drink-page/create-drink-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
-import { AssignDrinkPage } from './modules/products/categories/assign-drink-page/assign-drink-page';
 import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
 import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inventory-batch-view';
 import { stockItemBatchResolver } from './modules/inventory/resolver/stockitembatch/stock-item-batch-resolver';
@@ -52,7 +48,11 @@ import { OrderCard } from './modules/pos/components/order-card/order-card';
 import { OrderQuantityModifier } from './modules/pos/components/order-quantity-modifier/order-quantity-modifier';
 import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
 import { LongYellowButton } from './shared/components/long-yellow-button/long-yellow-button';
-import { CategoriesListPageEdit } from './modules/products/categories/categories-list-page-edit/categories-list-page-edit';
+import { CategoriesListPage } from './modules/categories/categories-list-page/categories-list-page';
+import { CategoriesListPageEdit } from './modules/categories/categories-list-page-edit/categories-list-page-edit';
+import { CreateDrinkPage } from './modules/categories/create-drink-page/create-drink-page';
+import { AssignDrinkPage } from './modules/categories/assign-drink-page/assign-drink-page';
+import { EditCategoryPage } from './modules/categories/edit-category-page/edit-category-page';
 
 export const routes: Routes = [
     {
