@@ -31,7 +31,7 @@ namespace happykopiAPI.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{id}", Name = "GetCategory")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory(int id)
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);
@@ -45,31 +45,40 @@ namespace happykopiAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryForCreateUpdateDto categoryForCreate)
         {
-            if (categoryForCreate == null)
+            try
             {
-                return BadRequest();
+                if (categoryForCreate == null)
+                {
+                    return BadRequest();
+                }
+
+                await _categoryService.CreateCategoryAsync(categoryForCreate);
+
+                return Ok(new { message = "Category created successfully" });
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
 
-            var createdCategory = await _categoryService.CreateCategoryAsync(categoryForCreate);
-
-            return CreatedAtRoute("GetCategory", new { id = createdCategory.Id }, createdCategory);
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryForCreateUpdateDto categoryForUpdate)
         {
-            if (categoryForUpdate == null)
+            try
             {
-                return BadRequest();
-            }
+                if (categoryForUpdate == null)
+                {
+                    return BadRequest();
+                }
 
-            var updatedCategory = await _categoryService.UpdateCategoryAsync(id, categoryForUpdate);
-            if (updatedCategory == null)
-            {
-                return NotFound(); 
+                await _categoryService.UpdateCategoryAsync(id, categoryForUpdate);
+                return Ok(new { message = "Category updated successfully." });
+            }catch (Exception ex) 
+            { 
+                return BadRequest(ex.Message); 
             }
-
-            return NoContent();
         }
 
         [HttpDelete("{id}")]

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CategoryListCardEdit } from '../../products/components/category-list-card-edit/category-list-card-edit';
+import { ActivatedRoute } from '@angular/router';
+import { CategoryWithProductCountDto } from '../../../core/dtos/category/category-with-product-count-dto';
 
 @Component({
   selector: 'app-categories-list-page-edit',
@@ -7,12 +9,15 @@ import { CategoryListCardEdit } from '../../products/components/category-list-ca
   templateUrl: './categories-list-page-edit.html',
   styleUrl: './categories-list-page-edit.css'
 })
-export class CategoriesListPageEdit {
-  categories = [
-    { name: 'All Drinks', count: 33 },
-    { name: 'Milk Tea', count: 9 },
-    { name: 'Fruit Tea', count: 6 },
-    { name: 'Hot Kopi', count: 9 },
-    { name: 'Iced Kopi', count: 9 },
-  ];
+export class CategoriesListPageEdit implements OnInit {
+  categories !: CategoryWithProductCountDto[];
+
+  constructor (
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.categories = this.route.snapshot.data['categorylist'];
+    console.log(this.categories);
+  }
 }

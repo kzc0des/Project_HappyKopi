@@ -53,6 +53,8 @@ import { CategoriesListPageEdit } from './modules/categories/categories-list-pag
 import { CreateDrinkPage } from './modules/categories/create-drink-page/create-drink-page';
 import { AssignDrinkPage } from './modules/categories/assign-drink-page/assign-drink-page';
 import { EditCategoryPage } from './modules/categories/edit-category-page/edit-category-page';
+import { categoriesListWithCountResolver } from './modules/categories/resolver/categorieswithcount/categories-list-with-count-resolver';
+import { categoryWithCountResolver } from './modules/categories/resolver/categorywithcount/category-with-count-resolver';
 
 export const routes: Routes = [
     {
@@ -181,7 +183,17 @@ export const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        component: CategoriesListPageEdit
+                        component: CategoriesListPageEdit,
+                        resolve: {
+                            categorylist: categoriesListWithCountResolver
+                        }
+                    },
+                    {
+                        path: ':categoryId',
+                        component: EditCategoryPage,
+                        resolve: {
+                            categoryDetail: categoryWithCountResolver
+                        }
                     }
                 ]
             }

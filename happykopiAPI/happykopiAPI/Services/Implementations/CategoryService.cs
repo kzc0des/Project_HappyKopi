@@ -4,6 +4,8 @@ using happykopiAPI.DTOs.Category.Outgoing_Data;
 using happykopiAPI.DTOs.Product;
 using happykopiAPI.Models;
 using happykopiAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -20,16 +22,16 @@ namespace happykopiAPI.Services.Implementations
 
         private IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("LocalDB"));
 
-        public async Task<CategoryDto> CreateCategoryAsync(CategoryForCreateUpdateDto categoryDto)
+        public async Task CreateCategoryAsync([FromBody] CategoryForCreateUpdateDto categoryDto)
         {
             using var connection = CreateConnection();
+
             var parameters = new { CategoryName = categoryDto.Name };
-            var newCategoryId = await connection.QuerySingleAsync<int>(
+            var newCategoryId = await connection.ExecuteAsync(
                 "dbo.sp_CreateCategory",
                 parameters,
                 commandType: CommandType.StoredProcedure);
 
-            return new CategoryDto { Id = newCategoryId, Name = categoryDto.Name };
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)
@@ -47,22 +49,36 @@ namespace happykopiAPI.Services.Implementations
         public async Task<IEnumerable<CategoryWithProductCountDto>> GetCategoriesWithProductCountAsync()
         {
             using var connection = CreateConnection();
-            return await connection.QueryAsync<CategoryWithProductCountDto>(
+            var categoriesFromDb = await connection.QueryAsync<CategoryWithProductCountDto>(
                 "dbo.sp_GetCategoriesWithProductCount",
                 commandType: CommandType.StoredProcedure);
+
+            var categoriesList = categoriesFromDb.ToList();
+
+            int TotalProductCount = categoriesList.Sum(c => c.ProductCount);
+
+            var allDrinksCategory = new CategoryWithProductCountDto
+            {
+                Id = 0,
+                Name = "All Drinks",
+                ProductCount = TotalProductCount
+            };
+
+            categoriesList.Insert(0, allDrinksCategory);
+            return categoriesList;
         }
 
-        public async Task<CategoryDto> GetCategoryByIdAsync(int id)
+        public async Task<CategoryWithProductCountDto> GetCategoryByIdAsync(int id)
         {
             using var connection = CreateConnection();
             var parameters = new { CategoryId = id };
-            return await connection.QuerySingleOrDefaultAsync<CategoryDto>(
+            return await connection.QuerySingleOrDefaultAsync<CategoryWithProductCountDto>(
                 "dbo.sp_GetCategoryWithProductCountById",
                 parameters,
                 commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<CategoryDto> UpdateCategoryAsync(int id, CategoryForCreateUpdateDto categoryDto)
+        public async Task UpdateCategoryAsync(int id, CategoryForCreateUpdateDto categoryDto)
         {
             using var connection = CreateConnection();
             var parameters = new
@@ -76,7 +92,6 @@ namespace happykopiAPI.Services.Implementations
                 parameters,
                 commandType: CommandType.StoredProcedure);
 
-            return new CategoryDto { Id = id, Name = categoryDto.Name };
         }
     }
 }
