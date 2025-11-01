@@ -8,12 +8,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './modifier-size-card.css',
 })
 export class ModifierSizeCard {
-@Input() itemName !: string;
-@Input() itemValue !: number;
-@Output() notifyClick = new EventEmitter();
-@Input() isSelected: boolean = false;
+  @Input() itemName !: string;
+  @Input() itemValue !: number;
+  @Output() notifyClick = new EventEmitter();
+  @Input() isSelected: boolean = false;
 
-clickHandler() : void {
-  this.notifyClick.emit();
-}
+  clickHandler(): void {
+    this.notifyClick.emit();
+  }
 }

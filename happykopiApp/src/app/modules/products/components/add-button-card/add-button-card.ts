@@ -11,6 +11,7 @@ import { CompilerOptions } from '@angular/core';
 export class AddButtonCard {
   @Input() itemName !: string;
   @Output() notifyClick = new EventEmitter<void>();
+  @Input() isDisabled !: boolean;
 
   onClick() {
     this.notifyClick.emit();
