@@ -14,6 +14,19 @@ export interface ModifierSize {
   ozAmount: number;
 }
 
+export interface Ingredient {
+  id: number;
+  name: string;
+  unitOfMeasurement: string;
+}
+
+export interface RecipeItem {
+  ingredientId: number;
+  ingredientName: string; 
+  amount: number;
+  unit: string;
+}
+
 @Component({
   selector: 'app-add-drink-page',
   imports: [FormsModule, CommonModule, AddButtonCard, Itemcard, DropdownButton, ModifierSizeCard],
@@ -27,7 +40,7 @@ export class AddDrinkPage {
 
   availableSizes: ModifierSize[] = [];
 
-  selectedSizeId: number | null = null;
+  selectedSizeId: number | null = 1;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     const nav = this.router.getCurrentNavigation();

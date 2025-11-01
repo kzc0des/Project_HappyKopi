@@ -29,10 +29,10 @@
         <app-dropdown-button class="w-full"></app-dropdown-button>
     </div>
 
-    <div class="bg-white flex-1 flex flex-col justify-center items-center px-5">
-        <div class="flex flex-col gap-4 py-7 w-full">
+    <div class="bg-white flex-1 flex flex-col justify-center items-center px-5 py-8 gap-4">
+        <div class="flex flex-col gap-4 w-full">
 
-            <h3 class="text-2xl font-bold text-hapikopi-dark w-full">Ingredients</h3>
+            <h3 class="text-lg font-bold text-hapikopi-dark w-full">Ingredients</h3>
 
             <div class="flex gap-3 flex-nowrap overflow-x-auto pb-5">
                 @for(item of availableSizes; track $index){
@@ -45,12 +45,10 @@
         </div>
 
 
-        <div class="flex flex-col gap-5 pb-5 w-full">
-            <app-add-button-card label="Add an Ingredient" icon="add" bgColor="#EDEDED"
-                textColor="#1f2937"></app-add-button-card>
+        <div class="flex flex-col gap-5 w-full">
+            <app-add-button-card itemName="Add an Ingredient"></app-add-button-card>
 
-            <app-add-button-card label="Add an Add-on" icon="add" bgColor="#EDEDED"
-                textColor="#1f2937"></app-add-button-card>
+            <app-add-button-card itemName="Add an Add-on"></app-add-button-card>
         </div>
     </div>
 </div>
