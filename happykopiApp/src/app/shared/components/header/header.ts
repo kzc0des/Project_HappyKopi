@@ -191,6 +191,12 @@ export class Header implements OnInit, OnDestroy {
       this.showBackButton = true;
       this.showSaveButton = true;
     }
+
+    /* products routing */
+
+    else if (segments.includes('products') && segments.length === 2) {
+      this.showAddButton = true;
+    }
   }
 
   onAddItemClick(): void {

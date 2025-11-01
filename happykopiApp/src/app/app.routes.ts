@@ -183,6 +183,10 @@ export const routes: Routes = [
                     {
                         path: 'filter',
                         component: CategoriesListPage
+                    },
+                    {
+                        path: 'create',
+                        component: AddDrinkPage
                     }
                 ]
             },

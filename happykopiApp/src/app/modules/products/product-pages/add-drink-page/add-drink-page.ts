@@ -9,15 +9,19 @@ import { ToggleCard } from '../../components/toggle-card/toggle-card';
 
 import { CategoryDropdown } from '../../components/category-dropdown/category-dropdown';
 import { EditPhotoCard } from '../../components/edit-photo-card/edit-photo-card';
+import { Itemcard } from '../../../../shared/components/itemcard/itemcard';
+import { DropdownButton } from '../../../../shared/components/dropdown-button/dropdown-button';
+import { ModifierSizeCard } from "../../components/modifier-size-card/modifier-size-card";
 
 @Component({
   selector: 'app-add-drink-page',
-  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard, EditPhotoCard, CategoryDropdown],
+  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard, EditPhotoCard, Itemcard, DropdownButton, ModifierSizeCard],
   templateUrl: './add-drink-page.html',
   styleUrl: './add-drink-page.css'
 })
 export class AddDrinkPage {
   isDropdownOpen = false;
+  isSizeSelected = false;
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -61,8 +65,4 @@ export class AddDrinkPage {
   }
 
   selectedCategory = 'Milk Tea';
-
-  onCategorySelected(category: string) {
-    console.log('Selected:', category);
-  }
 }
