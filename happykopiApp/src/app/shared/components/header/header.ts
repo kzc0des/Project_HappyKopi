@@ -197,6 +197,12 @@ export class Header implements OnInit, OnDestroy {
     else if (segments.includes('products') && segments.length === 2) {
       this.showAddButton = true;
     }
+
+    else if (segments.includes('products') && segments.length === 3) {
+      this.headerTitle = 'Create Drink';
+      this.showBackButton = true;
+      this.showSaveButton = true;
+    }
   }
 
   onAddItemClick(): void {

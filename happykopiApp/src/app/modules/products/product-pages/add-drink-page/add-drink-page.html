@@ -5,8 +5,7 @@
     px-5 py-8 gap-5 
     w-full flex-1">
 
-        <label for="drink-image-upload" 
-        class="relative flex items-center justify-center max-w-xs px-12 py-20
+        <label for="drink-image-upload" class="relative flex items-center justify-center max-w-xs px-12 py-20
                       rounded-2xl bg-[#fafafa] border-2 border-dashed border-gray-300
                       cursor-pointer transition-colors hover:bg-gray-100">
 
@@ -35,19 +34,23 @@
 
             <h3 class="text-2xl font-bold text-hapikopi-dark w-full">Ingredients</h3>
 
-            <div class="flex gap-3">
-                <app-modifier-size-card itemName="Grande" [itemValue]="16"></app-modifier-size-card>
-                <app-modifier-size-card itemName="Venti" [itemValue]="21"></app-modifier-size-card>
+            <div class="flex gap-3 flex-nowrap overflow-x-auto pb-5">
+                @for(item of availableSizes; track $index){
+                <app-modifier-size-card class="flex-shrink-0" [itemName]="item.name"
+                    [isSelected]="selectedSizeId === item.id" [itemValue]="item.ozAmount"
+                    (notifyClick)="onSizeSelect(item.id)">
+                </app-modifier-size-card>
+                }
             </div>
         </div>
 
 
         <div class="flex flex-col gap-5 pb-5 w-full">
-            <app-add-button-card label="Add an Ingredient" icon="add" bgColor="#EDEDED" textColor="#1f2937"
-                (clicked)="onAddIngredient()"></app-add-button-card>
+            <app-add-button-card label="Add an Ingredient" icon="add" bgColor="#EDEDED"
+                textColor="#1f2937"></app-add-button-card>
 
-            <app-add-button-card label="Add an Add-on" icon="add" bgColor="#EDEDED" textColor="#1f2937"
-                (clicked)="onAddIngredient()"></app-add-button-card>
+            <app-add-button-card label="Add an Add-on" icon="add" bgColor="#EDEDED"
+                textColor="#1f2937"></app-add-button-card>
         </div>
     </div>
 </div>

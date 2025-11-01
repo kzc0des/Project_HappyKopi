@@ -11,7 +11,7 @@ export class ModifierSizeCard {
 @Input() itemName !: string;
 @Input() itemValue !: number;
 @Output() notifyClick = new EventEmitter();
-isSelected:boolean = false;
+@Input() isSelected: boolean = false;
 
 clickHandler() : void {
   this.notifyClick.emit();
