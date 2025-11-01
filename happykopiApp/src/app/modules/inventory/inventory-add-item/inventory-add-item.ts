@@ -12,12 +12,11 @@ import { Location } from '@angular/common';
 import { ExpiryDateCard } from '../components/expiry-date-card/expiry-date-card';
 import { UnitGrouping } from '../../../core/enums/unit';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
-import { YellowButton } from "../../../shared/components/yellow-button/yellow-button";
 import { StockItemType } from '../../../core/enums/stock-item-type';
 
 @Component({
   selector: 'app-inventory-add-item',
-  imports: [ToggleButton, Itemcard, FormsModule, DropdownButton, ExpiryDateCard, YellowButton],
+  imports: [ToggleButton, Itemcard, FormsModule, DropdownButton, ExpiryDateCard],
   templateUrl: './inventory-add-item.html',
   styleUrl: './inventory-add-item.css'
 })

@@ -174,6 +174,10 @@ export class Header implements OnInit, OnDestroy {
 
     /* category routing */
 
+    else if (segments.includes('category') && segments.length === 2) {
+      this.showAddButton = true;
+    }
+
     else if (segments.includes('category') && segments.length === 3) {
       this.showBackButton = true;
       this.showSaveButton = true;

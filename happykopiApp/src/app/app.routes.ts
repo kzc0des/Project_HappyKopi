@@ -62,6 +62,7 @@ import { TransactionPaymentCard } from './modules/transactions/components/transa
 import { TransactionIndividualCard } from './modules/transactions/components/transaction-individual-card/transaction-individual-card';
 import { TransactionCard } from './modules/transactions/components/transaction-card/transaction-card';
 import { productsInCategoryResolver } from './modules/categories/resolver/productsincategory/products-in-category-resolver';
+import { CategoryAdd } from './modules/categories/category-add/category-add';
 
 export const routes: Routes = [
     {
@@ -194,6 +195,10 @@ export const routes: Routes = [
                         resolve: {
                             categorylist: categoriesListWithCountResolver
                         }
+                    },
+                    {
+                        path: 'create',
+                        component: CategoryAdd
                     },
                     {
                         path: ':categoryId/assign',
