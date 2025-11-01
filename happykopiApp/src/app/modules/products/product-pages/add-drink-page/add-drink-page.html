@@ -52,10 +52,3 @@
         </div>
     </div>
 </div>
-
-<app-recipe-builder-modal
-  [isVisible]="isRecipeBuilderVisible"
-  [existingRecipeIds]="existingRecipeIds"
-  (onClose)="handleRecipeBuilderClose()"
-  (onIngredientAdd)="handleIngredientAdded($event)">
-</app-recipe-builder-modal>

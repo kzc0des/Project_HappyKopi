@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RecipeBuilderModal } from './recipe-builder-modal';
+import { RedButton } from './red-button';
 
-describe('RecipeBuilderModal', () => {
-  let component: RecipeBuilderModal;
-  let fixture: ComponentFixture<RecipeBuilderModal>;
+describe('RedButton', () => {
+  let component: RedButton;
+  let fixture: ComponentFixture<RedButton>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RecipeBuilderModal]
+      imports: [RedButton]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RecipeBuilderModal);
+    fixture = TestBed.createComponent(RedButton);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
