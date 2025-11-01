@@ -49,23 +49,19 @@ namespace happykopiAPI.Services.Implementations
         public async Task<IEnumerable<CategoryWithProductCountDto>> GetCategoriesWithProductCountAsync()
         {
             using var connection = CreateConnection();
-            var categoriesFromDb = await connection.QueryAsync<CategoryWithProductCountDto>(
+            return await connection.QueryAsync<CategoryWithProductCountDto>(
                 "dbo.sp_GetCategoriesWithProductCount",
                 commandType: CommandType.StoredProcedure);
+        }
 
-            var categoriesList = categoriesFromDb.ToList();
-
-            int TotalProductCount = categoriesList.Sum(c => c.ProductCount);
-
-            var allDrinksCategory = new CategoryWithProductCountDto
-            {
-                Id = 0,
-                Name = "All Drinks",
-                ProductCount = TotalProductCount
-            };
-
-            categoriesList.Insert(0, allDrinksCategory);
-            return categoriesList;
+        public async Task<IEnumerable<ProductWithCategoryNameDto>> GetActiveProductsByCategoryIdAsync(int categoryId)
+        {
+            using var connection = CreateConnection();
+            var parameters = new { CategoryId = categoryId };
+            return await connection.QueryAsync<ProductWithCategoryNameDto>(
+                "dbo.sp_GetActiveProductsByCategoryId",
+                parameters,
+                commandType: CommandType.StoredProcedure);
         }
 
         public async Task<CategoryWithProductCountDto> GetCategoryByIdAsync(int id)

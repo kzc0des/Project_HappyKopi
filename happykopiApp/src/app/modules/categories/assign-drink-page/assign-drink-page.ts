@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SearchFieldCard } from '../../products/components/search-field-card/search-field-card';
 import { SelectableCardList } from '../../products/components/selectable-card-list/selectable-card-list';
 
@@ -10,7 +10,7 @@ import { SelectableCardList } from '../../products/components/selectable-card-li
   templateUrl: './assign-drink-page.html',
   styleUrl: './assign-drink-page.css'
 })
-export class AssignDrinkPage {
+export class AssignDrinkPage implements OnInit{
   drinks = [
     { name: 'Thai', category: 'Milk Tea', baseprice: 45.00, available: true},  //image: (wala akong malinaw na copy ng image kaya di ko na nilagyan)
     { name: 'Hokkaido', category: 'Milk Tea', baseprice: 45.00, available: false},
@@ -21,6 +21,15 @@ export class AssignDrinkPage {
   ];
 
   selectedDrinks: any[] = [];
+
+  constructor (
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    const datalist = this.route.snapshot.data['products'];
+    console.log(datalist);
+  }
 
   toggleSelection(drink: any) {
     const index = this.selectedDrinks.indexOf(drink);

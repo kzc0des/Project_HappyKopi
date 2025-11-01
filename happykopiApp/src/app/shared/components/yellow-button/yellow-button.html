@@ -1,19 +1,27 @@
-<button (click)="notifyClickButton()" class="flex items-center justify-center gap-3 bg-hapikopi-yellow px-5 py-3 rounded-lg">
-    <div class="">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="w-4"
-        viewBox="0 0 20 25"
-        fill="none"
-      >
-        <path
-          d="M12.2488 8.00339H5.50421M14.497 12.4998H5.50421M11.1247 16.9962H5.50421M1.00781 1.25879V23.7408L3.25601 22.6167L5.50421 23.7408L7.75241 22.6167L10.0006 23.7408L12.2488 22.6167L14.497 23.7408L16.7452 22.6167L18.9934 23.7408V1.25879L16.7452 2.38289L14.497 1.25879L12.2488 2.38289L10.0006 1.25879L7.75241 2.38289L5.50421 1.25879L3.25601 2.38289L1.00781 1.25879Z"
-          stroke="#765302"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </div>
-    <div class="text-[#765302]">{{ buttonTitle }}</div>
+<button (click)="notifyClickButton()"
+  class="flex items-center justify-center gap-3 bg-hapikopi-yellow p-5 rounded-lg w-full">
+  <div class="">
+    @if(itemTitle === "transaction"){
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4" viewBox="0 0 20 25" fill="none">
+      <path
+        d="M12.2488 8.00339H5.50421M14.497 12.4998H5.50421M11.1247 16.9962H5.50421M1.00781 1.25879V23.7408L3.25601 22.6167L5.50421 23.7408L7.75241 22.6167L10.0006 23.7408L12.2488 22.6167L14.497 23.7408L16.7452 22.6167L18.9934 23.7408V1.25879L16.7452 2.38289L14.497 1.25879L12.2488 2.38289L10.0006 1.25879L7.75241 2.38289L5.50421 1.25879L3.25601 2.38289L1.00781 1.25879Z"
+        stroke="#765302" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    }
+
+    @if(itemTitle === "drinks"){
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4" viewBox="0 0 163 226" fill="none">
+      <path d="M8 71.0003H155" stroke="#765302" stroke-width="16" stroke-linecap="round" />
+      <path
+        d="M29.8032 82.2484C29.369 76.1705 34.1832 71.0003 40.2769 71.0003H122.723C128.816 71.0003 133.631 76.1705 133.197 82.2484L124.196 208.248C123.804 213.743 119.232 218 113.723 218H49.2764C43.7681 218 39.1959 213.743 38.8032 208.248L29.8032 82.2484Z"
+        stroke="#765302" stroke-width="16" />
+      <path d="M81.5 39.4999V18.5C81.5 12.701 86.2008 8 92 8H107.75" stroke="#765302" stroke-width="16"
+        stroke-linecap="round" />
+      <path
+        d="M32.7879 48.2738C33.6315 43.2107 38.0121 39.5 43.1451 39.5H119.855C124.988 39.5 129.368 43.2107 130.212 48.2738L134 71H29L32.7879 48.2738Z"
+        stroke="#765302" stroke-width="16" />
+    </svg>
+    }
+  </div>
+  <div class="text-[#765302] font-semibold">{{ buttonTitle }}</div>
 </button>

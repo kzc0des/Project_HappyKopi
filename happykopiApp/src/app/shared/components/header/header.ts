@@ -144,7 +144,7 @@ export class Header implements OnInit, OnDestroy {
       this.showBackButton = false;
     }
 
-    // modifiers routing
+    /* modifiers routing */
 
     else if (segments.includes('modifiers') && segments.includes('edit') && segments.length >= 5) {
       this.showBackButton = true;
@@ -171,6 +171,25 @@ export class Header implements OnInit, OnDestroy {
       this.headerTitle = modifierType
       this.showBackButton = true;
       this.showAddButton = true;
+    }
+
+    /* category routing */
+
+    else if (segments.includes('category') && segments.length === 2) {
+      this.showAddButton = true;
+    }
+
+    else if (segments.includes('category') && segments.length === 3) {
+      this.showBackButton = true;
+      this.showSaveButton = true;
+      this.showDeleteButton = true;
+      this.onSelected = true;
+    }
+
+    else if (segments.includes('category') && segments.includes('assign') && segments.length === 4) {
+      this.headerTitle = `Assign to Category`;
+      this.showBackButton = true;
+      this.showSaveButton = true;
     }
   }
 
@@ -227,26 +246,26 @@ export class Header implements OnInit, OnDestroy {
     this.sidebarService.toggleSidebar();
   }
 
-  onBackClick() {
-    this.headerActionService.emitAction('BACK');
-    if(!this.isItemDeleted){
+  async onBackClick() {
+    if (!this.isItemDeleted && !this.hasValueChanged) {
       this.location.back();
     }
-    // if (!this.hasValueChanged) {
-    //   this.location.back();
-    // } else {
-    //   const confirmed = await this.confirmationService.confirm(
-    //     'Cancel Edit?',
-    //     'All new details you entered will be removed.',
-    //     'primary',
-    //     'Cancel Edit',
-    //     'Keep Editing'
-    //   );
+    
+    if (this.hasValueChanged) {
+      const confirmation = await this.confirmationService.confirm(
+        "Cancel Edit?",
+        "All the changes will not be saved.",
+        "primary",
+        'Yes, Go Back',
+        'Stay'
+      ) 
+      
+      if(confirmation){
+        this.location.back();
+      }
+    }
 
-    //   if (confirmed) {
-    //     this.location.back();
-    //   }
-    // }
+    this.headerActionService.emitAction('BACK');
   }
 
 }

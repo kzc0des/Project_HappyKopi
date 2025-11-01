@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { CategoryWithProductCountDto } from '../../../core/dtos/category/category-with-product-count-dto';
 import { ApiService } from '../../../core/services/api/api.service';
 import { CategoryForCreateUpdateDto } from '../../../core/dtos/category/category-for-create-update-dto';
+import { ProductWithCategoryNameDto } from '../../../core/dtos/category/product-with-category-name-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,11 @@ export class CategoryService {
 
   getCategories(): Observable<CategoryWithProductCountDto[]> {
     return this.apiService.get<CategoryWithProductCountDto[]>(this.controllerPath);
+  }
+
+  getCategoryWithProducts(id: number): Observable<ProductWithCategoryNameDto[]> {
+    const path = `${this.controllerPath}/assign/${id}`;
+    return this.apiService.get<ProductWithCategoryNameDto[]>(path);
   }
 
   getCategoryById(id: number): Observable<CategoryWithProductCountDto> {

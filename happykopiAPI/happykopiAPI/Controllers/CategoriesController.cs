@@ -31,6 +31,21 @@ namespace happykopiAPI.Controllers
             return Ok(categories);
         }
 
+        [HttpGet("assign/{categoryId}")]
+        public async Task<IActionResult> GetCategoriesWithProducts(int categoryId)
+        {
+            try
+            {
+                var productsByCategory = await _categoryService.GetActiveProductsByCategoryIdAsync(categoryId);
+                return Ok(productsByCategory);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory(int id)
         {

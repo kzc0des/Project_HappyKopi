@@ -10,8 +10,6 @@
             (ngModelChange)="updateUnitsBasedOnCategory($event)">
         </app-dropdown-button>
         <div class="flex flex-col gap-2">
-            <app-yellow-button [buttonTitle]="(showInitialStockInput) ? 'Close' : 'Add Initial Amount'"
-                (isClick)="receiveNotifyClick()"></app-yellow-button>
             @if(showInitialStockInput){
             <app-itemcard type="number" itemTitle="Initial Amount" [isEditing]="true"
                 [(ngModel)]="stockitemdetail.initialStockQuantity"></app-itemcard>
