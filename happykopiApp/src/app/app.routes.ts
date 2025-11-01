@@ -64,6 +64,7 @@ import { TransactionCard } from './modules/transactions/components/transaction-c
 import { productsInCategoryResolver } from './modules/categories/resolver/productsincategory/products-in-category-resolver';
 import { CategoryAdd } from './modules/categories/category-add/category-add';
 import { AddAddonModal } from './modules/products/components/add-addon-modal/add-addon-modal';
+import { AddIngredientModal } from './modules/products/components/add-ingredient-modal/add-ingredient-modal';
 
 export const routes: Routes = [
     {
@@ -369,7 +370,7 @@ export const routes: Routes = [
     },
     {
         path: 'recipe-modal',
-        component: AddAddonModal
+        component: AddIngredientModal
     }
     // save drink component
 ];
