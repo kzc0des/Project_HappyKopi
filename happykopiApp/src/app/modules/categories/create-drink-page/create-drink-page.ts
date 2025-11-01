@@ -15,6 +15,7 @@ export class CreateDrinkPage {
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();
     this.category = navigation?.extras?.state?.['category'];
+    console.log(this.category);
   }
 
   selectedSize: string | null = null;

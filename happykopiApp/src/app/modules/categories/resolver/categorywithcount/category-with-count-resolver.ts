@@ -16,17 +16,12 @@ export const categoryWithCountResolver: ResolveFn<CategoryWithProductCountDto | 
 
   const categoryId = parseInt(categoryParam, 10);
 
-  console.log('Resolver: Attempting to fetch category with ID:', categoryId);
-
   return categoryService.getCategoryById(categoryId).pipe(
     tap(data => {
       console.log('Resolver Success: Got data:', data);
     }),
     catchError(err => {
-      // === DEBUGGING: Log the actual error object ===
-      console.error('--- RESOLVER CATCHERROR BLOCK ---');
       console.error('Resolve error failed. The "err" object is:', err);
-      console.error('---------------------------------');
       return of(null);
     })
   )

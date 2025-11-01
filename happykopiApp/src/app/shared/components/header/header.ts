@@ -48,6 +48,7 @@ export class Header implements OnInit, OnDestroy {
     private router: Router,
     private headerActionService: HeaderService,
     private location: Location,
+    private confirmationService: ConfirmationService
   ) {
     this.currentPageSelected = sidebarService.currentSelectedPage$;
   }
@@ -181,6 +182,7 @@ export class Header implements OnInit, OnDestroy {
     else if (segments.includes('category') && segments.length === 3) {
       this.showBackButton = true;
       this.showSaveButton = true;
+      this.showDeleteButton = true;
       this.onSelected = true;
     }
 
@@ -244,11 +246,26 @@ export class Header implements OnInit, OnDestroy {
     this.sidebarService.toggleSidebar();
   }
 
-  onBackClick() {
-    this.headerActionService.emitAction('BACK');
-    if (!this.isItemDeleted) {
+  async onBackClick() {
+    if (!this.isItemDeleted && !this.hasValueChanged) {
       this.location.back();
     }
+    
+    if (this.hasValueChanged) {
+      const confirmation = await this.confirmationService.confirm(
+        "Cancel Edit?",
+        "All the changes will not be saved.",
+        "primary",
+        'Yes, Go Back',
+        'Stay'
+      ) 
+      
+      if(confirmation){
+        this.location.back();
+      }
+    }
+
+    this.headerActionService.emitAction('BACK');
   }
 
 }

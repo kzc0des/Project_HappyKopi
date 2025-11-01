@@ -77,8 +77,6 @@ namespace happykopiAPI.Data.Migrations
                 @CategoryId INT
             AS
             BEGIN
-                SET NOCOUNT ON;
-
                 UPDATE dbo.Categories
                 SET IsActive = 0
                 WHERE Id = @CategoryId;
