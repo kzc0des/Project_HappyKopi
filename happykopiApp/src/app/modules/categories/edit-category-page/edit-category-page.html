@@ -9,7 +9,7 @@
         <app-itemcard [isEditing]="true" itemTitle="Category Name" [(ngModel)]="category.name"></app-itemcard>
     </div>
     <div class="flex flex-col gap-6 p-6 w-full">
-        <app-yellow-button buttonTitle="Create Drinks" itemTitle="drinks"></app-yellow-button>
-        <app-yellow-button buttonTitle="Assign Drinks" itemTitle="drinks"></app-yellow-button>
+        <app-yellow-button buttonTitle="Create Drinks" itemTitle="drinks" (isClick)="goToCreateDrink()"></app-yellow-button>
+        <app-yellow-button buttonTitle="Assign Drinks" itemTitle="drinks" (isClick)="goToAssignDrink()"></app-yellow-button>
     </div>
 </div>

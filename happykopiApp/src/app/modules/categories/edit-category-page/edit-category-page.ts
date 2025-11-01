@@ -32,6 +32,6 @@ export class EditCategoryPage {
   }
 
   goToAssignDrink() {
-    this.router.navigate(['/assign-drink-page']);
+    this.router.navigate(['assign'], {relativeTo: this.route});
   }
 }

@@ -196,17 +196,17 @@ export const routes: Routes = [
                         }
                     },
                     {
+                        path: ':categoryId/assign',
+                        component: AssignDrinkPage,
+                        resolve: {
+                            products: productsInCategoryResolver 
+                        }
+                    },
+                    {
                         path: ':categoryId',
                         component: EditCategoryPage,
                         resolve: {
                             categoryDetail: categoryWithCountResolver
-                        }
-                    },
-                    {
-                        path: 'assign',
-                        component: AssignDrinkPage,
-                        resolve: {
-                            products: productsInCategoryResolver 
                         }
                     }
                 ]

@@ -48,7 +48,6 @@ export class Header implements OnInit, OnDestroy {
     private router: Router,
     private headerActionService: HeaderService,
     private location: Location,
-    private confirmationService: ConfirmationService
   ) {
     this.currentPageSelected = sidebarService.currentSelectedPage$;
   }
@@ -144,7 +143,7 @@ export class Header implements OnInit, OnDestroy {
       this.showBackButton = false;
     }
 
-    // modifiers routing
+    /* modifiers routing */
 
     else if (segments.includes('modifiers') && segments.includes('edit') && segments.length >= 5) {
       this.showBackButton = true;
@@ -173,10 +172,18 @@ export class Header implements OnInit, OnDestroy {
       this.showAddButton = true;
     }
 
+    /* category routing */
+
     else if (segments.includes('category') && segments.length === 3) {
       this.showBackButton = true;
-      this.showAddButton = true;
+      this.showSaveButton = true;
       this.onSelected = true;
+    }
+
+    else if (segments.includes('category') && segments.includes('assign') && segments.length === 4) {
+      this.headerTitle = `Assign to Category`;
+      this.showBackButton = true;
+      this.showSaveButton = true;
     }
   }
 
@@ -238,21 +245,6 @@ export class Header implements OnInit, OnDestroy {
     if (!this.isItemDeleted) {
       this.location.back();
     }
-    // if (!this.hasValueChanged) {
-    //   this.location.back();
-    // } else {
-    //   const confirmed = await this.confirmationService.confirm(
-    //     'Cancel Edit?',
-    //     'All new details you entered will be removed.',
-    //     'primary',
-    //     'Cancel Edit',
-    //     'Keep Editing'
-    //   );
-
-    //   if (confirmed) {
-    //     this.location.back();
-    //   }
-    // }
   }
 
 }
