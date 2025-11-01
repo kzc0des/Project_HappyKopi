@@ -61,7 +61,7 @@ import { TransactionHome } from './modules/transactions/forms/transaction-home/t
 import { TransactionPaymentCard } from './modules/transactions/components/transaction-payment-card/transaction-payment-card';
 import { TransactionIndividualCard } from './modules/transactions/components/transaction-individual-card/transaction-individual-card';
 import { TransactionCard } from './modules/transactions/components/transaction-card/transaction-card';
-import { allDrinksCategoryWithCountResolver } from './modules/categories/resolver/alldrinkscategorywithcount/all-drinks-category-with-count-resolver';
+import { productsInCategoryResolver } from './modules/categories/resolver/productsincategory/products-in-category-resolver';
 
 export const routes: Routes = [
     {
@@ -203,10 +203,10 @@ export const routes: Routes = [
                         }
                     },
                     {
-                        path: 'all',
-                        component: EditCategoryPage,
+                        path: 'assign',
+                        component: AssignDrinkPage,
                         resolve: {
-                            categoryDetail: allDrinksCategoryWithCountResolver
+                            products: productsInCategoryResolver 
                         }
                     }
                 ]

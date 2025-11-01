@@ -17,9 +17,9 @@ export class CategoryService {
     return this.apiService.get<CategoryWithProductCountDto[]>(this.controllerPath);
   }
 
-  getCategoryWithProducts(id: number): Observable<ProductWithCategoryNameDto> {
+  getCategoryWithProducts(id: number): Observable<ProductWithCategoryNameDto[]> {
     const path = `${this.controllerPath}/assign/${id}`;
-    return this.apiService.get<ProductWithCategoryNameDto>(path);
+    return this.apiService.get<ProductWithCategoryNameDto[]>(path);
   }
 
   getCategoryById(id: number): Observable<CategoryWithProductCountDto> {
