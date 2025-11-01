@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="add-button-card.css">
-</head>
-<body>
-    <div
-    class="add p-6 rounded-2xl flex shadow-sm gap-9 items-center cursor-pointer transition-all duration-200 hover:opacity-90"
-    [style.backgroundColor]="bgColor"
-    (click)="onClick()"
-    >
-    <div class="w-15 h-15 bg-[#D9D9D9] rounded-2xl flex items-center justify-center">
-        <span class="material-symbols-outlined text-gray-700 text-3xl">
-        {{ icon }}
-        </span>
+<button class="
+bg-[#EDEDED] w-full
+px-4 py-4 rounded-2xl shadow-sm
+flex items-center gap-9 
+cursor-pointer 
+transition-all duration-200 hover:opacity-90" 
+(click)="onClick()" 
+[disabled]="isDisabled">
+    <div class="
+    w-10 h-10 bg-[#D9D9D9] rounded-2xl 
+    flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="#000"
+                d="M11 13H6q-.425 0-.712-.288T5 12t.288-.712T6 11h5V6q0-.425.288-.712T12 5t.713.288T13 6v5h5q.425 0 .713.288T19 12t-.288.713T18 13h-5v5q0 .425-.288.713T12 19t-.712-.288T11 18z" />
+        </svg>
     </div>
-    <div class="text-lg font-medium" [style.color]="textColor">
-        {{ label }}
+    <div class="text-hapikopi-dark">
+        {{ itemName }}
     </div>
-    </div>
-</body>
-</html>
+</button>

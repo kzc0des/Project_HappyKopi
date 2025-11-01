@@ -1,44 +1,42 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SizeCard } from '../../components/size-card/size-card';
 import { AddButtonCard } from '../../components/add-button-card/add-button-card';
-import { FieldCard } from '../../components/field-card/field-card';
-import { ToggleCard } from '../../components/toggle-card/toggle-card';
 
-import { CategoryDropdown } from '../../components/category-dropdown/category-dropdown';
-import { EditPhotoCard } from '../../components/edit-photo-card/edit-photo-card';
+import { Itemcard } from '../../../../shared/components/itemcard/itemcard';
+import { DropdownButton } from '../../../../shared/components/dropdown-button/dropdown-button';
+import { ModifierSizeCard } from "../../components/modifier-size-card/modifier-size-card";
+
+
+export interface ModifierSize {
+  id: number;
+  name: string;
+  ozAmount: number;
+}
 
 @Component({
   selector: 'app-add-drink-page',
-  imports: [FormsModule, CommonModule, SizeCard, AddButtonCard, FieldCard, EditPhotoCard, CategoryDropdown],
+  imports: [
+    FormsModule,
+    CommonModule,
+    AddButtonCard,
+    Itemcard,
+    DropdownButton,
+    ModifierSizeCard,
+  ],
   templateUrl: './add-drink-page.html',
   styleUrl: './add-drink-page.css'
 })
-export class AddDrinkPage {
+export class AddDrinkPage implements OnInit {
   isDropdownOpen = false;
+  isSizeSelected = false;
+  drink: string;
 
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
+  availableSizes: ModifierSize[] = [];
+  selectedSizeId: number | null = 1;
 
-  ingredients = [
-    { name: 'Milk', unit: 'mL', value: ''},
-    { name: 'Sugar Syrup', unit: 'mL', value: ''},
-    { name: 'Water', unit: 'mL', value: ''},
-    { name: 'Ice', unit: 'g', value: ''}
-  ];
-
-  onIngredientValueChange(index: number, newValue: string) {
-    this.ingredients[index].value = newValue;
-  }
-
-  removeIngredient(ingredient: any) {
-    this.ingredients = this.ingredients.filter(i => i !== ingredient);
-  }
-
-  drink: any;
+  isRecipeBuilderVisible = false;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     const nav = this.router.getCurrentNavigation();
@@ -47,22 +45,24 @@ export class AddDrinkPage {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('name');
+    this.fetchSizesFromDatabase();
   }
 
-  selectedSize = 'grande'; 
-
-  onSizeChange(newSize: string) {
-    this.selectedSize = newSize;
-    console.log('Parent got:', this.selectedSize);
+  fetchSizesFromDatabase() {
+    this.availableSizes = [
+      { id: 1, name: 'Tall', ozAmount: 12 },
+      { id: 2, name: 'Grande', ozAmount: 16 },
+      { id: 3, name: 'Venti', ozAmount: 20 }
+    ];
   }
 
-  onAddIngredient() {
-    //redirect to another page...
+  onSizeSelect(sizeId: number) {
+    if (this.selectedSizeId === sizeId) {
+      this.selectedSizeId = null;
+    } else {
+      this.selectedSizeId = sizeId;
+    }
   }
 
-  selectedCategory = 'Milk Tea';
 
-  onCategorySelected(category: string) {
-    console.log('Selected:', category);
-  }
 }

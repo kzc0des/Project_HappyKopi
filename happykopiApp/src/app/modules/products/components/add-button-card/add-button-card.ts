@@ -9,13 +9,11 @@ import { CompilerOptions } from '@angular/core';
   styleUrl: './add-button-card.css'
 })
 export class AddButtonCard {
-  @Input() label: string = 'Add Item';
-  @Input() icon: string = 'add';      
-  @Input() bgColor: string = '#EDEDED'; 
-  @Input() textColor: string = '#1f2937';
-  @Output() clicked = new EventEmitter<void>();
+  @Input() itemName !: string;
+  @Output() notifyClick = new EventEmitter<void>();
+  @Input() isDisabled !: boolean;
 
   onClick() {
-    this.clicked.emit();
+    this.notifyClick.emit();
   }
 }

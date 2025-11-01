@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SearchFieldCard } from '../../components/search-field-card/search-field-card';
 import { CategoryButtonField } from '../../components/category-button-field/category-button-field';
 import { ProductListCard } from '../../components/product-list-card/product-list-card';
+import { HeaderService } from '../../../../core/services/header/header.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-drink-list-page',
@@ -11,8 +13,9 @@ import { ProductListCard } from '../../components/product-list-card/product-list
   templateUrl: './drink-list-page.html',
   styleUrl: './drink-list-page.css'
 })
-export class DrinkListPage {
+export class DrinkListPage implements OnInit {
   isDropdownOpen = false;
+  private actionSubscription !: Subscription;
 
   drinks = [
     { name: 'Thai', category: 'Milk Tea', baseprice: 45.00, available: true},  //image: (wala akong malinaw na copy ng image kaya di ko na nilagyan)
@@ -23,7 +26,19 @@ export class DrinkListPage {
     { name: 'Taro', category: 'Milk Tea', baseprice: 45.00, available: true},
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private headerService: HeaderService,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.actionSubscription = this.headerService.action$.subscribe(action => {
+      if(action === 'ADD'){
+        this.router.navigate(['create'], {relativeTo: this.route});
+      }
+    })
+  }
 
   goToDrink(drink: any) {
     this.router.navigate(['/drink-detail', drink.name], { state: { drink } });
