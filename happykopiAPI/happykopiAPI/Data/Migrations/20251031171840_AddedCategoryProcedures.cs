@@ -34,7 +34,7 @@ namespace happykopiAPI.Data.Migrations
             GO";
 
             var sp_GetCategoryWithProductCountById = @"
-            CREATE PROCEDURE dbo.sp_GetCategoryWithProductCountById
+            CREATE OR ALTER PROCEDURE dbo.sp_GetCategoryWithProductCountById
                 @CategoryId INT
             AS
             BEGIN
@@ -54,7 +54,7 @@ namespace happykopiAPI.Data.Migrations
             GO";
 
             var sp_GetCategoriesWithProductCount = @"
-            CREATE PROCEDURE dbo.sp_GetCategoriesWithProductCount
+            CREATE OR ALTER PROCEDURE dbo.sp_GetCategoriesWithProductCount
             AS
             BEGIN
                 SET NOCOUNT ON;
@@ -84,7 +84,7 @@ namespace happykopiAPI.Data.Migrations
             GO";
 
             var sp_UpdateCategory = @"
-            CREATE PROCEDURE dbo.sp_UpdateCategory
+            CREATE OR ALTER PROCEDURE dbo.sp_UpdateCategory
                 @CategoryId INT,
                 @CategoryName NVARCHAR(100)
             AS
