@@ -51,6 +51,7 @@ builder.Services.AddScoped<IStockItemService, StockItemService>();
 builder.Services.AddScoped<IModifierService, ModifierService>();
 builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddCors(options =>
 {
