@@ -1,4 +1,8 @@
-<div class="bg-white
+@if (isIngredientOpen$ | async) {
+<div class="backdrop" (click)="close()"></div>
+}
+
+<div [class.open]="isIngredientOpen$ | async" class="bg-white modal absolute
 flex flex-col justify-center items-center gap-6
 p-5 shadow-md rounded-lg">
     <div class="w-full items-start">
