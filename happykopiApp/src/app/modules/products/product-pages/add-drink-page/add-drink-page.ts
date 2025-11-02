@@ -7,6 +7,9 @@ import { AddButtonCard } from '../../components/add-button-card/add-button-card'
 import { Itemcard } from '../../../../shared/components/itemcard/itemcard';
 import { DropdownButton } from '../../../../shared/components/dropdown-button/dropdown-button';
 import { ModifierSizeCard } from "../../components/modifier-size-card/modifier-size-card";
+import { AddIngredientModal } from "../../components/add-ingredient-modal/add-ingredient-modal";
+import { ModalService } from '../../services/modal-service/modal.service';
+import { AddAddonModal } from "../../components/add-addon-modal/add-addon-modal";
 
 
 export interface ModifierSize {
@@ -24,7 +27,9 @@ export interface ModifierSize {
     Itemcard,
     DropdownButton,
     ModifierSizeCard,
-  ],
+    AddIngredientModal,
+    AddAddonModal
+],
   templateUrl: './add-drink-page.html',
   styleUrl: './add-drink-page.css'
 })
@@ -38,7 +43,11 @@ export class AddDrinkPage implements OnInit {
 
   isRecipeBuilderVisible = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: ModalService
+  ) {
     const nav = this.router.getCurrentNavigation();
     this.drink = nav?.extras.state?.['drink'];
   }
@@ -64,5 +73,11 @@ export class AddDrinkPage implements OnInit {
     }
   }
 
+  openIngredientModal() {
+    this.modalService.openIngredientModal();
+  }
 
+  openAddOnModal() {
+    this.modalService.openAddOnModal();
+  }
 }

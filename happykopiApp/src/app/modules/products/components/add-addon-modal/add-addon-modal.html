@@ -1,6 +1,11 @@
-<div class="bg-white
+@if (isAddOnOpen$ | async) {
+<div class="backdrop" (click)="close()"></div>
+}
+
+<div [class.open]="isAddOnOpen$ | async"
+class="bg-white w-[80vw] modal
 flex flex-col justify-center items-center gap-6
-p-5 shadow-md rounded-lg">
+p-7 shadow-md rounded-lg">
     <div class="w-full items-start">
         <p class="font-semibold text-hapikopi-dark text-lg">Add an Add-On</p>
     </div>
