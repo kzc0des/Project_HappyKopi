@@ -2,16 +2,18 @@
 <div class="backdrop" (click)="close()"></div>
 }
 
-<div [class.open]="isIngredientOpen$ | async" 
-class="bg-white modal w-[80vw]
+<div [class.open]="isIngredientOpen$ | async" class="bg-white modal w-[80vw]
 flex flex-col justify-center items-center gap-6
 p-7 shadow-md rounded-lg">
     <div class="w-full items-start">
         <p class="font-semibold text-hapikopi-dark text-lg">Add an Ingredient</p>
     </div>
-    <app-dropdown-button class="w-full" itemTitle="Category"></app-dropdown-button>
-    <app-dropdown-button class="w-full" itemTitle="Ingredient"></app-dropdown-button>
-    <app-itemcard class="w-full" [isEditing]="true" itemTitle="Measurement" type="number"></app-itemcard>
+    <app-dropdown-button class="w-full" itemTitle="Category" [(ngModel)]="selectedCategoryId"
+        [options]="categoryOptions"></app-dropdown-button>
+    <app-dropdown-button class="w-full" itemTitle="Ingredient" [(ngModel)]="selectedIngredientId"
+        [options]="ingredientOptions"></app-dropdown-button>
+    <app-itemcard class="w-full" [isEditing]="true" itemTitle="Measurement" type="number"
+        [(ngModel)]="quantityNeeded"></app-itemcard>
     @if(!isEditing){
     <app-yellow-button class="w-full py-4" itemTitle="ingredient" buttonTitle="Add this Ingredient"></app-yellow-button>
     }@else {

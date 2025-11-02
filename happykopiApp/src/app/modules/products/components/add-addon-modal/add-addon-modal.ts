@@ -51,7 +51,7 @@ export class AddAddonModal {
       this.saveAddOn.emit(payload);
       this.close();
     } else {
-      console.log("Pumili muna ng add-on at maglagay ng valid na 'times'");
+      console.log("Fill out all the fields.");
     }
   }
 }
