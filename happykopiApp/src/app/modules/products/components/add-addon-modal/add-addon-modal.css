@@ -7,3 +7,18 @@
     background: rgba(0, 0, 0, 0.5);
     z-index: 49;
 }
+
+.modal {
+    z-index: 50;
+    position: fixed; 
+    top: 50%;        
+    left: 50%;
+    transition: transform 0.3s ease-in-out;  
+    opacity: 0;  
+    transform: translate(-50%, -70%);
+}
+
+.modal.open {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}

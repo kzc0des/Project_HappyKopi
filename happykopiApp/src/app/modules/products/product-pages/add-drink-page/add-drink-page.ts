@@ -9,6 +9,7 @@ import { DropdownButton } from '../../../../shared/components/dropdown-button/dr
 import { ModifierSizeCard } from "../../components/modifier-size-card/modifier-size-card";
 import { AddIngredientModal } from "../../components/add-ingredient-modal/add-ingredient-modal";
 import { ModalService } from '../../services/modal-service/modal.service';
+import { AddAddonModal } from "../../components/add-addon-modal/add-addon-modal";
 
 
 export interface ModifierSize {
@@ -26,8 +27,9 @@ export interface ModifierSize {
     Itemcard,
     DropdownButton,
     ModifierSizeCard,
-    AddIngredientModal
-  ],
+    AddIngredientModal,
+    AddAddonModal
+],
   templateUrl: './add-drink-page.html',
   styleUrl: './add-drink-page.css'
 })
@@ -73,5 +75,9 @@ export class AddDrinkPage implements OnInit {
 
   openIngredientModal() {
     this.modalService.openIngredientModal();
+  }
+
+  openAddOnModal() {
+    this.modalService.openAddOnModal();
   }
 }

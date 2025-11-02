@@ -44,13 +44,12 @@
             </div>
         </div>
 
-
         <div class="flex flex-col gap-5 w-full">
             <app-add-button-card itemName="Add an Ingredient" [isDisabled]="isSizeSelected" (notifyClick)="openIngredientModal()"></app-add-button-card>
-
-            <app-add-button-card itemName="Add an Add-on" [isDisabled]="isSizeSelected"></app-add-button-card>
+            <app-add-button-card itemName="Add an Add-on" [isDisabled]="isSizeSelected" (notifyClick)="openAddOnModal()"></app-add-button-card>
         </div>
     </div>
 </div>
 
 <app-add-ingredient-modal></app-add-ingredient-modal>
+<app-add-addon-modal></app-add-addon-modal>
