@@ -5,10 +5,7 @@ namespace happykopiAPI.Models
 {
     public class ProductVariantAddOn
     {
-        [Key, Column(Order = 0)]
         public int ProductVariantId { get; set; }
-
-        [Key, Column(Order = 1)]
         public int ModifierId { get; set; }
 
         [Required]

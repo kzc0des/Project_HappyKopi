@@ -13,6 +13,7 @@ namespace happykopiAPI.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductVariantIngredient> ProductVariantIngredients { get; set; }
+        public DbSet<ProductVariantAddOn> ProductVariantAddOns { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<StockItem> StockItems { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -28,6 +29,12 @@ namespace happykopiAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ProductVariantAddOn>()
+                .HasKey(pva => new { pva.ProductVariantId, pva.ModifierId });
+
+            modelBuilder.Entity<ProductVariantIngredient>()
+                .HasKey(pvi => new { pvi.ProductVariantId, pvi.StockItemId });
 
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Variants)
