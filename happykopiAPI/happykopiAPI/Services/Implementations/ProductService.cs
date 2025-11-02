@@ -78,9 +78,6 @@ namespace happykopiAPI.Services.Implementations
 
         public async Task<int> CreateProductAsync(ProductCreateDto productDto)
         {
-            // (LOGIC FOR CLOUDINARY)
-            // productDto.ImageUrl = "http://cloudinary-url/image.jpg";
-
             await using var connection = new SqlConnection("LocalDB");
             await connection.OpenAsync();
 

@@ -1,4 +1,5 @@
 using happykopiAPI.Data;
+using happykopiAPI.Helpers;
 using happykopiAPI.Hubs;
 using happykopiAPI.Services.Implementations;
 using happykopiAPI.Services.Interfaces;
@@ -45,6 +46,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStockItemService, StockItemService>();
@@ -52,6 +54,7 @@ builder.Services.AddScoped<IModifierService, ModifierService>();
 builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddCors(options =>
 {

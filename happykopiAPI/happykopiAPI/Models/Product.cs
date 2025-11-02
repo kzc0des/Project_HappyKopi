@@ -15,6 +15,7 @@ namespace happykopiAPI.Models
         public string Description { get; set; }
 
         public string ImageUrl { get; set; } 
+        public string ImagePublicId { get; set; }
 
         [Required]
         public bool IsAvailable { get; set; }
