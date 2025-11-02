@@ -36,10 +36,10 @@
 
     @if(type === 'number'){
     <input type="number" [ngModel]="internalValue" (ngModelChange)="onValueChange($event)" class="font-bold bg-transparent outline-none
-        placeholder:text-gray-400 placeholder:font-medium" placeholder="Enter new value..." />
+        placeholder:text-gray-400 placeholder:font-medium w-full" placeholder="Enter new value..." />
     }@else {
     <input type="text" [ngModel]="internalValue" (ngModelChange)="onValueChange($event)" class="font-bold bg-transparent outline-none
-        placeholder:text-gray-400 placeholder:font-medium" placeholder="Enter new value..." />
+        placeholder:text-gray-400 placeholder:font-medium w-full" placeholder="Enter new value..." />
     }
 </div>
 }

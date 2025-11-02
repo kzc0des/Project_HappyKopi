@@ -18,6 +18,11 @@ export interface ModifierSize {
   ozAmount: number;
 }
 
+export interface Payload {
+  name: string;
+  price: number;
+}
+
 @Component({
   selector: 'app-add-drink-page',
   imports: [
@@ -40,6 +45,7 @@ export class AddDrinkPage implements OnInit {
 
   availableSizes: ModifierSize[] = [];
   selectedSizeId: number | null = 1;
+  product!: Payload;
 
   isRecipeBuilderVisible = false;
 
@@ -55,6 +61,7 @@ export class AddDrinkPage implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('name');
     this.fetchSizesFromDatabase();
+    this.initializeEmptyPayload();
   }
 
   fetchSizesFromDatabase() {
@@ -63,6 +70,13 @@ export class AddDrinkPage implements OnInit {
       { id: 2, name: 'Grande', ozAmount: 16 },
       { id: 3, name: 'Venti', ozAmount: 20 }
     ];
+  }
+
+  initializeEmptyPayload() {
+    this.product = {
+      name: '',
+      price: 0
+    }
   }
 
   onSizeSelect(sizeId: number) {
