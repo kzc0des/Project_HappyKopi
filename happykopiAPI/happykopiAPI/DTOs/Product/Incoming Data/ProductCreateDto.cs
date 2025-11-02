@@ -19,5 +19,6 @@ namespace happykopiAPI.DTOs.Product.Incoming_Data
         public bool IsActive { get; set; } = true;
 
         public ICollection<ProductVariantCreateDto> Variants { get; set; } = new List<ProductVariantCreateDto>();
+
     }
 }

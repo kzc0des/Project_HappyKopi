@@ -23,5 +23,6 @@ namespace happykopiAPI.Models
         public decimal Price { get; set; }
 
         public ICollection<ProductVariantIngredient> Recipe { get; set; }
+        public ICollection<ProductVariantAddOn> AvailableAddOns { get; set; }
     }
 }

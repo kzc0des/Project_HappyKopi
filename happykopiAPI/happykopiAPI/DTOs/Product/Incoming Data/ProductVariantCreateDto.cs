@@ -12,5 +12,6 @@ namespace happykopiAPI.DTOs.Product.Incoming_Data
         public decimal Price { get; set; }
 
         public ICollection<ProductVariantIngredientCreateDto> Recipe { get; set; } = [];
+        public ICollection<ProductVariantAddOnCreateDto> AddOns { get; set; } = [];
     }
 }
