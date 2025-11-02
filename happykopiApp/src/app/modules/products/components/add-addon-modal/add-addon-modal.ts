@@ -41,17 +41,22 @@ export class AddAddonModal {
   }
 
   onSave() {
-    if (this.selectedAddOnId && this.times > 0) {
-
+    if (this.selectedAddOnId && this.times >= 0) {
       const payload: AddOnItem = {
         addOnId: this.selectedAddOnId,
         times: this.times
       };
-
+      console.log(`Payload from the addon modal: ${payload.addOnId} ${payload.times}`)
       this.saveAddOn.emit(payload);
-      this.close();
+      this.resetModalState();
+
     } else {
-      console.log("Fill out all the fields.");
+      console.error("Fill out all the fields.");
     }
+  }
+
+  private resetModalState() {
+    this.selectedAddOnId = null;
+    this.times = 1;
   }
 }

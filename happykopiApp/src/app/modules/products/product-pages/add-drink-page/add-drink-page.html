@@ -21,18 +21,26 @@
                 class="absolute inset-0 w-full h-full object-cover rounded-2xl hidden" />
 
         </label>
+        <input id="drink-image-upload" type="file" class="hidden" />
 
-        <input id="drink-image-upload" type="file" class="hidden" accept="image/*" />
-        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Drink Name" [(ngModel)]="product.name"></app-itemcard>
+        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Drink Name"
+            [(ngModel)]="productPayload.name"></app-itemcard>
+
+        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Description"
+            [(ngModel)]="productPayload.description"></app-itemcard>
+
         <app-itemcard class="w-full" [isEditing]="true" itemTitle="Base Price" type="number"
-            [(ngModel)]="product.price"></app-itemcard>
-        <app-dropdown-button class="w-full" itemTitle="Category"></app-dropdown-button>
+            [(ngModel)]="currentVariantPrice"></app-itemcard>
+
+        <app-dropdown-button class="w-full" itemTitle="Category" [(ngModel)]="productPayload.categoryId"
+            [options]="categoryOptions">
+        </app-dropdown-button>
     </div>
 
     <div class="bg-white flex-1 flex flex-col justify-center items-center px-5 py-8 gap-4">
         <div class="flex flex-col gap-4 w-full">
 
-            <h3 class="text-lg font-bold text-hapikopi-dark w-full">Ingredients</h3>
+            <h3 class="text-lg font-bold text-hapikopi-dark w-full">Variants (Sizes)</h3>
 
             <div class="flex gap-3 flex-nowrap overflow-x-auto pb-5">
                 @for(item of availableSizes; track $index){
@@ -45,13 +53,47 @@
         </div>
 
         <div class="flex flex-col gap-5 w-full">
-            <app-add-button-card itemName="Add an Ingredient" [isDisabled]="isSizeSelected"
+            <h3 class="text-lg font-semibold text-hapikopi-dark w-full">Recipe for {{ currentVariant?.size }}</h3>
+
+            <app-add-button-card itemName="Add an Ingredient" [isDisabled]="selectedSizeId === null"
                 (notifyClick)="openIngredientModal()"></app-add-button-card>
-            <app-add-button-card itemName="Add an Add-on" [isDisabled]="isSizeSelected"
+
+            @if(currentVariant) {
+            @for(ingredient of currentVariant.recipe; track $index) {
+            <div class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
+                <span class="font-semibold">{{ ingredient.quantityNeeded }} (units)</span>
+            </div>
+            }
+            }
+
+            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant?.size }}</h3>
+
+            <app-add-button-card itemName="Add an Add-on" [isDisabled]="selectedSizeId === null"
                 (notifyClick)="openAddOnModal()"></app-add-button-card>
+
+            @if(currentVariant) {
+            @for(addOn of currentVariant.addOns; track $index) {
+            <div class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
+                <span class="font-semibold">{{ addOn.times }}</span>
+            </div>
+            }
+            }
+        </div>
+
+        <div class="w-full mt-6">
+            <app-yellow-button class="w-full py-4" buttonTitle="Save New Drink" itemTitle="submit"
+                (isClick)="submitNewProduct()">
+            </app-yellow-button>
         </div>
     </div>
 </div>
 
-<app-add-ingredient-modal></app-add-ingredient-modal>
-<app-add-addon-modal></app-add-addon-modal>
+
+<app-add-ingredient-modal 
+    [categoryOptions]="categoryOptions" 
+    [ingredientOptions]="ingredientOptions"
+    (saveIngredient)="handleSaveIngredient($event)">
+</app-add-ingredient-modal>
+
+<app-add-addon-modal [addOnOption]="addOnOption" (saveAddOn)="handleSaveAddOn($event)">
+</app-add-addon-modal>

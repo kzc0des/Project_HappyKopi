@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-quantity-button',
   imports: [],
   templateUrl: './quantity-button.html',
   styleUrl: './quantity-button.css',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => QuantityButton), 
+      multi: true
+    }
+  ]
 })
 export class QuantityButton implements ControlValueAccessor {
   value: number = 0;
