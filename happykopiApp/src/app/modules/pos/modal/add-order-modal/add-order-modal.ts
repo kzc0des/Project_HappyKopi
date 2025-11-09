@@ -26,14 +26,13 @@ export class AddOrderModal implements OnInit {
     { SizeName: 'Grande', SizeQuantity: 16 },
     { SizeName: 'Venti', SizeQuantity: 22 }
   ];
-  activeSize: string = 'Grande'; // default active
+  activeSize: string = 'Grande';  
 
-  ngOnInit() {
-    // Merge parent data with defaults
+  ngOnInit() { 
     this.addOrderModal = {
       DrinkName: this.addOrderModal?.DrinkName || 'Drink Name',
       DrinkCategory: this.addOrderModal?.DrinkCategory || 'Drink Category',
-      Total: this.addOrderModal?.Total ?? 0  // ?? because 0 is falsy
+      Total: this.addOrderModal?.Total ?? 0  
     };
   }
 
