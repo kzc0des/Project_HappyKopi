@@ -6,6 +6,7 @@ import { OrderCard } from '../../components/order-card/order-card';
 import { SearchDrink } from '../../../../shared/components/search-drink/search-drink';
 import { OrderQuickView } from '../../components/order-quick-view/order-quick-view';
 import { ActivatedRoute } from '@angular/router';
+import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-with-category.dto';
 
 @Component({
   selector: 'app-order',
@@ -17,20 +18,35 @@ export class Order implements OnInit {
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
 
+  drinks = signal<ProductsWithCategoryDto[]>([]);
+
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  loadCategories() {
     this.orderService.getCategories().subscribe({
       next: (data) => {
-        console.log('Categories from API:', data);
         this.categories.set(data);
-        if (data.length) this.selectedCategory.set(data[0]);
+        if (data.length) {
+          this.selectCategory(data[0]);
+        }
       },
-      error: (err) => console.error('Failed to load categories:', err),
+      error: (err) => console.error(err),
+    });
+  }
+
+  selectCategory(category: CategoryWithProductCountDto) {
+    this.selectedCategory.set(category);
+    this.orderService.getProductsByCategory(category.id).subscribe({
+      next: (drinks) => this.drinks.set(drinks),
+      error: (err) => console.error(err),
     });
   }
 
   onCategoryClick(category: CategoryWithProductCountDto) {
-    this.selectedCategory.set(category);
+    this.selectCategory(category);
   }
 }

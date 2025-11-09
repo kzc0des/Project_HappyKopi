@@ -1,4 +1,4 @@
-<div class="order-body"> 
+<div class="order-body">
   <app-order-quick-view
     [oqv]="{
       OrderNumber: 18,
@@ -18,27 +18,15 @@
     </app-pos-category-off>
     }
   </div>
- 
+
   <app-search-drink></app-search-drink>
- 
+
   <div class="drinks-table">
+    @for(drink of drinks(); track drink.id) {
     <app-order-card
-      [orderCard]="{ DrinkName: 'Thai', DrinkCategory: 'Milk Tea', DrinkImage: '' }"
-    ></app-order-card>
-    <app-order-card
-      [orderCard]="{ DrinkName: 'Oolong', DrinkCategory: 'Milk Tea', DrinkImage: '' }"
-    ></app-order-card>
-    <app-order-card
-      [orderCard]="{ DrinkName: 'Wintermelon', DrinkCategory: 'Milk Tea', DrinkImage: '' }"
-    ></app-order-card>
-    <app-order-card
-      [orderCard]="{ DrinkName: 'Matcha', DrinkCategory: 'Milk Tea', DrinkImage: '' }"
-    ></app-order-card>
-    <app-order-card
-      [orderCard]="{ DrinkName: 'Taro', DrinkCategory: 'Milk Tea', DrinkImage: '' }"
-    ></app-order-card>
-    <app-order-card
-      [orderCard]="{ DrinkName: 'Hokkaido', DrinkCategory: 'Milk Tea', DrinkImage: '' }"
-    ></app-order-card>
+        [orderCard]="drink"
+      >
+      </app-order-card>
+    }
   </div>
 </div>

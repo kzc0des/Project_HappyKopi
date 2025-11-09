@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../core/services/api/api.service';
 import { CategoryWithProductCountDto } from '../../../core/dtos/order/category-with-product-count.dto';
+import { ProductsWithCategoryDto } from '../../../core/dtos/order/products-with-category.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class OrderService {
    * Get all products under a specific category
    * @param categoryId Id of the category
    */
-  getProductsByCategory(categoryId: number): Observable<any[]> {
-    return this.api.get<any[]>(`order/category/${categoryId}`);
-  }
+  getProductsByCategory(categoryId: number): Observable<ProductsWithCategoryDto[]> {
+  return this.api.get<ProductsWithCategoryDto[]>(`order/category/${categoryId}`);
+}
 }
