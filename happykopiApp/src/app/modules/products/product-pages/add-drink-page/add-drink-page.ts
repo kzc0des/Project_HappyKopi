@@ -57,6 +57,8 @@ export class AddDrinkPage implements OnInit {
   public ingredientOptions: DropdownOption[] = [];
   public addOnOption: DropdownOption[] = [];
 
+  public imagePreview: string | ArrayBuffer | null = null;
+
   isRecipeBuilderVisible = false;
 
   constructor(
@@ -134,6 +136,22 @@ export class AddDrinkPage implements OnInit {
   set currentVariantPrice(value: number) {
     if (this.currentVariant) {
       this.currentVariant.price = value;
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if (fileList && fileList[0]) {
+      const file = fileList[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+        // You can also store the file itself if you need to upload it later
+        // this.productPayload.imageFile = file;
+      };
+      reader.readAsDataURL(file);
     }
   }
 

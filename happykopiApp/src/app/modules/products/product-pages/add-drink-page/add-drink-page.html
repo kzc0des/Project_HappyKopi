@@ -5,23 +5,27 @@
     px-5 py-8 gap-5 
     w-full flex-1">
 
-        <label for="drink-image-upload" class="relative flex items-center justify-center max-w-xs px-12 py-20
+        <label for="drink-image-upload" 
+        class="relative flex items-center justify-center max-w-xs 
                       rounded-2xl bg-[#fafafa] border-2 border-dashed border-gray-300
-                      cursor-pointer transition-colors hover:bg-gray-100">
+                      cursor-pointer transition-colors hover:bg-gray-100"
+        [ngClass]="imagePreview ? 'p-2 border-0' : 'px-12 py-20'">
 
-            <div id="svg-placeholder" class="
-            flex flex-col items-center justify-center bg-hapikopi-yellow p-3 rounded-2xl">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
-                    <path fill="#fff"
-                        d="M11.5 8C14 8 16 10 16 12.5S14 17 11.5 17S7 15 7 12.5S9 8 11.5 8m0 1A3.5 3.5 0 0 0 8 12.5a3.5 3.5 0 0 0 3.5 3.5a3.5 3.5 0 0 0 3.5-3.5A3.5 3.5 0 0 0 11.5 9M5 5h2l2-2h5l2 2h2a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m4.41-1l-2 2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.41l-2-2z" />
-                </svg>
-            </div>
-
-            <img id="image-preview" src="#" alt="Drink Preview"
-                class="absolute inset-0 w-full h-full object-cover rounded-2xl hidden" />
+            @if (!imagePreview) {
+                <div id="svg-placeholder" class="
+                flex flex-col items-center justify-center bg-hapikopi-yellow p-3 rounded-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
+                        <path fill="#fff"
+                            d="M11.5 8C14 8 16 10 16 12.5S14 17 11.5 17S7 15 7 12.5S9 8 11.5 8m0 1A3.5 3.5 0 0 0 8 12.5a3.5 3.5 0 0 0 3.5 3.5a3.5 3.5 0 0 0 3.5-3.5A3.5 3.5 0 0 0 11.5 9M5 5h2l2-2h5l2 2h2a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m4.41-1l-2 2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.41l-2-2z" />
+                    </svg>
+                </div>
+            } @else {
+                <img id="image-preview" [src]="imagePreview" alt="Drink Preview" 
+                    class="w-full h-full object-cover rounded-2xl" />
+            }
 
         </label>
-        <input id="drink-image-upload" type="file" class="hidden" />
+        <input id="drink-image-upload" type="file" class="hidden" accept="image/*" (change)="onFileSelected($event)" />
 
         <app-itemcard class="w-full" [isEditing]="true" itemTitle="Drink Name"
             [(ngModel)]="productPayload.name"></app-itemcard>
