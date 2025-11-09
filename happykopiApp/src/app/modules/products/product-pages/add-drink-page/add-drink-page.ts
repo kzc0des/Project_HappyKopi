@@ -20,6 +20,7 @@ import { ProductVariantAddOnCreateDto } from '../../../../core/dtos/product/prod
 import { ProductVariantCreateDto } from '../../../../core/dtos/product/product-variant-create-dto';
 import { ProductVariantIngredientCreateDto } from '../../../../core/dtos/product/product-variant-ingredient-create-dto';
 import { YellowButton } from '../../../../shared/components/yellow-button/yellow-button';
+import { ProductsService } from '../../services/products-service/products.service';
 
 
 export interface ModifierSize {
@@ -64,7 +65,8 @@ export class AddDrinkPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private productsService: ProductsService
   ) {
     const nav = this.router.getCurrentNavigation();
     this.drink = nav?.extras.state?.['drink'];
@@ -74,26 +76,28 @@ export class AddDrinkPage implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('name');
-    this.fetchSizesFromDatabase();
-    
-    this.initializeVariants();
-
-    this.fetchModalOptions();
+    this.fetchInitialData();
   }
 
-  fetchSizesFromDatabase() {
-    this.availableSizes = [
-      { id: 1, name: 'Tall', ozAmount: 12 },
-      { id: 2, name: 'Grande', ozAmount: 16 },
-      { id: 3, name: 'Venti', ozAmount: 20 }
-    ];
+  fetchInitialData() {
+    this.productsService.getActiveSizes().subscribe(sizes => {
+      this.availableSizes = sizes;
+      if (sizes.length > 0) {
+        this.selectedSizeId = sizes[0].id;
+      }
+      this.initializeVariants();
+    });
+
+    this.productsService.getActiveDrinkCategories().subscribe(options => this.categoryOptions = options);
+    this.productsService.getActiveLiquidAndPowderStockItems().subscribe(options => this.ingredientOptions = options);
+    this.productsService.getActiveAddOns().subscribe(options => this.addOnOption = options);
   }
 
   initializeEmptyPayload(): ProductCreateDto {
     return {
       name: '',
       description: '',  
-      imageUrl: '',  
+      imageFile: null,  
       categoryId: 0, 
       isAvailable: true,
       isActive: true,
@@ -109,13 +113,6 @@ export class AddDrinkPage implements OnInit {
       addOns: []
     }));
   }
-
-  fetchModalOptions() {
-    this.categoryOptions = [{ value: 1, label: 'Syrups' }, { value: 2, label: 'Powders' }];
-    this.ingredientOptions = [{ value: 101, label: 'Vanilla Syrup (101)' }, { value: 202, label: 'Matcha Powder (202)' }];
-    this.addOnOption = [{ value: 5, label: 'Pearl (5)' }, { value: 6, label: 'Nata (6)' }, { value: 7, label: 'Cream Cheese (7)' }];
-  }
-
 
   private get currentVariantIndex(): number {
     if (this.selectedSizeId === null) return -1;
@@ -144,12 +141,18 @@ export class AddDrinkPage implements OnInit {
     let fileList: FileList | null = element.files;
     if (fileList && fileList[0]) {
       const file = fileList[0];
+      const maxFileSize = 2 * 1024 * 1024; // 2MB
+
+      if (file.size > maxFileSize) {
+        alert('File size exceeds 2MB. Please choose a smaller file.');
+        element.value = ''; // Reset the file input
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result;
-        // You can also store the file itself if you need to upload it later
-        // this.productPayload.imageFile = file;
+        this.productPayload.imageFile = file;
       };
       reader.readAsDataURL(file);
     }
@@ -225,6 +228,17 @@ export class AddDrinkPage implements OnInit {
       return;
     }
 
-    console.log('FINAL PAYLOAD TO SUBMIT:', JSON.stringify(this.productPayload, null, 2));
+    this.productsService.createProduct(this.productPayload).subscribe({
+      next: (response) => {
+        console.log('Product created successfully with ID:', response.productId);
+        alert('Product created successfully!');
+        // Optionally, navigate to another page
+        // this.router.navigate(['/products']);
+      },
+      error: (error) => {
+        console.error('Error creating product:', error);
+        alert('Failed to create product. See console for details.');
+      }
+    });
   }
 }
