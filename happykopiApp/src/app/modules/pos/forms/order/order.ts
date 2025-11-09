@@ -7,18 +7,21 @@ import { SearchDrink } from '../../../../shared/components/search-drink/search-d
 import { OrderQuickView } from '../../components/order-quick-view/order-quick-view';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-with-category.dto';
+import { AddOrderModal, addOrderModalDto } from '../../modal/add-order-modal/add-order-modal';
 
 @Component({
   selector: 'app-order',
-  imports: [PosCategoryOff, OrderCard, SearchDrink, OrderQuickView],
+  imports: [PosCategoryOff, OrderCard, SearchDrink, OrderQuickView, AddOrderModal],
   templateUrl: './order.html',
   styleUrls: ['./order.css'],
 })
 export class Order implements OnInit {
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
-
   drinks = signal<ProductsWithCategoryDto[]>([]);
+ 
+  showModal = signal(false);
+  selectedDrink = signal<addOrderModalDto | undefined>(undefined);
 
   constructor(private orderService: OrderService) {}
 
@@ -48,5 +51,22 @@ export class Order implements OnInit {
 
   onCategoryClick(category: CategoryWithProductCountDto) {
     this.selectCategory(category);
+  }
+
+  openDrinkModal(drink: ProductsWithCategoryDto) {
+    
+  }
+
+  closeModal() {
+    this.showModal.set(false);
+  }
+
+  onDrinkClicked(drink: ProductsWithCategoryDto): void {
+    this.selectedDrink.set({
+      DrinkName: drink.name,
+      DrinkCategory: drink.categoryName,
+      Total: 0,
+    });
+    this.showModal.set(true);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'; 
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-with-category.dto';
 
 @Component({
@@ -9,8 +9,13 @@ import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-wi
 })
 export class OrderCard {
   @Input() orderCard!: ProductsWithCategoryDto;
- 
+  @Output() cardClick = new EventEmitter<ProductsWithCategoryDto>();
+
   get drinkImage(): string | null {
     return this.orderCard.imageUrl || null;
+  }
+
+  onClick(): void {
+    this.cardClick.emit(this.orderCard);
   }
 }

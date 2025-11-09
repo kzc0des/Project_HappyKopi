@@ -22,11 +22,42 @@
   <app-search-drink></app-search-drink>
 
   <div class="drinks-table">
-    @for(drink of drinks(); track drink.id) {
-    <app-order-card
-        [orderCard]="drink"
-      >
-      </app-order-card>
+    @for (drink of drinks(); track drink.id) {
+    <app-order-card [orderCard]="drink" (cardClick)="onDrinkClicked(drink)"> </app-order-card>
     }
   </div>
 </div>
+
+@if (showModal()) {
+<!-- Full screen overlay -->
+<div class="modal-overlay" (click)="closeModal()"></div>
+
+<!-- Modal container -->
+<div class="modal-wrapper">
+  <app-add-order-modal [addOrderModal]="selectedDrink()"></app-add-order-modal>
+</div>
+}
+
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 999;  
+  }
+ 
+  .modal-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;  
+    max-width: 600px; 
+    width: 90%;
+    padding: 1rem; 
+    border-radius: 12px; 
+  }
+</style>
