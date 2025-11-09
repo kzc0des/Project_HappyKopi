@@ -65,6 +65,7 @@ import { productsInCategoryResolver } from './modules/categories/resolver/produc
 import { CategoryAdd } from './modules/categories/category-add/category-add';
 import { AddAddonModal } from './modules/products/components/add-addon-modal/add-addon-modal';
 import { AddIngredientModal } from './modules/products/components/add-ingredient-modal/add-ingredient-modal';
+import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
 
 export const routes: Routes = [
     {
@@ -254,7 +255,11 @@ export const routes: Routes = [
     }, 
     {
         path: 'order',
-        component: Order
+        component: Order,
+        resolve: {
+            categories: CategoriesResolver
+        }
+
     }, 
     {
         path: 'posoff',
