@@ -13,5 +13,7 @@ namespace happykopiAPI.DTOs.Product.Outgoing_Data
         public bool IsAvailable { get; set; }
 
         public int CategoryId { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
+
     }
 }

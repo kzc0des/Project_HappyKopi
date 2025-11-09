@@ -5,4 +5,5 @@ export interface ProductsWithCategoryDto {
   imageUrl?: string;
   isAvailable: boolean;
   categoryId: number;
+  categoryName: string;
 }
