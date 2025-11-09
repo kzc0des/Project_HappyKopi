@@ -1,15 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
-
-.order-body { 
+.order-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; 
-  background-color: #F0F0F0; 
+  width: 100%;
+  background-color: #f0f0f0;
 }
 .order-body::-webkit-scrollbar {
   width: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  max-width: 600px;
+  width: 90%;
+  padding: 1rem;
+  border-radius: 12px;
 }
 
 .categories {
@@ -32,20 +53,18 @@ app-search-drink {
 }
 
 .drinks-table {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   width: 100%;
   height: 100%;
   padding: 30px 5px 30px 5px;
   margin-bottom: 310px;
 
   display: flex;
-  flex-wrap: wrap;  
-  justify-content: center; 
-  align-content: flex-start; 
-  gap: 30px 20px;  
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 30px 20px;
 }
-
-
 
 app-order-quick-view {
   position: fixed;
