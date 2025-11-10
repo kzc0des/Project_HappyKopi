@@ -31,6 +31,7 @@ export class ViewOrder implements OnInit {
     }));
   }
 
+  // TEMPORARY, nireremove muna yung orders (WIP ang mga transaction proccessses)
   clearOrders() {
     localStorage.removeItem('orders'); 
     this.orders = [];                  

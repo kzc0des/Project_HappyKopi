@@ -1,5 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { AddonCardActive, addonCardDto } from '../../components/addon-card-active/addon-card-active';
+import {
+  AddonCardActive,
+  addonCardDto,
+} from '../../components/addon-card-active/addon-card-active';
 import { OrderQuantityModifier } from '../../components/order-quantity-modifier/order-quantity-modifier';
 import { GrandeActive, sizeButtonDto } from '../../components/grande-active/grande-active';
 import { LongYellowButton } from '../../../../shared/components/long-yellow-button/long-yellow-button';
@@ -25,10 +28,9 @@ export class AddOrderModal implements OnInit {
   @Input() addOrderModal?: addOrderModalDto;
   @Output() closeModal = new EventEmitter<void>();
 
-
   sizes: sizeButtonDto[] = [];
   addons: addonCardDto[] = [];
-  activeSize: string = ''; 
+  activeSize: string = '';
   quantity: number = 1;
 
   constructor(private orderService: OrderService) {}
@@ -43,7 +45,7 @@ export class AddOrderModal implements OnInit {
       BasePrice: this.addOrderModal?.BasePrice ?? 0,
     };
   }
- 
+
   loadSizes() {
     this.orderService.getModifiersByType(ModifierType.Sizes).subscribe({
       next: (sizes: OrderModifierSummaryDto[]) => {
@@ -56,7 +58,7 @@ export class AddOrderModal implements OnInit {
       error: (err) => console.error('Error loading sizes:', err),
     });
   }
- 
+
   loadAddons() {
     this.orderService.getModifiersByType(ModifierType.AddOns).subscribe({
       next: (addons: OrderModifierSummaryDto[]) => {
@@ -69,27 +71,27 @@ export class AddOrderModal implements OnInit {
       error: (err) => console.error('Error loading addons:', err),
     });
   }
- 
+
   selectSize(size: sizeButtonDto) {
     this.activeSize = size.SizeName;
   }
- 
+
   onQuantityChange(newQuantity: number) {
     this.quantity = newQuantity;
   }
- 
+
   onAddonQuantityChange(addonName: string, newQuantity: number) {
     const addon = this.addons.find((a) => a.Name === addonName);
     if (addon) {
       addon.Quantity = newQuantity;
     }
   }
- 
+
   get sizePrice(): number {
     const selectedSize = this.sizes.find((s) => s.SizeName === this.activeSize);
     return selectedSize?.SizeQuantity ?? 0;
   }
- 
+
   getTotal(): number {
     const base = this.addOrderModal?.BasePrice ?? 0;
     const addonsTotal = this.addons
@@ -98,7 +100,7 @@ export class AddOrderModal implements OnInit {
 
     return (base + this.sizePrice + addonsTotal) * this.quantity;
   }
- 
+
   addToOrder() {
     const selectedAddons: Addon[] = this.addons
       .filter((a) => a.Quantity > 0)
@@ -107,8 +109,11 @@ export class AddOrderModal implements OnInit {
         quantity: a.Quantity,
         price: a.Price ?? 0,
       }));
+ 
+    let lastID = Number(localStorage.getItem('lastOrderID') || '0');
 
     const orderItem: OrderItem = {
+      tempOrderID: lastID,
       drinkName: this.addOrderModal?.DrinkName ?? '',
       drinkCategory: this.addOrderModal?.DrinkCategory ?? '',
       size: this.activeSize,
@@ -117,12 +122,14 @@ export class AddOrderModal implements OnInit {
       addons: selectedAddons,
     };
 
+    lastID += 1;
 
-    // MAHALAGANG BAGAY 
+    // MAHALAGANG BAGAY
     const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
     existingOrders.push(orderItem);
     localStorage.setItem('orders', JSON.stringify(existingOrders));
-    // MAHALAGANG BAGAY
+
+    localStorage.setItem('lastOrderID', lastID.toString());
 
     console.log('Order added:', orderItem);
 
