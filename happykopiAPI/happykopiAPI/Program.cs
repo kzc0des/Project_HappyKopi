@@ -11,6 +11,9 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 var AllowSpecificOrigins = "_allowSpecificOrigins";
 
+// Register Dapper enum handler early
+Dapper.SqlMapper.AddTypeHandler(new EnumStringTypeHandler<happykopiAPI.Enums.PaymentType>());
+
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5000); 
@@ -21,7 +24,6 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<HappyKopiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDB"), sqlServerOptionsAction: sqlOptions =>
@@ -55,14 +57,14 @@ builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200", "http://192.168.0.233:4200")
+            policy.WithOrigins("http://localhost:4200", "http://192.168.1.7:4200")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
