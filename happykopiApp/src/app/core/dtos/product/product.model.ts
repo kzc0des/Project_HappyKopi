@@ -1,26 +1,29 @@
 export interface RecipeItem {
-  stockItemId: number | null;
+  ingredientId: number; 
   quantityNeeded: number;
+  ingredientName: string; 
+  unitOfMeasure: string;  
 }
 
 export interface AddOnItem {
-  addOnId: number | null;
+  addOnId: number;
   times: number;
+  modifierName: string;
+  price: number;
 }
 
-export interface Variant {
+export interface ProductVariantCreateDtoUI {
+  sizeId: number;
   size: string;
   price: number;
   recipe: RecipeItem[];
   addOns: AddOnItem[];
 }
 
-export interface ProductPayload {
+export interface ProductPayloadUI {
   name: string;
   description: string;
-  imageUrl: string;
-  categoryId: number | null;
-  isAvailable: boolean;
-  isActive: boolean;
-  variants: Variant[];
+  imageFile: File | null;
+  categoryId: number;
+  variants: ProductVariantCreateDtoUI[];
 }

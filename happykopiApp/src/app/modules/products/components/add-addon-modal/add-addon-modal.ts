@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { ModalService } from '../../services/modal-service/modal.service';
 import { AsyncPipe } from '@angular/common';
 import { DropdownOption } from '../../../../shared/components/dropdown-button/dropdown-option';
-import { AddOnItem } from '../../../../core/dtos/product/product.model';
 import { QuantityButton } from "../../../../shared/components/quantity-button/quantity-button";
 import { FormsModule } from "@angular/forms";
+import { AddOnItem } from '../../../../core/dtos/product/product.model';
 
 @Component({
   selector: 'app-add-addon-modal',
@@ -17,11 +17,9 @@ import { FormsModule } from "@angular/forms";
   styleUrl: './add-addon-modal.css',
 })
 export class AddAddonModal {
-  @Input() addons !: string;
   @Input() isEditing = false;
-
   @Input() addOnOption: DropdownOption[] = [];
-  @Output() saveAddOn = new EventEmitter<AddOnItem>(); //payload
+  @Output() saveAddOn = new EventEmitter<AddOnItem>();
 
   public selectedAddOnId: number | null = null;
   public times: number = 1;
@@ -41,22 +39,33 @@ export class AddAddonModal {
   }
 
   onSave() {
-    if (this.selectedAddOnId && this.times >= 0) {
+    if (this.selectedAddOnId && this.times > 0) {
+      
+      const selectedOption = this.addOnOption.find(
+        opt => opt.value === this.selectedAddOnId
+      );
+
+      if (!selectedOption) {
+        console.error('Could not find selected add-on option.');
+        return;
+      }
+
+      const labelMatch = selectedOption.label.match(/(.*) \(\+₱.*\)/);
+      let modifierName = selectedOption.label;
+      
+      if (labelMatch && labelMatch[1]) {
+        modifierName = labelMatch[1].trim();
+      }
+
       const payload: AddOnItem = {
         addOnId: this.selectedAddOnId,
-        times: this.times
+        times: this.times,
+        modifierName: modifierName,
+        price: selectedOption.price || 0
       };
-      console.log(`Payload from the addon modal: ${payload.addOnId} ${payload.times}`)
+
       this.saveAddOn.emit(payload);
-      this.resetModalState();
-
-    } else {
-      console.error("Fill out all the fields.");
+      this.close();
     }
-  }
-
-  private resetModalState() {
-    this.selectedAddOnId = null;
-    this.times = 1;
   }
 }

@@ -65,6 +65,10 @@ import { productsInCategoryResolver } from './modules/categories/resolver/produc
 import { CategoryAdd } from './modules/categories/category-add/category-add';
 import { AddAddonModal } from './modules/products/components/add-addon-modal/add-addon-modal';
 import { AddIngredientModal } from './modules/products/components/add-ingredient-modal/add-ingredient-modal';
+import { activeSizeResolver } from './modules/products/resolver/adddrinkresolvers/active-size-resolver';
+import { activeAddonsResolver } from './modules/products/resolver/adddrinkresolvers/active-addons-resolver';
+import { drinkCategoriesResolver } from './modules/products/resolver/adddrinkresolvers/drink-categories-resolver';
+import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver/adddrinkresolvers/powder-and-liquids-ingredients-resolver';
 import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
 
 export const routes: Routes = [
@@ -189,7 +193,13 @@ export const routes: Routes = [
                     },
                     {
                         path: 'create',
-                        component: AddDrinkPage
+                        component: AddDrinkPage,
+                        resolve: {
+                            sizes: activeSizeResolver,
+                            categories: drinkCategoriesResolver,
+                            ingredients: powderAndLiquidsIngredientsResolver,
+                            addOns: activeAddonsResolver
+                        }
                     }
                 ]
             },

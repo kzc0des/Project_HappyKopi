@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 import { ModalService } from '../../services/modal-service/modal.service';
 import { AsyncPipe } from '@angular/common';
 import { DropdownOption } from '../../../../shared/components/dropdown-button/dropdown-option';
-import { RecipeItem } from '../../../../core/dtos/product/product.model';
 import { FormsModule } from '@angular/forms';
+import { RecipeItem } from '../../../../core/dtos/product/product.model';
 
 @Component({
   selector: 'app-add-ingredient-modal',
@@ -18,21 +18,44 @@ import { FormsModule } from '@angular/forms';
 })
 export class AddIngredientModal {
   @Input() isEditing = false;
-
   @Input() categoryOptions: DropdownOption[] = [];
-  @Input() ingredientOptions: DropdownOption[] = [];
-  @Output() saveIngredient = new EventEmitter<RecipeItem>()
+  
+  @Output() saveIngredient = new EventEmitter<RecipeItem>();
 
-  public selectedCategoryId: number | null = null;
+  public filteredIngredientOptions: DropdownOption[] = [];
+  private _allIngredientOptions: DropdownOption[] = [];
+
+  @Input()
+  set ingredientOptions(options: DropdownOption[]) {
+    this._allIngredientOptions = options;
+    if (this.selectedCategoryId) {
+      this.filterIngredients(this.selectedCategoryId);
+    } else {
+      this.filteredIngredientOptions = this._allIngredientOptions;
+    }
+  }
+
+  public selectedCategoryId: string | number | null = null;
   public selectedIngredientId: number | null = null;
   public quantityNeeded: number = 0;
 
   isIngredientOpen$: Observable<boolean>;
 
-  constructor (
+  constructor(
     private modalService: ModalService
   ) {
     this.isIngredientOpen$ = modalService.isIngredientModalOpen$;
+  }
+
+  filterIngredients(categoryValue: string | number | null) {
+    if (!categoryValue) {
+      this.filteredIngredientOptions = this._allIngredientOptions;
+    } else {
+      this.filteredIngredientOptions = this._allIngredientOptions.filter(option =>
+        option.type === categoryValue
+      );
+    }
+    this.selectedIngredientId = null;
   }
 
   close() {
@@ -40,18 +63,39 @@ export class AddIngredientModal {
     this.selectedCategoryId = null;
     this.selectedIngredientId = null;
     this.quantityNeeded = 0;
+    this.filteredIngredientOptions = this._allIngredientOptions;
   }
 
   onSave() {
     if (this.selectedIngredientId && this.quantityNeeded > 0) {
+      
+      const selectedOption = this._allIngredientOptions.find(
+        opt => opt.value === this.selectedIngredientId
+      );
+
+      if (!selectedOption) {
+        console.error('Could not find selected ingredient option.');
+        return;
+      }
+
+      const labelMatch = selectedOption.label.match(/(.*) \((.*)\)/);
+      let ingredientName = selectedOption.label;
+      let unitOfMeasure = '';
+
+      if (labelMatch && labelMatch[1] && labelMatch[2]) {
+        ingredientName = labelMatch[1].trim();
+        unitOfMeasure = labelMatch[2].trim();
+      }
+
       const payload: RecipeItem = {
-        stockItemId: this.selectedIngredientId,
-        quantityNeeded: this.quantityNeeded
+        ingredientId: this.selectedIngredientId,
+        quantityNeeded: this.quantityNeeded,
+        ingredientName: ingredientName,
+        unitOfMeasure: unitOfMeasure
       };
+
       this.saveIngredient.emit(payload);
       this.close();
-    } else {
-      console.log("Fill out all the fields.");
     }
   }
 }

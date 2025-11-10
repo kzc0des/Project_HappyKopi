@@ -8,14 +8,20 @@ p-7 shadow-md rounded-lg">
     <div class="w-full items-start">
         <p class="font-semibold text-hapikopi-dark text-lg">Add an Ingredient</p>
     </div>
-    <app-dropdown-button class="w-full" itemTitle="Category" [(ngModel)]="selectedCategoryId"
+    <app-dropdown-button class="w-full" itemTitle="Category" 
+        [(ngModel)]="selectedCategoryId" (ngModelChange)="filterIngredients($event)"
         [options]="categoryOptions"></app-dropdown-button>
-    <app-dropdown-button class="w-full" itemTitle="Ingredient" [(ngModel)]="selectedIngredientId"
-        [options]="ingredientOptions"></app-dropdown-button>
+
+    <app-dropdown-button class="w-full" itemTitle="Ingredient" 
+        [(ngModel)]="selectedIngredientId"
+        [options]="filteredIngredientOptions" [disabled]="!selectedCategoryId"></app-dropdown-button>
+
     <app-itemcard class="w-full" [isEditing]="true" itemTitle="Measurement" type="number"
         [(ngModel)]="quantityNeeded"></app-itemcard>
+        
     @if(!isEditing){
-    <app-yellow-button class="w-full py-4" itemTitle="ingredient" buttonTitle="Add this Ingredient" (isClick)="onSave()"></app-yellow-button>
+    <app-yellow-button class="w-full py-4" itemTitle="ingredient" buttonTitle="Add this Ingredient"
+        (isClick)="onSave()"></app-yellow-button>
     }@else {
     <div class="w-full flex gap-2">
         <app-red-button class="w-full py-4" buttonTitle="Delete" itemTitle="delete"></app-red-button>
