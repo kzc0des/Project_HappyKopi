@@ -13,7 +13,7 @@ import { AddAddonModal } from "../../components/add-addon-modal/add-addon-modal"
 
 import { DropdownOption } from '../../../../shared/components/dropdown-button/dropdown-option';
 
-import { AddOnItem } from '../../../../core/dtos/product/product.model';
+import { AddOnItem, ProductPayloadUI, ProductVariantCreateDtoUI } from '../../../../core/dtos/product/product.model';
 import { RecipeItem } from '../../../../core/dtos/product/product.model';
 import { ProductCreateDto } from '../../../../core/dtos/product/product-create-dto';
 import { ProductVariantAddOnCreateDto } from '../../../../core/dtos/product/product-variant-add-on-create-dto';
@@ -48,12 +48,21 @@ export class AddDrinkPage implements OnInit {
   availableSizes: ModifierDto[] = [];
   selectedSizeId: number | null = 1;
 
-  public productPayload: ProductCreateDto;
+  public productPayload: ProductPayloadUI;
 
+  // dropdown options sent to modals
   public categoryOptions: DropdownOption[] = [];
   public ingredientOptions: DropdownOption[] = [];
   public addOnOptions: DropdownOption[] = [];
+
+  // product category options
   public itemOptions: DropdownOption[] = [];
+
+  // product base price will be added to all the product sizes
+  basePrice: number = 0;
+  variantPrice: number = 0;
+
+  // image preview
 
   public imagePreview: string | ArrayBuffer | null = null;
 
@@ -71,6 +80,15 @@ export class AddDrinkPage implements OnInit {
     this.productPayload = this.initializeEmptyPayload();
   }
 
+  public get currentVariant(): ProductVariantCreateDtoUI | undefined {
+    if (this.selectedSizeId === null) {
+      return undefined;
+    }
+    return this.productPayload.variants.find(
+      v => v.sizeId === this.selectedSizeId
+    );
+  }
+
   ngOnInit() {
     this.fetchInitialData();
   }
@@ -81,6 +99,7 @@ export class AddDrinkPage implements OnInit {
     const addOnsData: ModifierDto[] = this.route.snapshot.data['addOns'] || [];
     this.availableSizes = this.route.snapshot.data['sizes'] || [];
 
+    console.log(`Sizes: ${JSON.stringify(this.availableSizes)}`);
     this.initializeVariants();
 
     this.categoryOptions = categoriesData.map(category => ({
@@ -96,7 +115,8 @@ export class AddDrinkPage implements OnInit {
 
     this.addOnOptions = addOnsData.map(modifier => ({
       value: modifier.id,
-      label: `${modifier.name} (+₱${modifier.price})`
+      label: `${modifier.name} (+₱${modifier.price})`,
+      price: modifier.price
     }));
 
     this.itemOptions = [
@@ -111,14 +131,12 @@ export class AddDrinkPage implements OnInit {
     ]
   }
 
-  initializeEmptyPayload(): ProductCreateDto {
+  initializeEmptyPayload(): ProductPayloadUI {
     return {
       name: '',
       description: '',
       imageFile: null,
       categoryId: 0,
-      isAvailable: true,
-      isActive: true,
       variants: []
     };
   }
@@ -127,7 +145,7 @@ export class AddDrinkPage implements OnInit {
     this.productPayload.variants = this.availableSizes.map(size => ({
       sizeId: size.id,
       size: size.name,
-      price: 0,
+      price: size.price,
       recipe: [],
       addOns: []
     }));
@@ -160,8 +178,9 @@ export class AddDrinkPage implements OnInit {
   }
 
 
-  onSizeSelect(sizeId: number) {
-    this.selectedSizeId = sizeId;
+  onSizeSelect(variant: ModifierDto) {
+    this.selectedSizeId = variant.id;
+    console.log(`Size Info: ${JSON.stringify(variant)}`);
   }
 
   openIngredientModal() {
@@ -174,35 +193,21 @@ export class AddDrinkPage implements OnInit {
     this.modalService.openAddOnModal();
   }
 
-  onSaveIngredient(item: ProductVariantIngredientCreateDto) {
-    if (!this.selectedSizeId) {
+  onSaveIngredient(item: RecipeItem) {
+    if (this.currentVariant) {
+      this.currentVariant.recipe.push(item);
+      console.log('Updated Variants Payload:', this.productPayload.variants);
+    } else {
       console.error('No size selected to add ingredient to.');
-      return;
-    }
-
-    const currentVariant = this.productPayload.variants.find(
-      v => v.sizeId === this.selectedSizeId
-    );
-
-    if (currentVariant) {
-      currentVariant.recipe.push(item);
-      // console.log('Updated Variants Payload:', this.productPayload.variants);
     }
   }
 
-  onSaveAddOn(item: ProductVariantAddOnCreateDto) {
-    if (!this.selectedSizeId) {
+  onSaveAddOn(item: AddOnItem) {
+    if (this.currentVariant) {
+      this.currentVariant.addOns.push(item);
+      console.log('Updated Variants Payload:', this.productPayload.variants);
+    } else {
       console.error('No size selected to add add-on to.');
-      return;
-    }
-
-    const currentVariant = this.productPayload.variants.find(
-      v => v.sizeId === this.selectedSizeId
-    );
-
-    if (currentVariant) {
-      currentVariant.addOns.push(item);
-      // console.log('Updated Variants Payload:', this.productPayload.variants);
     }
   }
 
@@ -232,6 +237,48 @@ export class AddDrinkPage implements OnInit {
     //   }
     // });
 
-    console.log(this.productPayload);
+    const payloadForBackend: ProductCreateDto = {
+      name: this.productPayload.name,
+      categoryId: this.productPayload.categoryId,
+      imageFile: this.productPayload.imageFile,
+      isAvailable: true, // Default values
+      isActive: true,    // Default values
+      description: this.productPayload.description || undefined,
+
+      // I-map ang "rich" UI variants sa "lean" DTO variants
+      variants: this.productPayload.variants.map(uiVariant => {
+
+        const leanRecipe: ProductVariantIngredientCreateDto[] = uiVariant.recipe.map(
+          (richIngredient) => ({
+            stockItemId: richIngredient.ingredientId,
+            quantityNeeded: richIngredient.quantityNeeded
+          })
+        );
+
+        const leanAddOns: ProductVariantAddOnCreateDto[] = uiVariant.addOns.map(
+          (richAddOn) => ({
+            addOnId: richAddOn.addOnId,
+            times: richAddOn.times
+          })
+        );
+
+        const sumOfAddOns = uiVariant.addOns.reduce(
+          (total, addon) => total + (addon.price * addon.times),
+          0
+        )
+
+        const leanVariant: ProductVariantCreateDto = {
+          sizeId: uiVariant.sizeId,
+          size: uiVariant.size,
+          price: uiVariant.price + sumOfAddOns + (this.basePrice || 0),
+          recipe: leanRecipe,
+          addOns: leanAddOns
+        };
+
+        return leanVariant;
+      })
+    };
+
+    console.log('Final payload for backend:', payloadForBackend);
   }
 }

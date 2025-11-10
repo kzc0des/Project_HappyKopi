@@ -5,23 +5,22 @@
     px-5 py-8 gap-5 
     w-full flex-1">
 
-        <label for="drink-image-upload" 
-        class="relative flex items-center justify-center max-w-xs 
+        <label for="drink-image-upload" class="relative flex items-center justify-center max-w-xs 
                       rounded-2xl bg-[#fafafa] border-2 border-dashed border-gray-300
                       cursor-pointer transition-colors hover:bg-gray-100"
-        [ngClass]="imagePreview ? 'p-2 border-0' : 'px-12 py-20'">
+            [ngClass]="imagePreview ? 'p-2 border-0' : 'px-12 py-20'">
 
             @if (!imagePreview) {
-                <div id="svg-placeholder" class="
+            <div id="svg-placeholder" class="
                 flex flex-col items-center justify-center bg-hapikopi-yellow p-3 rounded-2xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
-                        <path fill="#fff"
-                            d="M11.5 8C14 8 16 10 16 12.5S14 17 11.5 17S7 15 7 12.5S9 8 11.5 8m0 1A3.5 3.5 0 0 0 8 12.5a3.5 3.5 0 0 0 3.5 3.5a3.5 3.5 0 0 0 3.5-3.5A3.5 3.5 0 0 0 11.5 9M5 5h2l2-2h5l2 2h2a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m4.41-1l-2 2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.41l-2-2z" />
-                    </svg>
-                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 24 24">
+                    <path fill="#fff"
+                        d="M11.5 8C14 8 16 10 16 12.5S14 17 11.5 17S7 15 7 12.5S9 8 11.5 8m0 1A3.5 3.5 0 0 0 8 12.5a3.5 3.5 0 0 0 3.5 3.5a3.5 3.5 0 0 0 3.5-3.5A3.5 3.5 0 0 0 11.5 9M5 5h2l2-2h5l2 2h2a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m4.41-1l-2 2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.41l-2-2z" />
+                </svg>
+            </div>
             } @else {
-                <img id="image-preview" [src]="imagePreview" alt="Drink Preview" 
-                    class="w-full h-full object-cover rounded-2xl" />
+            <img id="image-preview" [src]="imagePreview" alt="Drink Preview"
+                class="w-full h-full object-cover rounded-2xl" />
             }
 
         </label>
@@ -33,8 +32,7 @@
         <app-itemcard class="w-full" [isEditing]="true" itemTitle="Description"
             [(ngModel)]="productPayload.description"></app-itemcard>
 
-        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Base Price" type="number"
-            ></app-itemcard>
+        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Base Price" type="number" [(ngModel)]="basePrice"></app-itemcard>
 
         <app-dropdown-button class="w-full" itemTitle="Category" [(ngModel)]="productPayload.categoryId"
             [options]="categoryOptions">
@@ -49,40 +47,49 @@
             <div class="flex gap-3 flex-nowrap overflow-x-auto pb-5">
                 @for(item of availableSizes; track $index){
                 <app-modifier-size-card class="flex-shrink-0" 
-                    [itemName]="item.name" [itemValue]="item.ozAmount || 0"
-                    [isSelected]="selectedSizeId === item.id"
-                    (notifyClick)="onSizeSelect(item.id)">
+                    [itemName]="item.name" 
+                    [itemValue]="item.ozAmount || 0"
+                    [price]="item.price"
+                    [isSelected]="selectedSizeId === item.id" 
+                    (notifyClick)="onSizeSelect(item)">
                 </app-modifier-size-card>
                 }
             </div>
         </div>
 
         <div class="flex flex-col gap-5 w-full">
-            <h3 class="text-lg font-semibold text-hapikopi-dark w-full">Recipe for</h3>
+            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Ingredients for {{ currentVariant?.size }}
+            </h3>
 
             <app-add-button-card itemName="Add an Ingredient" [isDisabled]="selectedSizeId === null"
                 (notifyClick)="openIngredientModal()"></app-add-button-card>
 
-            <!-- @if(currentVariant) {
-            @for(ingredient of currentVariant.recipe; track $index) {
-            <div class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
-                <span class="font-semibold">{{ ingredient.quantityNeeded }} (units)</span>
-            </div>
-            }
-            } -->
+            @if(currentVariant) {
+                @for(ingredient of currentVariant.recipe; track $index) {
+                <div
+                    class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
 
-            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for</h3>
+                    <span class="font-semibold">{{ ingredient.ingredientName }}</span>
+                    <span class="font-semibold">{{ ingredient.quantityNeeded }} {{ ingredient.unitOfMeasure }}</span>
+
+                </div>
+                }
+            }
+
+            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant?.size }}</h3>
 
             <app-add-button-card itemName="Add an Add-on" [isDisabled]="selectedSizeId === null"
                 (notifyClick)="openAddOnModal()"></app-add-button-card>
 
-            <!-- @if(currentVariant) {
-            @for(addOn of currentVariant.addOns; track $index) {
-            <div class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
-                <span class="font-semibold">{{ addOn.times }}</span>
-            </div>
+            @if(currentVariant) {
+                @for(addOn of currentVariant.addOns; track $index) {
+                <div
+                    class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
+                    <span class="font-semibold">{{ addOn.modifierName }} </span>
+                    <span class="font-semibold">{{ addOn.times }}×</span>
+                </div>
+                }
             }
-            } -->
         </div>
 
         <div class="w-full mt-6">
@@ -94,13 +101,9 @@
 </div>
 
 
-<app-add-ingredient-modal 
-    [categoryOptions]="itemOptions" 
-    [ingredientOptions]="ingredientOptions"
+<app-add-ingredient-modal [categoryOptions]="itemOptions" [ingredientOptions]="ingredientOptions"
     (saveIngredient)="onSaveIngredient($event)">
 </app-add-ingredient-modal>
 
-<app-add-addon-modal 
-    [addOnOption]="addOnOptions"
-    (saveAddOn)="onSaveAddOn($event)">
+<app-add-addon-modal [addOnOption]="addOnOptions" (saveAddOn)="onSaveAddOn($event)">
 </app-add-addon-modal>
