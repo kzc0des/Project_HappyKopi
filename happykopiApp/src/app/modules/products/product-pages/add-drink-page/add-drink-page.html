@@ -49,7 +49,6 @@
                 <app-modifier-size-card class="flex-shrink-0" 
                     [itemName]="item.name" 
                     [itemValue]="item.ozAmount || 0"
-                    [price]="item.price"
                     [isSelected]="selectedSizeId === item.id" 
                     (notifyClick)="onSizeSelect(item)">
                 </app-modifier-size-card>

@@ -160,11 +160,11 @@ export class AddDrinkPage implements OnInit {
     let fileList: FileList | null = element.files;
     if (fileList && fileList[0]) {
       const file = fileList[0];
-      const maxFileSize = 2 * 1024 * 1024; // 2MB
+      const maxFileSize = 2 * 1024 * 1024; 
 
       if (file.size > maxFileSize) {
         alert('File size exceeds 2MB. Please choose a smaller file.');
-        element.value = ''; // Reset the file input
+        element.value = ''; 
         return;
       }
 
@@ -212,40 +212,14 @@ export class AddDrinkPage implements OnInit {
   }
 
   submitNewProduct() {
-    // if (!this.productPayload.name) {
-    //   alert('Product name is required.');
-    //   return;
-    // }
-    // if (!this.productPayload.categoryId) {
-    //   alert('Category is required.');
-    //   return;
-    // }
-    // const variantWithoutPrice = this.productPayload.variants.find(v => v.price <= 0);
-    // if (variantWithoutPrice) {
-    //   alert(`Please set a price for the ${variantWithoutPrice.size} variant.`);
-    //   return;
-    // }
-
-    // this.productsService.createProduct(this.productPayload).subscribe({
-    //   next: (response) => {
-    //     console.log('Product created successfully with ID:', response.productId);
-    //     alert('Product created successfully!');
-    //   },
-    //   error: (error) => {
-    //     console.error('Error creating product:', error);
-    //     alert('Failed to create product. See console for details.');
-    //   }
-    // });
-
     const payloadForBackend: ProductCreateDto = {
       name: this.productPayload.name,
       categoryId: this.productPayload.categoryId,
       imageFile: this.productPayload.imageFile,
-      isAvailable: true, // Default values
-      isActive: true,    // Default values
+      isAvailable: true, 
+      isActive: true,    
       description: this.productPayload.description || undefined,
 
-      // I-map ang "rich" UI variants sa "lean" DTO variants
       variants: this.productPayload.variants.map(uiVariant => {
 
         const leanRecipe: ProductVariantIngredientCreateDto[] = uiVariant.recipe.map(
