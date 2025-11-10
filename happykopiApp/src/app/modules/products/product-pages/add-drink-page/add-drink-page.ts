@@ -108,7 +108,7 @@ export class AddDrinkPage implements OnInit {
         value: 'Powder',
         label: 'Powder'
       }
-    ] 
+    ]
   }
 
   initializeEmptyPayload(): ProductCreateDto {
@@ -174,30 +174,64 @@ export class AddDrinkPage implements OnInit {
     this.modalService.openAddOnModal();
   }
 
-  submitNewProduct() {
-    if (!this.productPayload.name) {
-      alert('Product name is required.');
-      return;
-    }
-    if (!this.productPayload.categoryId) {
-      alert('Category is required.');
-      return;
-    }
-    const variantWithoutPrice = this.productPayload.variants.find(v => v.price <= 0);
-    if (variantWithoutPrice) {
-      alert(`Please set a price for the ${variantWithoutPrice.size} variant.`);
+  onSaveIngredient(item: ProductVariantIngredientCreateDto) {
+    if (!this.selectedSizeId) {
+      console.error('No size selected to add ingredient to.');
       return;
     }
 
-    this.productsService.createProduct(this.productPayload).subscribe({
-      next: (response) => {
-        console.log('Product created successfully with ID:', response.productId);
-        alert('Product created successfully!');
-      },
-      error: (error) => {
-        console.error('Error creating product:', error);
-        alert('Failed to create product. See console for details.');
-      }
-    });
+    const currentVariant = this.productPayload.variants.find(
+      v => v.sizeId === this.selectedSizeId
+    );
+
+    if (currentVariant) {
+      currentVariant.recipe.push(item);
+      // console.log('Updated Variants Payload:', this.productPayload.variants);
+    }
+  }
+
+  onSaveAddOn(item: ProductVariantAddOnCreateDto) {
+    if (!this.selectedSizeId) {
+      console.error('No size selected to add add-on to.');
+      return;
+    }
+
+    const currentVariant = this.productPayload.variants.find(
+      v => v.sizeId === this.selectedSizeId
+    );
+
+    if (currentVariant) {
+      currentVariant.addOns.push(item);
+      // console.log('Updated Variants Payload:', this.productPayload.variants);
+    }
+  }
+
+  submitNewProduct() {
+    // if (!this.productPayload.name) {
+    //   alert('Product name is required.');
+    //   return;
+    // }
+    // if (!this.productPayload.categoryId) {
+    //   alert('Category is required.');
+    //   return;
+    // }
+    // const variantWithoutPrice = this.productPayload.variants.find(v => v.price <= 0);
+    // if (variantWithoutPrice) {
+    //   alert(`Please set a price for the ${variantWithoutPrice.size} variant.`);
+    //   return;
+    // }
+
+    // this.productsService.createProduct(this.productPayload).subscribe({
+    //   next: (response) => {
+    //     console.log('Product created successfully with ID:', response.productId);
+    //     alert('Product created successfully!');
+    //   },
+    //   error: (error) => {
+    //     console.error('Error creating product:', error);
+    //     alert('Failed to create product. See console for details.');
+    //   }
+    // });
+
+    console.log(this.productPayload);
   }
 }

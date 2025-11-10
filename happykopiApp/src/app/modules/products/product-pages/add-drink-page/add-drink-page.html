@@ -48,7 +48,8 @@
 
             <div class="flex gap-3 flex-nowrap overflow-x-auto pb-5">
                 @for(item of availableSizes; track $index){
-                <app-modifier-size-card class="flex-shrink-0" [itemName]="item.name"
+                <app-modifier-size-card class="flex-shrink-0" 
+                    [itemName]="item.name" [itemValue]="item.ozAmount || 0"
                     [isSelected]="selectedSizeId === item.id"
                     (notifyClick)="onSizeSelect(item.id)">
                 </app-modifier-size-card>
@@ -95,8 +96,11 @@
 
 <app-add-ingredient-modal 
     [categoryOptions]="itemOptions" 
-    [ingredientOptions]="ingredientOptions">
+    [ingredientOptions]="ingredientOptions"
+    (saveIngredient)="onSaveIngredient($event)">
 </app-add-ingredient-modal>
 
-<app-add-addon-modal [addOnOption]="addOnOptions">
+<app-add-addon-modal 
+    [addOnOption]="addOnOptions"
+    (saveAddOn)="onSaveAddOn($event)">
 </app-add-addon-modal>

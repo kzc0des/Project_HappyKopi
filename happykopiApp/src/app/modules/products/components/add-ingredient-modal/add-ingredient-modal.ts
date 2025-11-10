@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 import { ModalService } from '../../services/modal-service/modal.service';
 import { AsyncPipe } from '@angular/common';
 import { DropdownOption } from '../../../../shared/components/dropdown-button/dropdown-option';
-import { RecipeItem } from '../../../../core/dtos/product/product.model';
 import { FormsModule } from '@angular/forms';
+import { ProductVariantIngredientCreateDto } from '../../../../core/dtos/product/product-variant-ingredient-create-dto';
 
 @Component({
   selector: 'app-add-ingredient-modal',
@@ -20,7 +20,7 @@ export class AddIngredientModal {
   @Input() isEditing = false;
 
   @Input() categoryOptions: DropdownOption[] = [];
-  @Output() saveIngredient = new EventEmitter<RecipeItem>()
+  @Output() saveIngredient = new EventEmitter<ProductVariantIngredientCreateDto>()
 
   public filteredIngredientOptions: DropdownOption[] = [];
   private _allIngredientOptions: DropdownOption[] = [];
@@ -71,7 +71,7 @@ export class AddIngredientModal {
 
   onSave() {
     if (this.selectedIngredientId && this.quantityNeeded > 0) {
-      const payload: RecipeItem = {
+      const payload: ProductVariantIngredientCreateDto = {
         stockItemId: this.selectedIngredientId,
         quantityNeeded: this.quantityNeeded
       };

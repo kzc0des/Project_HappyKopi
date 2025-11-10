@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { ModalService } from '../../services/modal-service/modal.service';
 import { AsyncPipe } from '@angular/common';
 import { DropdownOption } from '../../../../shared/components/dropdown-button/dropdown-option';
-import { AddOnItem } from '../../../../core/dtos/product/product.model';
 import { QuantityButton } from "../../../../shared/components/quantity-button/quantity-button";
 import { FormsModule } from "@angular/forms";
+import { ProductVariantAddOnCreateDto } from '../../../../core/dtos/product/product-variant-add-on-create-dto';
 
 @Component({
   selector: 'app-add-addon-modal',
@@ -21,7 +21,7 @@ export class AddAddonModal {
   @Input() isEditing = false;
 
   @Input() addOnOption: DropdownOption[] = [];
-  @Output() saveAddOn = new EventEmitter<AddOnItem>(); //payload
+  @Output() saveAddOn = new EventEmitter<ProductVariantAddOnCreateDto>(); //payload
 
   public selectedAddOnId: number | null = null;
   public times: number = 1;
@@ -42,13 +42,14 @@ export class AddAddonModal {
 
   onSave() {
     if (this.selectedAddOnId && this.times >= 0) {
-      const payload: AddOnItem = {
+      const payload: ProductVariantAddOnCreateDto = {
         addOnId: this.selectedAddOnId,
         times: this.times
       };
       console.log(`Payload from the addon modal: ${payload.addOnId} ${payload.times}`)
       this.saveAddOn.emit(payload);
       this.resetModalState();
+      this.close();
 
     } else {
       console.error("Fill out all the fields.");

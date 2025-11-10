@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ModifierSizeCard {
   @Input() itemName !: string;
-  @Input() itemValue !: number;
+  @Input() itemValue : number = 0;
   @Output() notifyClick = new EventEmitter();
   @Input() isSelected: boolean = false;
 
