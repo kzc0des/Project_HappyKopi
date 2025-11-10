@@ -3,26 +3,26 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../../../core/services/api/api.service';
 import { CategoryWithProductCountDto } from '../../../core/dtos/order/category-with-product-count.dto';
 import { ProductsWithCategoryDto } from '../../../core/dtos/order/products-with-category.dto';
+import { ModifierType } from '../../../core/enums/modifier-type';
+import { OrderModifierSummaryDto } from '../../../core/dtos/order/order-modifier-summary.to';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrderService {
-
-  constructor(private api: ApiService) { }
-
-  /**
-   * Get all categories with the number of products in each
-   */
+  constructor(private api: ApiService) {}
+ 
   getCategories(): Observable<CategoryWithProductCountDto[]> {
     return this.api.get<CategoryWithProductCountDto[]>('order');
   }
-
-  /**
-   * Get all products under a specific category
-   * @param categoryId Id of the category
-   */
+ 
   getProductsByCategory(categoryId: number): Observable<ProductsWithCategoryDto[]> {
-  return this.api.get<ProductsWithCategoryDto[]>(`order/category/${categoryId}`);
-}
+    return this.api.get<ProductsWithCategoryDto[]>(`order/category/${categoryId}`);
+  }
+
+  getModifiersByType(type: ModifierType): Observable<OrderModifierSummaryDto[]> {
+    const params = new HttpParams().set('modifierType', type.toString());
+    return this.api.get<OrderModifierSummaryDto[]>(`modifiers`, params);
+  }
 }
