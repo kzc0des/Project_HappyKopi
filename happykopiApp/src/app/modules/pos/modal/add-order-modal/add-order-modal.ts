@@ -117,9 +117,12 @@ export class AddOrderModal implements OnInit {
       addons: selectedAddons,
     };
 
+
+    // MAHALAGANG BAGAY 
     const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
     existingOrders.push(orderItem);
     localStorage.setItem('orders', JSON.stringify(existingOrders));
+    // MAHALAGANG BAGAY
 
     console.log('Order added:', orderItem);
 
