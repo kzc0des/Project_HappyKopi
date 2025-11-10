@@ -160,11 +160,11 @@ export class AddDrinkPage implements OnInit {
     let fileList: FileList | null = element.files;
     if (fileList && fileList[0]) {
       const file = fileList[0];
-      const maxFileSize = 2 * 1024 * 1024; 
+      const maxFileSize = 2 * 1024 * 1024;
 
       if (file.size > maxFileSize) {
         alert('File size exceeds 2MB. Please choose a smaller file.');
-        element.value = ''; 
+        element.value = '';
         return;
       }
 
@@ -216,23 +216,23 @@ export class AddDrinkPage implements OnInit {
       name: this.productPayload.name,
       categoryId: this.productPayload.categoryId,
       imageFile: this.productPayload.imageFile,
-      isAvailable: true, 
-      isActive: true,    
+      isAvailable: true,
+      isActive: true,
       description: this.productPayload.description || undefined,
 
       variants: this.productPayload.variants.map(uiVariant => {
 
         const leanRecipe: ProductVariantIngredientCreateDto[] = uiVariant.recipe.map(
           (richIngredient) => ({
-            stockItemId: richIngredient.ingredientId,
-            quantityNeeded: richIngredient.quantityNeeded
+            StockItemId: richIngredient.ingredientId,
+            QuantityNeeded: richIngredient.quantityNeeded
           })
         );
 
         const leanAddOns: ProductVariantAddOnCreateDto[] = uiVariant.addOns.map(
           (richAddOn) => ({
-            addOnId: richAddOn.addOnId,
-            times: richAddOn.times
+            ModifierId: richAddOn.addOnId,
+            DefaultQuantity: richAddOn.times
           })
         );
 
@@ -242,11 +242,10 @@ export class AddDrinkPage implements OnInit {
         )
 
         const leanVariant: ProductVariantCreateDto = {
-          sizeId: uiVariant.sizeId,
-          size: uiVariant.size,
-          price: uiVariant.price + sumOfAddOns + (this.basePrice || 0),
-          recipe: leanRecipe,
-          addOns: leanAddOns
+          Size: uiVariant.size,
+          Price: uiVariant.price + sumOfAddOns + (this.basePrice || 0),
+          Recipe: leanRecipe,
+          AddOns: leanAddOns
         };
 
         return leanVariant;
@@ -254,5 +253,46 @@ export class AddDrinkPage implements OnInit {
     };
 
     console.log('Final payload for backend:', payloadForBackend);
+
+    this.productsService.createProduct(payloadForBackend).subscribe({
+      next: (response) => {
+        console.log('Product created successfully!', response);
+        this.router.navigate(['../products'], { relativeTo: this.route, replaceUrl: true});
+      },
+
+      error: (err) => {
+        console.error('Failed to create product (Full Error Object):', err);
+
+        let displayMessage = 'An unexpected error occurred. Please try again.';
+
+        if (err.status === 409) {
+          displayMessage = err.error?.message || 'A product with this name might already exist.';
+
+        } else if (err.status === 400) {
+          if (err.error && typeof err.error === 'string') {
+            displayMessage = `Error (400):\n${err.error}`;
+
+          } else if (err.error && err.error.errors) {
+            try {
+              const validationErrors = Object.values(err.error.errors) as string[];
+              displayMessage = `Validation Failed (400):\n- ${validationErrors.join('\n- ')}`;
+            } catch {
+              displayMessage = '400 Bad Request: Validation error (could not parse).';
+            }
+
+          } else if (err.error?.message) {
+            displayMessage = `Error (400):\n${err.error.message}`;
+
+          } else {
+            displayMessage = '400 Bad Request: Check console for error object.';
+          }
+
+        } else if (err.status === 500) {
+          displayMessage = '500 Internal Server Error. Check the backend logs.';
+        }
+
+        alert(displayMessage);
+      }
+    });
   }
 }

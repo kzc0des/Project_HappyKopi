@@ -1,4 +1,4 @@
 export interface ProductVariantAddOnCreateDto {
-    addOnId: number;
-    times: number;
+    ModifierId: number;
+    DefaultQuantity: number;
 }

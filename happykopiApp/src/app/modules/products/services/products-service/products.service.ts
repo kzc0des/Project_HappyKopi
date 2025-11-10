@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductCreateDto } from '../../../../core/dtos/product/product-create-dto';
-import { DropdownOption } from '../../../../shared/components/dropdown-button/dropdown-option';
 import { ApiService } from '../../../../core/services/api/api.service';
 import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
 import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
@@ -33,18 +32,17 @@ export class ProductsService {
   createProduct(product: ProductCreateDto): Observable<{ productId: number }> {
     const formData = new FormData();
 
-    formData.append('name', product.name);
-    formData.append('description', product.description ? product.description : '');
-    formData.append('categoryId', product.categoryId.toString());
-    formData.append('isActive', product.isActive.toString());
-    formData.append('isAvailable', product.isAvailable.toString());
+    formData.append('Name', product.name);
+    formData.append('Description', product.description ? product.description : '');
+    formData.append('CategoryId', product.categoryId.toString());
+    formData.append('IsActive', product.isActive.toString());
+    formData.append('IsAvailable', product.isAvailable.toString());
 
     if (product.imageFile) {
-      formData.append('imageFile', product.imageFile, product.imageFile.name);
+      formData.append('ImageFile', product.imageFile, product.imageFile.name);
     }
 
-    formData.append('variantsJson', JSON.stringify(product.variants));
-
+    formData.append('VariantsJson', JSON.stringify(product.variants));
     return this.apiService.post<{ productId: number }>('products', formData);
   }
 }
