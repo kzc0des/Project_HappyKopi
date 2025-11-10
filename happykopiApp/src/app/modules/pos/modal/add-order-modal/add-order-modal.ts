@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AddonCardActive } from '../../components/addon-card-active/addon-card-active';
+import { AddonCardActive, addonCardDto } from '../../components/addon-card-active/addon-card-active';
 import { OrderQuickView } from '../../components/order-quick-view/order-quick-view';
 import { OrderQuantityModifier } from '../../components/order-quantity-modifier/order-quantity-modifier';
 import { GrandeActive, sizeButtonDto } from '../../components/grande-active/grande-active';
@@ -26,12 +26,14 @@ export class AddOrderModal implements OnInit {
   @Input() addOrderModal?: addOrderModalDto;
 
   sizes: sizeButtonDto[] = [];
+  addons: addonCardDto[] = [];
   activeSize: string = '';
 
   constructor(private orderService: OrderService) {}
 
   ngOnInit() {
     this.loadSizes();
+    this.loadAddons();
 
     this.addOrderModal = {
       DrinkName: this.addOrderModal?.DrinkName || 'Drink Name',
@@ -39,20 +41,29 @@ export class AddOrderModal implements OnInit {
       Total: this.addOrderModal?.Total ?? 0,
     };
   }
-
+ 
   loadSizes() {
     this.orderService.getModifiersByType(ModifierType.Sizes).subscribe({
       next: (sizes: OrderModifierSummaryDto[]) => {
-        this.sizes = sizes.map((size) => ({
+        this.sizes = sizes.map(size => ({
           SizeName: size.name,
-          SizeQuantity: size.price, 
+          SizeQuantity: size.price,
         }));
- 
-        if (this.sizes.length > 0) {
-          this.activeSize = this.sizes[0].SizeName;
-        }
+        if (this.sizes.length > 0) this.activeSize = this.sizes[0].SizeName;
       },
-      error: (err) => console.error('Error loading sizes:', err),
+      error: (err) => console.error('Error loading sizes:', err)
+    });
+  }
+ 
+  loadAddons() {
+    this.orderService.getModifiersByType(ModifierType.AddOns).subscribe({
+      next: (addons: OrderModifierSummaryDto[]) => {
+        this.addons = addons.map(addon => ({
+          Name: addon.name,
+          Quantity: 0  
+        }));
+      },
+      error: (err) => console.error('Error loading addons:', err)
     });
   }
 

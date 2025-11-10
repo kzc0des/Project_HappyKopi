@@ -1,35 +1,32 @@
-<div class="modal-card"> 
+<div class="modal-card">
   <div class="product-header">
     <div>
-      <h3 class="product-title">{{addOrderModal?.DrinkName}}</h3>
-      <p class="product-subtitle">{{addOrderModal?.DrinkCategory}}</p>
+      <h3 class="product-title">{{ addOrderModal?.DrinkName }}</h3>
+      <p class="product-subtitle">{{ addOrderModal?.DrinkCategory }}</p>
     </div>
-    <div class="product-price">{{addOrderModal?.Total | currency: 'PHP'}}</div>
+    <div class="product-price">{{ addOrderModal?.Total | currency : 'PHP' }}</div>
   </div>
- 
+
   <app-order-quantity-modifier></app-order-quantity-modifier>
 
   <div class="size-container">
-  @for (size of sizes; track size.SizeName) {
+    @for (size of sizes; track size.SizeName) {
     <app-grande-active
       [sizeButton]="size"
       [isActive]="activeSize === size.SizeName"
       (selected)="selectSize(size)"
     ></app-grande-active>
-  }
-</div>
+    }
+  </div>
 
- 
   <div class="addons-section">
     <h4 class="addons-title">Add-ons</h4>
 
     <div class="addons-list">
-      <app-addon-card-active [addonCard]="{Name: 'Cream Cheese', Quantity: 0}"></app-addon-card-active>
-      <app-addon-card-active [addonCard]="{Name: 'Nata De Coco', Quantity: 0}"></app-addon-card-active> 
-      <app-addon-card-active [addonCard]="{Name: 'Espresso Shot', Quantity: 0}"></app-addon-card-active>  
-      <app-addon-card-active [addonCard]="{Name: 'Kiss ni Neo', Quantity: 0}"></app-addon-card-active>
-      <app-addon-card-active [addonCard]="{Name: 'Miss na Kita', Quantity: 0}"></app-addon-card-active>   
+      @for (addon of addons; track addon.Name) {
+      <app-addon-card-active [addonCard]="addon"></app-addon-card-active>
+      }
     </div>
-  </div> 
+  </div>
   <app-long-yellow-button buttonSize="modal" buttonTitle="Add Drink"></app-long-yellow-button>
 </div>
