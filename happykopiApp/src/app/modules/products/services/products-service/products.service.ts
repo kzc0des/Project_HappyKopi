@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductCreateDto } from '../../../../core/dtos/product/product-create-dto';
 import { DropdownOption } from '../../../../shared/components/dropdown-button/dropdown-option';
-import { ModifierSize } from '../../product-pages/add-drink-page/add-drink-page';
 import { ApiService } from '../../../../core/services/api/api.service';
+import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
+import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
+import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,20 +14,20 @@ export class ProductsService {
 
   constructor(private apiService: ApiService) { }
 
-  getActiveSizes(): Observable<ModifierSize[]> {
-    return this.apiService.get<ModifierSize[]>('products/sizes');
+  getActiveSizes(): Observable<ModifierDto[]> {
+    return this.apiService.get<ModifierDto[]>('products/sizes');
   }
 
-  getActiveLiquidAndPowderStockItems(): Observable<DropdownOption[]> {
-    return this.apiService.get<DropdownOption[]>('products/ingredients');
+  getActiveLiquidAndPowderStockItems(): Observable<StockItemDto[]> {
+    return this.apiService.get<StockItemDto[]>('products/ingredients');
   }
 
-  getActiveAddOns(): Observable<DropdownOption[]> {
-    return this.apiService.get<DropdownOption[]>('products/addons');
+  getActiveAddOns(): Observable<ModifierDto[]> {
+    return this.apiService.get<ModifierDto[]>('products/addons');
   }
 
-  getActiveDrinkCategories(): Observable<DropdownOption[]> {
-    return this.apiService.get<DropdownOption[]>('products/categories');
+  getActiveDrinkCategories(): Observable<CategoryDto[]> {
+    return this.apiService.get<CategoryDto[]>('products/categories');
   }
 
   createProduct(product: ProductCreateDto): Observable<{ productId: number }> {

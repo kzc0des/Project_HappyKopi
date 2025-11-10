@@ -34,7 +34,7 @@
             [(ngModel)]="productPayload.description"></app-itemcard>
 
         <app-itemcard class="w-full" [isEditing]="true" itemTitle="Base Price" type="number"
-            [(ngModel)]="currentVariantPrice"></app-itemcard>
+            ></app-itemcard>
 
         <app-dropdown-button class="w-full" itemTitle="Category" [(ngModel)]="productPayload.categoryId"
             [options]="categoryOptions">
@@ -49,7 +49,7 @@
             <div class="flex gap-3 flex-nowrap overflow-x-auto pb-5">
                 @for(item of availableSizes; track $index){
                 <app-modifier-size-card class="flex-shrink-0" [itemName]="item.name"
-                    [isSelected]="selectedSizeId === item.id" [itemValue]="item.ozAmount"
+                    [isSelected]="selectedSizeId === item.id"
                     (notifyClick)="onSizeSelect(item.id)">
                 </app-modifier-size-card>
                 }
@@ -57,31 +57,31 @@
         </div>
 
         <div class="flex flex-col gap-5 w-full">
-            <h3 class="text-lg font-semibold text-hapikopi-dark w-full">Recipe for {{ currentVariant?.size }}</h3>
+            <h3 class="text-lg font-semibold text-hapikopi-dark w-full">Recipe for</h3>
 
             <app-add-button-card itemName="Add an Ingredient" [isDisabled]="selectedSizeId === null"
                 (notifyClick)="openIngredientModal()"></app-add-button-card>
 
-            @if(currentVariant) {
+            <!-- @if(currentVariant) {
             @for(ingredient of currentVariant.recipe; track $index) {
             <div class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
                 <span class="font-semibold">{{ ingredient.quantityNeeded }} (units)</span>
             </div>
             }
-            }
+            } -->
 
-            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant?.size }}</h3>
+            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for</h3>
 
             <app-add-button-card itemName="Add an Add-on" [isDisabled]="selectedSizeId === null"
                 (notifyClick)="openAddOnModal()"></app-add-button-card>
 
-            @if(currentVariant) {
+            <!-- @if(currentVariant) {
             @for(addOn of currentVariant.addOns; track $index) {
             <div class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
                 <span class="font-semibold">{{ addOn.times }}</span>
             </div>
             }
-            }
+            } -->
         </div>
 
         <div class="w-full mt-6">
@@ -95,9 +95,8 @@
 
 <app-add-ingredient-modal 
     [categoryOptions]="categoryOptions" 
-    [ingredientOptions]="ingredientOptions"
-    (saveIngredient)="handleSaveIngredient($event)">
+    [ingredientOptions]="ingredientOptions">
 </app-add-ingredient-modal>
 
-<app-add-addon-modal [addOnOption]="addOnOption" (saveAddOn)="handleSaveAddOn($event)">
+<app-add-addon-modal [addOnOption]="addOnOptions">
 </app-add-addon-modal>

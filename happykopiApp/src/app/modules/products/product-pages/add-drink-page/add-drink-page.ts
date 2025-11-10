@@ -21,13 +21,9 @@ import { ProductVariantCreateDto } from '../../../../core/dtos/product/product-v
 import { ProductVariantIngredientCreateDto } from '../../../../core/dtos/product/product-variant-ingredient-create-dto';
 import { YellowButton } from '../../../../shared/components/yellow-button/yellow-button';
 import { ProductsService } from '../../services/products-service/products.service';
-
-
-export interface ModifierSize {
-  id: number;
-  name: string; // e.g., "Tall", "Grande"
-  ozAmount: number;
-}
+import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
+import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dto';
+import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
 
 @Component({
   selector: 'app-add-drink-page',
@@ -49,14 +45,14 @@ export class AddDrinkPage implements OnInit {
   isDropdownOpen = false;
   drink: string;
 
-  availableSizes: ModifierSize[] = [];
+  availableSizes: ModifierDto[] = [];
   selectedSizeId: number | null = 1;
 
   public productPayload: ProductCreateDto;
 
   public categoryOptions: DropdownOption[] = [];
   public ingredientOptions: DropdownOption[] = [];
-  public addOnOption: DropdownOption[] = [];
+  public addOnOptions: DropdownOption[] = [];
 
   public imagePreview: string | ArrayBuffer | null = null;
 
@@ -70,7 +66,7 @@ export class AddDrinkPage implements OnInit {
   ) {
     const nav = this.router.getCurrentNavigation();
     this.drink = nav?.extras.state?.['drink'];
-    
+
     this.productPayload = this.initializeEmptyPayload();
   }
 
@@ -79,25 +75,35 @@ export class AddDrinkPage implements OnInit {
   }
 
   fetchInitialData() {
-    this.route.data.subscribe(data => {
-      this.availableSizes = data['sizes'];
-      this.categoryOptions = data['categories'];
-      this.ingredientOptions = data['ingredients'];
-      this.addOnOption = data['addOns'];
+    const categoriesData: CategoryDto[] = this.route.snapshot.data['categories'] || [];
+    const ingredientsData: StockItemDto[] = this.route.snapshot.data['ingredients'] || [];
+    const addOnsData: ModifierDto[] = this.route.snapshot.data['addOns'] || [];
+    this.availableSizes = this.route.snapshot.data['sizes'] || [];
 
-      if (this.availableSizes.length > 0) {
-        this.selectedSizeId = this.availableSizes[0].id;
-      }
-      this.initializeVariants();
-    });
+    this.initializeVariants();
+
+    this.categoryOptions = categoriesData.map(category => ({
+      value: category.id,
+      label: category.name
+    }));
+
+    this.ingredientOptions = ingredientsData.map(item => ({
+      value: item.id,
+      label: `${item.name} (${item.unitOfMeasure})`
+    }));
+
+    this.addOnOptions = addOnsData.map(modifier => ({
+      value: modifier.id,
+      label: `${modifier.name} (+₱${modifier.price})`
+    }));
   }
 
   initializeEmptyPayload(): ProductCreateDto {
     return {
       name: '',
-      description: '',  
-      imageFile: null,  
-      categoryId: 0, 
+      description: '',
+      imageFile: null,
+      categoryId: 0,
       isAvailable: true,
       isActive: true,
       variants: []
@@ -111,28 +117,6 @@ export class AddDrinkPage implements OnInit {
       recipe: [],
       addOns: []
     }));
-  }
-
-  private get currentVariantIndex(): number {
-    if (this.selectedSizeId === null) return -1;
-    const sizeName = this.availableSizes.find(s => s.id === this.selectedSizeId)?.name;
-    if (!sizeName) return -1;
-    return this.productPayload.variants.findIndex(v => v.size === sizeName);
-  }
-
-  public get currentVariant(): ProductVariantCreateDto | null {
-    const index = this.currentVariantIndex;
-    return index !== -1 ? this.productPayload.variants[index] : null;
-  }
-
-  get currentVariantPrice(): number {
-    return this.currentVariant?.price ?? 0;
-  }
-  
-  set currentVariantPrice(value: number) {
-    if (this.currentVariant) {
-      this.currentVariant.price = value;
-    }
   }
 
   onFileSelected(event: Event): void {
@@ -163,53 +147,13 @@ export class AddDrinkPage implements OnInit {
   }
 
   openIngredientModal() {
-    if (this.selectedSizeId === null) return; 
+    if (this.selectedSizeId === null) return;
     this.modalService.openIngredientModal();
   }
 
   openAddOnModal() {
     if (this.selectedSizeId === null) return;
     this.modalService.openAddOnModal();
-  }
-
-  handleSaveIngredient(recipeItem: RecipeItem) {
-    const variant = this.currentVariant;
-    if (!variant || !recipeItem.stockItemId) return;
-
-    const newIngredient: ProductVariantIngredientCreateDto = {
-      stockItemId: recipeItem.stockItemId,
-      quantityNeeded: recipeItem.quantityNeeded
-    };
-
-    const existingIndex = variant.recipe.findIndex(r => r.stockItemId === newIngredient.stockItemId);
-    if (existingIndex > -1) {
-      variant.recipe[existingIndex] = newIngredient;
-    } else {
-      variant.recipe.push(newIngredient);
-    }
-    
-    this.modalService.closeIngredientModal();
-    console.log('Updated Payload:', this.productPayload);
-  }
-
-  handleSaveAddOn(addOnItem: AddOnItem) {
-    const variant = this.currentVariant;
-    if (!variant || !addOnItem.addOnId) return;
-
-    const newAddOn: ProductVariantAddOnCreateDto = {
-      addOnId: addOnItem.addOnId,
-      times: addOnItem.times
-    };
-
-    const existingIndex = variant.addOns.findIndex(a => a.addOnId === newAddOn.addOnId);
-    if (existingIndex > -1) {
-      variant.addOns[existingIndex] = newAddOn;
-    } else {
-      variant.addOns.push(newAddOn);
-    }
-
-    this.modalService.closeAddOnModal();
-    console.log('Updated Payload:', this.productPayload);
   }
 
   submitNewProduct() {
@@ -231,8 +175,6 @@ export class AddDrinkPage implements OnInit {
       next: (response) => {
         console.log('Product created successfully with ID:', response.productId);
         alert('Product created successfully!');
-        // Optionally, navigate to another page
-        // this.router.navigate(['/products']);
       },
       error: (error) => {
         console.error('Error creating product:', error);
