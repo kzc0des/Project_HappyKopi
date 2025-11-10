@@ -100,6 +100,34 @@ export class AddOrderModal implements OnInit {
 
     return (base + this.sizePrice + addonsTotal) * this.quantity;
   }
+ 
+  private areOrdersIdentical(order1: OrderItem, order2: OrderItem): boolean {
+    if (
+      order1.drinkName !== order2.drinkName ||
+      order1.drinkCategory !== order2.drinkCategory ||
+      order1.size !== order2.size
+    ) {
+      return false;
+    }
+ 
+    if (order1.addons.length !== order2.addons.length) {
+      return false;
+    }
+ 
+    const addons1 = [...order1.addons].sort((a, b) => a.name.localeCompare(b.name));
+    const addons2 = [...order2.addons].sort((a, b) => a.name.localeCompare(b.name));
+ 
+    for (let i = 0; i < addons1.length; i++) {
+      if (
+        addons1[i].name !== addons2[i].name ||
+        addons1[i].quantity !== addons2[i].quantity
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   addToOrder() {
     const selectedAddons: Addon[] = this.addons
@@ -109,11 +137,11 @@ export class AddOrderModal implements OnInit {
         quantity: a.Quantity,
         price: a.Price ?? 0,
       }));
- 
-    let lastID = Number(localStorage.getItem('lastOrderID') || '0');
 
-    const orderItem: OrderItem = {
-      tempOrderID: lastID,
+    const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+ 
+    const newOrder: OrderItem = {
+      tempOrderID: 0, 
       drinkName: this.addOrderModal?.DrinkName ?? '',
       drinkCategory: this.addOrderModal?.DrinkCategory ?? '',
       size: this.activeSize,
@@ -121,18 +149,37 @@ export class AddOrderModal implements OnInit {
       total: this.getTotal(),
       addons: selectedAddons,
     };
+ 
+    const matchingOrderIndex = existingOrders.findIndex((order) =>
+      this.areOrdersIdentical(order, newOrder)
+    );
 
-    lastID += 1;
+    if (matchingOrderIndex !== -1) { 
+      const existingOrder = existingOrders[matchingOrderIndex];
+      const newQuantity = existingOrder.quantity + this.quantity;
+       
+      const pricePerItem = existingOrder.total / existingOrder.quantity;
+      
+      existingOrders[matchingOrderIndex] = {
+        ...existingOrder,
+        quantity: newQuantity,
+        total: pricePerItem * newQuantity,
+      };
 
-    // MAHALAGANG BAGAY
-    const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-    existingOrders.push(orderItem);
+      console.log('Order merged with existing order:', existingOrders[matchingOrderIndex]);
+    } else { 
+      let lastID = Number(localStorage.getItem('lastOrderID') || '0');
+      newOrder.tempOrderID = lastID;
+      
+      existingOrders.push(newOrder);
+      
+      lastID += 1;
+      localStorage.setItem('lastOrderID', lastID.toString());
+
+      console.log('New order added:', newOrder);
+    }
+
     localStorage.setItem('orders', JSON.stringify(existingOrders));
-
-    localStorage.setItem('lastOrderID', lastID.toString());
-
-    console.log('Order added:', orderItem);
-
     this.closeModal.emit();
   }
 }
