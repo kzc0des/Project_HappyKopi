@@ -53,6 +53,7 @@ export class AddDrinkPage implements OnInit {
   public categoryOptions: DropdownOption[] = [];
   public ingredientOptions: DropdownOption[] = [];
   public addOnOptions: DropdownOption[] = [];
+  public itemOptions: DropdownOption[] = [];
 
   public imagePreview: string | ArrayBuffer | null = null;
 
@@ -89,13 +90,25 @@ export class AddDrinkPage implements OnInit {
 
     this.ingredientOptions = ingredientsData.map(item => ({
       value: item.id,
-      label: `${item.name} (${item.unitOfMeasure})`
+      label: `${item.name} (${item.unitOfMeasure})`,
+      type: item.itemType
     }));
 
     this.addOnOptions = addOnsData.map(modifier => ({
       value: modifier.id,
       label: `${modifier.name} (+₱${modifier.price})`
     }));
+
+    this.itemOptions = [
+      {
+        value: 'Liquid',
+        label: 'Liquid'
+      },
+      {
+        value: 'Powder',
+        label: 'Powder'
+      }
+    ] 
   }
 
   initializeEmptyPayload(): ProductCreateDto {
@@ -112,11 +125,16 @@ export class AddDrinkPage implements OnInit {
 
   initializeVariants() {
     this.productPayload.variants = this.availableSizes.map(size => ({
+      sizeId: size.id,
       size: size.name,
       price: 0,
       recipe: [],
       addOns: []
     }));
+
+    if (this.productPayload.variants.length > 0) {
+      this.selectedSizeId = this.productPayload.variants[0].sizeId;
+    }
   }
 
   onFileSelected(event: Event): void {
