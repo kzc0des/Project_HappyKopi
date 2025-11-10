@@ -1,18 +1,14 @@
-<div class="order-card">
+<div class="order-card" (click)="onClick()">
   <div class="oc-upper-content">
-    @if (orderCard.DrinkImage) {
-      <img
-        [src]="orderCard.DrinkImage"
-        alt="{{ orderCard.DrinkName }}"
-        class="oc-drink-img"
-      />
+    @if (drinkImage) {
+      <img [src]="drinkImage" alt="orderCard.name" class="oc-drink-img" />
     } @else {
-      <div class="oc-placeholder">No image</div>
+      <div class="oc-placeholder">No image available</div>
     }
   </div>
 
   <div class="oc-lower-content">
-    <div class="oc-drink-name">{{ orderCard.DrinkName }}</div>
-    <div class="oc-drink-cat">{{ orderCard.DrinkCategory }}</div>
+    <div class="oc-drink-name">{{ orderCard.name }}</div>
+    <div class="oc-drink-cat">{{ orderCard.categoryName }}</div>
   </div>
 </div>

@@ -1,5 +1,4 @@
-<div class="modal-card">
-  <!-- Header -->
+<div class="modal-card"> 
   <div class="product-header">
     <div>
       <h3 class="product-title">{{addOrderModal?.DrinkName}}</h3>
@@ -7,8 +6,7 @@
     </div>
     <div class="product-price">{{addOrderModal?.Total | currency: 'PHP'}}</div>
   </div>
-
-  <!-- Quantity Selector -->
+ 
   <app-order-quantity-modifier></app-order-quantity-modifier>
 
   <div class="size-container">
@@ -21,8 +19,7 @@
   }
 </div>
 
-
-  <!-- Add-ons -->
+ 
   <div class="addons-section">
     <h4 class="addons-title">Add-ons</h4>
 
