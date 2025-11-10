@@ -57,5 +57,26 @@ namespace happykopiAPI.Services.Implementations
 
             return result;
         }
+
+        public async Task<IEnumerable<OrderModifierSummaryDto>> GetModifiersByTypeAsync(ModifierType modifierType)
+        {
+            using var connection = CreateConnection();
+            var parameters = new { ModifierType = (int)modifierType };
+            return await connection.QueryAsync<OrderModifierSummaryDto>("sp_GetModifiersByType", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<IEnumerable<OrderModifierSummaryDto>> GetAllModifiersAsync()
+        {
+            using var connection = CreateConnection();
+
+            return await connection.QueryAsync<OrderModifierSummaryDto>("sp_GetModifiers", commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<IEnumerable<OrderModifierSummaryDto>> GetAvailableModifiersAsync()
+        {
+            using var connection = CreateConnection();
+
+            return await connection.QueryAsync<OrderModifierSummaryDto>("sp_GetAvailableModifiers", commandType: CommandType.StoredProcedure);
+        }
     }
 }
