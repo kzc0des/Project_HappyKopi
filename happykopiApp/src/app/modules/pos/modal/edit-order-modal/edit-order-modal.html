@@ -1,13 +1,14 @@
 <div class="modal-card">
   <div class="product-header">
     <div>
-      <h3 class="product-title">{{ addOrderModal?.DrinkName }}</h3>
-      <p class="product-subtitle">{{ addOrderModal?.DrinkCategory }}</p>
+      <h3 class="product-title">{{ orderData?.drinkName }}</h3>
+      <p class="product-subtitle">{{ orderData?.drinkCategory }}</p>
     </div>
     <div class="product-price">{{ getTotal() | currency : 'PHP' }}</div>
   </div>
 
   <app-order-quantity-modifier
+    [oqm]="{ Quantity: quantity }"
     (quantityChange)="onQuantityChange($event)"
   ></app-order-quantity-modifier>
 
@@ -36,7 +37,7 @@
 
   <app-long-yellow-button
     buttonSize="modal"
-    buttonTitle="Add Drink"
-    (click)="addToOrder()"
+    buttonTitle="Save Changes"
+    (click)="saveChanges()"
   ></app-long-yellow-button>
 </div>

@@ -1,3 +1,4 @@
+using happykopiAPI.Enums;
 using happykopiAPI.Services.Implementations;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace happykopiAPI.Controllers
             _orderService = orderService;
         }
 
-        [HttpGet]
+        [HttpGet()]
         public async Task<IActionResult> GetCategories()
         {
             var categories = await _orderService.GetCategoriesWithProductCountAsync();
@@ -30,6 +31,31 @@ namespace happykopiAPI.Controllers
             var products = await _orderService.GetProductsWithCategoriesAsync(categoryId);
             return Ok(products);
         }
+
+        [HttpGet("modifiers")]
+        public async Task<IActionResult> GetModifiers([FromQuery] ModifierType? modifierType = null, [FromQuery] bool availableOnly = false)
+        {
+            if (modifierType.HasValue)
+            {
+                var modifiersByType = await _orderService.GetModifiersByTypeAsync(modifierType.Value);
+                return Ok(modifiersByType);
+            }
+
+            var modifiers = availableOnly
+                ? await _orderService.GetAvailableModifiersAsync()
+                : await _orderService.GetAllModifiersAsync();
+
+            return Ok(modifiers);
+        }
+
+        [HttpGet("modifiers/count-by-type")]
+        public async Task<IActionResult> GetModifierCounts()
+        {
+            var counts = await _orderService.GetModifierCountByTypeAsync();
+            return Ok(counts);
+        }
+
+        
 
     }
 

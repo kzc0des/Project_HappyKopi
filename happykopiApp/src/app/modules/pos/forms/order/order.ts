@@ -19,7 +19,7 @@ export class Order implements OnInit {
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
   drinks = signal<ProductsWithCategoryDto[]>([]);
- 
+
   showModal = signal(false);
   selectedDrink = signal<addOrderModalDto | undefined>(undefined);
 
@@ -53,9 +53,7 @@ export class Order implements OnInit {
     this.selectCategory(category);
   }
 
-  openDrinkModal(drink: ProductsWithCategoryDto) {
-    
-  }
+  openDrinkModal(drink: ProductsWithCategoryDto) {}
 
   closeModal() {
     this.showModal.set(false);
@@ -65,8 +63,12 @@ export class Order implements OnInit {
     this.selectedDrink.set({
       DrinkName: drink.name,
       DrinkCategory: drink.categoryName,
-      Total: 0,
+      BasePrice: 0,
     });
     this.showModal.set(true);
+  }
+
+  onCloseModal() {
+    this.showModal.set(false);
   }
 }

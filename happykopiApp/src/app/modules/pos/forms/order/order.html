@@ -32,6 +32,6 @@
 <div class="modal-overlay" (click)="closeModal()"></div>
  
 <div class="modal-wrapper">
-  <app-add-order-modal [addOrderModal]="selectedDrink()"></app-add-order-modal>
+  <app-add-order-modal [addOrderModal]="selectedDrink()" (closeModal)="onCloseModal()"></app-add-order-modal>
 </div>
 }
