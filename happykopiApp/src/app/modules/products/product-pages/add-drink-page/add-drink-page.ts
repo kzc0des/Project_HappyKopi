@@ -75,22 +75,21 @@ export class AddDrinkPage implements OnInit {
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('name');
     this.fetchInitialData();
   }
 
   fetchInitialData() {
-    this.productsService.getActiveSizes().subscribe(sizes => {
-      this.availableSizes = sizes;
-      if (sizes.length > 0) {
-        this.selectedSizeId = sizes[0].id;
+    this.route.data.subscribe(data => {
+      this.availableSizes = data['sizes'];
+      this.categoryOptions = data['categories'];
+      this.ingredientOptions = data['ingredients'];
+      this.addOnOption = data['addOns'];
+
+      if (this.availableSizes.length > 0) {
+        this.selectedSizeId = this.availableSizes[0].id;
       }
       this.initializeVariants();
     });
-
-    this.productsService.getActiveDrinkCategories().subscribe(options => this.categoryOptions = options);
-    this.productsService.getActiveLiquidAndPowderStockItems().subscribe(options => this.ingredientOptions = options);
-    this.productsService.getActiveAddOns().subscribe(options => this.addOnOption = options);
   }
 
   initializeEmptyPayload(): ProductCreateDto {
