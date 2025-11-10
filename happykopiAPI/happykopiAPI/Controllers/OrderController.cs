@@ -31,6 +31,13 @@ namespace happykopiAPI.Controllers
             return Ok(products);
         }
 
+        [HttpGet("modifiers/count-by-type")]
+        public async Task<IActionResult> GetModifierCounts()
+        {
+            var counts = await _orderService.GetModifierCountByTypeAsync();
+            return Ok(counts);
+        }
+
     }
 
 }

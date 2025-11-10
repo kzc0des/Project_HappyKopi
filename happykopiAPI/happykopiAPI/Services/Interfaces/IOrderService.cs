@@ -7,5 +7,6 @@ namespace happykopiAPI.Services.Interfaces
     {
         public Task<IEnumerable<CategoryWithProductCountDto>> GetCategoriesWithProductCountAsync();
         public Task<IEnumerable<ProductsWithCategoryDto>> GetProductsWithCategoriesAsync(int categoryId);
+        Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync();
     }
 }

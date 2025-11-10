@@ -4,6 +4,8 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using happykopiAPI.DTOs.Order.Outgoing_Data;
 using happykopiAPI.DTOs.Product.Outgoing_Data;
+using happykopiAPI.DTOs.Modifier.Internal;
+using happykopiAPI.Enums;
 
 namespace happykopiAPI.Services.Implementations
 {
@@ -34,6 +36,26 @@ namespace happykopiAPI.Services.Implementations
                 new { CategoryId = categoryId },
                 commandType: CommandType.StoredProcedure
             );
+        }
+
+        public async Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync()
+        {
+            using var connection = CreateConnection();
+            var resultsFromDb = await connection.QueryAsync<ModifierCountFromDbDto>(
+                "sp_GetModifierCountByType",
+                commandType: CommandType.StoredProcedure
+            );
+
+            var result = resultsFromDb
+                .Select(r => new ModifierCountDto
+                {
+                    ModifierType = ((ModifierType)r.ModifierType).ToString(),
+                    ModifierCount = r.ModifierCount
+                })
+                .ToList();
+
+
+            return result;
         }
     }
 }
