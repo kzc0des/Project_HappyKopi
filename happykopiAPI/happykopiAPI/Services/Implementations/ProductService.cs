@@ -78,7 +78,8 @@ namespace happykopiAPI.Services.Implementations
 
         public async Task<int> CreateProductAsync(ProductCreateDto productDto)
         {
-            await using var connection = new SqlConnection("LocalDB");
+            var connectionString = _configuration.GetConnectionString("LocalDB");
+            await using var connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
 
             await using var transaction = await connection.BeginTransactionAsync();
@@ -90,6 +91,7 @@ namespace happykopiAPI.Services.Implementations
                     productDto.Name,
                     productDto.Description,
                     productDto.ImageUrl,
+                    productDto.ImagePublicId,
                     productDto.CategoryId
                 };
                 int newProductId = await connection.QuerySingleAsync<int>(
@@ -118,7 +120,7 @@ namespace happykopiAPI.Services.Implementations
                     {
                         var ingredientParams = new
                         {
-                            VariantId = newVariantId,
+                            ProductVariantId = newVariantId,
                             ingredient.StockItemId,
                             ingredient.QuantityNeeded
                         };
@@ -134,7 +136,7 @@ namespace happykopiAPI.Services.Implementations
                     {
                         var addOnParams = new
                         {
-                            VariantId = newVariantId,
+                            ProductVariantId = newVariantId,
                             addOn.ModifierId,
                             addOn.DefaultQuantity
                         };

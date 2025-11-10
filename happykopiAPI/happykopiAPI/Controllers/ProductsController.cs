@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace happykopiAPI.Controllers
 {
@@ -20,10 +21,12 @@ namespace happykopiAPI.Controllers
     {
         private readonly IProductService _productService;
         private readonly IImageService _imageService;
-        public ProductsController(IProductService productService, IImageService imageService)
+        private readonly ILogger<ProductsController> _logger;
+        public ProductsController(IProductService productService, IImageService imageService, ILogger<ProductsController> logger)
         {
             _productService = productService;
             _imageService = imageService;
+            _logger = logger;
         }
 
         [HttpGet("sizes")] 
@@ -57,6 +60,20 @@ namespace happykopiAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromForm] ProductCreateFormDto formDto)
         {
+            // --- START DEBUG LOGGING ---
+            _logger.LogInformation("--- CreateProduct Endpoint Na-Hit ---");
+
+            // 1. Tignan natin kung ano ang na-bind sa DTO
+            _logger.LogWarning("DTO 'formDto.Name' value: {Name}", formDto.Name);
+
+            // 2. Tignan natin ang RAW FORM DATA
+            _logger.LogWarning("--- Raw Request.Form Keys ---");
+            foreach (var key in Request.Form.Keys)
+            {
+                _logger.LogWarning("Raw Key: {Key} | Raw Value: {Value}", key, Request.Form[key]);
+            }
+            _logger.LogWarning("--- End Raw Request.Form ---");
+            // --- END DEBUG LOGGING ---
 
             if (formDto == null)
             {
