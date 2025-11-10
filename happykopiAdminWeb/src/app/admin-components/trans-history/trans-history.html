@@ -1,0 +1,14 @@
+<div class="order-card">
+  <div class="order-id">{{ orderId }}</div>
+  
+  <div class="details">
+    <div class="order-time">{{ orderTime }}</div>
+    <div class="barista-name">{{ baristaName }}</div>
+  </div>
+
+  <div class="payment-method" [class.gcash]="paymentMethod === 'gcash'" [class.cash]="paymentMethod === 'cash'">
+    {{ paymentMethod }} Payment
+  </div>
+
+  <div class="total-payment">₱{{ totalPayment }}</div>
+</div>

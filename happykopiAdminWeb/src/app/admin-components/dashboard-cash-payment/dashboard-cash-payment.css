@@ -1,0 +1,50 @@
+.transaction-card {
+  width: 700px;
+  height: 90px;
+  position: relative;
+  background: white;
+  border-radius: 10px;
+}
+
+.transaction-icon {
+  width: 55px;
+  height: 55px;
+  background-color: #F3B72C;
+  border-radius: 12px;
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.transaction-title {
+  position: absolute;
+  left: 110px;
+  top: 28px;
+  color: #909090;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.transaction-count {
+  position: absolute;
+  left: 110px;
+  top: 50px;
+  color: #282828;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.transaction-amount {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #282828;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: right;
+}

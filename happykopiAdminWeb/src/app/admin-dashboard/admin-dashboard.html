@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dashboard</title>
+</head>
+<body class="body">
+
+  <nav class="navbar">
+    <h1 class="nav-text">HappyKopi Dashboard</h1>
+    
+    <!-- Sign Out Dropdown -->
+    <div class="dropdown-container">
+      <button class="dropdown-btn" (click)="toggleDropdown()">
+        <svg class="arrow-icon" [class.rotate]="isDropdownOpen" width="20" height="20" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      
+      @if (isDropdownOpen) {
+        <div class="dropdown-menu">
+          <button class="dropdown-item" (click)="openSignOutModal()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M6 14H3C2.73478 14 2.48043 13.8946 2.29289 13.7071C2.10536 13.5196 2 13.2652 2 13V3C2 2.73478 2.10536 2.48043 2.29289 2.29289C2.48043 2.10536 2.73478 2 3 2H6M11 11L14 8M14 8L11 5M14 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sign Out
+          </button>
+        </div>
+      }
+    </div>
+  </nav>
+
+  <!-- Sign Out Confirmation Modal -->
+  @if (isSignOutModalOpen) {
+    <div class="modal-overlay" (click)="closeSignOutModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2 class="modal-title">Sign Out</h2>
+        <p class="modal-message">Are you sure you want to sign out?</p>
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="closeSignOutModal()">Cancel</button>
+          <button class="btn-confirm" (click)="confirmSignOut()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="container">
+    <div class="flex-layout">
+      <div class="left-column">
+
+        <div class="summary-container">
+          <!-- SALES BOX -->
+          <div class="summary-box">
+            <app-dashboard-card
+              [amount]="totalSales"
+              [title]="'Total Sales'">
+            </app-dashboard-card>
+          </div>
+
+          <!-- TRANSACTION BOX -->
+          <div class="summary-box">
+            <app-admin-dashboard-transaction
+              [value]="totalTransactions"
+              [subtitle]="'Total Transactions'">
+            </app-admin-dashboard-transaction>
+          </div>
+        </div>
+
+        <!-- WEEKLY SALES -->
+        <div class="flex-item left-bottom">
+          <h3 class="weekly-text">Weekly Sales</h3>
+          <app-admin-line-chart></app-admin-line-chart>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="right-column">
+        <div class="flex-item right-top">
+          <app-dashboard-cash-payment
+            [title]="'Cash Transactions'"
+            [count]="cashTransactionCount"
+            [amount]="cashTransactionAmount">
+          </app-dashboard-cash-payment>
+
+          <app-dashboard-gcash-payment
+            title="Gcash Payments"
+            [count]="gcashPaymentCount"
+            [amount]="gcashPaymentAmount"
+            color="#FFD966">
+          </app-dashboard-gcash-payment>
+        </div>
+        <div class="flex-item right-bottom">
+          <h3 class="sales-text">Transaction History</h3>
+          
+          @for (transaction of transactionHistory; track transaction.orderId) {
+            <app-trans-history
+              [orderId]="transaction.orderId"
+              [orderTime]="transaction.orderTime"
+              [baristaName]="transaction.baristaName"
+              [paymentMethod]="transaction.paymentMethod"
+              [totalPayment]="transaction.totalPayment">
+            </app-trans-history>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
