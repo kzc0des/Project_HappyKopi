@@ -12,9 +12,8 @@
     <div class="drink-size">{{ cartItem.Size }}</div>
 
     <div class="addon-list">
-      <div class="addon">
-        {{ cartItem.AddOn }}
-        <div class="addon-qty">({{ cartItem.AddOnQuantity }})</div>
+      <div class="addon" *ngFor="let addon of cartItem.Addons">
+        {{ addon.name }} ({{ addon.quantity }})
       </div>
     </div>
   </div>

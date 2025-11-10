@@ -1,50 +1,7 @@
 <div class="order-body">
-  <app-cart-item
-    [cartItem]="{
-      Name: 'Thai',
-      Size: 'Grande',
-      DrinkImage: '',
-      AddOn: 'Cream Cheese',
-      Subtotal: 100,
-      DrinkQuantity: 1,
-      AddOnQuantity: 1
-    }"
-  ></app-cart-item>
-  <app-cart-item
-    [cartItem]="{
-      Name: 'Thai',
-      Size: 'Grande',
-      DrinkImage: '',
-      AddOn: 'Cream Cheese',
-      Subtotal: 100,
-      DrinkQuantity: 1,
-      AddOnQuantity: 1
-    }"
-  ></app-cart-item>
-  <app-cart-item
-    [cartItem]="{
-      Name: 'Thai',
-      Size: 'Grande',
-      DrinkImage: '',
-      AddOn: 'Cream Cheese',
-      Subtotal: 100,
-      DrinkQuantity: 1,
-      AddOnQuantity: 1
-    }"
-  ></app-cart-item>
-  <app-cart-item
-    [cartItem]="{
-      Name: 'Thai',
-      Size: 'Grande',
-      DrinkImage: '',
-      AddOn: 'Cream Cheese',
-      Subtotal: 100,
-      DrinkQuantity: 1,
-      AddOnQuantity: 1
-    }"
-  ></app-cart-item>
+  <app-cart-item *ngFor="let order of orders" [cartItem]="order"></app-cart-item>
 
   <div class="btns">
-    <app-long-yellow-button buttonTitle="Charge"></app-long-yellow-button>
+    <app-long-yellow-button buttonTitle="Charge" (click)="clearOrders()"> </app-long-yellow-button>
   </div>
 </div>
