@@ -1,0 +1,43 @@
+<div class="modal-card">
+  <div class="product-header">
+    <div>
+      <h3 class="product-title">{{ orderData?.drinkName }}</h3>
+      <p class="product-subtitle">{{ orderData?.drinkCategory }}</p>
+    </div>
+    <div class="product-price">{{ getTotal() | currency : 'PHP' }}</div>
+  </div>
+
+  <app-order-quantity-modifier
+    [oqm]="{ Quantity: quantity }"
+    (quantityChange)="onQuantityChange($event)"
+  ></app-order-quantity-modifier>
+
+  <div class="size-container">
+    @for (size of sizes; track size.SizeName) {
+    <app-grande-active
+      [sizeButton]="size"
+      [isActive]="activeSize === size.SizeName"
+      (selected)="selectSize(size)"
+    ></app-grande-active>
+    }
+  </div>
+
+  <div class="addons-section">
+    <h4 class="addons-title">Add-ons</h4>
+
+    <div class="addons-list">
+      @for (addon of addons; track addon.Name) {
+      <app-addon-card-active
+        [addonCard]="addon"
+        (quantityChange)="onAddonQuantityChange(addon.Name, $event)"
+      ></app-addon-card-active>
+      }
+    </div>
+  </div>
+
+  <app-long-yellow-button
+    buttonSize="modal"
+    buttonTitle="Save Changes"
+    (click)="saveChanges()"
+  ></app-long-yellow-button>
+</div>

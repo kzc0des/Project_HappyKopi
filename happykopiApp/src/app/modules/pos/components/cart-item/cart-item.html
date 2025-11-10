@@ -20,6 +20,6 @@
 
   <div class="price-and-qty">
     <div class="drink-price">{{ cartItem.Subtotal | currency : 'PHP' }}</div>
-    <div class="quantity-control">Edit</div>
+    <div class="quantity-control" (click)="editOrder()">Edit</div>
   </div>
 </div>

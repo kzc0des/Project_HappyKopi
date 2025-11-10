@@ -1,7 +1,22 @@
-<div class="order-body">
-  <app-cart-item *ngFor="let order of orders" [cartItem]="order"></app-cart-item>
+<div class="order-body mb-9">
+  <app-cart-item 
+    *ngFor="let order of orders"
+    [cartItem]="order"
+    (edit)="openEditModal($event)"
+  ></app-cart-item>
 
   <div class="btns">
-    <app-long-yellow-button buttonTitle="Charge" (click)="clearOrders()"> </app-long-yellow-button>
+    <app-long-yellow-button buttonTitle="Charge" (click)="clearOrders()"></app-long-yellow-button>
   </div>
+
+  @if (showEditModal && selectedOrderId !== null) {
+  <div class="modal-overlay" (click)="closeEditModal()"></div>
+  <div class="modal-wrapper">
+    <app-edit-order-modal
+      [orderId]="selectedOrderId!"
+      (closeModal)="closeEditModal()"
+    ></app-edit-order-modal>
+  </div>
+
+  }
 </div>
