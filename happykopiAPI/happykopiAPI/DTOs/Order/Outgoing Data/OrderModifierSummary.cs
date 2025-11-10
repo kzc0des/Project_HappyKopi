@@ -7,3 +7,4 @@ namespace happykopiAPI.DTOs.Order.Outgoing_Data
         public decimal Price { get; set; }
     }
 }
+    

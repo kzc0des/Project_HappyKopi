@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 export interface sizeButtonDto {
   SizeName: string,
-  SizeQuantity: number
+  SizeQuantity: number,
 }
 
 @Component({

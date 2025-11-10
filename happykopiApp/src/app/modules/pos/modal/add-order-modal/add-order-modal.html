@@ -4,10 +4,12 @@
       <h3 class="product-title">{{ addOrderModal?.DrinkName }}</h3>
       <p class="product-subtitle">{{ addOrderModal?.DrinkCategory }}</p>
     </div>
-    <div class="product-price">{{ addOrderModal?.Total | currency : 'PHP' }}</div>
+    <div class="product-price">{{ getTotal() | currency : 'PHP' }}</div>
   </div>
 
-  <app-order-quantity-modifier></app-order-quantity-modifier>
+  <app-order-quantity-modifier
+    (quantityChange)="onQuantityChange($event)"
+  ></app-order-quantity-modifier>
 
   <div class="size-container">
     @for (size of sizes; track size.SizeName) {
@@ -24,9 +26,17 @@
 
     <div class="addons-list">
       @for (addon of addons; track addon.Name) {
-      <app-addon-card-active [addonCard]="addon"></app-addon-card-active>
+      <app-addon-card-active
+        [addonCard]="addon"
+        (quantityChange)="onAddonQuantityChange(addon.Name, $event)"
+      ></app-addon-card-active>
       }
     </div>
   </div>
-  <app-long-yellow-button buttonSize="modal" buttonTitle="Add Drink"></app-long-yellow-button>
+
+  <app-long-yellow-button
+    buttonSize="modal"
+    buttonTitle="Add Drink"
+    (click)="addToOrder()"
+  ></app-long-yellow-button>
 </div>
