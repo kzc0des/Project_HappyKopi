@@ -25,6 +25,7 @@ import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dt
 import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dto';
 import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
 import { HeaderService } from '../../../../core/services/header/header.service';
+import { AlertService } from '../../../../core/services/alert/alert.service';
 
 @Component({
   selector: 'app-add-drink-page',
@@ -74,7 +75,8 @@ export class AddDrinkPage implements OnInit {
     private router: Router,
     private modalService: ModalService,
     private productsService: ProductsService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private alertService: AlertService
   ) {
     const nav = this.router.getCurrentNavigation();
     this.drink = nav?.extras.state?.['drink'];
@@ -218,7 +220,7 @@ export class AddDrinkPage implements OnInit {
 
     if (productForm.invalid) {
       console.log("Form is invalid. Please check errors.");
-      return; 
+      return;
     }
 
     const payloadForBackend: ProductCreateDto = {
@@ -264,13 +266,17 @@ export class AddDrinkPage implements OnInit {
     console.log('Final payload for backend:', payloadForBackend);
 
     this.productsService.createProduct(payloadForBackend).subscribe({
-      next: (response) => {
+      next: async (response) => {        
         console.log('Product created successfully!', response);
         this.headerService.notifyItemAdded(true);
-        this.router.navigate(['../'], { relativeTo: this.route, replaceUrl: true});
+        await this.alertService.showSuccess(
+          'Success!',
+          'Product has been created successfully.'
+        );
+        this.router.navigate(['../'], { relativeTo: this.route, replaceUrl: true });
       },
 
-      error: (err) => {
+      error: async (err) => {
         console.error('Failed to create product (Full Error Object):', err);
 
         let displayMessage = 'An unexpected error occurred. Please try again.';
@@ -301,7 +307,10 @@ export class AddDrinkPage implements OnInit {
           displayMessage = '500 Internal Server Error. Check the backend logs.';
         }
 
-        alert(displayMessage);
+        await this.alertService.showError(
+          'Failed',
+          'An error occurred while creating the product.'
+        );
       }
     });
   }
