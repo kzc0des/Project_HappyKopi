@@ -183,8 +183,8 @@ namespace happykopiAPI.Services.Implementations
             var ingredients = (await multi.ReadAsync<ProductVariantIngredientDetailDto>()).ToList();
             var addOns = (await multi.ReadAsync<ProductVariantAddOnDetailDto>()).ToList();
 
-            var variantIngredients = ingredients.ToLookup(i => i.StockItemId);
-            var variantAddOns = addOns.ToLookup(a => a.ModifierId);
+            var variantIngredients = ingredients.ToLookup(i => i.ProductVariantId);
+            var variantAddOns = addOns.ToLookup(a => a.ProductVariantId);
 
             foreach (var variant in variants)
             {

@@ -6,6 +6,7 @@ import { CategoryButtonField } from '../../components/category-button-field/cate
 import { ProductListCard } from '../../components/product-list-card/product-list-card';
 import { HeaderService } from '../../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
+import { ProductListItemDto } from '../../../../core/dtos/product/product.model';
 
 @Component({
   selector: 'app-drink-list-page',
@@ -16,15 +17,7 @@ import { Subscription } from 'rxjs';
 export class DrinkListPage implements OnInit {
   isDropdownOpen = false;
   private actionSubscription !: Subscription;
-
-  drinks = [
-    { name: 'Thai', category: 'Milk Tea', baseprice: 45.00, available: true},  //image: (wala akong malinaw na copy ng image kaya di ko na nilagyan)
-    { name: 'Hokkaido', category: 'Milk Tea', baseprice: 45.00, available: false},
-    { name: 'Hot Kopi Latte', category: 'Hot Kopi', baseprice: 45.00, available: true},
-    { name: 'Karamel Macchiato', category: 'Milk Tea', baseprice: 45.00, available: true},
-    { name: 'Capuccino', category: 'Iced Kopi', baseprice: 45.00, available: false},
-    { name: 'Taro', category: 'Milk Tea', baseprice: 45.00, available: true},
-  ];
+  drinks: ProductListItemDto[] = []
 
   constructor(
     private router: Router,
@@ -33,6 +26,9 @@ export class DrinkListPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.drinks = this.route.snapshot.data['productslist'];
+    console.log(this.drinks);
+
     this.actionSubscription = this.headerService.action$.subscribe(action => {
       if(action === 'ADD'){
         this.router.navigate(['create'], {relativeTo: this.route});

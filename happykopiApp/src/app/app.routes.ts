@@ -70,6 +70,7 @@ import { activeAddonsResolver } from './modules/products/resolver/adddrinkresolv
 import { drinkCategoriesResolver } from './modules/products/resolver/adddrinkresolvers/drink-categories-resolver';
 import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver/adddrinkresolvers/powder-and-liquids-ingredients-resolver';
 import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
+import { productsListResolver } from './modules/products/resolver/productslist/products-list-resolver';
 
 export const routes: Routes = [
     {
@@ -185,7 +186,10 @@ export const routes: Routes = [
                     {
                         path: '',
                         component: DrinkListPage,
-                        pathMatch: 'full'
+                        pathMatch: 'full',
+                        resolve: {
+                            productslist: productsListResolver
+                        }
                     },
                     {
                         path: 'filter',

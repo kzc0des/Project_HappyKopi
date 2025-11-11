@@ -25,7 +25,13 @@ namespace happykopiAPI.DTOs.Product.Outgoing_Data
         public List<ProductVariantAddOnDetailDto> AddOns { get; set; } = new List<ProductVariantAddOnDetailDto>();
     }
 
-    public class ProductVariantIngredientDetailDto : ProductVariantIngredientCreateDto { }
+    public class ProductVariantIngredientDetailDto : ProductVariantIngredientCreateDto
+    {
+        public int ProductVariantId { get; set; }
+    }
 
-    public class ProductVariantAddOnDetailDto : ProductVariantAddOnCreateDto { }
+    public class ProductVariantAddOnDetailDto : ProductVariantAddOnCreateDto
+    {
+        public int ProductVariantId { get; set; }
+    }
 }

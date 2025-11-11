@@ -1,6 +1,8 @@
 <div class="card bg-white flex items-center gap-6 py-2 rounded-0 cursor-pointer hover:bg-gray-50 transition px-6"
     (click)="onCardClick()">
-    <div class="menu-image"></div>
+    <div class="menu-image">
+        <img [src]="imageUrl | cloudinary:'w_57,h_80,c_fill,g_auto,q_auto,f_auto'" alt="product-image">
+    </div>
     <div class="flex flex-1 justify-between items-center gap-6">
         <div class="flex flex-col gap-2">
             <div class="text-[16px] font-semibold text-gray-800">{{ name }}</div>

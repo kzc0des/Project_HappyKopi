@@ -34,6 +34,7 @@ export interface ProductListItemDto {
   id: number;
   name: string;
   categoryName: string;
+  imageUrl: string;
 }
 
 export interface ProductDetailDto {
@@ -54,4 +55,3 @@ export interface ProductUpdateDto extends ProductCreateDto { }
 export interface ProductVariantDetailDto extends ProductVariantCreateDtoUI {
   id: number;
 }
-

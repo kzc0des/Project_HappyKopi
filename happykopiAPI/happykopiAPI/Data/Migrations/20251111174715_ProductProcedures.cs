@@ -5,7 +5,7 @@
 namespace happykopiAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ProductsProcedures : Migration
+    public partial class ProductProcedures : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ BEGIN
     SELECT
         p.Id,
         p.Name,
-        c.Name AS CategoryName
+        c.Name AS CategoryName,
+        p.ImageUrl
     FROM
         Products p
     JOIN

@@ -12,8 +12,8 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    [Migration("20251111135724_ProductsProcedures")]
-    partial class ProductsProcedures
+    [Migration("20251111174715_ProductProcedures")]
+    partial class ProductProcedures
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
