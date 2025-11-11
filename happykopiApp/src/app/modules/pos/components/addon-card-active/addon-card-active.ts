@@ -28,12 +28,14 @@ export class AddonCardActive implements OnInit {
     this.quantityChange.emit(this.addonCard.Quantity);
   }
 
-  decrease(): void {
-    if (this.addonCard.Quantity > 0) {
+  decrease() {
+    if (this.addonCard.Quantity > this.minQuantity) {
       this.addonCard.Quantity--;
       this.quantityChange.emit(this.addonCard.Quantity);
     }
   }
+ 
+  @Input() minQuantity: number = 0;
 
   get isZero(): boolean {
     return this.addonCard.Quantity === 0;

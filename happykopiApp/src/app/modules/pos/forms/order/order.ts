@@ -8,6 +8,7 @@ import { OrderQuickView } from '../../components/order-quick-view/order-quick-vi
 import { ActivatedRoute } from '@angular/router';
 import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-with-category.dto';
 import { AddOrderModal, addOrderModalDto } from '../../modal/add-order-modal/add-order-modal';
+import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
 
 @Component({
   selector: 'app-order',
@@ -19,6 +20,7 @@ export class Order implements OnInit {
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
   drinks = signal<ProductsWithCategoryDto[]>([]);
+  
 
   showModal = signal(false);
   selectedDrink = signal<addOrderModalDto | undefined>(undefined);
@@ -61,9 +63,10 @@ export class Order implements OnInit {
 
   onDrinkClicked(drink: ProductsWithCategoryDto): void {
     this.selectedDrink.set({
+      ProductId: drink.id, // <-- PASS THE PRODUCT ID
       DrinkName: drink.name,
       DrinkCategory: drink.categoryName,
-      BasePrice: 0,
+      BasePrice: drink.price, // <-- Pass the "starts at" price
     });
     this.showModal.set(true);
   }

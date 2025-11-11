@@ -82,26 +82,35 @@ namespace happykopiAPI.Services.Implementations
         public async Task<ProductConfigurationResultDto> GetProductConfigurationByIdAsync(int productId)
         {
             using var connection = CreateConnection();
-             
             var parameters = new { p_ProductId = productId };
-             
-            using var multi = await connection.QueryMultipleAsync(
-                "GetProductConfigurationByProductId",
+
+            var multi = await connection.QueryMultipleAsync(
+                "sp_GetProductConfigurationByProductId",
                 parameters,
                 commandType: CommandType.StoredProcedure
             );
-             
-            var result = new ProductConfigurationResultDto
-            {
-                // 1. First result set: Product Variants
-                Variants = (await multi.ReadAsync<OrderVariantDto>()).ToList(),
-                 
-                Ingredients = (await multi.ReadAsync<OrderVariantIngredientDto>()).ToList(),
-                 
-                AddOns = (await multi.ReadAsync<OrderVarianAddontDto>()).ToList()
-            };
 
-            return result;
+            var variants = (await multi.ReadAsync<OrderVariantDto>()).ToList();
+            Console.WriteLine($"Variants: {variants.Count}");
+
+            var ingredients = (await multi.ReadAsync<OrderVariantIngredientDto>()).ToList();
+            Console.WriteLine($"Ingredients: {ingredients.Count}");
+
+            var addOns = (await multi.ReadAsync<OrderVarianAddontDto>())
+                .Where(a => a.ModifierId != null && a.ModifierId > 0) // Filter out null rows
+                .ToList();
+            Console.WriteLine($"AddOns: {addOns.Count}");
+
+            var allAvailableAddons = (await multi.ReadAsync<OrderModifierSummaryDto>()).ToList();
+            Console.WriteLine($"AllAvailableAddons: {allAvailableAddons.Count}");
+
+            return new ProductConfigurationResultDto
+            {
+                Variants = variants,
+                Ingredients = ingredients,
+                AddOns = addOns,
+                AllAvailableAddons = allAvailableAddons
+            };
         }
     }
 }
