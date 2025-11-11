@@ -22,6 +22,7 @@ export class AddIngredientModal {
   @Input() ingredient: RecipeItem | null = null;
   
   @Output() saveIngredient = new EventEmitter<RecipeItem>();
+  @Output() deleteIngredient = new EventEmitter<void>();
 
   public filteredIngredientOptions: DropdownOption[] = [];
   private _allIngredientOptions: DropdownOption[] = [];
@@ -130,5 +131,10 @@ export class AddIngredientModal {
       this.saveIngredient.emit(payload);
       this.close();
     }
+  }
+
+  onDelete(): void {
+    this.deleteIngredient.emit();
+    this.close();
   }
 }

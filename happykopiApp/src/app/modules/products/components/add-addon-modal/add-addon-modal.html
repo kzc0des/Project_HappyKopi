@@ -15,8 +15,8 @@ p-7 shadow-md rounded-lg">
     <app-yellow-button class="w-full py-4" itemTitle="addon" buttonTitle="Add this Add-on" (isClick)="onSave()"></app-yellow-button>
     }@else {
     <div class="w-full flex gap-2">
-        <app-red-button class="w-full py-4" buttonTitle="Delete" itemTitle="delete"></app-red-button>
-        <app-yellow-button class="w-full py-4" buttonTitle="Save" itemTitle="addon"></app-yellow-button>
+        <app-red-button class="w-full py-4" buttonTitle="Delete" itemTitle="delete" (isClick)="onDelete()"></app-red-button>
+        <app-yellow-button class="w-full py-4" buttonTitle="Save" itemTitle="addon" (isClick)="onSave()"></app-yellow-button>
     </div>
     }
 </div>

@@ -20,6 +20,7 @@ export class AddAddonModal {
   @Input() isEditing = false;
   @Input() addOnOption: DropdownOption[] = [];
   @Input() addon: AddOnItem | null = null;
+  @Output() deleteAddOn = new EventEmitter<void>();
   @Output() saveAddOn = new EventEmitter<AddOnItem>();
 
   public selectedAddOnId: number | null = null;
@@ -75,5 +76,10 @@ export class AddAddonModal {
       this.saveAddOn.emit(payload);
       this.close();
     }
+  }
+
+  onDelete(): void {
+    this.deleteAddOn.emit();
+    this.close();
   }
 }

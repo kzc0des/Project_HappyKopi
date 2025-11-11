@@ -232,6 +232,17 @@ export class AddDrinkPage implements OnInit {
     console.log('Editing ingredient:', this.editingIngredient);
   }
 
+  onDeleteIngredient(): void {
+    if (this.currentVariant && this.editingIngredientIndex !== null) {
+      this.currentVariant.recipe.splice(this.editingIngredientIndex, 1);
+      console.log('Deleted ingredient at index:', this.editingIngredientIndex);
+      console.log('Updated Variants Payload:', this.productPayload.variants);
+    } else {
+      console.error('No ingredient selected for deletion or no size selected.');
+    }
+    this.resetEditingState();
+  }
+
   onSaveAddOn(item: AddOnItem) {
     if (this.currentVariant) {
       if (this.editingAddOnIndex !== null) {
@@ -254,6 +265,17 @@ export class AddDrinkPage implements OnInit {
     this.editingAddOn = { ...addOn };
     this.editingAddOnIndex = index;
     this.modalService.openAddOnModal();
+  }
+
+  onDeleteAddOn(): void {
+    if (this.currentVariant && this.editingAddOnIndex !== null) {
+      this.currentVariant.addOns.splice(this.editingAddOnIndex, 1);
+      console.log('Deleted add-on at index:', this.editingAddOnIndex);
+      console.log('Updated Variants Payload:', this.productPayload.variants);
+    } else {
+      console.error('No add-on selected for deletion or no size selected.');
+    }
+    this.resetEditingState();
   }
 
   submitNewProduct(productForm: NgForm) {

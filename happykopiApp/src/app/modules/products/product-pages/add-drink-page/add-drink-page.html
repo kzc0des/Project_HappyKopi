@@ -98,10 +98,10 @@
 
 
 <app-add-ingredient-modal [isEditing]="editingIngredientIndex !== null" [ingredient]="editingIngredient"
-    [categoryOptions]="itemOptions" [ingredientOptions]="ingredientOptions"
-    (saveIngredient)="onSaveIngredient($event)">
+    [categoryOptions]="itemOptions" [ingredientOptions]="ingredientOptions" (saveIngredient)="onSaveIngredient($event)"
+    (deleteIngredient)="onDeleteIngredient()">
 </app-add-ingredient-modal>
 
 <app-add-addon-modal [isEditing]="editingAddOnIndex !== null" [addon]="editingAddOn" [addOnOption]="addOnOptions"
-    (saveAddOn)="onSaveAddOn($event)">
+    (saveAddOn)="onSaveAddOn($event)" (deleteAddOn)="onDeleteAddOn()">
 </app-add-addon-modal>
