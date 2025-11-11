@@ -6,6 +6,7 @@ export interface Addon {
 
 export interface OrderItem {
   tempOrderID: number;
+  drinkID?: number;
   drinkName: string;
   drinkCategory: string;
   size: string;

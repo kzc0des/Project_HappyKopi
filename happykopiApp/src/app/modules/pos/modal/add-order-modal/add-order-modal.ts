@@ -21,7 +21,7 @@ export interface addOrderModalDto {
 }
 
 interface AddonWithConfig extends addonCardDto {
-  minQuantity: number; // Minimum quantity (from default)
+  minQuantity: number;  
 }
 
 @Component({
@@ -39,8 +39,7 @@ export class AddOrderModal implements OnInit {
   activeSize: string = '';
   selectedVariantId: number = 0;
   quantity: number = 1;
-
-  // Store the full configuration
+ 
   productConfig?: ProductConfigurationResultDto;
 
   constructor(private orderService: OrderService) {}
@@ -63,8 +62,7 @@ export class AddOrderModal implements OnInit {
       next: (config: ProductConfigurationResultDto) => {
         console.log('Product Configuration:', config);
         this.productConfig = config;
-
-        // Load variants (sizes) - only those with ingredients
+ 
         if (config.variants && config.variants.length > 0) {
           this.sizes = config.variants.map((v) => ({
             SizeName: v.size,
@@ -72,8 +70,7 @@ export class AddOrderModal implements OnInit {
           }));
           this.activeSize = this.sizes[0].SizeName;
           this.selectedVariantId = config.variants[0].id;
-
-          // Load addons for the first variant
+ 
           this.loadAddonsForVariant(this.selectedVariantId);
         } else {
           console.warn('No variants with ingredients found for this product');
@@ -87,24 +84,21 @@ export class AddOrderModal implements OnInit {
 
   loadAddonsForVariant(variantId: number) {
     if (!this.productConfig) return;
-
-    // Get variant-specific addons (with default quantities)
+ 
     const variantAddons = this.productConfig.addOns.filter((a) => a.productVariantId === variantId);
-
-    // Create a map of modifier IDs to their default quantities
+ 
     const defaultQuantities = new Map<number, number>();
     variantAddons.forEach((va) => {
       defaultQuantities.set(va.modifierId, va.defaultQuantity);
     });
-
-    // Load all available addons
+ 
     this.addons = this.productConfig.allAvailableAddons.map((addon) => {
       const defaultQty = defaultQuantities.get(addon.id) || 0;
       return {
         Name: addon.name,
-        Quantity: defaultQty, // Set to default quantity
+        Quantity: defaultQty, 
         Price: addon.price,
-        minQuantity: defaultQty, // Store minimum allowed quantity
+        minQuantity: defaultQty,  
       };
     });
 
@@ -113,12 +107,10 @@ export class AddOrderModal implements OnInit {
 
   selectSize(size: sizeButtonDto) {
     this.activeSize = size.SizeName;
-
-    // Find the variant ID for this size
+ 
     const variant = this.productConfig?.variants.find((v) => v.size === size.SizeName);
     if (variant) {
-      this.selectedVariantId = variant.id;
-      // Reload addons for this variant
+      this.selectedVariantId = variant.id; 
       this.loadAddonsForVariant(variant.id);
     }
   }
@@ -129,8 +121,7 @@ export class AddOrderModal implements OnInit {
 
   onAddonQuantityChange(addonName: string, newQuantity: number) {
     const addon = this.addons.find((a) => a.Name === addonName);
-    if (addon) {
-      // Don't allow decreasing below minimum quantity
+    if (addon) { 
       if (newQuantity < addon.minQuantity) {
         console.warn(`Cannot decrease ${addonName} below ${addon.minQuantity}`);
         addon.Quantity = addon.minQuantity;
@@ -161,8 +152,7 @@ export class AddOrderModal implements OnInit {
         quantity: a.Quantity,
         price: a.Price ?? 0,
       }));
-
-    // Get ingredients for selected variant
+ 
     const variantIngredients =
       this.productConfig?.ingredients.filter(
         (ing) => ing.productVariantId === this.selectedVariantId
@@ -191,12 +181,12 @@ export class AddOrderModal implements OnInit {
     console.log('=== ORDER PAYLOAD ===');
     console.log(JSON.stringify(newOrder, null, 2));
     console.log('===================');
-
-    // Store in localStorage (keep your existing logic)
+ 
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
     const orderItem: OrderItem = {
       tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
+      drinkID: newOrder.productId,
       drinkName: newOrder.drinkName,
       drinkCategory: newOrder.drinkCategory,
       size: newOrder.size,
