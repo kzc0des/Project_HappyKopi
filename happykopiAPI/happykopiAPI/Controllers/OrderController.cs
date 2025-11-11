@@ -55,7 +55,23 @@ namespace happykopiAPI.Controllers
             return Ok(counts);
         }
 
-        
+        [HttpGet("configuration/{productId}")]
+        public async Task<IActionResult> GetProductConfiguration(int productId)
+        {
+            if (productId <= 0)
+            {
+                return BadRequest("Product ID must be greater than zero.");
+            }
+
+            var configuration = await _orderService.GetProductConfigurationByIdAsync(productId);
+             
+            if (configuration == null || configuration.Variants.Count == 0)
+            { 
+                return NotFound($"Product with ID {productId} not found or has no variants.");
+            }
+
+            return Ok(configuration);
+        }
 
     }
 

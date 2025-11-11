@@ -78,5 +78,30 @@ namespace happykopiAPI.Services.Implementations
 
             return await connection.QueryAsync<OrderModifierSummaryDto>("sp_GetAvailableModifiers", commandType: CommandType.StoredProcedure);
         }
+
+        public async Task<ProductConfigurationResultDto> GetProductConfigurationByIdAsync(int productId)
+        {
+            using var connection = CreateConnection();
+             
+            var parameters = new { p_ProductId = productId };
+             
+            using var multi = await connection.QueryMultipleAsync(
+                "GetProductConfigurationByProductId",
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+             
+            var result = new ProductConfigurationResultDto
+            {
+                // 1. First result set: Product Variants
+                Variants = (await multi.ReadAsync<OrderVariantDto>()).ToList(),
+                 
+                Ingredients = (await multi.ReadAsync<OrderVariantIngredientDto>()).ToList(),
+                 
+                AddOns = (await multi.ReadAsync<OrderVarianAddontDto>()).ToList()
+            };
+
+            return result;
+        }
     }
 }
