@@ -5,24 +5,32 @@ import { CategoryWithProductCountDto } from '../../../core/dtos/order/category-w
 import { ProductsWithCategoryDto } from '../../../core/dtos/order/products-with-category.dto';
 import { ModifierType } from '../../../core/enums/modifier-type';
 import { OrderModifierSummaryDto } from '../../../core/dtos/order/order-modifier-summary.to';
-import { HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http'; 
+import { ProductConfigurationResultDto } from '../../../core/dtos/order/product-configuration-result.dto'; 
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrderService {
+export class OrderService { 
+  private readonly endpoint = 'order'; 
+
   constructor(private api: ApiService) {}
- 
+   
   getCategories(): Observable<CategoryWithProductCountDto[]> {
-    return this.api.get<CategoryWithProductCountDto[]>('order');
+    return this.api.get<CategoryWithProductCountDto[]>(this.endpoint);
   }
- 
+  
   getProductsByCategory(categoryId: number): Observable<ProductsWithCategoryDto[]> {
-    return this.api.get<ProductsWithCategoryDto[]>(`order/category/${categoryId}`);
+    return this.api.get<ProductsWithCategoryDto[]>(`${this.endpoint}/category/${categoryId}`);
   }
 
-  getModifiersByType(type: ModifierType): Observable<OrderModifierSummaryDto[]> {
-    const params = new HttpParams().set('modifierType', type.toString());
-    return this.api.get<OrderModifierSummaryDto[]>(`modifiers`, params);
+  getModifiersByType(type: ModifierType): Observable<OrderModifierSummaryDto[]> { 
+    const params = new HttpParams().set('modifierType', type.toString()); 
+    return this.api.get<OrderModifierSummaryDto[]>(`${this.endpoint}/modifiers`, params); 
+  }
+
+  getProductConfiguration(productId: number): Observable<ProductConfigurationResultDto> {
+    const path = `${this.endpoint}/configuration/${productId}`;
+    return this.api.get<ProductConfigurationResultDto>(path);
   }
 }

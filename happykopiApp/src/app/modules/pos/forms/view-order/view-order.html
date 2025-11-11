@@ -1,12 +1,27 @@
-<div class="order-body mb-9">
-  <app-cart-item 
-    *ngFor="let order of orders"
-    [cartItem]="order"
-    (edit)="openEditModal($event)"
-  ></app-cart-item>
+<div class="order-body">
+  <div class="cart-item-container">
+    <app-cart-item
+      *ngFor="let order of orders"
+      [cartItem]="order"
+      (edit)="openEditModal($event)"
+    ></app-cart-item>
+  </div>
 
   <div class="btns">
-    <app-long-yellow-button buttonTitle="Charge" (click)="clearOrders()"></app-long-yellow-button>
+    <div class="mx-[8%] text-[20px] mb-1">
+      Total: <b>{{ total | currency : 'PHP' }}</b>
+    </div>
+
+    <app-long-yellow-button
+      buttonSize="long"
+      buttonTitle="Charge using Cash"
+      (click)="clearOrders()"
+    ></app-long-yellow-button>
+    <app-long-yellow-button
+      buttonSize="long"
+      buttonTitle="Charge using G-Cash"
+      (click)="clearOrders()"
+    ></app-long-yellow-button>
   </div>
 
   @if (showEditModal && selectedOrderId !== null) {
@@ -17,6 +32,5 @@
       (closeModal)="closeEditModal()"
     ></app-edit-order-modal>
   </div>
-
   }
 </div>

@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CartItem, cartItemDto } from '../../components/cart-item/cart-item';
 import { LongYellowButton } from '../../../../shared/components/long-yellow-button/long-yellow-button';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { OrderItem } from '../../../../core/dtos/order/order-item.dto'; 
 import { EditOrderModal } from '../../modal/edit-order-modal/edit-order-modal';
+import { TextBoxPrice } from '../../../../shared/components/text-box-price/text-box-price';
 
 @Component({
   selector: 'app-view-order',
-  imports: [CartItem, LongYellowButton, CommonModule, EditOrderModal],
+  imports: [CartItem, LongYellowButton, CommonModule, EditOrderModal, CurrencyPipe],
   templateUrl: './view-order.html',
   styleUrl: './view-order.css',
 })
-export class ViewOrder implements OnInit {
+export class ViewOrder implements OnInit { 
+  total: number = 0;
   orders: cartItemDto[] = [];
   showEditModal = false;
   selectedOrderId: number | null = null;
@@ -32,6 +34,12 @@ export class ViewOrder implements OnInit {
       Subtotal: order.total,
       DrinkQuantity: order.quantity,
     }));
+
+    this.calculateTotal();
+  }
+
+  calculateTotal() {
+    this.total = this.orders.reduce((sum, order) => sum + order.Subtotal, 0);
   }
 
   openEditModal(orderId: number) {
@@ -42,7 +50,7 @@ export class ViewOrder implements OnInit {
   closeEditModal() {
     this.showEditModal = false;
     this.selectedOrderId = null;
-    this.loadOrders(); // refresh orders after edit
+    this.loadOrders(); 
   }
 
   clearOrders() {

@@ -6,6 +6,7 @@ import {
 import { OrderQuantityModifier } from '../../components/order-quantity-modifier/order-quantity-modifier';
 import { GrandeActive, sizeButtonDto } from '../../components/grande-active/grande-active';
 import { LongYellowButton } from '../../../../shared/components/long-yellow-button/long-yellow-button';
+import { RedButton } from '../../../../shared/components/red-button/red-button';
 import { CurrencyPipe } from '@angular/common';
 import { OrderModifierSummaryDto } from '../../../../core/dtos/order/order-modifier-summary.to';
 import { ModifierType } from '../../../../core/enums/modifier-type';
@@ -14,7 +15,7 @@ import { Addon, OrderItem } from '../../../../core/dtos/order/order-item.dto';
 
 @Component({
   selector: 'app-edit-order-modal',
-  imports: [AddonCardActive, OrderQuantityModifier, GrandeActive, LongYellowButton, CurrencyPipe],
+  imports: [AddonCardActive, OrderQuantityModifier, GrandeActive, LongYellowButton, RedButton, CurrencyPipe],
   templateUrl: './edit-order-modal.html',
   styleUrl: './edit-order-modal.css',
 })
@@ -72,7 +73,7 @@ export class EditOrderModal implements OnInit {
           Quantity: 0,
           Price: a.price ?? 0,
         }));
-        this.loadOrderData(); // reload after addons loaded
+        this.loadOrderData();  
       },
       error: (err) => console.error('Error loading addons:', err),
     });
@@ -139,6 +140,14 @@ export class EditOrderModal implements OnInit {
       console.log('Order updated:', existingOrders[index]);
     }
 
+    this.closeModal.emit();
+  }
+
+  delete() {
+    let existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+    existingOrders = existingOrders.filter((o) => o.tempOrderID !== this.orderId);
+    localStorage.setItem('orders', JSON.stringify(existingOrders));
+    console.log('Order deleted:', this.orderId);
     this.closeModal.emit();
   }
 }

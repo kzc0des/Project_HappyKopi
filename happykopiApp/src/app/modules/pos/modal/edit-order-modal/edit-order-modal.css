@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
 .modal-card {
-  width: 465px;  
+  width: 465px;
   background: #fff;
   border-radius: 20px;
   padding: 24px;
@@ -43,27 +43,25 @@
   font-size: 20px;
   font-weight: 600;
 }
- 
 
 /* Sizes */
 .size-container {
   display: flex;
   gap: 15px;
-  overflow-x: auto;       /* horizontal scroll */
-  overflow-y: hidden;     /* hide vertical overflow */
-  box-sizing: border-box; 
-  flex-wrap: nowrap;       /* prevent items from wrapping */
-  padding: 10px;          /* optional spacing inside container */
-  scroll-behavior: smooth; 
+  overflow-x: auto; /* horizontal scroll */
+  overflow-y: hidden; /* hide vertical overflow */
+  box-sizing: border-box;
+  flex-wrap: nowrap; /* prevent items from wrapping */
+  padding: 10px; /* optional spacing inside container */
+  scroll-behavior: smooth;
 
-  flex: 0 0 auto;  /* prevent shrinking */
+  flex: 0 0 auto; /* prevent shrinking */
   min-width: 120px; /* example width */
 }
 
 .size-container::-webkit-scrollbar {
-  width: 0;                
+  width: 0;
 }
- 
 
 /* Add-ons */
 .addons-section {
@@ -83,13 +81,12 @@
   gap: 20px;
   overflow-x: auto;
   padding-bottom: 3px;
-  padding-top: 3px;  
+  padding-top: 3px;
 }
 
 .addons-list::-webkit-scrollbar {
-  width: 0;                
+  width: 0;
 }
-
 
 .addon-card {
   min-width: 130px;
@@ -140,12 +137,20 @@
   font-weight: 600;
 }
 
-/* Add Item Button */
 app-long-yellow-button {
-  display: block;         
-  width: 100%;           
+  display: block;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
 
+.modal-buttons app-red-button,
+.modal-buttons app-long-yellow-button {
+  flex: 1;
+}
 
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
