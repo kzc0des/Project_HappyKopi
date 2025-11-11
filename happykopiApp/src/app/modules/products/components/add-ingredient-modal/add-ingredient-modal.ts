@@ -24,6 +24,10 @@ export class AddIngredientModal {
   @Output() saveIngredient = new EventEmitter<RecipeItem>();
   @Output() deleteIngredient = new EventEmitter<void>();
 
+  public hasChanges: boolean = false;
+  private _initialIngredientState: { categoryId: string | number | null; ingredientId: number | null; quantityNeeded: number; } | null = null;
+
+
   public filteredIngredientOptions: DropdownOption[] = [];
   private _allIngredientOptions: DropdownOption[] = [];
 
@@ -35,25 +39,35 @@ export class AddIngredientModal {
   }
 
   ngOnChanges() {
-    if (this.isEditing && this.ingredient) {
+    this.resetFormFields();
+
+    if (this.isEditing && this.ingredient) { // If editing, populate with ingredient data
       this.selectedIngredientId = this.ingredient.ingredientId;
       this.quantityNeeded = this.ingredient.quantityNeeded;
       this.updateModalFieldsForEdit();
-    } else {
-      // If not editing, ensure category and ingredient are reset when modal opens for a new item
-      this.resetFormFields();
     }
+    this.updateHasChanges();
   }
 
   private updateModalFieldsForEdit(): void {
+    // This method is called when editing an existing ingredient.
+    // It sets the selected category and ingredient ID based on the input ingredient.
+    // It also stores the initial state for change tracking.
+
     if (this.isEditing && this.ingredient && this._allIngredientOptions.length > 0) {
       const selectedOption = this._allIngredientOptions.find(
         opt => opt.value === this.ingredient?.ingredientId
       );
       if (selectedOption) {
-        this.selectedCategoryId = selectedOption.type? selectedOption.type : null;
+        this.selectedCategoryId = selectedOption.type ? selectedOption.type : null;
         this.selectedIngredientId = selectedOption.value
-        this.filterIngredients(this.selectedCategoryId, true); // Pass true to keep selectedIngredientId
+        this.filterIngredients(this.selectedCategoryId, true); // Pass true to keep selectedIngredientId from being reset
+
+        this._initialIngredientState = {
+          categoryId: this.selectedCategoryId,
+          ingredientId: this.selectedIngredientId,
+          quantityNeeded: this.quantityNeeded
+        };
       }
     }
   }
@@ -83,13 +97,26 @@ export class AddIngredientModal {
     if (!keepSelectedIngredientId) {
       this.selectedIngredientId = null;
     }
+    this.updateHasChanges();
+  }
+
+  onCategoryChange(value: string | null) {
+    this.selectedCategoryId = value;
+    this.filterIngredients(value);
+  }
+
+  onIngredientChange(value: number | null) {
+    this.selectedIngredientId = value;
+    this.updateHasChanges();
+  }
+
+  onQuantityChange(value: number) {
+    this.quantityNeeded = value;
+    this.updateHasChanges();
   }
 
   close() {
     this.modalService.closeIngredientModal();
-    this.selectedCategoryId = null;
-    this.selectedIngredientId = null;
-    this.quantityNeeded = 0;
     this.resetFormFields();
   }
 
@@ -98,6 +125,19 @@ export class AddIngredientModal {
     this.selectedCategoryId = null;
     this.selectedIngredientId = null;
     this.quantityNeeded = 0;
+    this.hasChanges = false;
+    this._initialIngredientState = null;
+  }
+
+  private updateHasChanges(): void {
+    if (this.isEditing && this._initialIngredientState) {
+      this.hasChanges =
+        this.selectedCategoryId !== this._initialIngredientState.categoryId ||
+        this.selectedIngredientId !== this._initialIngredientState.ingredientId ||
+        this.quantityNeeded !== this._initialIngredientState.quantityNeeded;
+    } else {
+      this.hasChanges = this.selectedIngredientId !== null && this.quantityNeeded > 0;
+    }
   }
 
   onSave() {
@@ -129,12 +169,12 @@ export class AddIngredientModal {
       };
 
       this.saveIngredient.emit(payload);
-      this.close();
-    }
+      this.close(); // Close and reset after save
+    }    
   }
 
   onDelete(): void {
     this.deleteIngredient.emit();
-    this.close();
+    this.close(); // Close and reset after delete
   }
 }

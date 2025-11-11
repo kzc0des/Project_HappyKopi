@@ -71,7 +71,7 @@
                 (notifyClick)="openIngredientModal()"></app-add-button-card>
 
             @if(currentVariant) {
-            @for(ingredient of currentVariant.recipe; track ingredient; let i = $index) {
+            @for(ingredient of currentVariant.recipe; track trackByIngredientId(i, ingredient); let i = $index) {
             <app-selected-ingredient-card [ingredient]="ingredient" (edit)="onEditIngredient(ingredient, i)"></app-selected-ingredient-card>
             }
             }
@@ -82,7 +82,7 @@
                 (notifyClick)="openAddOnModal()"></app-add-button-card>
 
             @if(currentVariant) {
-            @for(addOn of currentVariant.addOns; track addOn; let i = $index) {
+            @for(addOn of currentVariant.addOns; track trackByAddOnId(i, addOn); let i = $index) {
             <app-selected-addon-card [addon]="addOn" (edit)="onEditAddOn(addOn, i)"></app-selected-addon-card>
             }
             }

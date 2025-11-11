@@ -1,5 +1,5 @@
 <button (click)="notifyClickButton()"
-  class="flex items-center justify-center gap-3 bg-hapikopi-yellow p-5 rounded-lg w-full">
+  class="flex items-center justify-center gap-3 bg-hapikopi-yellow p-5 rounded-lg w-full" [disabled]="isDisabled">
   <div class="">
     @if(itemTitle === "transaction"){
     <svg xmlns="http://www.w3.org/2000/svg" class="w-4" viewBox="0 0 20 25" fill="none">

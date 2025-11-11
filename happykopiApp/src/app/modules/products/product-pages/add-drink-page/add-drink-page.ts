@@ -384,4 +384,12 @@ export class AddDrinkPage implements OnInit {
     this.editingAddOn = null;
     this.editingAddOnIndex = null;
   }
+
+  trackByIngredientId(index: number, ingredient: RecipeItem): number {
+    return ingredient.ingredientId;
+  }
+
+  trackByAddOnId(index: number, addOn: AddOnItem): number {
+    return addOn.addOnId;
+  }
 }
