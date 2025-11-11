@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddButtonCard } from '../../components/add-button-card/add-button-card';
@@ -24,6 +24,7 @@ import { ProductsService } from '../../services/products-service/products.servic
 import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
 import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dto';
 import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
+import { HeaderService } from '../../../../core/services/header/header.service';
 
 @Component({
   selector: 'app-add-drink-page',
@@ -72,7 +73,8 @@ export class AddDrinkPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private headerService: HeaderService
   ) {
     const nav = this.router.getCurrentNavigation();
     this.drink = nav?.extras.state?.['drink'];
@@ -211,7 +213,14 @@ export class AddDrinkPage implements OnInit {
     }
   }
 
-  submitNewProduct() {
+  submitNewProduct(productForm: NgForm) {
+    productForm.form.markAllAsTouched();
+
+    if (productForm.invalid) {
+      console.log("Form is invalid. Please check errors.");
+      return; 
+    }
+
     const payloadForBackend: ProductCreateDto = {
       name: this.productPayload.name,
       categoryId: this.productPayload.categoryId,
@@ -257,7 +266,8 @@ export class AddDrinkPage implements OnInit {
     this.productsService.createProduct(payloadForBackend).subscribe({
       next: (response) => {
         console.log('Product created successfully!', response);
-        this.router.navigate(['../products'], { relativeTo: this.route, replaceUrl: true});
+        this.headerService.notifyItemAdded(true);
+        this.router.navigate(['../'], { relativeTo: this.route, replaceUrl: true});
       },
 
       error: (err) => {
