@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RecipeItem } from '../../../../core/dtos/product/product.model';
 
 @Component({
@@ -8,5 +8,10 @@ import { RecipeItem } from '../../../../core/dtos/product/product.model';
   styleUrl: './selected-ingredient-card.css',
 })
 export class SelectedIngredientCard {
-@Input() ingredient!: RecipeItem;
+  @Input() ingredient!: RecipeItem;
+  @Output() edit = new EventEmitter<void>();
+
+  onEdit(): void {
+    this.edit.emit();
+  }
 }

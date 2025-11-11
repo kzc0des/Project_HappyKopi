@@ -71,8 +71,8 @@
                 (notifyClick)="openIngredientModal()"></app-add-button-card>
 
             @if(currentVariant) {
-            @for(ingredient of currentVariant.recipe; track $index) {
-            <app-selected-ingredient-card [ingredient]="ingredient"></app-selected-ingredient-card>
+            @for(ingredient of currentVariant.recipe; track ingredient; let i = $index) {
+            <app-selected-ingredient-card [ingredient]="ingredient" (edit)="onEditIngredient(ingredient, i)"></app-selected-ingredient-card>
             }
             }
 
@@ -82,8 +82,8 @@
                 (notifyClick)="openAddOnModal()"></app-add-button-card>
 
             @if(currentVariant) {
-            @for(addOn of currentVariant.addOns; track $index) {
-            <app-selected-addon-card [addon]="addOn"></app-selected-addon-card>
+            @for(addOn of currentVariant.addOns; track addOn; let i = $index) {
+            <app-selected-addon-card [addon]="addOn" (edit)="onEditAddOn(addOn, i)"></app-selected-addon-card>
             }
             }
         </div>
@@ -97,9 +97,11 @@
 </form>
 
 
-<app-add-ingredient-modal [categoryOptions]="itemOptions" [ingredientOptions]="ingredientOptions"
+<app-add-ingredient-modal [isEditing]="editingIngredientIndex !== null" [ingredient]="editingIngredient"
+    [categoryOptions]="itemOptions" [ingredientOptions]="ingredientOptions"
     (saveIngredient)="onSaveIngredient($event)">
 </app-add-ingredient-modal>
 
-<app-add-addon-modal [addOnOption]="addOnOptions" (saveAddOn)="onSaveAddOn($event)">
+<app-add-addon-modal [isEditing]="editingAddOnIndex !== null" [addon]="editingAddOn" [addOnOption]="addOnOptions"
+    (saveAddOn)="onSaveAddOn($event)">
 </app-add-addon-modal>

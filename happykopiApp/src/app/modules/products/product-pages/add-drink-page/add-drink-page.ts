@@ -74,6 +74,12 @@ export class AddDrinkPage implements OnInit {
 
   isRecipeBuilderVisible = false;
 
+  // Properties for editing
+  editingIngredient: RecipeItem | null = null;
+  editingIngredientIndex: number | null = null;
+  editingAddOn: AddOnItem | null = null;
+  editingAddOnIndex: number | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -193,30 +199,61 @@ export class AddDrinkPage implements OnInit {
 
   openIngredientModal() {
     if (this.selectedSizeId === null) return;
+    this.resetEditingState();
     this.modalService.openIngredientModal();
   }
 
   openAddOnModal() {
     if (this.selectedSizeId === null) return;
+    this.resetEditingState();
     this.modalService.openAddOnModal();
   }
 
   onSaveIngredient(item: RecipeItem) {
     if (this.currentVariant) {
-      this.currentVariant.recipe.push(item);
+      if (this.editingIngredientIndex !== null) {
+        this.currentVariant.recipe[this.editingIngredientIndex] = item;
+        console.log('Updated Ingredient:', item);
+      } else {
+        this.currentVariant.recipe.push(item);
+      }
       console.log('Updated Variants Payload:', this.productPayload.variants);
     } else {
-      console.error('No size selected to add ingredient to.');
+      console.error('No size selected to add or update ingredient.');
     }
+    this.resetEditingState();
+  }
+
+  onEditIngredient(ingredient: RecipeItem, index: number) {
+    if (this.selectedSizeId === null) return;
+    this.editingIngredient = { ...ingredient };
+    this.editingIngredientIndex = index;
+    this.modalService.openIngredientModal();
+    console.log('Editing ingredient:', this.editingIngredient);
   }
 
   onSaveAddOn(item: AddOnItem) {
     if (this.currentVariant) {
-      this.currentVariant.addOns.push(item);
+      if (this.editingAddOnIndex !== null) {
+        // Update existing add-on
+        this.currentVariant.addOns[this.editingAddOnIndex] = item;
+        console.log('Updated Add-on:', item);
+      } else {
+        // Add new add-on
+        this.currentVariant.addOns.push(item);
+      }
       console.log('Updated Variants Payload:', this.productPayload.variants);
     } else {
-      console.error('No size selected to add add-on to.');
+      console.error('No size selected to add or update add-on.');
     }
+    this.resetEditingState();
+  }
+
+  onEditAddOn(addOn: AddOnItem, index: number) {
+    if (this.selectedSizeId === null) return;
+    this.editingAddOn = { ...addOn };
+    this.editingAddOnIndex = index;
+    this.modalService.openAddOnModal();
   }
 
   submitNewProduct(productForm: NgForm) {
@@ -317,5 +354,12 @@ export class AddDrinkPage implements OnInit {
         );
       }
     });
+  }
+
+  private resetEditingState() {
+    this.editingIngredient = null;
+    this.editingIngredientIndex = null;
+    this.editingAddOn = null;
+    this.editingAddOnIndex = null;
   }
 }

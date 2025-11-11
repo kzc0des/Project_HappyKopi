@@ -19,6 +19,7 @@ import { AddOnItem } from '../../../../core/dtos/product/product.model';
 export class AddAddonModal {
   @Input() isEditing = false;
   @Input() addOnOption: DropdownOption[] = [];
+  @Input() addon: AddOnItem | null = null;
   @Output() saveAddOn = new EventEmitter<AddOnItem>();
 
   public selectedAddOnId: number | null = null;
@@ -30,6 +31,13 @@ export class AddAddonModal {
     private modalService: ModalService
   ) {
     this.isAddOnOpen$ = modalService.isAddOnModalOpen$;
+  }
+
+  ngOnChanges() {
+    if (this.isEditing && this.addon) {
+      this.selectedAddOnId = this.addon.addOnId;
+      this.times = this.addon.times;
+    }
   }
 
   close() {

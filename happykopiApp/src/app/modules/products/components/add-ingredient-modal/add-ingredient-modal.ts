@@ -19,6 +19,7 @@ import { RecipeItem } from '../../../../core/dtos/product/product.model';
 export class AddIngredientModal {
   @Input() isEditing = false;
   @Input() categoryOptions: DropdownOption[] = [];
+  @Input() ingredient: RecipeItem | null = null;
   
   @Output() saveIngredient = new EventEmitter<RecipeItem>();
 
@@ -28,14 +29,35 @@ export class AddIngredientModal {
   @Input()
   set ingredientOptions(options: DropdownOption[]) {
     this._allIngredientOptions = options;
-    if (this.selectedCategoryId) {
-      this.filterIngredients(this.selectedCategoryId);
+    // Re-evaluate filtering when options are set, especially if editing
+    this.updateModalFieldsForEdit();
+  }
+
+  ngOnChanges() {
+    if (this.isEditing && this.ingredient) {
+      this.selectedIngredientId = this.ingredient.ingredientId;
+      this.quantityNeeded = this.ingredient.quantityNeeded;
+      this.updateModalFieldsForEdit();
     } else {
-      this.filteredIngredientOptions = this._allIngredientOptions;
+      // If not editing, ensure category and ingredient are reset when modal opens for a new item
+      this.resetFormFields();
     }
   }
 
-  public selectedCategoryId: string | number | null = null;
+  private updateModalFieldsForEdit(): void {
+    if (this.isEditing && this.ingredient && this._allIngredientOptions.length > 0) {
+      const selectedOption = this._allIngredientOptions.find(
+        opt => opt.value === this.ingredient?.ingredientId
+      );
+      if (selectedOption) {
+        this.selectedCategoryId = selectedOption.type? selectedOption.type : null;
+        this.selectedIngredientId = selectedOption.value
+        this.filterIngredients(this.selectedCategoryId, true); // Pass true to keep selectedIngredientId
+      }
+    }
+  }
+
+  public selectedCategoryId: string | null = null;
   public selectedIngredientId: number | null = null;
   public quantityNeeded: number = 0;
 
@@ -46,16 +68,20 @@ export class AddIngredientModal {
   ) {
     this.isIngredientOpen$ = modalService.isIngredientModalOpen$;
   }
-
-  filterIngredients(categoryValue: string | number | null) {
+  
+  // Added a parameter `keepSelectedIngredientId` to prevent resetting it during editing initialization
+  filterIngredients(categoryValue: string | number | null, keepSelectedIngredientId: boolean = false) {
     if (!categoryValue) {
       this.filteredIngredientOptions = this._allIngredientOptions;
     } else {
       this.filteredIngredientOptions = this._allIngredientOptions.filter(option =>
         option.type === categoryValue
       );
+      // If the previously selected ingredient is no longer in the filtered list, clear it.
     }
-    this.selectedIngredientId = null;
+    if (!keepSelectedIngredientId) {
+      this.selectedIngredientId = null;
+    }
   }
 
   close() {
@@ -63,7 +89,14 @@ export class AddIngredientModal {
     this.selectedCategoryId = null;
     this.selectedIngredientId = null;
     this.quantityNeeded = 0;
-    this.filteredIngredientOptions = this._allIngredientOptions;
+    this.resetFormFields();
+  }
+
+  private resetFormFields(): void {
+    this.filteredIngredientOptions = this._allIngredientOptions; // Reset to all options
+    this.selectedCategoryId = null;
+    this.selectedIngredientId = null;
+    this.quantityNeeded = 0;
   }
 
   onSave() {
