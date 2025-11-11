@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectableCardList } from './selectable-card-list';
+import { AlertDialog } from './alert-dialog';
 
-describe('SelectableCardList', () => {
-  let component: SelectableCardList;
-  let fixture: ComponentFixture<SelectableCardList>;
+describe('AlertDialog', () => {
+  let component: AlertDialog;
+  let fixture: ComponentFixture<AlertDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SelectableCardList]
+      imports: [AlertDialog]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SelectableCardList);
+    fixture = TestBed.createComponent(AlertDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,3 +1,5 @@
+import { ProductCreateDto } from "./product-create-dto";
+
 export interface RecipeItem {
   ingredientId: number; 
   quantityNeeded: number;
@@ -27,3 +29,29 @@ export interface ProductPayloadUI {
   categoryId: number;
   variants: ProductVariantCreateDtoUI[];
 }
+
+export interface ProductListItemDto {
+  id: number;
+  name: string;
+  categoryName: string;
+}
+
+export interface ProductDetailDto {
+  id: number;
+  name: string;
+  description: string;
+  categoryId: number;
+  categoryName: string;
+  isAvailable: boolean;
+  isActive: boolean;
+  imageUrl: string;
+  imagePublicId: string;
+  variants: ProductVariantDetailDto[];
+}
+
+export interface ProductUpdateDto extends ProductCreateDto { }
+
+export interface ProductVariantDetailDto extends ProductVariantCreateDtoUI {
+  id: number;
+}
+

@@ -4,11 +4,11 @@ namespace happykopiAPI.DTOs.Product.Incoming_Data
 {
     public class ProductCreateFormDto
     {
-        //[Required]
-        public string? Name { get; set; }
+        [Required]
+        public string Name { get; set; }
         public string? Description { get; set; }
 
-        //[Required]
+        [Required]
         public int CategoryId { get; set; }
 
         public bool IsAvailable { get; set; } = true;

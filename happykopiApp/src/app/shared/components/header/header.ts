@@ -31,6 +31,7 @@ export class Header implements OnInit, OnDestroy {
   headerTitle!: string | null;
   hasValueChanged = false;
   isItemDeleted = false;
+  isItemAdded = false;
 
   // for getting the router navigations
   private routerSubscription!: Subscription;
@@ -39,7 +40,9 @@ export class Header implements OnInit, OnDestroy {
   private valueChangeSubscription!: Subscription;
 
   // detection for deletion
-  private isDeleteItemSubscription !: Subscription;
+  private isDeleteItemSubscription!: Subscription;
+
+  private isAddedItemSubscription!: Subscription;
 
   currentPageSelected: Observable<string>;
 
@@ -72,6 +75,10 @@ export class Header implements OnInit, OnDestroy {
 
     this.isDeleteItemSubscription = this.headerActionService.isItemDeleted$.subscribe(deleted => {
       this.isItemDeleted = deleted;
+    });
+
+    this.isAddedItemSubscription = this.headerActionService.isItemAdded$.subscribe(added => {
+      this.isItemAdded = added;
     });
 
     console.log(`show back button state: ${this.showBackButton}`);
@@ -201,7 +208,6 @@ export class Header implements OnInit, OnDestroy {
     else if (segments.includes('products') && segments.length === 3) {
       this.headerTitle = 'Create Drink';
       this.showBackButton = true;
-      this.showSaveButton = true;
     }
   }
 
@@ -259,7 +265,7 @@ export class Header implements OnInit, OnDestroy {
   }
 
   async onBackClick() {
-    if (!this.isItemDeleted && !this.hasValueChanged) {
+    if (!this.isItemDeleted && !this.hasValueChanged && !this.isItemAdded) {
       this.location.back();
     }
     

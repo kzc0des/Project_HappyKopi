@@ -19,6 +19,11 @@ import { AddOnItem } from '../../../../core/dtos/product/product.model';
 export class AddAddonModal {
   @Input() isEditing = false;
   @Input() addOnOption: DropdownOption[] = [];
+  @Input() addon: AddOnItem | null = null;
+
+  public hasChanges: boolean = false;
+  private _initialAddonState: { addOnId: number | null; times: number } | null = null;
+  @Output() deleteAddOn = new EventEmitter<void>();
   @Output() saveAddOn = new EventEmitter<AddOnItem>();
 
   public selectedAddOnId: number | null = null;
@@ -32,10 +37,41 @@ export class AddAddonModal {
     this.isAddOnOpen$ = modalService.isAddOnModalOpen$;
   }
 
+  ngOnChanges() {
+    // Reset form fields and initial state when editing or adding a new item
+    this.selectedAddOnId = null;
+    this.times = 1;
+    this._initialAddonState = null;
+    this.hasChanges = false;
+
+    if (this.isEditing && this.addon) { // If editing, populate with add-on data
+      this.selectedAddOnId = this.addon.addOnId;
+      this.times = this.addon.times;
+      this._initialAddonState = {
+        addOnId: this.addon.addOnId,
+        times: this.addon.times
+      };
+    }
+    this.updateHasChanges(); // Check for changes after initial setup
+  }
+
+  onAddonChange(value: number | null) {
+    this.selectedAddOnId = value;
+    this.updateHasChanges();
+  }
+
+  onTimesChange(value: number) {
+    this.times = value;
+    this.updateHasChanges();
+  }
+
   close() {
     this.modalService.closeAddOnModal();
     this.selectedAddOnId = null;
     this.times = 1;
+    this.hasChanges = false;
+    this._initialAddonState = null;
+
   }
 
   onSave() {
@@ -65,7 +101,23 @@ export class AddAddonModal {
       };
 
       this.saveAddOn.emit(payload);
-      this.close();
+      this.close(); // Close and reset after save
+    }    
+  }
+
+  private updateHasChanges(): void {
+    if (this.isEditing && this._initialAddonState) {
+      this.hasChanges =
+        this.selectedAddOnId !== this._initialAddonState.addOnId ||
+        this.times !== this._initialAddonState.times;
+    } else {
+      // For new add-ons, changes exist if any field is filled beyond default
+      this.hasChanges = this.selectedAddOnId !== null;
     }
+  }
+
+  onDelete(): void {
+    this.deleteAddOn.emit();
+    this.close();
   }
 }

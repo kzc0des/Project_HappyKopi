@@ -1,4 +1,6 @@
-<div class="flex flex-col gap-4 h-full">
+<app-loading-spinner></app-loading-spinner>
+
+<form #productForm="ngForm" class="flex flex-col gap-4 h-full">
     <div class=" 
     bg-white shadow-sm 
     flex flex-col items-center justify-center
@@ -26,17 +28,27 @@
         </label>
         <input id="drink-image-upload" type="file" class="hidden" accept="image/*" (change)="onFileSelected($event)" />
 
-        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Drink Name"
-            [(ngModel)]="productPayload.name"></app-itemcard>
+        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Drink Name" [(ngModel)]="productPayload.name"
+            name="productName" #productName="ngModel" required></app-itemcard>
 
-        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Description"
-            [(ngModel)]="productPayload.description"></app-itemcard>
+        @if (productName.invalid && (productName.dirty || productName.touched || productForm.submitted)) {
+        <div class="text-sm text-red-600 px-4 -mt-3">
+            @if (productName.errors?.['required']) {
+            <span>Please provide a product name.</span>
+            }
+        </div>
+        }
 
-        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Base Price" type="number" [(ngModel)]="basePrice"></app-itemcard>
+        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Description" [(ngModel)]="productPayload.description"
+            name="productDescription"> </app-itemcard>
+
+        <app-itemcard class="w-full" [isEditing]="true" itemTitle="Base Price" type="number" [(ngModel)]="basePrice"
+            name="basePrice" #basePrice="ngModel"> </app-itemcard>
 
         <app-dropdown-button class="w-full" itemTitle="Category" [(ngModel)]="productPayload.categoryId"
-            [options]="categoryOptions">
+            name="productCategory" #productCategory="ngModel" [options]="categoryOptions" required>
         </app-dropdown-button>
+
     </div>
 
     <div class="bg-white flex-1 flex flex-col justify-center items-center px-5 py-8 gap-4">
@@ -46,11 +58,8 @@
 
             <div class="flex gap-3 flex-nowrap overflow-x-auto pb-5">
                 @for(item of availableSizes; track $index){
-                <app-modifier-size-card class="flex-shrink-0" 
-                    [itemName]="item.name" 
-                    [itemValue]="item.ozAmount || 0"
-                    [isSelected]="selectedSizeId === item.id" 
-                    (notifyClick)="onSizeSelect(item)">
+                <app-modifier-size-card class="flex-shrink-0" [itemName]="item.name" [itemValue]="item.ozAmount || 0"
+                    [isSelected]="selectedSizeId === item.id" (notifyClick)="onSizeSelect(item)">
                 </app-modifier-size-card>
                 }
             </div>
@@ -64,15 +73,9 @@
                 (notifyClick)="openIngredientModal()"></app-add-button-card>
 
             @if(currentVariant) {
-                @for(ingredient of currentVariant.recipe; track $index) {
-                <div
-                    class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
-
-                    <span class="font-semibold">{{ ingredient.ingredientName }}</span>
-                    <span class="font-semibold">{{ ingredient.quantityNeeded }} {{ ingredient.unitOfMeasure }}</span>
-
-                </div>
-                }
+            @for(ingredient of currentVariant.recipe; track trackByIngredientId(i, ingredient); let i = $index) {
+            <app-selected-ingredient-card [ingredient]="ingredient" (edit)="onEditIngredient(ingredient, i)"></app-selected-ingredient-card>
+            }
             }
 
             <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant?.size }}</h3>
@@ -81,28 +84,26 @@
                 (notifyClick)="openAddOnModal()"></app-add-button-card>
 
             @if(currentVariant) {
-                @for(addOn of currentVariant.addOns; track $index) {
-                <div
-                    class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
-                    <span class="font-semibold">{{ addOn.modifierName }} </span>
-                    <span class="font-semibold">{{ addOn.times }}×</span>
-                </div>
-                }
+            @for(addOn of currentVariant.addOns; track trackByAddOnId(i, addOn); let i = $index) {
+            <app-selected-addon-card [addon]="addOn" (edit)="onEditAddOn(addOn, i)"></app-selected-addon-card>
+            }
             }
         </div>
 
         <div class="w-full mt-6">
             <app-yellow-button class="w-full py-4" buttonTitle="Save New Drink" itemTitle="submit"
-                (isClick)="submitNewProduct()">
+                (isClick)="submitNewProduct(productForm)">
             </app-yellow-button>
         </div>
     </div>
-</div>
+</form>
 
 
-<app-add-ingredient-modal [categoryOptions]="itemOptions" [ingredientOptions]="ingredientOptions"
-    (saveIngredient)="onSaveIngredient($event)">
+<app-add-ingredient-modal [isEditing]="editingIngredientIndex !== null" [ingredient]="editingIngredient"
+    [categoryOptions]="itemOptions" [ingredientOptions]="ingredientOptions" (saveIngredient)="onSaveIngredient($event)"
+    (deleteIngredient)="onDeleteIngredient()">
 </app-add-ingredient-modal>
 
-<app-add-addon-modal [addOnOption]="addOnOptions" (saveAddOn)="onSaveAddOn($event)">
+<app-add-addon-modal [isEditing]="editingAddOnIndex !== null" [addon]="editingAddOn" [addOnOption]="addOnOptions"
+    (saveAddOn)="onSaveAddOn($event)" (deleteAddOn)="onDeleteAddOn()">
 </app-add-addon-modal>

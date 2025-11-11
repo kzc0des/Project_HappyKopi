@@ -16,6 +16,9 @@ export class HeaderService {
   private isDelete = new BehaviorSubject<boolean>(false);
   public isItemDeleted$ = this.isDelete.asObservable();
 
+  private isAdded = new BehaviorSubject<boolean>(false);
+  public isItemAdded$ = this.isAdded.asObservable();
+
   private changedInputs = new Set<string>();
 
   emitAction(action: HeaderAction): void {
@@ -38,6 +41,10 @@ export class HeaderService {
 
   notifyItemDeleted(status: boolean): void {
     this.isDelete.next(status);
+  }
+
+  notifyItemAdded(status: boolean): void {
+    this.isAdded.next(status);
   }
 
   resetValueChangedState(): void {

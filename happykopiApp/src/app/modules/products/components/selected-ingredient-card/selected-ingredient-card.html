@@ -1,0 +1,27 @@
+<div class="flex items-center justify-between px-3 shadow-md py-3 rounded-lg cursor-pointer" (click)="onEdit()">
+    <div class="flex items-center gap-4">
+        <div class="bg-hapikopi-yellow flex items-center justify-center p-3 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="20" viewBox="0 0 23 20" fill="none">
+                <path d="M17.167 1H21.1668L20.199 8H17.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                <path
+                    d="M3.66669 1H17.1668V18C17.1668 18.5523 16.7191 19 16.1668 19H4.66664C4.11438 19 3.66667 18.5523 3.66665 18L3.66629 6.24995C3.66628 5.77785 3.44471 5.336 3.08639 5.0286C1.74087 3.8744 -1.12847 1 3.66669 1Z"
+                    stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12.167 5.5H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                <path d="M12.167 9.5H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                <path d="M12.167 13.5H14.167" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <p class="text-sm text-gray-300">Ingredient</p>
+            <p class="font-semibold text-lg text-hapikopi-dark">{{ingredient.ingredientName}}</p>
+        </div>
+    </div>
+
+    <p>{{ingredient.quantityNeeded}} {{ingredient.unitOfMeasure}}</p>
+
+</div>
