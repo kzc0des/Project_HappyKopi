@@ -1,1 +1,4 @@
-<p>loading-spinner works!</p>
+<div *ngIf="loading$ | async" class="overlay">
+  <div class="spinner"></div>
+  <p class="text-white mt-4">Loading...</p>
+</div>

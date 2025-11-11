@@ -28,6 +28,9 @@ import { HeaderService } from '../../../../core/services/header/header.service';
 import { AlertService } from '../../../../core/services/alert/alert.service';
 import { SelectedIngredientCard } from '../../components/selected-ingredient-card/selected-ingredient-card';
 import { SelectedAddonCard } from '../../components/selected-addon-card/selected-addon-card';
+import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
+import { LoadingService } from '../../../../core/services/loading/loading.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-add-drink-page',
@@ -42,7 +45,8 @@ import { SelectedAddonCard } from '../../components/selected-addon-card/selected
     AddAddonModal,
     YellowButton,
     SelectedIngredientCard,
-    SelectedAddonCard
+    SelectedAddonCard,
+    LoadingSpinner
   ],
   templateUrl: './add-drink-page.html',
   styleUrl: './add-drink-page.css'
@@ -86,7 +90,8 @@ export class AddDrinkPage implements OnInit {
     private modalService: ModalService,
     private productsService: ProductsService,
     private headerService: HeaderService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private loadingService: LoadingService
   ) {
     const nav = this.router.getCurrentNavigation();
     this.drink = nav?.extras.state?.['drink'];
@@ -328,8 +333,11 @@ export class AddDrinkPage implements OnInit {
 
     console.log('Final payload for backend:', payloadForBackend);
 
-    this.productsService.createProduct(payloadForBackend).subscribe({
-      next: async (response) => {        
+    this.loadingService.show();
+    this.productsService.createProduct(payloadForBackend)
+    .pipe(finalize(() => this.loadingService.hide()))
+    .subscribe({
+      next: async (response) => {
         console.log('Product created successfully!', response);
         this.headerService.notifyItemAdded(true);
         await this.alertService.showSuccess(
