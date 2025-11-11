@@ -73,7 +73,7 @@ export class EditOrderModal implements OnInit {
           Quantity: 0,
           Price: a.price ?? 0,
         }));
-        this.loadOrderData(); // reload after addons loaded
+        this.loadOrderData();  
       },
       error: (err) => console.error('Error loading addons:', err),
     });

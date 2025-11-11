@@ -1,25 +1,26 @@
 .order-body {
   width: 100%;
   background-color: #f0f0f0;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* full viewport height */
+  height: calc(100vh - 220px);
+  overflow: hidden;
 }
+
 .order-body::-webkit-scrollbar {
   width: 0;
 }
 
 app-long-yellow-button {
-  display: block; /* ensure it takes width of its content */
-  width: 100%; /* make it expand across the flex center */
+  display: block;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
 
 .btns {
   position: fixed;
-  bottom: 40px;
+  bottom: 0px;
   left: 0;
   width: 100%;
   display: flex;
@@ -27,6 +28,11 @@ app-long-yellow-button {
   gap: 19px;
   justify-content: center;
   z-index: 999;
+  background: #fafafa;
+  padding-bottom: 60px;
+  padding-top: 30px;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0px -1px 18.9px -5px rgba(0, 0, 0, 0.25);
 }
 
 .modal-overlay {
@@ -49,4 +55,20 @@ app-long-yellow-button {
   width: 90%;
   padding: 1rem;
   border-radius: 12px;
+}
+
+.cart-item-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f0f0;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+.cart-item-container::-webkit-scrollbar {
+  width: 0;
+}
+
+.cart-item-container app-cart-item:last-child {
+  margin-bottom: 100px;
 }
