@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { AddOnItem } from '../../../../core/dtos/product/product.model';
 
 @Component({
   selector: 'app-selected-addon-card',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './selected-addon-card.css',
 })
 export class SelectedAddonCard {
-
+  @Input() addon!: AddOnItem;
 }

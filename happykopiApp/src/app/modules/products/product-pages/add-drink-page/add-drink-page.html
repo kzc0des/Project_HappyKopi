@@ -44,7 +44,8 @@
             name="basePrice" #basePrice="ngModel"> </app-itemcard>
 
         <app-dropdown-button class="w-full" itemTitle="Category" [(ngModel)]="productPayload.categoryId"
-            name="productCategory" #productCategory="ngModel" [options]="categoryOptions" required> </app-dropdown-button>
+            name="productCategory" #productCategory="ngModel" [options]="categoryOptions" required>
+        </app-dropdown-button>
 
     </div>
 
@@ -71,15 +72,7 @@
 
             @if(currentVariant) {
             @for(ingredient of currentVariant.recipe; track $index) {
-            <div
-                class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
-
-                <span class="font-semibold">{{ ingredient.ingredientName }}</span>
-                <span class="font-semibold">{{ ingredient.quantityNeeded }} {{ ingredient.unitOfMeasure }}</span>
-
-            </div>
-
-            <app-selected-ingredient-card></app-selected-ingredient-card>
+            <app-selected-ingredient-card [ingredient]="ingredient"></app-selected-ingredient-card>
             }
             }
 
@@ -90,13 +83,7 @@
 
             @if(currentVariant) {
             @for(addOn of currentVariant.addOns; track $index) {
-            <div
-                class="w-full p-3 bg-[#FFFBF2] border border-hapikopi-yellow rounded-lg flex justify-between items-center">
-                <span class="font-semibold">{{ addOn.modifierName }} </span>
-                <span class="font-semibold">{{ addOn.times }}×</span>
-            </div>
-
-            <app-selected-addon-card></app-selected-addon-card>
+            <app-selected-addon-card [addon]="addOn"></app-selected-addon-card>
             }
             }
         </div>
