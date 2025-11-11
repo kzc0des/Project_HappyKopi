@@ -148,4 +148,9 @@ app-long-yellow-button {
   justify-content: center;
 }
 
+.modal-buttons app-red-button,
+.modal-buttons app-long-yellow-button {
+  flex: 1;
+}
+
 
