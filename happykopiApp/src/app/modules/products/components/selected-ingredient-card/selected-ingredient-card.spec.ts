@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectableCardList } from './selectable-card-list';
+import { SelectedIngredientCard } from './selected-ingredient-card';
 
-describe('SelectableCardList', () => {
-  let component: SelectableCardList;
-  let fixture: ComponentFixture<SelectableCardList>;
+describe('SelectedIngredientCard', () => {
+  let component: SelectedIngredientCard;
+  let fixture: ComponentFixture<SelectedIngredientCard>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SelectableCardList]
+      imports: [SelectedIngredientCard]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SelectableCardList);
+    fixture = TestBed.createComponent(SelectedIngredientCard);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

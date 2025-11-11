@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchFieldCard } from '../../products/components/search-field-card/search-field-card';
-import { SelectableCardList } from '../../products/components/selectable-card-list/selectable-card-list';
 
 @Component({
   selector: 'app-assign-drink-page',
-  imports: [CommonModule, SearchFieldCard, SelectableCardList],
+  imports: [CommonModule, SearchFieldCard],
   templateUrl: './assign-drink-page.html',
   styleUrl: './assign-drink-page.css'
 })

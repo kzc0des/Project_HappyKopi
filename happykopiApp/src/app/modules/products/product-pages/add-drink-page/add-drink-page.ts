@@ -26,6 +26,8 @@ import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dt
 import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
 import { HeaderService } from '../../../../core/services/header/header.service';
 import { AlertService } from '../../../../core/services/alert/alert.service';
+import { SelectedIngredientCard } from '../../components/selected-ingredient-card/selected-ingredient-card';
+import { SelectedAddonCard } from '../../components/selected-addon-card/selected-addon-card';
 
 @Component({
   selector: 'app-add-drink-page',
@@ -38,7 +40,9 @@ import { AlertService } from '../../../../core/services/alert/alert.service';
     ModifierSizeCard,
     AddIngredientModal,
     AddAddonModal,
-    YellowButton
+    YellowButton,
+    SelectedIngredientCard,
+    SelectedAddonCard
   ],
   templateUrl: './add-drink-page.html',
   styleUrl: './add-drink-page.css'
