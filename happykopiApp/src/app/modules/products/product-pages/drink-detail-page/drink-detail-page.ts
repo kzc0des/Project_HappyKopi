@@ -20,7 +20,6 @@ export class DrinkDetailPage implements OnInit {
   displayVariants: ProductVariantDetailDto[] = [];
   availableSizes: ModifierDto[] = [];
   selectedSizeId: number | null = null;
-  basePrice: number = 0;
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(private route: ActivatedRoute) { }
@@ -42,6 +41,7 @@ export class DrinkDetailPage implements OnInit {
 
     if (this.availableSizes.length > 0) {
       this.selectedSizeId = this.availableSizes[0].id;
+      // this.basePrice = this.availableSizes[0].price; // Set initial price
     }
 
     this.imagePreview = this.productPayload.imageUrl;
@@ -56,6 +56,14 @@ export class DrinkDetailPage implements OnInit {
       return undefined;
     }
     return this.displayVariants.find(v => v.id === this.selectedSizeId);
+  }
+
+  get currentPrice(): number {
+    const variant = this.currentVariant;
+    if (variant) {
+      return variant.price;
+    }
+    return 0;
   }
 
   onSizeSelect(size: ModifierDto) {

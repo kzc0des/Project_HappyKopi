@@ -38,5 +38,6 @@ namespace happykopiAPI.DTOs.Product.Outgoing_Data
     {
         public int ProductVariantId { get; set; }
         public string ModifierName { get; set; }
+        public int Times { get; set; }
     }
 }
