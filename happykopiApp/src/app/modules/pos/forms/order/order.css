@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: #fafafa;
 }
 .order-body::-webkit-scrollbar {
   width: 0;
@@ -33,14 +33,14 @@
   border-radius: 12px;
 }
 
-.categories {
-  margin: 30px 0 0px 0;
-  padding: 10px 25px 10px 25px;
+.categories { 
+  padding: 40px 25px 10px 25px;
   display: flex;
   gap: 20px;
   overflow-x: auto;
   width: 100%;
   justify-content: flex-start;
+  background-color: #f0f0f0;
 }
 
 .categories::-webkit-scrollbar {
@@ -56,12 +56,12 @@ app-search-drink {
   background-color: #fafafa;
   width: 100%;
   height: 100%;
-  padding: 30px 5px 30px 5px;
+  padding: 30px 20px 30px 20px;
   margin-bottom: 310px;
 
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: start;
   align-content: flex-start;
   gap: 30px 20px;
 }
