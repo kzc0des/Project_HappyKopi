@@ -25,7 +25,7 @@
       <div class="card-expanded">
         <div class="order-header">
           <div>
-            <div class="order-number">Order No. {{ oqv.OrderNumber }}</div>
+            <div class="order-number">Current Order</div>
             <div class="order-quantity">{{ oqv.OrderQuantity }} Drinks</div>
           </div>
           <div class="order-total">
@@ -123,7 +123,7 @@
                 stroke-linejoin="round"
               />
             </svg>
-            <div class="collapsed-order-number">Order No. {{ oqv.OrderNumber }}</div>
+            <div class="collapsed-order-number">Current Order</div>
           </div>
           <div class="collapsed-total">{{ oqv.OrderTotal | currency : 'PHP' }}</div>
         </div>
