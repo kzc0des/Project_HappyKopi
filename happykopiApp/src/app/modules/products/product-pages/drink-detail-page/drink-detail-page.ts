@@ -8,10 +8,11 @@ import { ModifierSizeCard } from '../../components/modifier-size-card/modifier-s
 import { SelectedAddonCard } from '../../components/selected-addon-card/selected-addon-card';
 import { SelectedIngredientCard } from '../../components/selected-ingredient-card/selected-ingredient-card';
 import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
+import { AvailabilityCard } from "../../../../shared/components/availability-card/availability-card";
 
 @Component({
   selector: 'app-drink-detail-page',
-  imports: [CommonModule, Itemcard, ModifierSizeCard, SelectedAddonCard, SelectedIngredientCard, FormsModule],
+  imports: [CommonModule, Itemcard, ModifierSizeCard, SelectedAddonCard, SelectedIngredientCard, FormsModule, AvailabilityCard],
   templateUrl: './drink-detail-page.html',
   styleUrl: './drink-detail-page.css'
 })

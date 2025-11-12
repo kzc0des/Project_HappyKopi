@@ -25,16 +25,20 @@
 
         </label>
 
-        <app-itemcard class="w-full" itemTitle="Drink Name" [(ngModel)]="productPayload.name"
+        <app-itemcard [showIcon]="true" class="w-full" itemTitle="Drink Name" [(ngModel)]="productPayload.name"
             name="productName" required></app-itemcard>
 
-        <app-itemcard class="w-full" itemTitle="Description" [(ngModel)]="productPayload.description"
+        <app-itemcard [showIcon]="true" class="w-full" itemTitle="Description" [(ngModel)]="productPayload.description"
             name="productDescription"> </app-itemcard>
 
-        <app-itemcard class="w-full" itemTitle="Price" type="number" [ngModel]="currentPrice"
-            name="basePrice" #basePrice="ngModel"> </app-itemcard>
+        <app-itemcard [showIcon]="true" class="w-full" itemTitle="Category" [(ngModel)]="productPayload.categoryName"
+            name="productDescription"> </app-itemcard>
 
-        
+        <app-availability-card class="w-full">
+        </app-availability-card>
+
+        <app-itemcard [showIcon]="true" class="w-full" itemTitle="Price" type="number" [ngModel]="currentPrice"
+            name="basePrice" #basePrice="ngModel"> </app-itemcard>
 
     </div>
 
