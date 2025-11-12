@@ -71,6 +71,7 @@ import { drinkCategoriesResolver } from './modules/products/resolver/adddrinkres
 import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver/adddrinkresolvers/powder-and-liquids-ingredients-resolver';
 import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
 import { productsListResolver } from './modules/products/resolver/productslist/products-list-resolver';
+import { productDetailResolver } from './modules/products/resolver/productdetail/product-detail-resolver';
 
 export const routes: Routes = [
     {
@@ -203,6 +204,13 @@ export const routes: Routes = [
                             categories: drinkCategoriesResolver,
                             ingredients: powderAndLiquidsIngredientsResolver,
                             addOns: activeAddonsResolver
+                        }
+                    },
+                    {
+                        path: 'drink/:id',
+                        component: DrinkDetailPage,
+                        resolve: {
+                            drink: productDetailResolver
                         }
                     }
                 ]
