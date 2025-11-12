@@ -33,7 +33,7 @@
   border-radius: 12px;
 }
 
-.categories { 
+.categories {
   padding: 40px 25px 0 25px;
   display: flex;
   gap: 20px;
@@ -55,15 +55,14 @@ app-search-drink {
 .drinks-table {
   background-color: #fafafa;
   width: 100%;
-  height: 100%;
-  padding: 30px 20px 30px 20px;
+  padding: 30px 20px;
   margin-bottom: 310px;
 
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: start;
-  align-content: flex-start;
-  gap: 30px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px 20px; 
+  justify-content: center; 
+  align-items: start; 
 }
 
 app-order-quick-view {

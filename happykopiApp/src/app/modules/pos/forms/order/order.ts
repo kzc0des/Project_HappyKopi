@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-with-category.dto';
 import { AddOrderModal, addOrderModalDto } from '../../modal/add-order-modal/add-order-modal';
 import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-order',
@@ -20,7 +21,13 @@ export class Order implements OnInit {
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
   drinks = signal<ProductsWithCategoryDto[]>([]);
-  
+
+  // Add All Drinks category
+  allDrinksCategory: CategoryWithProductCountDto = {
+    id: -1,
+    name: 'All Drinks',
+    productCount: 0,
+  };
 
   showModal = signal(false);
   selectedDrink = signal<addOrderModalDto | undefined>(undefined);
@@ -35,9 +42,34 @@ export class Order implements OnInit {
     this.orderService.getCategories().subscribe({
       next: (data) => {
         this.categories.set(data);
-        if (data.length) {
-          this.selectCategory(data[0]);
-        }
+
+        // Calculate total product count for All Drinks
+        const totalProducts = data.reduce((sum, category) => sum + category.productCount, 0);
+        this.allDrinksCategory.productCount = totalProducts;
+
+        // Set All Drinks as default selected
+        this.selectAllDrinks();
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
+  // Alternative approach in the component if no backend endpoint
+  selectAllDrinks() {
+    this.selectedCategory.set(this.allDrinksCategory);
+
+    // If no backend endpoint, combine products from all categories
+    const allDrinks: ProductsWithCategoryDto[] = [];
+
+    // Fetch products from each category and combine
+    const categoryRequests = this.categories().map((category) =>
+      this.orderService.getProductsByCategory(category.id)
+    );
+
+    forkJoin(categoryRequests).subscribe({
+      next: (results) => {
+        results.forEach((drinks) => allDrinks.push(...drinks));
+        this.drinks.set(allDrinks);
       },
       error: (err) => console.error(err),
     });
@@ -49,6 +81,10 @@ export class Order implements OnInit {
       next: (drinks) => this.drinks.set(drinks),
       error: (err) => console.error(err),
     });
+  }
+
+  onAllDrinksClick() {
+    this.selectAllDrinks();
   }
 
   onCategoryClick(category: CategoryWithProductCountDto) {
@@ -71,7 +107,6 @@ export class Order implements OnInit {
     });
     this.showModal.set(true);
   }
-
 
   onCloseModal() {
     this.showModal.set(false);
