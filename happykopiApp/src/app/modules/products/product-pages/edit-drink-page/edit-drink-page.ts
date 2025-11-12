@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,7 +47,7 @@ export class EditDrinkPage implements OnInit {
   productPayload!: ProductDetailDto;
   displayVariants: ProductVariantDetailDto[] = [];
   availableSizes: ModifierDto[] = [];
-  selectedSizeId: number | null = null;
+  selectedSizeId = signal<number | null>(null);
   imagePreview: string | ArrayBuffer | null = null;
 
   editingIngredient: RecipeItem | null = null;
@@ -70,13 +70,15 @@ export class EditDrinkPage implements OnInit {
 
   ngOnInit() {
 
-    this.fetchInitialData();   
-    
-    if (this.availableSizes.length > 0) {
-      this.selectedSizeId = this.availableSizes[0].id;
+    this.fetchInitialData();
+
+    if (this.productPayload?.variants?.length > 0) {
+      this.selectedSizeId.set(this.productPayload.variants[0].sizeId);
     }
 
     this.imagePreview = this.productPayload.imageUrl;
+
+    
   }
 
   fetchInitialData() {
@@ -87,7 +89,8 @@ export class EditDrinkPage implements OnInit {
     this.productPayload = this.route.snapshot.data['drink'] || [];
 
 
-    console.log(`Sizes: ${JSON.stringify(this.availableSizes)}`);
+    console.log(`Payload: ${JSON.stringify(this.productPayload)}`);
+    // console.log(`Sizes: ${JSON.stringify(this.availableSizes)}`);
     this.categoryOptions = categoriesData.map(category => ({
       value: category.id,
       label: category.name
@@ -117,15 +120,16 @@ export class EditDrinkPage implements OnInit {
     ]
   }
 
-  get currentVariant(): ProductVariantDetailDto | undefined {
-    if (this.selectedSizeId === null) {
-      return undefined;
-    }
-    return this.productPayload.variants.find(v => v.id === this.selectedSizeId);
-  }
+  currentVariant = computed(() => {
+    const sizeId = this.selectedSizeId();
+    console.log(`Selected Size ID: ${sizeId}`);
+    console.log(`Variant Id: ${this.productPayload.variants[0].sizeId}`);
+    if (sizeId === null) return undefined;
+    return this.productPayload.variants.find(v => v.sizeId === sizeId);
+  });
 
   get currentPrice(): number {
-    const variant = this.currentVariant;
+    const variant = this.currentVariant();
     if (variant) {
       return variant.price;
     }
@@ -133,28 +137,28 @@ export class EditDrinkPage implements OnInit {
   }
 
   onSizeSelect(size: ModifierDto) {
-    this.selectedSizeId = size.id;
+    this.selectedSizeId.set(size.id);
   }
 
   openIngredientModal() {
-    if (this.selectedSizeId === null) return;
+    if (this.selectedSizeId() === null) return;
     this.resetEditingState();
     this.modalService.openIngredientModal();
   }
 
   openAddOnModal() {
-    if (this.selectedSizeId === null) return;
+    if (this.selectedSizeId() === null) return;
     this.resetEditingState();
     this.modalService.openAddOnModal();
   }
 
   onSaveIngredient(item: RecipeItem) {
-    if (this.currentVariant) {
+    if (this.currentVariant()) {
       if (this.editingIngredientIndex !== null) {
-        this.currentVariant.recipe[this.editingIngredientIndex] = item;
+        this.currentVariant()!.recipe[this.editingIngredientIndex!] = item;
         console.log('Updated Ingredient:', item);
       } else {
-        this.currentVariant.recipe.push(item);
+        this.currentVariant()!.recipe.push(item);
       }
       console.log('Updated Variants Payload:', this.productPayload.variants);
     } else {
@@ -164,7 +168,7 @@ export class EditDrinkPage implements OnInit {
   }
 
   onEditIngredient(ingredient: RecipeItem, index: number) {
-    if (this.selectedSizeId === null) return;
+    if (this.selectedSizeId() === null) return;
     this.editingIngredient = { ...ingredient };
     this.editingIngredientIndex = index;
     this.modalService.openIngredientModal();
@@ -172,8 +176,8 @@ export class EditDrinkPage implements OnInit {
   }
 
   onDeleteIngredient(): void {
-    if (this.currentVariant && this.editingIngredientIndex !== null) {
-      this.currentVariant.recipe.splice(this.editingIngredientIndex, 1);
+    if (this.currentVariant() && this.editingIngredientIndex !== null) {
+      this.currentVariant()!.recipe.splice(this.editingIngredientIndex!, 1);
       console.log('Deleted ingredient at index:', this.editingIngredientIndex);
       console.log('Updated Variants Payload:', this.productPayload.variants);
     } else {
@@ -183,14 +187,14 @@ export class EditDrinkPage implements OnInit {
   }
 
   onSaveAddOn(item: AddOnItem) {
-    if (this.currentVariant) {
+    if (this.currentVariant()) {
       if (this.editingAddOnIndex !== null) {
         // Update existing add-on
-        this.currentVariant.addOns[this.editingAddOnIndex] = item;
+        this.currentVariant()!.addOns[this.editingAddOnIndex!] = item;
         console.log('Updated Add-on:', item);
       } else {
         // Add new add-on
-        this.currentVariant.addOns.push(item);
+        this.currentVariant()!.addOns.push(item);
       }
       console.log('Updated Variants Payload:', this.productPayload.variants);
     } else {
@@ -200,15 +204,15 @@ export class EditDrinkPage implements OnInit {
   }
 
   onEditAddOn(addOn: AddOnItem, index: number) {
-    if (this.selectedSizeId === null) return;
+    if (this.selectedSizeId() === null) return;
     this.editingAddOn = { ...addOn };
     this.editingAddOnIndex = index;
     this.modalService.openAddOnModal();
   }
 
   onDeleteAddOn(): void {
-    if (this.currentVariant && this.editingAddOnIndex !== null) {
-      this.currentVariant.addOns.splice(this.editingAddOnIndex, 1);
+    if (this.currentVariant() && this.editingAddOnIndex !== null) {
+      this.currentVariant()!.addOns.splice(this.editingAddOnIndex!, 1);
       console.log('Deleted add-on at index:', this.editingAddOnIndex);
       console.log('Updated Variants Payload:', this.productPayload.variants);
     } else {
@@ -224,12 +228,12 @@ export class EditDrinkPage implements OnInit {
     this.editingAddOnIndex = null;
   }
 
-  trackByIngredientId(index: number, ingredient: RecipeItem): number {
-    return ingredient.ingredientId;
+  trackByIngredientId(index: number, ingredient: RecipeItem): string {
+    return `${ingredient.ingredientId}-${index}`;
   }
 
-  trackByAddOnId(index: number, addOn: AddOnItem): number {
-    return addOn.addOnId;
+  trackByAddOnId(index: number, addOn: AddOnItem): string {
+    return `${addOn.addOnId}-${index}`;
   }
 
 }

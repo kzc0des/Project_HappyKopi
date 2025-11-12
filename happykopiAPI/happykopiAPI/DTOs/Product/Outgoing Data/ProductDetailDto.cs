@@ -21,6 +21,7 @@ namespace happykopiAPI.DTOs.Product.Outgoing_Data
         public int Id { get; set; }
 
         public int OzAmount { get; set; }
+        public int SizeId { get; set; }
         public string Size { get; set; }
         public decimal Price { get; set; }
         public List<ProductVariantIngredientDetailDto> Recipe { get; set; } = new List<ProductVariantIngredientDetailDto>();

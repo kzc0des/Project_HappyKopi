@@ -200,6 +200,12 @@ export class Header implements OnInit, OnDestroy {
     }
 
     /* products routing */
+    else if (segments.includes('products') && segments.includes('edit') && segments.length >= 5) {
+      this.showBackButton = true;
+      this.onSelected = true;
+      this.showSaveButton = true;
+      this.showDeleteButton = true;
+    }
 
     else if (segments.includes('products') && segments.length === 2) {
       this.showAddButton = true;
@@ -274,7 +280,7 @@ export class Header implements OnInit, OnDestroy {
     if (!this.isItemDeleted && !this.hasValueChanged && !this.isItemAdded) {
       this.location.back();
     }
-    
+
     if (this.hasValueChanged) {
       const confirmation = await this.confirmationService.confirm(
         "Cancel Edit?",
@@ -282,9 +288,9 @@ export class Header implements OnInit, OnDestroy {
         "primary",
         'Yes, Go Back',
         'Stay'
-      ) 
-      
-      if(confirmation){
+      )
+
+      if (confirmation) {
         this.location.back();
       }
     }

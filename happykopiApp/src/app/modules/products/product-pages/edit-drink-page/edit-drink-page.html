@@ -50,34 +50,34 @@
 
             <div class="flex gap-3 flex-nowrap overflow-x-auto pb-5">
                 @for(item of availableSizes; track $index){
-                <app-modifier-size-card class="flex-shrink-0" [itemName]="item.name" [itemValue]="item.ozAmount || 0"
-                    [isSelected]="selectedSizeId === item.id" (notifyClick)="onSizeSelect(item)">
+                <app-modifier-size-card class="flex-shrink-0" [itemName]="item.name" [itemValue]="item.ozAmount || 0" [isSelected]="selectedSizeId() === item.id"
+                    (notifyClick)="onSizeSelect(item)">
                 </app-modifier-size-card>
                 }
             </div>
         </div>
 
         <div class="flex flex-col gap-5 w-full">
-            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Ingredients for {{ currentVariant?.size }}
+            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Ingredients for {{ currentVariant()?.size }}
             </h3>
 
-            <app-add-button-card itemName="Add an Ingredient" [isDisabled]="selectedSizeId === null"
+            <app-add-button-card itemName="Add an Ingredient" [isDisabled]="selectedSizeId() === null"
                 (notifyClick)="openIngredientModal()"></app-add-button-card>
 
-            @if(currentVariant) {
-            @for(ingredient of currentVariant.recipe; track trackByIngredientId(i, ingredient); let i = $index) {
+            @if(currentVariant()) {
+            @for(ingredient of currentVariant()!.recipe; track trackByIngredientId(i, ingredient); let i = $index) {
             <app-selected-ingredient-card [ingredient]="ingredient"
                 (edit)="onEditIngredient(ingredient, i)"></app-selected-ingredient-card>
             }
             }
 
-            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant?.size }}</h3>
+            <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant()?.size }}</h3>
 
-            <app-add-button-card itemName="Add an Add-on" [isDisabled]="selectedSizeId === null"
+            <app-add-button-card itemName="Add an Add-on" [isDisabled]="selectedSizeId() === null"
                 (notifyClick)="openAddOnModal()"></app-add-button-card>
 
-            @if(currentVariant) {
-            @for(addOn of currentVariant.addOns; track trackByAddOnId(i, addOn); let i = $index) {
+            @if(currentVariant()) {
+            @for(addOn of currentVariant()!.addOns; track trackByAddOnId(i, addOn); let i = $index) {
             <app-selected-addon-card [addon]="addOn" (edit)="onEditAddOn(addOn, i)"></app-selected-addon-card>
             }
             }

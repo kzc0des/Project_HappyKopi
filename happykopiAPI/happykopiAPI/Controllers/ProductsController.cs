@@ -61,20 +61,16 @@ namespace happykopiAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromForm] ProductCreateFormDto formDto)
         {
-            // --- START DEBUG LOGGING ---
-            _logger.LogInformation("--- CreateProduct Endpoint Na-Hit ---");
+            _logger.LogInformation("--- CreateProduct Endpoint ---");
 
-            // 1. Tignan natin kung ano ang na-bind sa DTO
             _logger.LogWarning("DTO 'formDto.Name' value: {Name}", formDto.Name);
 
-            // 2. Tignan natin ang RAW FORM DATA
             _logger.LogWarning("--- Raw Request.Form Keys ---");
             foreach (var key in Request.Form.Keys)
             {
                 _logger.LogWarning("Raw Key: {Key} | Raw Value: {Value}", key, Request.Form[key]);
             }
             _logger.LogWarning("--- End Raw Request.Form ---");
-            // --- END DEBUG LOGGING ---
 
             if (formDto == null)
             {

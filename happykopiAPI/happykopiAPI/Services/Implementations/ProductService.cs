@@ -108,7 +108,7 @@ namespace happykopiAPI.Services.Implementations
                     var variantParams = new
                     {
                         ProductId = newProductId,
-                        variant.Size,
+                        variant.SizeId,
                         variant.Price
                     };
                     int newVariantId = await connection.QuerySingleAsync<int>(
@@ -231,7 +231,7 @@ namespace happykopiAPI.Services.Implementations
                     var variantParams = new
                     {
                         ProductId = productId,
-                        variant.Size,
+                        variant.SizeId,
                         variant.Price
                     };
                     int newVariantId = await connection.QuerySingleAsync<int>(
