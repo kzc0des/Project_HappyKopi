@@ -24,6 +24,7 @@ import { ModalService } from '../../services/modal-service/modal.service';
 import { DropdownOption } from '../../../../shared/components/dropdown-button/dropdown-option';
 import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dto';
 import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
+import { ConfirmationService } from '../../../../core/services/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-edit-drink-page',
@@ -65,7 +66,8 @@ export class EditDrinkPage implements OnInit {
     private route: ActivatedRoute,
     private headerService: HeaderService,
     private router: Router,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
@@ -78,7 +80,29 @@ export class EditDrinkPage implements OnInit {
 
     this.imagePreview = this.productPayload.imageUrl;
 
-    
+    this.headerService.action$.subscribe(async action => {
+      if(action === "SAVE"){
+        const confirm = await this.confirmationService.confirm(
+          "Save Product?",
+          "Make sure that all the details are correct and complete.",
+          "primary",
+          "Save",
+          "Cancel"
+        )
+
+
+      }else if(action === "DELETE"){
+        const confirm = await this.confirmationService.confirm(
+          "Delete Product?",
+          "Are you sure you want to delete this product?",
+          "danger",
+          "Delete",
+          "Cancel"
+        )
+
+        
+      }
+    })
   }
 
   fetchInitialData() {
