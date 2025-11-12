@@ -266,8 +266,7 @@ namespace happykopiAPI.Data.Migrations
 				SELECT
 					Id,
 					Name,
-					Description,
-					Price,
+					Description, 
 					ImageUrl,
 					IsAvailable,
 					CategoryId

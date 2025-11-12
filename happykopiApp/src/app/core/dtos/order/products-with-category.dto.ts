@@ -6,4 +6,5 @@ export interface ProductsWithCategoryDto {
   isAvailable: boolean;
   categoryId: number;
   categoryName: string;
+  price: number;
 }
