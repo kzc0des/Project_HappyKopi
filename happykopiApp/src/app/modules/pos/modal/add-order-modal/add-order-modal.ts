@@ -12,6 +12,7 @@ import { Addon, OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
 import { OrderVariantAddOnDto } from '../../../../core/dtos/order/order-variant-addon.dto';
 import { AllAvailableAddonDto } from '../../../../core/dtos/order/all-available-addon.dto';
+import { UndoRedoService } from '../services/undo-redo';
 
 export interface addOrderModalDto {
   ProductId: number;
@@ -44,7 +45,7 @@ export class AddOrderModal implements OnInit {
 
   productConfig?: ProductConfigurationResultDto;
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private undoRedoService: UndoRedoService) {}
 
   ngOnInit() {
     this.addOrderModal = {
@@ -168,7 +169,7 @@ export class AddOrderModal implements OnInit {
       productVariantId: this.selectedVariantId,
       drinkName: this.addOrderModal?.DrinkName ?? '',
       drinkCategory: this.addOrderModal?.DrinkCategory ?? '',
-      imageUrl: this.addOrderModal?.ImageUrl || '', // ✅ Add this
+      imageUrl: this.addOrderModal?.ImageUrl || '',
       size: this.activeSize,
       sizePrice: this.sizePrice,
       quantity: this.quantity,
@@ -190,13 +191,12 @@ export class AddOrderModal implements OnInit {
 
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    // ✅ Create OrderItem with imageUrl
     const orderItem: OrderItem = {
       tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
       drinkID: newOrder.productId,
       drinkName: newOrder.drinkName,
       drinkCategory: newOrder.drinkCategory,
-      imageUrl: newOrder.imageUrl, // ✅ Add this
+      imageUrl: newOrder.imageUrl,
       size: newOrder.size,
       quantity: newOrder.quantity,
       total: newOrder.total,
@@ -210,6 +210,10 @@ export class AddOrderModal implements OnInit {
 
     let lastID = orderItem.tempOrderID + 1;
     localStorage.setItem('lastOrderID', lastID.toString());
+
+    this.undoRedoService.saveAddedOrder(orderItem);
+ 
+    window.dispatchEvent(new CustomEvent('ordersUpdated'));
 
     this.closeModal.emit();
   }

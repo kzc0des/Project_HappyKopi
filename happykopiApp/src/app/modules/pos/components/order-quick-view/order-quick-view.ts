@@ -1,10 +1,13 @@
+// order-quick-view.component.ts
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
+import { UndoRedoService } from '../../modal/services/undo-redo';
 
 export interface oqvDto {
-  OrderNumber: number,
-  OrderTotal: number,
-  OrderQuantity: number
+  OrderNumber: number;
+  OrderTotal: number;
+  OrderQuantity: number;
 }
 
 @Component({
@@ -13,12 +16,113 @@ export interface oqvDto {
   templateUrl: './order-quick-view.html',
   styleUrl: './order-quick-view.css',
 })
-export class OrderQuickView {
+export class OrderQuickView implements OnInit, OnDestroy {
   @Input() oqv!: oqvDto;
 
   expanded = true;
+  canUndo = false;
+  canRedo = false;
+  private storageListener: any;
+  private ordersUpdatedListener: any;
+
+  constructor(private undoRedoService: UndoRedoService) {}
+
+  ngOnInit() {
+    this.updateUndoRedoState();
+
+    // Listen for storage changes
+    this.storageListener = () => this.updateUndoRedoState();
+    window.addEventListener('storage', this.storageListener);
+
+    // ✅ ADD THIS: Listen for custom ordersUpdated event
+    this.ordersUpdatedListener = () => {
+      console.log('Orders updated event received');
+      this.updateUndoRedoState();
+      this.refreshOQVData();
+    };
+    window.addEventListener('ordersUpdated', this.ordersUpdatedListener);
+
+    // Initial data load
+    this.refreshOQVData();
+  }
+
+  ngOnDestroy() {
+    if (this.storageListener) {
+      window.removeEventListener('storage', this.storageListener);
+    }
+    if (this.ordersUpdatedListener) {
+      window.removeEventListener('ordersUpdated', this.ordersUpdatedListener);
+    }
+  }
 
   toggleCard() {
     this.expanded = !this.expanded;
+  }
+
+  undo() {
+    console.log('Undo clicked. Can undo:', this.canUndo);
+    const removedOrder = this.undoRedoService.undo();
+
+    if (removedOrder) {
+      // Remove the order from localStorage
+      const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+      const updatedOrders = existingOrders.filter(
+        (order) => order.tempOrderID !== removedOrder.tempOrderID
+      );
+
+      localStorage.setItem('orders', JSON.stringify(updatedOrders));
+      this.refreshOQVData(updatedOrders);
+      this.updateUndoRedoState();
+
+      // Notify other components
+      window.dispatchEvent(new CustomEvent('ordersUpdated'));
+    }
+  }
+
+  redo() {
+    console.log('Redo clicked. Can redo:', this.canRedo);
+    const addedOrder = this.undoRedoService.redo();
+
+    if (addedOrder) {
+      // Add the order back to localStorage
+      const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+
+      // Check if order already exists to avoid duplicates
+      const orderExists = existingOrders.some(
+        (order) => order.tempOrderID === addedOrder.tempOrderID
+      );
+      if (!orderExists) {
+        existingOrders.push(addedOrder);
+        localStorage.setItem('orders', JSON.stringify(existingOrders));
+        this.refreshOQVData(existingOrders);
+        this.updateUndoRedoState();
+
+        // Notify other components
+        window.dispatchEvent(new CustomEvent('ordersUpdated'));
+      }
+    }
+  }
+
+  private updateUndoRedoState() {
+    this.canUndo = this.undoRedoService.canUndo();
+    this.canRedo = this.undoRedoService.canRedo();
+    console.log('Undo/Redo state updated - CanUndo:', this.canUndo, 'CanRedo:', this.canRedo);
+  }
+
+  private refreshOQVData(orders?: OrderItem[]): void {
+    const existingOrders = orders || JSON.parse(localStorage.getItem('orders') || '[]');
+    const totalQuantity = existingOrders.reduce(
+      (sum: number, order: OrderItem) => sum + order.quantity,
+      0
+    );
+    const totalAmount = existingOrders.reduce(
+      (sum: number, order: OrderItem) => sum + order.total,
+      0
+    );
+
+    this.oqv.OrderQuantity = totalQuantity;
+    this.oqv.OrderTotal = totalAmount;
+
+    console.log('OQV Data refreshed - Quantity:', totalQuantity, 'Total:', totalAmount);
   }
 }
