@@ -12,6 +12,7 @@ import {
 } from '../../../../core/dtos/order/new-order-request.dto';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { UserDto } from '../../../../core/dtos/auth/user-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-order',
@@ -25,19 +26,23 @@ export class ViewOrder implements OnInit {
   showEditModal = false;
   selectedOrderId: number | null = null;
   isProcessing = false;
-  
+
   currentUser: UserDto | null = null;
   currentUserId: number | null = null;
   currentBaristaName: string = '';
 
-  constructor(private orderService: OrderService, private authService: AuthService) {}
+  constructor(
+    private orderService: OrderService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadCurrentUser();
     this.loadOrders();
   }
 
-  private loadCurrentUser() { 
+  private loadCurrentUser() {
     this.authService.getCurrentUser$().subscribe((user) => {
       if (user) {
         this.currentUser = user;
@@ -51,20 +56,20 @@ export class ViewOrder implements OnInit {
   }
 
   loadOrders() {
-  const storedOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+    const storedOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-  this.orders = storedOrders.map((order) => ({
-    tempOrderID: order.tempOrderID,
-    Name: order.drinkName,
-    Size: order.size,
-    DrinkImage: order.imageUrl || '', // ✅ Load the image URL
-    Addons: order.addons.map((a) => ({ name: a.name, quantity: a.quantity })),
-    Subtotal: order.total,
-    DrinkQuantity: order.quantity,
-  }));
+    this.orders = storedOrders.map((order) => ({
+      tempOrderID: order.tempOrderID,
+      Name: order.drinkName,
+      Size: order.size,
+      DrinkImage: order.imageUrl || '', // ✅ Load the image URL
+      Addons: order.addons.map((a) => ({ name: a.name, quantity: a.quantity })),
+      Subtotal: order.total,
+      DrinkQuantity: order.quantity,
+    }));
 
-  this.calculateTotal();
-}
+    this.calculateTotal();
+  }
 
   calculateTotal() {
     this.total = this.orders.reduce((sum, order) => sum + order.Subtotal, 0);
@@ -96,7 +101,8 @@ export class ViewOrder implements OnInit {
       alert('No logged-in user detected. Please log in first.');
       return;
     }
- 
+
+    this.isProcessing = true;
     console.log('Payment Type:', paymentType);
 
     const storedOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
@@ -135,19 +141,30 @@ export class ViewOrder implements OnInit {
           : null,
       orderItems: orderItems,
     };
- 
-    console.log(JSON.stringify(orderRequest, null, 2));
 
-    this.printReceipt(orderRequest, storedOrders);
+    console.log(JSON.stringify(orderRequest, null, 2));
 
     this.orderService.createOrder(orderRequest).subscribe({
       next: (response) => {
         console.log('\n✅ ORDER SUCCESS:', response);
-        alert(`Order ${response.orderNumber} successfully created!`);
-        this.clearOrders();
+ 
+        const receiptData = {
+          orderNumber: response.orderNumber,
+          baristaName: this.currentBaristaName,
+          paymentType: paymentType,
+          referenceNumber: orderRequest.referenceNumber,
+          totalAmount: totalAmount,
+          orders: storedOrders,
+          timestamp: new Date().toISOString(),
+        };
+
+        localStorage.setItem('lastReceipt', JSON.stringify(receiptData));
+ 
+        this.router.navigate(['/charge-summary']);
+
         this.isProcessing = false;
       },
-      error: (error) => { 
+      error: (error) => {
         alert('Failed to create order: ' + (error.error?.message || error.message));
         this.isProcessing = false;
       },
