@@ -18,11 +18,12 @@ export interface addOrderModalDto {
   DrinkName: string;
   DrinkCategory: string;
   BasePrice: number;
+  ImageUrl?: string;
 }
 
 interface AddonWithConfig extends addonCardDto {
   minQuantity: number;
-  modifierId: number;  // Added modifierId to track the addon ID
+  modifierId: number; // Added modifierId to track the addon ID
 }
 
 @Component({
@@ -40,7 +41,7 @@ export class AddOrderModal implements OnInit {
   activeSize: string = '';
   selectedVariantId: number = 0;
   quantity: number = 1;
- 
+
   productConfig?: ProductConfigurationResultDto;
 
   constructor(private orderService: OrderService) {}
@@ -51,6 +52,7 @@ export class AddOrderModal implements OnInit {
       DrinkName: this.addOrderModal?.DrinkName ?? 'Drink Name',
       DrinkCategory: this.addOrderModal?.DrinkCategory ?? 'Drink Category',
       BasePrice: this.addOrderModal?.BasePrice ?? 0,
+      ImageUrl: this.addOrderModal?.ImageUrl || '', // ✅ Add this
     };
 
     if (this.addOrderModal.ProductId) {
@@ -63,7 +65,7 @@ export class AddOrderModal implements OnInit {
       next: (config: ProductConfigurationResultDto) => {
         console.log('Product Configuration:', config);
         this.productConfig = config;
- 
+
         if (config.variants && config.variants.length > 0) {
           this.sizes = config.variants.map((v) => ({
             SizeName: v.size,
@@ -71,7 +73,7 @@ export class AddOrderModal implements OnInit {
           }));
           this.activeSize = this.sizes[0].SizeName;
           this.selectedVariantId = config.variants[0].id;
- 
+
           this.loadAddonsForVariant(this.selectedVariantId);
         } else {
           console.warn('No variants with ingredients found for this product');
@@ -85,22 +87,22 @@ export class AddOrderModal implements OnInit {
 
   loadAddonsForVariant(variantId: number) {
     if (!this.productConfig) return;
- 
+
     const variantAddons = this.productConfig.addOns.filter((a) => a.productVariantId === variantId);
- 
+
     const defaultQuantities = new Map<number, number>();
     variantAddons.forEach((va) => {
       defaultQuantities.set(va.modifierId, va.defaultQuantity);
     });
- 
+
     this.addons = this.productConfig.allAvailableAddons.map((addon) => {
       const defaultQty = defaultQuantities.get(addon.id) || 0;
       return {
         Name: addon.name,
-        Quantity: defaultQty, 
+        Quantity: defaultQty,
         Price: addon.price,
         minQuantity: defaultQty,
-        modifierId: addon.id,  // Store the addon ID
+        modifierId: addon.id, // Store the addon ID
       };
     });
 
@@ -109,10 +111,10 @@ export class AddOrderModal implements OnInit {
 
   selectSize(size: sizeButtonDto) {
     this.activeSize = size.SizeName;
- 
+
     const variant = this.productConfig?.variants.find((v) => v.size === size.SizeName);
     if (variant) {
-      this.selectedVariantId = variant.id; 
+      this.selectedVariantId = variant.id;
       this.loadAddonsForVariant(variant.id);
     }
   }
@@ -123,7 +125,7 @@ export class AddOrderModal implements OnInit {
 
   onAddonQuantityChange(addonName: string, newQuantity: number) {
     const addon = this.addons.find((a) => a.Name === addonName);
-    if (addon) { 
+    if (addon) {
       if (newQuantity < addon.minQuantity) {
         console.warn(`Cannot decrease ${addonName} below ${addon.minQuantity}`);
         addon.Quantity = addon.minQuantity;
@@ -147,16 +149,15 @@ export class AddOrderModal implements OnInit {
   }
 
   addToOrder() {
-    // Map addons with modifierId included
     const selectedAddons: Addon[] = this.addons
       .filter((a) => a.Quantity > 0)
       .map((a) => ({
         name: a.Name,
         quantity: a.Quantity,
         price: a.Price ?? 0,
-        modifierId: a.modifierId,  // Include modifierId
+        modifierId: a.modifierId,
       }));
- 
+
     const variantIngredients =
       this.productConfig?.ingredients.filter(
         (ing) => ing.productVariantId === this.selectedVariantId
@@ -167,6 +168,7 @@ export class AddOrderModal implements OnInit {
       productVariantId: this.selectedVariantId,
       drinkName: this.addOrderModal?.DrinkName ?? '',
       drinkCategory: this.addOrderModal?.DrinkCategory ?? '',
+      imageUrl: this.addOrderModal?.ImageUrl || '', // ✅ Add this
       size: this.activeSize,
       sizePrice: this.sizePrice,
       quantity: this.quantity,
@@ -185,21 +187,22 @@ export class AddOrderModal implements OnInit {
     console.log('=== ORDER PAYLOAD ===');
     console.log(JSON.stringify(newOrder, null, 2));
     console.log('===================');
- 
+
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    // Create OrderItem with all required fields
+    // ✅ Create OrderItem with imageUrl
     const orderItem: OrderItem = {
       tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
       drinkID: newOrder.productId,
       drinkName: newOrder.drinkName,
       drinkCategory: newOrder.drinkCategory,
+      imageUrl: newOrder.imageUrl, // ✅ Add this
       size: newOrder.size,
       quantity: newOrder.quantity,
       total: newOrder.total,
       addons: newOrder.addons,
-      productVariantId: newOrder.productVariantId,  // Added missing field
-      sizePrice: newOrder.sizePrice,                // Added missing field
+      productVariantId: newOrder.productVariantId,
+      sizePrice: newOrder.sizePrice,
     };
 
     existingOrders.push(orderItem);

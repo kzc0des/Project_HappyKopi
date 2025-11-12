@@ -1,6 +1,11 @@
 <div class="drink-card">
-  <div class="drink-image"></div>
-
+  <div class="drink-image">
+    @if (cartItem.DrinkImage) {
+    <img [src]="cartItem.DrinkImage" alt="cartItem.Name" class="cart-drink-img" />
+    } @else {
+    <div class="image-placeholder">No image</div>
+    }
+  </div>
   <div class="drink-info">
     <div class="drink-header">
       <div class="drink-name">
@@ -8,16 +13,13 @@
         <div class="drink-qty">({{ cartItem.DrinkQuantity }})</div>
       </div>
     </div>
-
     <div class="drink-size">{{ cartItem.Size }}</div>
-
     <div class="addon-list">
       <div class="addon" *ngFor="let addon of cartItem.Addons">
         {{ addon.name }} ({{ addon.quantity }})
       </div>
     </div>
   </div>
-
   <div class="price-and-qty">
     <div class="drink-price">{{ cartItem.Subtotal | currency : 'PHP' }}</div>
     <div class="quantity-control" (click)="editOrder()">Edit</div>

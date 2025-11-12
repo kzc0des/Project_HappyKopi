@@ -63,13 +63,15 @@ export class Order implements OnInit {
 
   onDrinkClicked(drink: ProductsWithCategoryDto): void {
     this.selectedDrink.set({
-      ProductId: drink.id, // <-- PASS THE PRODUCT ID
+      ProductId: drink.id,
       DrinkName: drink.name,
       DrinkCategory: drink.categoryName,
-      BasePrice: drink.price, // <-- Pass the "starts at" price
+      BasePrice: drink.price,
+      ImageUrl: drink.imageUrl || '',
     });
     this.showModal.set(true);
   }
+
 
   onCloseModal() {
     this.showModal.set(false);

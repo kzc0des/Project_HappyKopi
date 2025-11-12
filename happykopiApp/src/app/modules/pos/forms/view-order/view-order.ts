@@ -51,20 +51,20 @@ export class ViewOrder implements OnInit {
   }
 
   loadOrders() {
-    const storedOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+  const storedOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    this.orders = storedOrders.map((order) => ({
-      tempOrderID: order.tempOrderID,
-      Name: order.drinkName,
-      Size: order.size,
-      DrinkImage: '',
-      Addons: order.addons.map((a) => ({ name: a.name, quantity: a.quantity })),
-      Subtotal: order.total,
-      DrinkQuantity: order.quantity,
-    }));
+  this.orders = storedOrders.map((order) => ({
+    tempOrderID: order.tempOrderID,
+    Name: order.drinkName,
+    Size: order.size,
+    DrinkImage: order.imageUrl || '', // ✅ Load the image URL
+    Addons: order.addons.map((a) => ({ name: a.name, quantity: a.quantity })),
+    Subtotal: order.total,
+    DrinkQuantity: order.quantity,
+  }));
 
-    this.calculateTotal();
-  }
+  this.calculateTotal();
+}
 
   calculateTotal() {
     this.total = this.orders.reduce((sum, order) => sum + order.Subtotal, 0);

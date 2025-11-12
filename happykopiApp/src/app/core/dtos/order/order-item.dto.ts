@@ -16,4 +16,5 @@ export interface OrderItem {
   addons: Addon[];
   productVariantId: number;
   sizePrice: number;
+  imageUrl?: string;
 }
