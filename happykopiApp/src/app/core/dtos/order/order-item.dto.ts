@@ -2,6 +2,7 @@ export interface Addon {
   name: string;
   quantity: number;
   price: number;
+  modifierId: number;
 }
 
 export interface OrderItem {
@@ -13,4 +14,6 @@ export interface OrderItem {
   quantity: number;
   total: number;
   addons: Addon[];
+  productVariantId: number;
+  sizePrice: number;
 }

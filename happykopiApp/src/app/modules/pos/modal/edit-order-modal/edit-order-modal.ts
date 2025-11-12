@@ -14,6 +14,7 @@ import { ProductConfigurationResultDto } from '../../../../core/dtos/order/produ
 
 interface AddonWithConfig extends addonCardDto {
   minQuantity: number;
+  modifierId: number;
 }
 
 @Component({
@@ -54,8 +55,7 @@ export class EditOrderModal implements OnInit {
     if (this.orderData) {
       this.activeSize = this.orderData.size;
       this.quantity = this.orderData.quantity;
-
-      // Load product configuration based on the product ID from order
+ 
       if (this.orderData.drinkID) {
         this.loadProductConfiguration(this.orderData.drinkID);
       }
@@ -73,8 +73,7 @@ export class EditOrderModal implements OnInit {
             SizeName: v.size,
             SizeQuantity: v.price,
           }));
-
-          // Find the variant that matches the saved size
+ 
           const savedVariant = config.variants.find((v) => v.size === this.orderData!.size);
           if (savedVariant) {
             this.selectedVariantId = savedVariant.id;
@@ -105,8 +104,7 @@ export class EditOrderModal implements OnInit {
 
     this.addons = this.productConfig.allAvailableAddons.map((addon) => {
       const defaultQty = defaultQuantities.get(addon.id) || 0;
-
-      // Check if this addon was in the saved order
+ 
       const savedAddon = this.orderData?.addons.find((a) => a.name === addon.name);
       const quantity = savedAddon ? savedAddon.quantity : defaultQty;
 
@@ -115,6 +113,7 @@ export class EditOrderModal implements OnInit {
         Quantity: quantity,
         Price: addon.price,
         minQuantity: defaultQty,
+        modifierId: addon.id
       };
     });
 
@@ -167,6 +166,7 @@ export class EditOrderModal implements OnInit {
         name: a.Name,
         quantity: a.Quantity,
         price: a.Price ?? 0,
+        modifierId: a.modifierId
       }));
 
     const variantIngredients =

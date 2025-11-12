@@ -7,6 +7,8 @@ import { ModifierType } from '../../../core/enums/modifier-type';
 import { OrderModifierSummaryDto } from '../../../core/dtos/order/order-modifier-summary.to';
 import { HttpParams } from '@angular/common/http';
 import { ProductConfigurationResultDto } from '../../../core/dtos/order/product-configuration-result.dto';
+import { NewOrderRequestDto } from '../../../core/dtos/order/new-order-request.dto';
+import { NewOrderResponseDto } from '../../../core/dtos/order/new-order-response.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +42,9 @@ export class OrderService {
       `${this.endpoint}/modifiers/by-ids`,
       modifierIds
     );
+  }
+
+  createOrder(orderRequest: NewOrderRequestDto): Observable<NewOrderResponseDto> {
+    return this.api.post<NewOrderResponseDto>(this.endpoint, orderRequest);
   }
 }

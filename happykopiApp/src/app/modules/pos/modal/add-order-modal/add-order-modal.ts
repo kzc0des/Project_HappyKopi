@@ -21,7 +21,8 @@ export interface addOrderModalDto {
 }
 
 interface AddonWithConfig extends addonCardDto {
-  minQuantity: number;  
+  minQuantity: number;
+  modifierId: number;  // Added modifierId to track the addon ID
 }
 
 @Component({
@@ -98,7 +99,8 @@ export class AddOrderModal implements OnInit {
         Name: addon.name,
         Quantity: defaultQty, 
         Price: addon.price,
-        minQuantity: defaultQty,  
+        minQuantity: defaultQty,
+        modifierId: addon.id,  // Store the addon ID
       };
     });
 
@@ -145,12 +147,14 @@ export class AddOrderModal implements OnInit {
   }
 
   addToOrder() {
+    // Map addons with modifierId included
     const selectedAddons: Addon[] = this.addons
       .filter((a) => a.Quantity > 0)
       .map((a) => ({
         name: a.Name,
         quantity: a.Quantity,
         price: a.Price ?? 0,
+        modifierId: a.modifierId,  // Include modifierId
       }));
  
     const variantIngredients =
@@ -184,6 +188,7 @@ export class AddOrderModal implements OnInit {
  
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
+    // Create OrderItem with all required fields
     const orderItem: OrderItem = {
       tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
       drinkID: newOrder.productId,
@@ -193,6 +198,8 @@ export class AddOrderModal implements OnInit {
       quantity: newOrder.quantity,
       total: newOrder.total,
       addons: newOrder.addons,
+      productVariantId: newOrder.productVariantId,  // Added missing field
+      sizePrice: newOrder.sizePrice,                // Added missing field
     };
 
     existingOrders.push(orderItem);
