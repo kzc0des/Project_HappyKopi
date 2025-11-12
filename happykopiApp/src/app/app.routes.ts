@@ -212,6 +212,13 @@ export const routes: Routes = [
                         resolve: {
                             drink: productDetailResolver
                         }
+                    },
+                    {
+                        path: 'drink/:id/edit',
+                        component: EditDrinkPage,
+                        resolve: {
+                            drink: productDetailResolver
+                        }
                     }
                 ]
             },
