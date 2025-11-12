@@ -57,17 +57,25 @@
             </h3>
 
             @if(currentVariant) {
-            @for(ingredient of currentVariant.recipe; track $index) {
-            <app-selected-ingredient-card [ingredient]="ingredient"></app-selected-ingredient-card>
-            }
+                @if(currentVariant.recipe && currentVariant.recipe.length > 0) {
+                    @for(ingredient of currentVariant.recipe; track $index) {
+                        <app-selected-ingredient-card [ingredient]="ingredient"></app-selected-ingredient-card>
+                    }
+                } @else {
+                    <p class="text-sm text-gray-500 italic">No ingredients for this variant.</p>
+                }
             }
 
             <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant?.size }}</h3>
 
             @if(currentVariant) {
-            @for(addOn of currentVariant.addOns; track $index) {
-            <app-selected-addon-card [addon]="addOn"></app-selected-addon-card>
-            }
+                @if(currentVariant.addOns && currentVariant.addOns.length > 0) {
+                    @for(addOn of currentVariant.addOns; track $index) {
+                        <app-selected-addon-card [addon]="addOn"></app-selected-addon-card>
+                    }
+                } @else {
+                    <p class="text-sm text-gray-500 italic">No add-ons for this variant.</p>
+                }
             }
         </div>
     </div>
