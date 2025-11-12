@@ -28,8 +28,7 @@ namespace happykopiAPI.Services.Implementations
             using var connection = CreateConnection();
 
             try
-            {
-                // Convert request DTOs to internal JSON DTOs (camelCase for SQL Server OPENJSON)
+            { 
                 var orderItemsJson = request.OrderItems.Select(item => new NewOrderItemJsonDto
                 {
                     productVariantId = item.ProductVariantId,
@@ -44,14 +43,12 @@ namespace happykopiAPI.Services.Implementations
                         subtotal = mod.Subtotal
                     }).ToList()
                 }).ToList();
-
-                // Serialize to JSON
+                 
                 var orderItemsJsonString = JsonSerializer.Serialize(orderItemsJson, new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
-
-                // Prepare parameters for stored procedure
+                 
                 var parameters = new DynamicParameters();
                 parameters.Add("@UserId", request.UserId);
                 parameters.Add("@OrderDate", DateTime.Now);
@@ -64,19 +61,16 @@ namespace happykopiAPI.Services.Implementations
                 parameters.Add("@OrderItemsJson", orderItemsJsonString);
                 parameters.Add("@OrderNumber", dbType: DbType.String, direction: ParameterDirection.Output, size: 40);
                 parameters.Add("@OrderId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-
-                // Execute stored procedure
+                 
                 await connection.ExecuteAsync(
                     "sp_InsertOrder",
                     parameters,
                     commandType: CommandType.StoredProcedure
                 );
-
-                // Get output parameters
+                 
                 var orderId = parameters.Get<int>("@OrderId");
                 var orderNumber = parameters.Get<string>("@OrderNumber");
-
-                // Return response
+                 
                 return new NewOrderResponseDto
                 {
                     OrderId = orderId,

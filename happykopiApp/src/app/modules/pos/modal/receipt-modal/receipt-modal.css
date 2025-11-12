@@ -90,13 +90,14 @@
 .item-header {
   font-weight: bold;
   margin-bottom: 6px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .item-size {
   color: #666;
   font-weight: normal;
   margin-left: 4px;
+  font-size: 16px;
 }
 
 .item-price-row {
@@ -137,6 +138,7 @@
   background: #F3B72C;
   padding: 4px 12px;
   border-radius: 4px;
+  font-size: 20px;
 }
 
 .receipt-footer {
@@ -167,7 +169,7 @@
   background: #F3B72C;
   border: none;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   transition: background 0.3s;
   color: #fafafa;

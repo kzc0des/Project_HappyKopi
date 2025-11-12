@@ -1,36 +1,35 @@
 <div class="receipt-modal-overlay" (click)="onClose()">
       <div class="receipt-container" (click)="$event.stopPropagation()"> 
         <div class="receipt-header">
-          <div class="receipt-logo">HAPPYKOPI</div>
-          <div class="receipt-tagline">Your Daily Coffee Fix</div>
+          <div class="receipt-logo">happykopi</div> 
         </div>
  
         <div class="receipt-body">
           <div class="receipt-info">
             <div class="info-row">
-              <span>Order #:</span>
-              <span class="font-bold">{{ receipt.orderNumber }}</span>
+              <span class="text-[16px]">Order #:</span>
+              <span class="text-[16px]">{{ receipt.orderNumber }}</span>
             </div>
             <div class="info-row">
-              <span>Barista:</span>
-              <span>{{ receipt.baristaName }}</span>
+              <span class="text-[16px]">Barista:</span>
+              <span class="text-[16px]">{{ receipt.baristaName }}</span>
             </div>
             <div class="info-row">
-              <span>Date:</span>
-              <span>{{ getDate(receipt.timestamp) }}</span>
+              <span class="text-[16px]">Date:</span>
+              <span class="text-[16px]">{{ getDate(receipt.timestamp) }}</span>
             </div>
             <div class="info-row">
-              <span>Time:</span>
-              <span>{{ getTime(receipt.timestamp) }}</span>
+              <span class="text-[16px]">Time:</span>
+              <span class="text-[16px]">{{ getTime(receipt.timestamp) }}</span>
             </div>
             <div class="info-row">
-              <span>Payment:</span>
-              <span>{{ receipt.paymentType }}</span>
+              <span class="text-[16px]">Payment:</span>
+              <span class="text-[16px]">{{ receipt.paymentType }}</span>
             </div>
             @if (receipt.referenceNumber) {
               <div class="info-row">
-                <span>Ref #:</span>
-                <span class="text-xs">{{ receipt.referenceNumber }}</span>
+                <span class="text-[16px]">Ref #:</span>
+                <span class="text-[16px]">{{ receipt.referenceNumber }}</span>
               </div>
             }
           </div>
@@ -46,8 +45,8 @@
                   <span class="item-size">({{ order.size }})</span>
                 </div>
                 <div class="item-price-row">
-                  <span>{{ order.quantity }} x {{ order.sizePrice | currency: 'PHP' }}</span>
-                  <span class="font-bold">{{ (order.sizePrice * order.quantity) | currency: 'PHP' }}</span>
+                  <span class="text-[16px]">{{ order.quantity }} x {{ order.sizePrice | currency: 'PHP' }}</span>
+                  <span class="font-bold text-[16px]]">{{ (order.sizePrice * order.quantity) | currency: 'PHP' }}</span>
                 </div>
                 
                 @if (order.addons && order.addons.length > 0) {
@@ -60,8 +59,8 @@
                 }
                 
                 <div class="item-total">
-                  <span>Subtotal:</span>
-                  <span class="font-bold">{{ order.total | currency: 'PHP' }}</span>
+                  <span class="text-[16px]">Subtotal:</span>
+                  <span class="font-bold text-[16px]">{{ order.total | currency: 'PHP' }}</span>
                 </div>
               </div>
             }
@@ -71,7 +70,7 @@
 
           <!-- Total -->
           <div class="receipt-total">
-            <span class="total-label">TOTAL:</span>
+            <span class="text-[20px]">TOTAL:</span>
             <span class="total-amount">{{ receipt.totalAmount | currency: 'PHP' }}</span>
           </div>
         </div>
