@@ -57,16 +57,16 @@
             </h3>
 
             @if(currentVariant) {
-            @for(ingredient of currentVariant.recipe; track trackByIngredientId(i, ingredient); let i = $index) {
-            <app-selected-ingredient-card [ingredient]="ingredient" (edit)="onEditIngredient(ingredient, i)"></app-selected-ingredient-card>
+            @for(ingredient of currentVariant.recipe; track $index) {
+            <app-selected-ingredient-card [ingredient]="ingredient"></app-selected-ingredient-card>
             }
             }
 
             <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant?.size }}</h3>
 
             @if(currentVariant) {
-            @for(addOn of currentVariant.addOns; track trackByAddOnId(i, addOn); let i = $index) {
-            <app-selected-addon-card [addon]="addOn" (edit)="onEditAddOn(addOn, i)"></app-selected-addon-card>
+            @for(addOn of currentVariant.addOns; track $index) {
+            <app-selected-addon-card [addon]="addOn"></app-selected-addon-card>
             }
             }
         </div>

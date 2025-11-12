@@ -19,6 +19,8 @@ namespace happykopiAPI.DTOs.Product.Outgoing_Data
     public class ProductVariantDetailDto
     {
         public int Id { get; set; }
+
+        public int OzAmount { get; set; }
         public string Size { get; set; }
         public decimal Price { get; set; }
         public List<ProductVariantIngredientDetailDto> Recipe { get; set; } = new List<ProductVariantIngredientDetailDto>();
@@ -28,10 +30,13 @@ namespace happykopiAPI.DTOs.Product.Outgoing_Data
     public class ProductVariantIngredientDetailDto : ProductVariantIngredientCreateDto
     {
         public int ProductVariantId { get; set; }
+        public string IngredientName { get; set; }
+        public string UnitOfMeasure { get; set; }
     }
 
     public class ProductVariantAddOnDetailDto : ProductVariantAddOnCreateDto
     {
         public int ProductVariantId { get; set; }
+        public string ModifierName { get; set; }
     }
 }

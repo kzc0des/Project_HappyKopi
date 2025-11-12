@@ -1,6 +1,7 @@
 import { ProductCreateDto } from "./product-create-dto";
 
 export interface RecipeItem {
+  productVariantId?: number; // For mapping from backend
   ingredientId: number; 
   quantityNeeded: number;
   ingredientName: string; 
@@ -8,6 +9,7 @@ export interface RecipeItem {
 }
 
 export interface AddOnItem {
+  productVariantId?: number; // For mapping from backend
   addOnId: number;
   times: number;
   modifierName: string;
@@ -53,5 +55,8 @@ export interface ProductDetailDto {
 export interface ProductUpdateDto extends ProductCreateDto { }
 
 export interface ProductVariantDetailDto extends ProductVariantCreateDtoUI {
-  id: number;
+  id: number; // This is the ProductVariantId
+  ozAmount?: number;
+  recipe: RecipeItem[];
+  addOns: AddOnItem[];
 }

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+﻿using Dapper;
 using happykopiAPI.DTOs.Product.Dropdown_Data;
 using happykopiAPI.DTOs.Product.Incoming_Data;
 using happykopiAPI.DTOs.Product.Internal;
@@ -191,7 +192,6 @@ namespace happykopiAPI.Services.Implementations
                 variant.Recipe = variantIngredients[variant.Id].ToList();
                 variant.AddOns = variantAddOns[variant.Id].ToList();
             }
-
             product.Variants = variants;
 
             return product;
