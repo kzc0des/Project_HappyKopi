@@ -7,6 +7,7 @@ using happykopiAPI.DTOs.Order.Outgoing_Data;
 using happykopiAPI.DTOs.Order.Ingoing_Data;
 using happykopiAPI.DTOs.Order.Internal;
 using happykopiAPI.DTOs.Product.Outgoing_Data;
+using happykopiAPI.DTOs.Product.Internal;
 using happykopiAPI.DTOs.Modifier.Internal;
 using happykopiAPI.Enums;
 
@@ -22,13 +23,13 @@ namespace happykopiAPI.Services.Implementations
         }
 
         private IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("LocalDB"));
-         
+
         public async Task<NewOrderResponseDto> CreateOrderAsync(NewOrderRequestDto request)
         {
             using var connection = CreateConnection();
 
             try
-            { 
+            {
                 var orderItemsJson = request.OrderItems.Select(item => new NewOrderItemJsonDto
                 {
                     productVariantId = item.ProductVariantId,
@@ -43,12 +44,12 @@ namespace happykopiAPI.Services.Implementations
                         subtotal = mod.Subtotal
                     }).ToList()
                 }).ToList();
-                 
+
                 var orderItemsJsonString = JsonSerializer.Serialize(orderItemsJson, new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
-                 
+
                 var parameters = new DynamicParameters();
                 parameters.Add("@UserId", request.UserId);
                 parameters.Add("@OrderDate", DateTime.Now);
@@ -61,16 +62,16 @@ namespace happykopiAPI.Services.Implementations
                 parameters.Add("@OrderItemsJson", orderItemsJsonString);
                 parameters.Add("@OrderNumber", dbType: DbType.String, direction: ParameterDirection.Output, size: 40);
                 parameters.Add("@OrderId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                 
+
                 await connection.ExecuteAsync(
                     "sp_InsertOrder",
                     parameters,
                     commandType: CommandType.StoredProcedure
                 );
-                 
+
                 var orderId = parameters.Get<int>("@OrderId");
                 var orderNumber = parameters.Get<string>("@OrderNumber");
-                 
+
                 return new NewOrderResponseDto
                 {
                     OrderId = orderId,
@@ -91,7 +92,7 @@ namespace happykopiAPI.Services.Implementations
             {
                 throw new Exception($"Error creating order: {ex.Message}", ex);
             }
-        } 
+        }
 
         public async Task<IEnumerable<CategoryWithProductCountDto>> GetCategoriesWithProductCountAsync()
         {
@@ -110,6 +111,82 @@ namespace happykopiAPI.Services.Implementations
                 new { CategoryId = categoryId },
                 commandType: CommandType.StoredProcedure
             );
+        }
+
+        // NEW METHOD: Get Product Availability
+        public async Task<ProductAvailabilityResponseDto> GetProductAvailabilityAsync(int? categoryId = null)
+        {
+            using var connection = CreateConnection();
+
+            var parameters = new { CategoryId = categoryId };
+
+            using var multi = await connection.QueryMultipleAsync(
+                "sp_CheckProductAvailability",
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            // Read first result set: all products with availability
+            var allProducts = (await multi.ReadAsync<ProductAvailabilityFromDbDto>()).ToList();
+
+            // Read second result set: ingredient issues
+            var ingredientIssues = (await multi.ReadAsync<IngredientIssueFromDbDto>()).ToList();
+
+            // Group ingredient issues by product
+            var issuesByProduct = ingredientIssues
+                .GroupBy(i => i.ProductId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            // Separate available and unavailable products
+            var available = allProducts
+                .Where(p => p.IsAvailable)
+                .Select(p => new ProductWithAvailabilityDto
+                {
+                    ProductId = p.ProductId,
+                    ProductName = p.ProductName,
+                    CategoryName = p.CategoryName,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    IsAvailable = true
+                })
+                .ToList();
+
+            var unavailable = allProducts
+                .Where(p => !p.IsAvailable)
+                .Select(p =>
+                {
+                    var issues = issuesByProduct.ContainsKey(p.ProductId)
+                        ? issuesByProduct[p.ProductId]
+                        : new List<IngredientIssueFromDbDto>();
+
+                    var reason = issues.Any() ? issues.First().Reason : "UNKNOWN";
+
+                    return new UnavailableProductDto
+                    {
+                        ProductId = p.ProductId,
+                        ProductName = p.ProductName,
+                        CategoryName = p.CategoryName,
+                        Price = p.Price,
+                        ImageUrl = p.ImageUrl,
+                        Reason = reason,
+                        Details = issues.Select(i => new IngredientIssueDto
+                        {
+                            IngredientName = i.IngredientName,
+                            Required = i.Required,
+                            Available = i.Available,
+                            UnitOfMeasure = i.UnitOfMeasure,
+                            ExpiredBatchCount = i.ExpiredBatchCount,
+                            TotalBatchCount = i.TotalBatchCount
+                        }).ToList()
+                    };
+                })
+                .ToList();
+
+            return new ProductAvailabilityResponseDto
+            {
+                AvailableProducts = available,
+                UnavailableProducts = unavailable
+            };
         }
 
         public async Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync()
