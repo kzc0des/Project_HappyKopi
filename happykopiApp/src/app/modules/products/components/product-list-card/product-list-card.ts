@@ -3,7 +3,7 @@ import { CloudinaryPipe } from './cloudinary.pipe';
 
 @Component({
   selector: 'app-product-list-card',
-  imports: [CloudinaryPipe],
+  imports: [],
   templateUrl: './product-list-card.html',
   styleUrl: './product-list-card.css'
 })
