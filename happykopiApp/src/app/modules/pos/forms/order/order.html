@@ -35,10 +35,10 @@
     >
     </app-search-drink>
   </div>
- 
+
   @if (drinks().length > 0) {
   <div class="drinks-table">
-    @for (drink of drinks(); track drink.id) {
+    @for (drink of getUniqueDrinks(); track drink.id) {
     <app-order-card
       [orderCard]="drink"
       [isUnavailable]="!isProductAvailable(drink.id)"
@@ -48,7 +48,7 @@
     }
   </div>
   } @else {
-  <div class="empty-state"> 
+  <div class="empty-state">
     <h3 class="empty-state-title">Uh-oh, no drinks found!</h3>
     <p class="empty-state-message">Try searching for something else or check another category.</p>
   </div>

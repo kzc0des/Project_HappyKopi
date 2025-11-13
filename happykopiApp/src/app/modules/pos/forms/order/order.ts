@@ -31,7 +31,7 @@ export class Order implements OnInit {
   // for category
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
- 
+
   // for searching
   allDrinks = signal<ProductsWithCategoryDto[]>([]);
   drinks = signal<ProductsWithCategoryDto[]>([]);
@@ -102,7 +102,7 @@ export class Order implements OnInit {
   onCategoryClick(category: CategoryWithProductCountDto) {
     this.selectCategory(category);
   }
- 
+
   onSearchResults(filteredDrinks: ProductsWithCategoryDto[]) {
     this.drinks.set(filteredDrinks);
   }
@@ -145,5 +145,16 @@ export class Order implements OnInit {
 
   isProductAvailable(drinkId: number): boolean {
     return !this.unavailableMap().has(drinkId);
+  }
+
+  getUniqueDrinks(): ProductsWithCategoryDto[] {
+    const seen = new Set<number>();
+    return this.drinks().filter((drink) => {
+      if (seen.has(drink.id)) {
+        return false;
+      }
+      seen.add(drink.id);
+      return true;
+    });
   }
 }
