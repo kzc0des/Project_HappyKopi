@@ -104,7 +104,8 @@ export class Header implements OnInit, OnDestroy {
 
   private updateHeaderButtons(url: string): void {
     this.resetHeaderState();
-    const segments = url.split('/').filter(segment => segment);
+    const pathOnly = url.split('?')[0];
+    const segments = pathOnly.split('/').filter(segment => segment);
 
     // Example URL: /app/inventory/liquid/create
     // Segments: ['app', 'inventory', 'liquid', 'create']
@@ -211,6 +212,7 @@ export class Header implements OnInit, OnDestroy {
     }
 
     else if (segments.includes('products') && segments.length === 2) {
+      this.headerTitle = 'Products';
       this.showAddButton = true;
     }
 
@@ -320,6 +322,3 @@ export class Header implements OnInit, OnDestroy {
   }
 
 }
-
-
-
