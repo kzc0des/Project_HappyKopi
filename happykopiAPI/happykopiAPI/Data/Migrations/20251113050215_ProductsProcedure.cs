@@ -12,6 +12,7 @@ namespace happykopiAPI.Data.Migrations
         {
             var sp_GetActiveProducts = @"
 CREATE OR ALTER PROCEDURE sp_GetActiveProducts
+    @CategoryId INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -26,7 +27,8 @@ BEGIN
     JOIN
         Categories c ON p.CategoryId = c.Id
     WHERE
-        p.IsActive = 1;
+        p.IsActive = 1
+        AND (@CategoryId IS NULL OR p.CategoryId = @CategoryId);
 END;
 ";
             migrationBuilder.Sql(sp_GetActiveProducts);

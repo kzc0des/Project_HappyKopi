@@ -70,8 +70,9 @@ export class InventoryBatchAdd implements OnInit {
     this.inventoryService.addStockItemBatch(this.batchDetail).subscribe({
       next: async () => {
         this.loadingService.hide();
+        this.headerService.notifyItemAdded(true);
         await this.alertService.show('Success', 'New batch has been added successfully.', 'success');
-        this.router.navigate(['../..'], { relativeTo: this.route, replaceUrl: true });
+        this.router.navigate(['../../'], { relativeTo: this.route, replaceUrl: true });
       },
       error: async (err) => {
         this.loadingService.hide();

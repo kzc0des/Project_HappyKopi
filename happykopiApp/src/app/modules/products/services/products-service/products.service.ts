@@ -47,8 +47,12 @@ export class ProductsService {
     return this.apiService.post<{ productId: number }>('products', formData);
   }
 
-  getActiveProducts(): Observable<ProductListItemDto[]> {
-    return this.apiService.get<ProductListItemDto[]>('products');
+  getActiveProducts(categoryId?: number): Observable<ProductListItemDto[]> {
+    let url = 'products';
+    if (categoryId) {
+      url += `?categoryId=${categoryId}`;
+    }
+    return this.apiService.get<ProductListItemDto[]>(url);
   }
 
   getProductById(id: number): Observable<ProductDetailDto> {
