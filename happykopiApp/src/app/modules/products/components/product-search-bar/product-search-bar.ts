@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-product-search-bar',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './product-search-bar.css',
 })
 export class ProductSearchBar {
+  @Output() searchChange = new EventEmitter<string>();
 
+  onSearch(event: Event): void {
+    this.searchChange.emit((event.target as HTMLInputElement).value);
+  }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -8,6 +8,9 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './category-button-field.css'
 })
 export class CategoryButtonField {
-    constructor(private router: Router) {}
+  @Input() categoryName: string = 'All Drinks';
+  @Input() drinkCount: number = 0;
+
+  constructor(private router: Router) { }
 }
 
