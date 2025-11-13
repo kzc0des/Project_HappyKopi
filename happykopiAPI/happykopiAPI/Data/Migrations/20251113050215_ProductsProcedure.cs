@@ -5,7 +5,7 @@
 namespace happykopiAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ProductProcedures : Migration
+    public partial class ProductsProcedure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,7 @@ END;
             migrationBuilder.Sql(sp_GetActiveProducts);
 
             var sp_GetProductDetailById = @"
-CREATE OR ALTER PROCEDURE sp_GetProductDetailById
+CREATE OR ALTER PROCEDURE [dbo].[sp_GetProductDetailById]
     @ProductId INT
 AS
 BEGIN
@@ -56,17 +56,22 @@ BEGIN
     -- Product Variants
     SELECT
         pv.Id,
-        pv.Size,
-        pv.Price
+        pv.SizeId,
+        pv.Price,
+        m.Name AS Size,
+        m.OzAmount
     FROM ProductVariants pv
+    JOIN Modifiers m ON pv.SizeId = m.Id
     WHERE pv.ProductId = @ProductId;
     
     -- Variant Ingredients
     SELECT
         pvi.ProductVariantId,
         pvi.StockItemId,
+        pvi.StockItemId AS IngredientId,
         si.Name AS IngredientName,
         pvi.QuantityNeeded,
+        si.ItemType,
         si.UnitOfMeasure
     FROM ProductVariantIngredients pvi
     JOIN ProductVariants pv ON pvi.ProductVariantId = pv.Id
@@ -77,6 +82,7 @@ BEGIN
     SELECT
         pva.ProductVariantId,
         pva.ModifierId,
+        pva.ModifierId AS AddOnId,
         m.Name AS ModifierName,
         pva.DefaultQuantity AS Times,
         m.Price
