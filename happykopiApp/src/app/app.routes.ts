@@ -29,7 +29,6 @@ import { AddDrinkPage } from './modules/products/product-pages/add-drink-page/ad
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/product-pages/edit-drink-page/edit-drink-page';
-import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
 import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
 import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inventory-batch-view';
@@ -321,22 +320,6 @@ export const routes: Routes = [
     {
         path: 'charge-summary',
         component: ChargeSummary
-    },
-    {
-        path: 'add-drink-page',
-        component: AddDrinkPage
-    },
-    {
-        path: 'edit-category',
-        component: EditCategoryPage
-    },
-    {
-        path: 'edit-drink-page',
-        component: EditDrinkPage
-    },
-    {
-        path: 'edit-products',
-        component: EditProductsPage
     },
     {
         path: 'create-drink-page',
