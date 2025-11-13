@@ -101,9 +101,9 @@ export class OrderQuickView implements OnInit, OnDestroy {
       }
     }
   }
- 
+
   viewDrinks() {
-    this.router.navigate(['/view-order']);
+    this.router.navigate(['/app/orders/cart']);
   }
 
   private updateUndoRedoState() {
