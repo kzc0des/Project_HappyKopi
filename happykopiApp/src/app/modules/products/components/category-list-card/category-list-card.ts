@@ -7,7 +7,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './category-list-card.html',
   styleUrl: './category-list-card.css'
 })
-export class CategoryListCard {  
+export class CategoryListCard {
+  @Input() categoryId: number = 0;
   @Input() itemTitle !: string;
   @Input() itemValue !: number;
   @Input() itemUnit !: string;

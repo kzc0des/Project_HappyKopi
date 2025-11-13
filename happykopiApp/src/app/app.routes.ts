@@ -75,6 +75,7 @@ import { InventoryBatchAdd } from './modules/inventory/inventory-batch-add/inven
 import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
 import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
 import { roleGuard } from './core/guards/role-guard';
+import { ProductCategoriesPage } from './modules/products/product-pages/product-categories-page/product-categories-page';
 
 export const routes: Routes = [
     {
@@ -204,8 +205,11 @@ export const routes: Routes = [
                         }
                     },
                     {
-                        path: 'filter',
-                        component: CategoriesListPage
+                        path: 'category',
+                        component: ProductCategoriesPage,
+                        resolve: {
+                            categorylist: categoriesListWithCountResolver
+                        }
                     },
                     {
                         path: 'create',
