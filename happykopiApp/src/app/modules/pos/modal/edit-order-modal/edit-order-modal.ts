@@ -70,11 +70,11 @@ export class EditOrderModal implements OnInit {
 
         if (config.variants && config.variants.length > 0) {
           this.sizes = config.variants.map((v) => ({
-            SizeName: v.size,
+            SizeName: v.sizeName,
             SizeQuantity: v.price,
           }));
  
-          const savedVariant = config.variants.find((v) => v.size === this.orderData!.size);
+          const savedVariant = config.variants.find((v) => v.sizeName === this.orderData!.size);
           if (savedVariant) {
             this.selectedVariantId = savedVariant.id;
           } else {
@@ -123,7 +123,7 @@ export class EditOrderModal implements OnInit {
   selectSize(size: sizeButtonDto) {
     this.activeSize = size.SizeName;
 
-    const variant = this.productConfig?.variants.find((v) => v.size === size.SizeName);
+    const variant = this.productConfig?.variants.find((v) => v.sizeName === size.SizeName);
     if (variant) {
       this.selectedVariantId = variant.id;
       this.loadAddonsForVariant(variant.id);

@@ -24,23 +24,12 @@ export class UnavailableProductModal {
 
   getReasonMessage(): string {
     switch (this.modalData.unavailableInfo.reason) {
-      case 'EXPIRED_BATCHES':
-        return 'Hindi available ang product na ito dahil expired na ang mga ingredients';
-      case 'INSUFFICIENT_STOCK':
-        return 'Hindi available ang product na ito dahil kulang ang stock ng ingredients';
+      case 'EXPIRED BATCHES':
+        return 'Product not available due to expired ingredients.';
+      case 'INSUFFICIENT STOCK':
+        return 'Product not available due to insufficient stock.';
       default:
-        return 'Hindi available ang product na ito';
-    }
-  }
-
-  getReasonIcon(): string {
-    switch (this.modalData.unavailableInfo.reason) {
-      case 'EXPIRED_BATCHES':
-        return '⚠️';
-      case 'INSUFFICIENT_STOCK':
-        return '📦';
-      default:
-        return 'ℹ️';
+        return 'This product is not available';
     }
   }
 }

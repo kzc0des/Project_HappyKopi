@@ -69,7 +69,7 @@ export class AddOrderModal implements OnInit {
 
         if (config.variants && config.variants.length > 0) {
           this.sizes = config.variants.map((v) => ({
-            SizeName: v.size,
+            SizeName: v.sizeName,
             SizeQuantity: v.price,
           }));
           this.activeSize = this.sizes[0].SizeName;
@@ -113,7 +113,7 @@ export class AddOrderModal implements OnInit {
   selectSize(size: sizeButtonDto) {
     this.activeSize = size.SizeName;
 
-    const variant = this.productConfig?.variants.find((v) => v.size === size.SizeName);
+    const variant = this.productConfig?.variants.find((v) => v.sizeName === size.SizeName);
     if (variant) {
       this.selectedVariantId = variant.id;
       this.loadAddonsForVariant(variant.id);
