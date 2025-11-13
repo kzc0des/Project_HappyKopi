@@ -82,7 +82,8 @@
             </svg>
           </div>
 
-          <div class="view-drinks-button">
+          <!-- View Drinks Button - ADD (click) HERE -->
+          <div class="view-drinks-button" (click)="viewDrinks()">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -105,8 +106,8 @@
     </div>
     } @else {
     <div class="card-content-wrapper">
-      <div class="card-collapsed">
-        <div class="collapsed-content">
+      <div class="card-collapsed"> 
+        <div class="collapsed-content" (click)="viewDrinks()">
           <div class="collapsed-left">
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,7 @@
 // order-quick-view.component.ts
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router'; // ADD THIS
 import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { UndoRedoService } from '../../modal/services/undo-redo';
 
@@ -25,7 +26,10 @@ export class OrderQuickView implements OnInit, OnDestroy {
   private storageListener: any;
   private ordersUpdatedListener: any;
 
-  constructor(private undoRedoService: UndoRedoService) {}
+  constructor(
+    private undoRedoService: UndoRedoService,
+    private router: Router // ADD THIS
+  ) {}
 
   ngOnInit() {
     this.updateUndoRedoState();
@@ -34,7 +38,7 @@ export class OrderQuickView implements OnInit, OnDestroy {
     this.storageListener = () => this.updateUndoRedoState();
     window.addEventListener('storage', this.storageListener);
 
-    // ✅ ADD THIS: Listen for custom ordersUpdated event
+    // Listen for custom ordersUpdated event
     this.ordersUpdatedListener = () => {
       console.log('Orders updated event received');
       this.updateUndoRedoState();
@@ -64,7 +68,6 @@ export class OrderQuickView implements OnInit, OnDestroy {
     const removedOrder = this.undoRedoService.undo();
 
     if (removedOrder) {
-      // Remove the order from localStorage
       const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
       const updatedOrders = existingOrders.filter(
         (order) => order.tempOrderID !== removedOrder.tempOrderID
@@ -74,7 +77,6 @@ export class OrderQuickView implements OnInit, OnDestroy {
       this.refreshOQVData(updatedOrders);
       this.updateUndoRedoState();
 
-      // Notify other components
       window.dispatchEvent(new CustomEvent('ordersUpdated'));
     }
   }
@@ -84,10 +86,8 @@ export class OrderQuickView implements OnInit, OnDestroy {
     const addedOrder = this.undoRedoService.redo();
 
     if (addedOrder) {
-      // Add the order back to localStorage
       const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-      // Check if order already exists to avoid duplicates
       const orderExists = existingOrders.some(
         (order) => order.tempOrderID === addedOrder.tempOrderID
       );
@@ -97,10 +97,13 @@ export class OrderQuickView implements OnInit, OnDestroy {
         this.refreshOQVData(existingOrders);
         this.updateUndoRedoState();
 
-        // Notify other components
         window.dispatchEvent(new CustomEvent('ordersUpdated'));
       }
     }
+  }
+ 
+  viewDrinks() {
+    this.router.navigate(['/view-order']);
   }
 
   private updateUndoRedoState() {

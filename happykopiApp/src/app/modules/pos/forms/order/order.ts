@@ -28,15 +28,18 @@ import {
   styleUrls: ['./order.css'],
 })
 export class Order implements OnInit {
+  // for category
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
  
+  // for searching
   allDrinks = signal<ProductsWithCategoryDto[]>([]);
- 
   drinks = signal<ProductsWithCategoryDto[]>([]);
 
+  // for unavailable drinks
   unavailableMap = signal<Map<number, UnavailableProductDto>>(new Map());
 
+  // for default na allDrinks
   allDrinksCategory: CategoryWithProductCountDto = {
     id: -1,
     name: 'All Drinks',

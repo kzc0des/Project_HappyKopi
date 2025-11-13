@@ -15,8 +15,7 @@ export class SearchDrink<T> {
   
   // Specify which properties to search
   @Input() searchProperties: (keyof T)[] = [];
-  
-  // Optional: custom placeholder text
+   
   @Input() placeholder: string = 'Search...';
   
   // Emit filtered results

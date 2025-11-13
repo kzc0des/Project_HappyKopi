@@ -35,8 +35,7 @@
     >
     </app-search-drink>
   </div>
-
-  <!-- Drinks Table or Empty State -->
+ 
   @if (drinks().length > 0) {
   <div class="drinks-table">
     @for (drink of drinks(); track drink.id) {
