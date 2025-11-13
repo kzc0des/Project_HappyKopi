@@ -12,8 +12,8 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    [Migration("20251113105557_UpdateSpGetProductConfigurationByProductId_AddSizeId")]
-    partial class UpdateSpGetProductConfigurationByProductId_AddSizeId
+    [Migration("20251113113040_UpdateCreateProductVariant")]
+    partial class UpdateCreateProductVariant
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

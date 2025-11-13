@@ -1,6 +1,6 @@
 export interface OrderVariantDto {
   id: number;
   productId: number;
-  size: string;
+  sizeName: string;
   price: number;
 }
