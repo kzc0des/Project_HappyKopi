@@ -10,36 +10,66 @@ namespace happykopiAPI.Controllers
     public class DashboardController : ControllerBase
     {
         private readonly IDashboardService _dashboardService;
+        private readonly ITransactionService _transactionService;
 
-        public DashboardController(IDashboardService dashboardService)
+        public DashboardController(
+            IDashboardService dashboardService,
+            ITransactionService transactionService)
         {
             _dashboardService = dashboardService;
+            _transactionService = transactionService;
         }
 
+        // ===== SUMMARY ENDPOINTS =====
         [HttpGet("today")]
         public async Task<ActionResult<TransactionSummaryDto>> GetToday()
-            => Ok(await _dashboardService.GetTodaySummaryAsync());
+        {
+            var result = await _dashboardService.GetTodaySummaryAsync();
+            return Ok(result);
+        }
 
         [HttpGet("this-week")]
         public async Task<ActionResult<TransactionSummaryDto>> GetThisWeek()
-            => Ok(await _dashboardService.GetWeeklySummaryAsync());
+        {
+            var result = await _dashboardService.GetWeeklySummaryAsync();
+            return Ok(result);
+        }
 
         [HttpGet("this-month")]
         public async Task<ActionResult<TransactionSummaryDto>> GetThisMonth()
-            => Ok(await _dashboardService.GetMonthlySummaryAsync());
+        {
+            var result = await _dashboardService.GetMonthlySummaryAsync();
+            return Ok(result);
+        }
 
+        // ===== CHART ENDPOINTS =====
         [HttpGet("chart/today")]
         public async Task<ActionResult<IEnumerable<ChartPointDto>>> GetChartToday()
-            => Ok(await _dashboardService.GetChartTodayAsync());
+        {
+            var result = await _dashboardService.GetChartTodayAsync();
+            return Ok(result);
+        }
 
         [HttpGet("chart/this-week")]
         public async Task<ActionResult<IEnumerable<ChartPointDto>>> GetChartThisWeek()
-            => Ok(await _dashboardService.GetChartThisWeekAsync());
+        {
+            var result = await _dashboardService.GetChartThisWeekAsync();
+            return Ok(result);
+        }
 
         [HttpGet("chart/this-month")]
         public async Task<ActionResult<IEnumerable<ChartPointDto>>> GetChartThisMonth()
-            => Ok(await _dashboardService.GetChartThisMonthAsync());
+        {
+            var result = await _dashboardService.GetChartThisMonthAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("transactions/history")]
+        public async Task<ActionResult<IEnumerable<TransactionListItemDto>>> GetTransactionHistory()
+        {
+            var result = await _dashboardService.GetTransactionHistoryAsync();
+            return Ok(result);
+        }
     }
 }
-
-
+    

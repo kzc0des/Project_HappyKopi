@@ -1,9 +1,10 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-gcash-payment',
   standalone: true,
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './dashboard-gcash-payment.html',
   styleUrls: ['./dashboard-gcash-payment.css']
 })

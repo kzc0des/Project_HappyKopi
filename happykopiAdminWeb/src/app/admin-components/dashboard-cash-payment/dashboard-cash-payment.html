@@ -19,5 +19,5 @@
 
   <div class="transaction-title">{{ title }}</div>
   <div class="transaction-count">{{ count }}</div>
-  <div class="transaction-amount">₱{{ amount }}</div>
+  <div class="transaction-amount">{{ amount | currency : 'PHP' }}</div>
 </div>

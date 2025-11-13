@@ -11,5 +11,7 @@ namespace happykopiAPI.Services.Interfaces
         Task<IEnumerable<ChartPointDto>> GetChartTodayAsync();
         Task<IEnumerable<ChartPointDto>> GetChartThisWeekAsync();
         Task<IEnumerable<ChartPointDto>> GetChartThisMonthAsync();
+
+        Task<IEnumerable<TransactionListItemAdminDto>> GetTransactionHistoryAsync();
     }
 }
