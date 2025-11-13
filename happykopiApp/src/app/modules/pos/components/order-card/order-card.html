@@ -8,7 +8,35 @@
       [class.faded]="isUnavailable"
     />
     } @else {
-    <div class="oc-placeholder">No image available</div>
+    <div class="oc-placeholder">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="26"
+        viewBox="0 0 18 26"
+        fill="none"
+      >
+        <path d="M1 8.35693H17" stroke="#777777" stroke-width="2" stroke-linecap="round" />
+        <path
+          d="M3.37314 9.58122C3.32588 8.91968 3.84988 8.35693 4.51314 8.35693H13.4869C14.1501 8.35693 14.6741 8.91968 14.6269 9.58122L13.6473 23.2955C13.6045 23.8936 13.1069 24.3569 12.5073 24.3569H5.49268C4.89314 24.3569 4.39548 23.8936 4.35274 23.2955L3.37314 9.58122Z"
+          fill="#F0F0F0"
+          stroke="#777777"
+          stroke-width="2"
+        />
+        <path
+          d="M9 4.92857V2.64286C9 2.01167 9.51166 1.5 10.1429 1.5H11.8571"
+          stroke="#777777"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <path
+          d="M3.69799 5.88368C3.78982 5.3326 4.26662 4.92871 4.82531 4.92871H13.1747C13.7334 4.92871 14.2102 5.3326 14.302 5.88368L14.7143 8.35728H3.28571L3.69799 5.88368Z"
+          fill="#F0F0F0"
+          stroke="#777777"
+          stroke-width="2"
+        />
+      </svg>
+    </div>
     } @if (isUnavailable) {
     <div class="unavailable-overlay"></div>
     }

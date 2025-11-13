@@ -12,7 +12,7 @@
   width: 0;
 }
 
-.upper-content {
+.upper-content { 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@
   height: max-content;
   background-color: #fafafa;  
   margin-bottom: 30px;
-  padding-top: 50px;
+  padding-top: 60px;
   padding-bottom: 50px;
 
 }
@@ -31,7 +31,7 @@
   justify-content: center;
   height: max-content;
   background-color: #fafafa;
-  padding: 20px 0 20px 0;
+  padding: 20px 0 100% 0;
   gap: 0 80px;
 }
 
