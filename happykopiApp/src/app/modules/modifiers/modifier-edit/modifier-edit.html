@@ -8,9 +8,7 @@
         <label class="text-sm font-semibold text-gray-600">Linked Stock Item</label>
         @if(modifierDetails.linkedItems && modifierDetails.linkedItems.length > 0){
             @for(item of modifierDetails.linkedItems; track item.stockItemId) {
-            <div class="flex items-center justify-between text-gray-800 p-2 border rounded-md bg-gray-50">
-                <span>{{item.stockItemName}}</span>
-            </div>
+            <app-itemcard [isEditing]="false" itemTitle="Miscellaneous" [(ngModel)]="item.stockItemName" [isBatch]="true"></app-itemcard>
             }
         } @else {
             <div class="text-gray-500 p-2 border rounded-md bg-gray-50 text-sm">No stock item linked.</div>
