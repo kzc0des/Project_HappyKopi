@@ -1,8 +1,17 @@
-@for(item of categories; track $index){
+<div class="flex flex-col">
+    
     <app-category-list-card
-    [categoryId]="item.id"
-    [itemTitle]="item.name"
+    itemTitle="All Drinks"
     itemUnit="Drinks"
-    [itemValue]="item.productCount"
-    (itemClick)="onCategoryClick(item.id)"></app-category-list-card>
-}
+    (itemClick)="onAllDrinksClick()">
+  </app-category-list-card>
+
+    @for(item of categories; track $index){
+        <app-category-list-card
+        [categoryId]="item.id"
+        [itemTitle]="item.name"
+        itemUnit="Drinks"
+        [itemValue]="item.productCount"
+        (itemClick)="onCategoryClick(item.id)"></app-category-list-card>
+    }
+</div>

@@ -28,4 +28,8 @@ export class ProductCategoriesPage implements OnInit {
       queryParams: { categoryId: categoryId },
     });
   }
+
+  onAllDrinksClick() {
+    this.router.navigate(['/app/products']);
+  }
 }
