@@ -284,6 +284,14 @@ export const routes: Routes = [
                         resolve: {
                             categories: CategoriesResolver
                         }
+                    },
+                    {
+                        path: 'cart',
+                        component: ViewOrder
+                    },
+                    {
+                        path: 'summary',
+                        component: ChargeSummary
                     }
                 ]
             }
@@ -328,11 +336,7 @@ export const routes: Routes = [
     {
         path: 'posoff',
         component: PosCategoryOff
-    },
-    {
-        path: 'view-order',
-        component: ViewOrder
-    },
+    }, 
     {
         path: 'cart-item',
         component: CartItem
@@ -348,11 +352,7 @@ export const routes: Routes = [
     {
         path: 'charge',
         component: Charge
-    },
-    {
-        path: 'charge-summary',
-        component: ChargeSummary
-    },
+    }, 
     {
         path: 'create-drink-page',
         component: CreateDrinkPage

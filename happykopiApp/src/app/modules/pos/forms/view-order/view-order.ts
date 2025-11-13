@@ -147,7 +147,7 @@ export class ViewOrder implements OnInit {
     this.orderService.createOrder(orderRequest).subscribe({
       next: (response) => {
         console.log('\n✅ ORDER SUCCESS:', response);
- 
+
         const receiptData = {
           orderNumber: response.orderNumber,
           baristaName: this.currentBaristaName,
@@ -159,8 +159,8 @@ export class ViewOrder implements OnInit {
         };
 
         localStorage.setItem('lastReceipt', JSON.stringify(receiptData));
- 
-        this.router.navigate(['/charge-summary']);
+        
+        this.router.navigate(['/app/orders/summary']);
 
         this.isProcessing = false;
       },

@@ -7,33 +7,33 @@ shadow">
     <div class="flex items-center justify-between w-full">
 
         <div class="flex items-center gap-6 flex-1">
-
-            @if (showBackButton) {
-            <button (click)="onBackClick()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 512 512">
-                    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
-                        d="M244 400L100 256l144-144M120 256h292" />
-                </svg>
-            </button>
-            } @else {
-            <button (click)="toggleSidebar()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="18" viewBox="0 0 29 22" fill="none">
-                    <path d="M2 2H27M2 10.7907H27M2 20H27" stroke="#F0F0F0" stroke-width="4" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-            </button>
+            @if (showMenuButton) {
+                @if (showBackButton) {
+                <button (click)="onBackClick()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7" viewBox="0 0 512 512">
+                        <path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
+                            d="M244 400L100 256l144-144M120 256h292" />
+                    </svg>
+                </button>
+                } @else {
+                <button (click)="toggleSidebar()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="18" viewBox="0 0 29 22" fill="none">
+                        <path d="M2 2H27M2 10.7907H27M2 20H27" stroke="#F0F0F0" stroke-width="4" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+                }
             }
-
             @if(!onSelected){
-            @if(headerTitle){
-            <h1 class="font-semibold text-xl">
-                {{ headerTitle | titlecase }}
-            </h1>
-            }@else{
-            <h1 class="font-semibold text-xl">
-                {{ (currentPageSelected | async) | titlecase }}
-            </h1>
-            }
+                @if(headerTitle){
+                <h1 class="font-semibold text-xl">
+                    {{ headerTitle | titlecase }}
+                </h1>
+                }@else{
+                <h1 class="font-semibold text-xl">
+                    {{ (currentPageSelected | async) | titlecase }}
+                </h1>
+                }
             }
 
         </div>

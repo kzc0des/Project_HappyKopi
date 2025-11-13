@@ -33,40 +33,44 @@
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
-            <tr
-              *ngFor="let detail of modalData.unavailableInfo.details"
-              [class.row-alert]="
-                detail.available < detail.required ||
-                (detail.expiredBatchCount && detail.expiredBatchCount > 0)
-              "
-            >
-              <td class="ingredient-name">{{ detail.ingredientName }}</td>
-              <td>{{ detail.required }} {{ detail.unitOfMeasure }}</td>
-              <td>{{ detail.available }} {{ detail.unitOfMeasure }}</td>
-              <td>
-                <span
-                  *ngIf="detail.expiredBatchCount && detail.expiredBatchCount > 0"
-                  class="status-tag expired"
-                >
-                  {{ detail.expiredBatchCount }} Expired
-                </span>
-                <span
-                  *ngIf="
-                    detail.available < detail.required &&
-                    (!detail.expiredBatchCount || detail.expiredBatchCount === 0)
-                  "
-                  class="status-tag insufficient"
-                >
-                  Short {{ detail.required - detail.available }} {{ detail.unitOfMeasure }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
         </table>
+        <div class="table-body-wrapper">
+          <table class="ingredients-table">
+            <tbody>
+              <tr
+                *ngFor="let detail of modalData.unavailableInfo.details"
+                [class.row-alert]="
+                  detail.available < detail.required ||
+                  (detail.expiredBatchCount && detail.expiredBatchCount > 0)
+                "
+              >
+                <td class="ingredient-name">{{ detail.ingredientName }}</td>
+                <td>{{ detail.required }} {{ detail.unitOfMeasure }}</td>
+                <td>{{ detail.available }} {{ detail.unitOfMeasure }}</td>
+                <td>
+                  <span
+                    *ngIf="detail.expiredBatchCount && detail.expiredBatchCount > 0"
+                    class="status-tag expired"
+                  >
+                    {{ detail.expiredBatchCount }} Expired
+                  </span>
+                  <span
+                    *ngIf="
+                      detail.available < detail.required &&
+                      (!detail.expiredBatchCount || detail.expiredBatchCount === 0)
+                    "
+                    class="status-tag insufficient"
+                  >
+                    Short {{ detail.required - detail.available }} {{ detail.unitOfMeasure }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>  
-    <div class="pb-6">
+    </div>
+    <div class="pb-9">
       <app-long-yellow-button
         class="w-full flex justify-center items-center"
         (click)="closeModal.emit()"

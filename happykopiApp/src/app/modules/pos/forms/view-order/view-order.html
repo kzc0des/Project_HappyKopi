@@ -1,4 +1,10 @@
 <div class="order-body">
+  @if (orders.length === 0) {
+  <div class="empty-state">
+    <h3 class="empty-state-title">No drinks added yet!</h3>
+    <p class="empty-state-message">Choose a drink from our order page first.</p>
+  </div>
+  } @else { 
   <div class="cart-item-container">
     <app-cart-item
       *ngFor="let order of orders"
@@ -6,9 +12,10 @@
       (edit)="openEditModal($event)"
     ></app-cart-item>
   </div>
+  }
 
   <div class="btns">
-    <div class="mx-[8%] text-[20px] mb-1">
+    <div class="mx-[8%] text-[20px] mb-3">
       Total: <b>{{ total | currency : 'PHP' }}</b>
     </div>
 

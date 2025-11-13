@@ -17,6 +17,7 @@ export class Header implements OnInit, OnDestroy {
   showAddButton = false;
   showEditButton = false;
   showBackButton = false;
+  showMenuButton = true; 
 
   // under editing state
   isEditing = false;
@@ -91,6 +92,7 @@ export class Header implements OnInit, OnDestroy {
     this.showBackButton = false;
     this.showSaveButton = false;
     this.showDeleteButton = false;
+    this.showMenuButton = true;
     this.onSelected = false;
     this.headerTitle = null;
     this.headerActionService.resetValueChangedState();
@@ -221,6 +223,24 @@ export class Header implements OnInit, OnDestroy {
       this.showBackButton = true;
       this.showEditButton = true;
       this.onSelected = true;
+    }
+
+        /* orders routing */
+    else if (segments.includes('orders') && segments.includes('cart') && segments.length === 3) {
+      this.headerTitle = 'Your Cart';
+      this.showBackButton = true;
+    }
+
+    else if (segments.includes('orders') && segments.includes('summary') && segments.length === 3) {
+      this.headerTitle = 'Order Summary';
+      this.showBackButton = false;
+      this.showMenuButton = false; 
+    }
+
+    else if (segments.includes('orders') && segments.length === 2) {
+      this.headerTitle = 'Order';
+      this.showBackButton = false;
+      
     }
   }
 
