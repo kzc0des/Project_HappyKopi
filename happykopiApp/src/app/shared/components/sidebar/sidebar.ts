@@ -22,6 +22,8 @@ export class Sidebar implements OnDestroy{
 
   pages!:{page: string, route: string}[];
 
+  isBarista = false;
+
   constructor(private sidebarService: SidebarService, private authService: AuthService, private router: Router) {
     this.isSidebarOpen$ = sidebarService.isSidebarOpen$;
     this.selectedPage = sidebarService.currentSelectedPage$;
@@ -31,22 +33,28 @@ export class Sidebar implements OnDestroy{
       if(user && user.role) {
         if(user.role.toLowerCase() === 'admin') {
           this.pages = [
-            {page: 'products', route: 'products'},
-            {page: 'category', route: 'category'},
+            {page: 'products', route: '/products'},
+            {page: 'inventory', route: 'inventory'},
             {page: 'modifiers', route: 'modifiers'},
-            {page: 'inventory', route: 'inventory'}
           ]
-        }else if(user.role.toLowerCase() === 'barista') {
+
+          this.isBarista = false;
+
+        } else if(user.role.toLowerCase() === 'barista') {
           this.pages = [
             {page: 'orders', route: '/orders'},
             {page: 'transactions', route: '/transactions'},
             {page: 'print', route: '/print'}
           ]
+
+          this.isBarista = true;
         }else {
           this.pages = [];
+          this.isBarista = false;
         }
       }else{
         this.pages = []
+        this.isBarista = false;
       }
     })
   }
