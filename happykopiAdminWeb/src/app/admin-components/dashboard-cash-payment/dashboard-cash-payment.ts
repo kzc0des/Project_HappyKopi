@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-cash-payment',
+  standalone: true,
   imports: [],
   templateUrl: './dashboard-cash-payment.html',
   styleUrl: './dashboard-cash-payment.css'
