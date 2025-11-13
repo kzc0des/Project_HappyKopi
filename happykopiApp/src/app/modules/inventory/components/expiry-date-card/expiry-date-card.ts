@@ -1,4 +1,4 @@
-import { Component, ElementRef, forwardRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { HeaderService } from '../../../../core/services/header/header.service';
 
@@ -20,6 +20,7 @@ export class ExpiryDateCard implements ControlValueAccessor, OnInit {
   day: string = '';
   year: string = '';
   minDate: string = '';
+  @Input() isEditing: boolean = true;
 
   @ViewChild('nativeDatePicker') nativeDatePicker!: ElementRef<HTMLInputElement>;
 

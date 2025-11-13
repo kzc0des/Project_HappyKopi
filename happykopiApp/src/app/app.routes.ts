@@ -121,10 +121,11 @@ export const routes: Routes = [
                         component: InventoryBatchAdd
                     },
                     {
-                        path: ':itemtype/:itemid/batch/:batchid',
+                        path: ':itemType/:itemId/batch/:batchid',
                         component: InventoryBatchView,
                         resolve: {
-                            batchdetail: stockItemBatchResolver
+                            batchdetail: stockItemBatchResolver,
+                            stockitemdetail: stockitemdetailResolver
                         }
                     },
                     {

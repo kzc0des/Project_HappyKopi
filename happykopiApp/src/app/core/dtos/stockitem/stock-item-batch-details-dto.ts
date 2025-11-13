@@ -3,4 +3,5 @@ export interface StockItemBatchDetailsDto {
     stockQuantity: number;
     expiryDate?: Date;
     dateReceived: Date;
+    remarks: string;
 }

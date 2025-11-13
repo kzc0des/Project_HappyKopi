@@ -10,23 +10,23 @@ focus-within:ring-hapikopi-yellow">
     <div class="flex flex-col gap-5 flex-1">
         <p class="text-gray-500">Expiry Date</p>
         <div class="flex pb-2 border-b-1 border-gray-300">
-            <input id="month-input" type="text" inputmode="numeric" placeholder="mm" maxlength="2" [(ngModel)]="month" (keydown)="onKeydown($event)"
+            <input id="month-input" type="text" inputmode="numeric" placeholder="mm" maxlength="2" [(ngModel)]="month" (keydown)="onKeydown($event)" [disabled]="!isEditing"
                 (input)="focusNext($event, 'day')" (blur)="handleBlur()" class="border-0 bg-transparent w-11
       text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-0" /> <span
                 class="text-gray-400">/&nbsp;</span>
 
-            <input id="day-input" type="text" inputmode="numeric" placeholder="dd" maxlength="2" [(ngModel)]="day" (keydown)="onKeydown($event)"
+            <input id="day-input" type="text" inputmode="numeric" placeholder="dd" maxlength="2" [(ngModel)]="day" (keydown)="onKeydown($event)" [disabled]="!isEditing"
                 (input)="focusNext($event, 'year')" (blur)="handleBlur()" class="border-0 bg-transparent w-11
       text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-0" /> <span
                 class="text-gray-400">/&nbsp;</span>
 
-            <input id="year-input" type="text" inputmode="numeric" placeholder="yyyy" maxlength="4" [(ngModel)]="year" (keydown)="onKeydown($event)"
+            <input id="year-input" type="text" inputmode="numeric" placeholder="yyyy" maxlength="4" [(ngModel)]="year" (keydown)="onKeydown($event)" [disabled]="!isEditing"
                 (input)="onDateChange()" (blur)="handleBlur()" class="border-0 bg-transparent w-11
       text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-0" />
         </div>
     </div>
     <div>
-        <button type="button" (click)="openCalendar()"
+        <button type="button" (click)="openCalendar()" [disabled]="!isEditing"
             class="flex cursor-pointer items-center p-2 bg-gray-300 rounded-md">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5" viewBox="0 0 1024 1024">
                 <path fill="#282828"
