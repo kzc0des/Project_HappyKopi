@@ -92,6 +92,28 @@ export class ExpiryDateCard implements ControlValueAccessor, OnInit {
     this.headerService.notifyValueChanged('changed date', true);
   }
 
+  onKeydown(event: KeyboardEvent): void {
+    const allowedKeys = [
+      'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
+      'ArrowLeft', 'ArrowRight', 'Home', 'End'
+    ];
+
+    // Allow navigation and editing keys
+    if (allowedKeys.includes(event.key)) {
+      return;
+    }
+
+    // Allow: Ctrl+A, Command+A
+    if ((event.key === 'a' || event.key === 'A') && (event.ctrlKey || event.metaKey)) {
+      return;
+    }
+
+    // Prevent if not a number
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
   focusNext(event: Event, nextField: 'day' | 'year'): void {
     this.onDateChange();
     const input = event.target as HTMLInputElement;
