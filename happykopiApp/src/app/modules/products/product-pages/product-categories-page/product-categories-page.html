@@ -1,8 +1,9 @@
 <div class="flex flex-col">
     
-    <app-category-list-card
+  <app-category-list-card
     itemTitle="All Drinks"
     itemUnit="Drinks"
+    [itemValue]="totalDrinksCount"
     (itemClick)="onAllDrinksClick()">
   </app-category-list-card>
 
