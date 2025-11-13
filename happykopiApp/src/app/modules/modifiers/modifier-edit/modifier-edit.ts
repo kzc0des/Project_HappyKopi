@@ -42,16 +42,13 @@ export class ModifierEdit implements OnInit, OnDestroy {
     this.currentUrl = this.router.url;
     this.updateItemTitle(this.currentUrl);
 
-    this.routerSubscription = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      const state = this.router.getCurrentNavigation()?.extras.state;
-      if (state && state['selectedStockItemId']) {
-        this.modifierService.linkStockItem(this.modifierDetails.id, { stockItemId: state['selectedStockItemId'], quantityNeeded: 1 }).subscribe(() => {
-          this.reloadModifierDetails();
-        });
-      }
-    });
+    // Check for the state passed from the modifier-link page
+    const navigationState = this.location.getState() as { selectedStockItemId?: number };
+    if (navigationState && navigationState.selectedStockItemId) {
+      this.modifierService.linkStockItem(this.modifierDetails.id, { stockItemId: navigationState.selectedStockItemId, quantityNeeded: 1 }).subscribe(() => {
+        this.reloadModifierDetails();
+      });
+    }
 
     this.actionSubscription = this.headerService.action$.subscribe(async action => {
       switch (action) {
@@ -154,9 +151,6 @@ export class ModifierEdit implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.actionSubscription) {
       this.actionSubscription.unsubscribe();
-    }
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
     }
   }
 }

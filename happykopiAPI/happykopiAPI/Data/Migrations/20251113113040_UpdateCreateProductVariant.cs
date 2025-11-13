@@ -34,7 +34,7 @@ END;
             var sql = @"
 CREATE OR ALTER PROCEDURE sp_CreateProductVariant
     @ProductId INT,
-    @Size NVARCHAR(5),
+    @SizeId NVARCHAR(5),
     @Price DECIMAL(10, 2)
 AS
 BEGIN
