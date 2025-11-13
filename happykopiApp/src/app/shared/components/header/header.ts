@@ -17,7 +17,7 @@ export class Header implements OnInit, OnDestroy {
   showAddButton = false;
   showEditButton = false;
   showBackButton = false;
-  showMenuButton = true; 
+  showMenuButton = true;
 
   // under editing state
   isEditing = false;
@@ -184,6 +184,36 @@ export class Header implements OnInit, OnDestroy {
       this.showAddButton = true;
     }
 
+    /* products routing */
+    else if (segments.includes('products') && segments.includes('category') && segments.length === 3) {
+      this.headerTitle = "Category";
+      this.showBackButton = true;
+    }
+
+    else if (segments.includes('products') && segments[2] === 'create' && segments.length === 3) {
+      this.headerTitle = 'Create Drink';
+      this.showBackButton = true;
+    }
+
+    else if (segments.includes('products') && segments.includes('drink') && segments.length >= 4) {
+      this.showBackButton = true;
+      this.showEditButton = true;
+      this.onSelected = true;
+    }
+
+    else if (segments.includes('products') && segments.includes('edit') && segments.length >= 5) {
+      this.showBackButton = true;
+      this.onSelected = true;
+      this.showSaveButton = true;
+      this.showDeleteButton = true;
+    }
+
+
+    else if (segments.includes('products') && segments.length === 2) {
+      this.headerTitle = 'Products';
+      this.showAddButton = true;
+    }
+
     /* category routing */
 
     else if (segments.includes('category') && segments.length === 2) {
@@ -203,31 +233,7 @@ export class Header implements OnInit, OnDestroy {
       this.showSaveButton = true;
     }
 
-    /* products routing */
-    else if (segments.includes('products') && segments.includes('edit') && segments.length >= 5) {
-      this.showBackButton = true;
-      this.onSelected = true;
-      this.showSaveButton = true;
-      this.showDeleteButton = true;
-    }
-
-    else if (segments.includes('products') && segments.length === 2) {
-      this.headerTitle = 'Products';
-      this.showAddButton = true;
-    }
-
-    else if (segments.includes('products') && segments.length === 3) {
-      this.headerTitle = 'Create Drink';
-      this.showBackButton = true;
-    }
-
-    else if (segments.includes('products') && segments.includes('drink') && segments.length >= 4) {
-      this.showBackButton = true;
-      this.showEditButton = true;
-      this.onSelected = true;
-    }
-
-        /* orders routing */
+    /* orders routing */
     else if (segments.includes('orders') && segments.includes('cart') && segments.length === 3) {
       this.headerTitle = 'Your Cart';
       this.showBackButton = true;
@@ -236,13 +242,13 @@ export class Header implements OnInit, OnDestroy {
     else if (segments.includes('orders') && segments.includes('summary') && segments.length === 3) {
       this.headerTitle = 'Order Summary';
       this.showBackButton = false;
-      this.showMenuButton = false; 
+      this.showMenuButton = false;
     }
 
     else if (segments.includes('orders') && segments.length === 2) {
       this.headerTitle = 'Order';
       this.showBackButton = false;
-      
+
     }
   }
 
