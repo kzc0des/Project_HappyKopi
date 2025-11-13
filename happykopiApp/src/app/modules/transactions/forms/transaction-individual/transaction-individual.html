@@ -2,64 +2,42 @@
   <div class="description-list">
     <app-description-card
       descriptionType="text"
-      [description]="{
-        Title: 'Order ID',
-        Content: transaction?.orderId || ''
-      }"
+      [description]="{ Title: 'Order ID', Content: transaction?.orderId || '' }"
     ></app-description-card>
+
     <app-description-card
       descriptionType="text"
-      [description]="{
-        Title: 'Date & Time of Transaction',
-        Content: (transaction?.transactionDate | date:'MMM d, y h:mm a') || ''
-      }"
+      [description]="{ Title: 'Date & Time of Transaction', Content: (transaction?.transactionDate | date:'MMM d, y h:mm a') || '' }"
     ></app-description-card>
+
     <app-description-card
       descriptionType="text"
-      [description]="{
-        Title: 'Barista',
-        Content: transaction?.barista || ''
-      }"
+      [description]="{ Title: 'Barista', Content: transaction?.baristaName || '' }"
     ></app-description-card>
+
     <app-description-card
       descriptionType="money"
-      [description]="{
-        Title: 'Total Amount',
-        Content: transaction?.totalAmount || 0
-      }"
+      [description]="{ Title: 'Total Amount', Content: transaction?.total || 0 }"
     ></app-description-card>
-    @for (payment of transaction?.payments || []; track payment.paymentType) {
-      <app-description-card
-        descriptionType="text"
-        [description]="{
-          Title: 'Payment Method',
-          Content: payment.paymentType
-        }"
-      ></app-description-card>
-      @if (payment.referenceNumber) {
-        <app-description-card
-          descriptionType="text"
-          [description]="{
-            Title: 'Reference Number',
-            Content: payment.referenceNumber
-          }"
-        ></app-description-card>
-      }
-    }
+
+    <!-- <app-description-card
+      descriptionType="text"
+      [description]="{ Title: 'Payment Method', Content: transaction?.paymentMethod || ''}"
+    ></app-description-card> -->
   </div>
-  
+
   <div class="drink-list">
-    @for (item of transaction?.items || []; track item.id) {
-      <app-charge-item 
+    @for (item of transaction?.items || []; track item.productName) { 
+      <app-charge-item
         [chargeItem]="{
-          Name: item.name,
-          Size: item.size,
-          AddOn: item.addOns?.join(', ') || '',
-          Subtotal: item.price,
-          DrinkQuantity: item.quantity,
-          AddOnQuantity: item.addOnQuantity || 0
-        }">
-      </app-charge-item>
+          Name: item.productName || '',
+          Size: item.variant || '',
+          Subtotal: item.subtotal || 0,
+          DrinkQuantity: item.quantity || 0,
+          AddOn: '',
+          AddOnQuantity: 0
+        }"
+      ></app-charge-item>
     }
   </div>
 </div>

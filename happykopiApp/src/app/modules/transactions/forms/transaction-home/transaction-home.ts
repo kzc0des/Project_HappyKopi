@@ -1,55 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { TransactionsService } from '../../services/transactions.service';
 import { TransactionCard } from "../../components/transaction-card/transaction-card";
 import { TransactionIndividualCard } from "../../components/transaction-individual-card/transaction-individual-card";
 import { TransactionPaymentCard } from "../../components/transaction-payment-card/transaction-payment-card";
-import { TransactionService } from '../../services/transaction.service';
-import { TransactionListItemDto } from '../../../../core/dtos/transaction/transaction-list-item-dto';
-import { TransactionSummaryDto } from '../../../../core/dtos/transaction/transaction-summary-dto';
+import { TransactionListItemDto } from '../../../../core/dtos/transaction/transaction-list-item.dto';
+import { TransactionSummaryDto } from '../../../../core/dtos/transaction/transaction-summary.dto';
 
 @Component({
   selector: 'app-transaction-home',
   standalone: true,
-  imports: [CommonModule, TransactionCard, TransactionIndividualCard, TransactionPaymentCard],
+  imports: [
+    CommonModule,
+    TransactionCard,
+    TransactionIndividualCard,
+    TransactionPaymentCard
+  ],
   templateUrl: './transaction-home.html',
   styleUrls: ['./transaction-home.css']
 })
 export class TransactionHome implements OnInit {
-  transactions: TransactionListItemDto[] = [];
-  salesTotal: number = 0;
-  transactionsCount: number = 0;
-  cashTotal: number = 0;
-  cashTransactionsCount: number = 0;
-  cashlessTotal: number = 0;
-  cashlessTransactionsCount: number = 0;
+  private transactionsService = inject(TransactionsService);
 
-  constructor(
-    private transactionService: TransactionService,
-    private route: ActivatedRoute
-  ) { }
+  transactions: TransactionListItemDto[] = [];
+  summary?: TransactionSummaryDto;
 
   ngOnInit(): void {
-    // Get daily summary
-    this.transactionService.getDailySummary().subscribe((summary: TransactionSummaryDto) => {
-      this.salesTotal = summary.totalSales;
-      this.transactionsCount = summary.totalTransactions;
-      this.cashTotal = summary.cashSummary.totalAmount;
-      this.cashTransactionsCount = summary.cashSummary.totalTransactions;
-      this.cashlessTotal = summary.cashlessSummary.totalAmount;
-      this.cashlessTransactionsCount = summary.cashlessSummary.totalTransactions;
-    });
+    console.log('[TransactionHome] ngOnInit called - START');
+    
+    this.loadSummary();
+    this.loadHistory();
+  }
 
-    // Get transaction history
-    this.transactionService.getTransactionHistory().subscribe(transactions => {
-      this.transactions = transactions;
+  private loadSummary(): void {
+    this.transactionsService.getDailySummary().subscribe({
+      next: (summary) => this.summary = summary,
+      error: (err) => console.error('Error loading summary:', err)
+    });
+  }
+
+  private loadHistory(): void {
+    this.transactionsService.getTransactionHistoryToday().subscribe({
+      next: (transactions) => this.transactions = transactions,
+      error: (err) => console.error('Error loading history:', err)
     });
   }
 
   getPaymentTypeFlag(paymentType: string): 'cash' | 'gcash' {
-    return paymentType.toLowerCase().includes('cash') &&
-           !paymentType.toLowerCase().includes('cashless')
-           ? 'cash'
-           : 'gcash';
+    const type = paymentType;
+    return type === 'cash' ? 'cash' : 'gcash';
   }
 }

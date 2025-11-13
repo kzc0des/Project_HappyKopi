@@ -6,8 +6,8 @@ export interface chargeItemDto {
  Size: string,
  AddOn: string,
  Subtotal: number,
- DrinkQuantity: number,
- AddOnQuantity: number,
+ DrinkQuantity?: number,
+ AddOnQuantity?: number,
 } 
 
 @Component({

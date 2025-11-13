@@ -72,6 +72,8 @@ import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver
 import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
 import { productsListResolver } from './modules/products/resolver/productslist/products-list-resolver';
 import { productDetailResolver } from './modules/products/resolver/productdetail/product-detail-resolver';
+import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
+import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
 
 export const routes: Routes = [
     {
@@ -403,12 +405,18 @@ export const routes: Routes = [
         component: DescriptionCard
     },
     {
-        path: 'transaction-individual',
-        component: TransactionIndividual
+        path: 'transactions-individual/:id',
+        component: TransactionIndividual,
+        resolve: {
+            transactions : transactionsResolver
+        }
     },
     {
         path: 'recipe-modal',
         component: AddIngredientModal
-    }
-    // save drink component
+    },
+    {
+        path: 'charge-item',
+        component: ChargeItem
+    },
 ];
