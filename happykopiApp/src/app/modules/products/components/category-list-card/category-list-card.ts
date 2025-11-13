@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 export class CategoryListCard {
   @Input() categoryId: number = 0;
   @Input() itemTitle !: string;
-  @Input() itemValue !: number;
+  @Input() itemValue: number | undefined;
   @Input() itemUnit !: string;
   @Output() itemClick = new EventEmitter<any>();
 }
