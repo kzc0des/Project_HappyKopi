@@ -29,7 +29,6 @@ import { AddDrinkPage } from './modules/products/product-pages/add-drink-page/ad
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/product-pages/edit-drink-page/edit-drink-page';
-import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
 import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
 import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inventory-batch-view';
@@ -72,6 +71,7 @@ import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver
 import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
 import { productsListResolver } from './modules/products/resolver/productslist/products-list-resolver';
 import { productDetailResolver } from './modules/products/resolver/productdetail/product-detail-resolver';
+import { InventoryBatchAdd } from './modules/inventory/inventory-batch-add/inventory-batch-add';
 import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
 import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
 
@@ -119,14 +119,15 @@ export const routes: Routes = [
                         }
                     },
                     {
-                        path: 'item/:itemid/batch/add',
-                        component: InventoryBatchView
+                        path: ':itemtype/:itemid/batch/add',
+                        component: InventoryBatchAdd
                     },
                     {
-                        path: 'item/:itemid/batch/:batchid',
+                        path: ':itemType/:itemId/batch/:batchid',
                         component: InventoryBatchView,
                         resolve: {
-                            batchdetail: stockItemBatchResolver
+                            batchdetail: stockItemBatchResolver,
+                            stockitemdetail: stockitemdetailResolver
                         }
                     },
                     {
@@ -323,22 +324,6 @@ export const routes: Routes = [
     {
         path: 'charge-summary',
         component: ChargeSummary
-    },
-    {
-        path: 'add-drink-page',
-        component: AddDrinkPage
-    },
-    {
-        path: 'edit-category',
-        component: EditCategoryPage
-    },
-    {
-        path: 'edit-drink-page',
-        component: EditDrinkPage
-    },
-    {
-        path: 'edit-products',
-        component: EditProductsPage
     },
     {
         path: 'create-drink-page',
