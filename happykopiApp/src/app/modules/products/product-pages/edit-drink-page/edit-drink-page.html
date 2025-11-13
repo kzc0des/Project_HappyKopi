@@ -25,6 +25,9 @@
 
         </label>
 
+        <input id="drink-image-upload" type="file" class="hidden" accept="image/*"
+            (change)="onFileChange($event)">
+
         <app-itemcard [isEditing]="true" class="w-full" itemTitle="Drink Name" [(ngModel)]="productPayload.name"
             name="productName" required></app-itemcard>
 

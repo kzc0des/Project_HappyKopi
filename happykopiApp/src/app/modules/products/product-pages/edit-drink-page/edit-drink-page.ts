@@ -15,7 +15,7 @@ import { ModifierSizeCard } from '../../components/modifier-size-card/modifier-s
 import { SelectedAddonCard } from '../../components/selected-addon-card/selected-addon-card';
 import { SelectedIngredientCard } from '../../components/selected-ingredient-card/selected-ingredient-card';
 import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
-import { AddOnItem, ProductDetailDto, ProductVariantDetailDto, RecipeItem } from '../../../../core/dtos/product/product.model';
+import { AddOnItem, ProductDetailDto, ProductUpdateDto, ProductVariantDetailDto, RecipeItem } from '../../../../core/dtos/product/product.model';
 import { HeaderService } from '../../../../core/services/header/header.service';
 import { ToggleButton } from "../../../../shared/components/toggle-button/toggle-button";
 import { AddAddonModal } from '../../components/add-addon-modal/add-addon-modal';
@@ -25,6 +25,8 @@ import { DropdownOption } from '../../../../shared/components/dropdown-button/dr
 import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dto';
 import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
 import { ConfirmationService } from '../../../../core/services/confirmation/confirmation.service';
+import { ProductsService } from '../../services/products-service/products.service';
+import { LoadingService } from '../../../../core/services/loading/loading.service';
 
 @Component({
   selector: 'app-edit-drink-page',
@@ -51,6 +53,7 @@ export class EditDrinkPage implements OnInit {
   selectedSizeId = signal<number | null>(null);
   imagePreview: string | ArrayBuffer | null = null;
 
+  imageFile: File | null = null;
   editingIngredient: RecipeItem | null = null;
   editingIngredientIndex: number | null = null;
   editingAddOn: AddOnItem | null = null;
@@ -67,7 +70,9 @@ export class EditDrinkPage implements OnInit {
     private headerService: HeaderService,
     private router: Router,
     private modalService: ModalService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private productsService: ProductsService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
@@ -81,17 +86,18 @@ export class EditDrinkPage implements OnInit {
     this.imagePreview = this.productPayload.imageUrl;
 
     this.headerService.action$.subscribe(async action => {
-      if(action === "SAVE"){
+      if (action === "SAVE") {
         const confirm = await this.confirmationService.confirm(
           "Save Product?",
           "Make sure that all the details are correct and complete.",
           "primary",
           "Save",
           "Cancel"
-        )
+        );
+        if (confirm) this.updateProduct();
 
 
-      }else if(action === "DELETE"){
+      } else if (action === "DELETE") {
         const confirm = await this.confirmationService.confirm(
           "Delete Product?",
           "Are you sure you want to delete this product?",
@@ -100,7 +106,7 @@ export class EditDrinkPage implements OnInit {
           "Cancel"
         )
 
-        
+
       }
     })
   }
@@ -158,6 +164,11 @@ export class EditDrinkPage implements OnInit {
       return variant.price;
     }
     return 0;
+  }
+
+  onFileChange(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    this.imageFile = file || null;
   }
 
   onSizeSelect(size: ModifierDto) {
@@ -260,4 +271,36 @@ export class EditDrinkPage implements OnInit {
     return `${addOn.addOnId}-${index}`;
   }
 
+  async updateProduct() {
+    this.loadingService.show();
+
+    const updatePayload: ProductUpdateDto = {
+      name: this.productPayload.name,
+      description: this.productPayload.description,
+      categoryId: this.productPayload.categoryId,
+      isAvailable: this.productPayload.isAvailable,
+      isActive: this.productPayload.isActive,
+      imageFile: this.imageFile,
+      variants: this.productPayload.variants.map(variant => ({
+        SizeId: variant.sizeId,
+        Price: variant.price,
+        Recipe: variant.recipe.map(ingredient => ({
+          StockItemId: ingredient.ingredientId,
+          QuantityNeeded: ingredient.quantityNeeded
+        })),
+        AddOns: variant.addOns.map(addOn => ({
+          ModifierId: addOn.addOnId,
+          DefaultQuantity: addOn.times
+        }))
+      }))
+    };
+
+    this.productsService.updateProduct(this.productPayload.id, updatePayload).subscribe({
+      next: () => {
+        this.loadingService.hide();
+        this.router.navigate(['/products']);
+      },
+      error: (err) => this.loadingService.hide()
+    });
+  }
 }
