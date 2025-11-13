@@ -27,11 +27,9 @@ export class SearchDrink<T> {
   onSearchChange(): void {
     const term = this.searchTerm.toLowerCase().trim();
 
-    if (term === '') {
-      // If empty, return all items
+    if (term === '') { 
       this.searchResults.emit(this.allItems);
-    } else {
-      // Filter items based on specified properties
+    } else { 
       const filtered = this.allItems.filter((item) => {
         return this.searchProperties.some((prop) => {
           const value = item[prop];

@@ -30,11 +30,9 @@ import {
 export class Order implements OnInit {
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
-
-  // Store ALL drinks (for search)
+ 
   allDrinks = signal<ProductsWithCategoryDto[]>([]);
-
-  // Store FILTERED drinks (for display)
+ 
   drinks = signal<ProductsWithCategoryDto[]>([]);
 
   unavailableMap = signal<Map<number, UnavailableProductDto>>(new Map());
@@ -101,8 +99,7 @@ export class Order implements OnInit {
   onCategoryClick(category: CategoryWithProductCountDto) {
     this.selectCategory(category);
   }
-
-  // NEW: Handle search results
+ 
   onSearchResults(filteredDrinks: ProductsWithCategoryDto[]) {
     this.drinks.set(filteredDrinks);
   }
