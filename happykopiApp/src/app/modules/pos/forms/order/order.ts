@@ -7,9 +7,12 @@ import { OrderCard } from '../../components/order-card/order-card';
 import { SearchDrink } from '../../../../shared/components/search-drink/search-drink';
 import { OrderQuickView } from '../../components/order-quick-view/order-quick-view';
 import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-with-category.dto';
-import { AddOrderModal, addOrderModalDto } from '../../modal/add-order-modal/add-order-modal'; 
+import { AddOrderModal, addOrderModalDto } from '../../modal/add-order-modal/add-order-modal';
 import { UnavailableProductDto } from '../../../../core/dtos/order/product-availability.dto';
-import { UnavailableProductModal, UnavailableProductModalData } from '../../modal/unavailable-modal/unavailable-modal';
+import {
+  UnavailableProductModal,
+  UnavailableProductModalData,
+} from '../../modal/unavailable-modal/unavailable-modal';
 
 @Component({
   selector: 'app-order',
@@ -27,7 +30,13 @@ import { UnavailableProductModal, UnavailableProductModalData } from '../../moda
 export class Order implements OnInit {
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
+
+  // Store ALL drinks (for search)
+  allDrinks = signal<ProductsWithCategoryDto[]>([]);
+
+  // Store FILTERED drinks (for display)
   drinks = signal<ProductsWithCategoryDto[]>([]);
+
   unavailableMap = signal<Map<number, UnavailableProductDto>>(new Map());
 
   allDrinksCategory: CategoryWithProductCountDto = {
@@ -62,10 +71,10 @@ export class Order implements OnInit {
   selectAllDrinks() {
     this.selectedCategory.set(this.allDrinksCategory);
 
-    // Use new availability endpoint without category filter
     this.orderService.getProductsWithAvailability().subscribe({
       next: ({ products, unavailableMap }) => {
-        this.drinks.set(products);
+        this.allDrinks.set(products); // Store all drinks
+        this.drinks.set(products); // Display all drinks initially
         this.unavailableMap.set(unavailableMap);
       },
       error: (err) => console.error(err),
@@ -75,10 +84,10 @@ export class Order implements OnInit {
   selectCategory(category: CategoryWithProductCountDto) {
     this.selectedCategory.set(category);
 
-    // Use new availability endpoint with category filter
     this.orderService.getProductsWithAvailability(category.id).subscribe({
       next: ({ products, unavailableMap }) => {
-        this.drinks.set(products);
+        this.allDrinks.set(products); // Store all drinks in category
+        this.drinks.set(products); // Display all drinks initially
         this.unavailableMap.set(unavailableMap);
       },
       error: (err) => console.error(err),
@@ -93,6 +102,11 @@ export class Order implements OnInit {
     this.selectCategory(category);
   }
 
+  // NEW: Handle search results
+  onSearchResults(filteredDrinks: ProductsWithCategoryDto[]) {
+    this.drinks.set(filteredDrinks);
+  }
+
   closeModal() {
     this.showModal.set(false);
   }
@@ -100,9 +114,7 @@ export class Order implements OnInit {
   onDrinkClicked(drink: ProductsWithCategoryDto): void {
     const unavailableInfo = this.unavailableMap().get(drink.id);
 
-    // Check if product is unavailable
     if (unavailableInfo) {
-      // Show unavailable modal
       this.selectedUnavailableProduct.set({
         productName: drink.name,
         categoryName: drink.categoryName,
@@ -112,7 +124,6 @@ export class Order implements OnInit {
       });
       this.showUnavailableModal.set(true);
     } else {
-      // Show regular add order modal
       this.selectedDrink.set({
         ProductId: drink.id,
         DrinkName: drink.name,

@@ -1,4 +1,4 @@
-<!-- features/order/pages/order/order.html -->
+<!-- order.html -->
 <div class="order-body">
   <app-order-quick-view
     [oqv]="{
@@ -28,7 +28,13 @@
   </div>
 
   <div class="bg-[#f0f0f0] w-full flex justify-center align-middle pt-[10px]">
-    <app-search-drink></app-search-drink>
+    <app-search-drink
+      [allItems]="allDrinks()"
+      [searchProperties]="['name', 'categoryName']"
+      [placeholder]="'Search drinks...'"
+      (searchResults)="onSearchResults($event)"
+    >
+    </app-search-drink>
   </div>
 
   <div class="drinks-table">
