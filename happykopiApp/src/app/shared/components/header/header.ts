@@ -122,15 +122,16 @@ export class Header implements OnInit, OnDestroy {
       this.showSaveButton = true;
     }
     // Route: 'item/:itemid/batch/add'
-    else if (segments.includes('item') && segments.includes('batch') && segments.includes('add')) {
+    else if (segments.includes('batch') && segments.includes('add')) {
       this.headerTitle = 'Add Batch';
       this.showBackButton = true;
       this.showSaveButton = true;
     }
-    // Route: 'item/:itemid/batch/:batchid'
-    else if (segments.includes('item') && segments.includes('batch') && segments.length >= 5) {
+    // Route: ':itemtype/:itemid/batch/:batchid'
+    else if (segments.includes('batch') && segments.length >= 6) {
       this.showBackButton = true;
-      this.showEditButton = true;
+      this.showDeleteButton = true;
+      this.onSelected = true;
     }
 
     else if (segments.includes('inventory') && segments.length === 4) {

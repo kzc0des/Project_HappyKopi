@@ -1,9 +1,19 @@
-<div class="flex flex-col gap-4.5 px-6 py-8 bg-white">
-    <div class="flex w-full">
-        <app-itemcard class="flex-1" itemTitle="Batch No." [(ngModel)]="batchDetail.id"></app-itemcard>
-        <app-date-card class="flex-1 text-end" itemTitle="Date Added"
-            [itemValue]="batchDetail.dateReceived"></app-date-card>
+<div class="h-full">
+    <div class="flex flex-col bg-white py-4 px-5">
+        <div class="flex justify-between items-center">
+            <div class="flex flex-col gap-2">
+                <p class="text-gray-500">Batch No.</p>
+                <h1 class="font-semibold text-hapikopi-dark">{{batchDetail.id}}</h1>
+            </div>
+            <app-date-card itemTitle="Date Added" [itemValue]="batchDetail.dateReceived"></app-date-card>
+        </div>
+        <div class="flex flex-col gap-5">
+            <app-itemcard itemTitle="Quantity" [showIcon]="false" [isEditing]="false" [isBatch]="true"
+                [(ngModel)]="batchDetail.stockQuantity">
+            </app-itemcard>
+            @if(batchDetail.expiryDate) {
+            <app-expiry-date-card [(ngModel)]="batchDetail.expiryDate" [isEditing]="false"></app-expiry-date-card>
+            }
+        </div>
     </div>
-    <app-itemcard itemTitle="Quantity" [isEditing]="true" type="number" [(ngModel)]="batchDetail.stockQuantity"></app-itemcard>
-    <app-expiry-date-card></app-expiry-date-card>
 </div>

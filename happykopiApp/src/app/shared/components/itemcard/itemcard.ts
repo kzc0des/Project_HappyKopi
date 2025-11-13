@@ -19,6 +19,7 @@ export class Itemcard implements ControlValueAccessor {
   @Input() itemTitle: string = '';
   @Input() showIcon: boolean = false;
   @Input() isEditing: boolean = false;
+  @Input() isBatch: boolean = false;
   @Input() type!: string;
 
   internalValue: string | number = '';

@@ -59,4 +59,8 @@ export class InventoryItemDetail implements OnInit, OnDestroy {
       this.actionSubscription.unsubscribe();
     }
   }
+
+  onAddStock() {
+    this.router.navigate(['batch/add'], { relativeTo: this.route });
+  }
 }

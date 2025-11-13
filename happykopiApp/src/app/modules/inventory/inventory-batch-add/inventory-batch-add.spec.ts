@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditAddOnsPage } from './edit-add-ons-page';
+import { InventoryBatchAdd } from './inventory-batch-add';
 
-describe('EditAddOnsPage', () => {
-  let component: EditAddOnsPage;
-  let fixture: ComponentFixture<EditAddOnsPage>;
+describe('InventoryBatchAdd', () => {
+  let component: InventoryBatchAdd;
+  let fixture: ComponentFixture<InventoryBatchAdd>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditAddOnsPage]
+      imports: [InventoryBatchAdd]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditAddOnsPage);
+    fixture = TestBed.createComponent(InventoryBatchAdd);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

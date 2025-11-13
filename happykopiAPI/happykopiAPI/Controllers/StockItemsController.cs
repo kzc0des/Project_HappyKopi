@@ -53,16 +53,14 @@ namespace happykopiAPI.Controllers
         public async Task<IActionResult> AddStockBatch([FromBody] StockItemBatchForCreateDto dto)
         {
             try
-            {
-                /* will be removed later
+            {                
                 var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userIdString))
                 {
                     return Unauthorized("User ID not found in token.");
                 }
 
-                dto.UserId = int.Parse(userIdString);
-                */
+                dto.UserId = int.Parse(userIdString);                
 
                 await _stockItemService.AddStockItemBatchAsync(dto);
                 return Ok(new { message = "Stock batch added successfully." });
