@@ -3,5 +3,6 @@
     [categoryId]="item.id"
     [itemTitle]="item.name"
     itemUnit="Drinks"
-    [itemValue]="item.productCount"></app-category-list-card>
+    [itemValue]="item.productCount"
+    (itemClick)="onCategoryClick(item.id)"></app-category-list-card>
 }
