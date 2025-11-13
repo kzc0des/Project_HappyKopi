@@ -107,5 +107,24 @@ namespace happykopiAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{categoryId}/assign-products")]
+        public async Task<IActionResult> AssignProductsToCategory(int categoryId, [FromBody] AssignProductsDto assignProductsDto)
+        {
+            try
+            {
+                if (assignProductsDto == null || !assignProductsDto.ProductIds.Any())
+                {
+                    return BadRequest("Product IDs must be provided.");
+                }
+
+                await _categoryService.AssignProductsToCategoryAsync(categoryId, assignProductsDto.ProductIds);
+                return Ok(new { message = "Products assigned successfully." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

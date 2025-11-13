@@ -4,6 +4,7 @@ import { CategoryWithProductCountDto } from '../../../core/dtos/category/categor
 import { ApiService } from '../../../core/services/api/api.service';
 import { CategoryForCreateUpdateDto } from '../../../core/dtos/category/category-for-create-update-dto';
 import { ProductWithCategoryNameDto } from '../../../core/dtos/category/product-with-category-name-dto';
+import { AssignProductsToCategoryDto } from '../../../core/dtos/category/assign-products-to-category-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,7 @@ export class CategoryService {
 
   assignProductsToCategory(categoryId: number, productIds: number[]): Observable<void> {
     const path = `${this.controllerPath}/${categoryId}/assign-products`;
-    return this.apiService.put<void>(path, { productIds });
+    const payload: AssignProductsToCategoryDto = { productIds };
+    return this.apiService.put<void>(path, payload);
   }
 }

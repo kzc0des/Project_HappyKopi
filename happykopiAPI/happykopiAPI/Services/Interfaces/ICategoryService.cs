@@ -13,5 +13,6 @@ namespace happykopiAPI.Services.Interfaces
         public Task<IEnumerable<ProductWithCategoryNameDto>> GetActiveProductsByCategoryIdAsync(int categoryId);
         public Task<CategoryWithProductCountDto> GetCategoryByIdAsync(int id);
         public Task UpdateCategoryAsync(int id, CategoryForCreateUpdateDto categoryDto);
+        public Task AssignProductsToCategoryAsync(int categoryId, List<int> productIds);
     }
 }

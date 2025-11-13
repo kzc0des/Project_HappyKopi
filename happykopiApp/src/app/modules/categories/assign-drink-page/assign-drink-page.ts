@@ -49,6 +49,7 @@ export class AssignDrinkPage implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     if (this.actionSubscription) {
       this.actionSubscription.unsubscribe();
+      this.headerService.notifyValueChanged('drinkAssignment', false);
     }
   }
 
@@ -68,6 +69,7 @@ export class AssignDrinkPage implements OnInit, OnDestroy{
       this.selectedDrinks.splice(index, 1);
     }
     console.log('Selected Drinks:', this.selectedDrinks);
+    this.headerService.notifyValueChanged('drinkAssignment', this.selectedDrinks.length > 0);
   }
 
   onSelectionChange(selected: any[]) {
@@ -93,7 +95,7 @@ export class AssignDrinkPage implements OnInit, OnDestroy{
         this.loadingService.hide();
         this.router.navigate(['/app/category', this.categoryId]);
       },
-      error: (err) => this.loadingService.hide()
+      error: () => this.loadingService.hide()
     });
   }
 }
