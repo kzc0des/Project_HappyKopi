@@ -104,7 +104,8 @@ export class EditDrinkPage implements OnInit {
           "danger",
           "Delete",
           "Cancel"
-        )
+        );
+        if (confirm) this.deleteProduct();
 
 
       }
@@ -301,6 +302,19 @@ export class EditDrinkPage implements OnInit {
         this.router.navigate(['../'], { relativeTo: this.route });
       },
       error: (err) => this.loadingService.hide()
+    });
+  }
+
+  async deleteProduct() {
+    this.loadingService.show();
+    this.productsService.deleteProduct(this.productPayload.id).subscribe({
+      next: () => {
+        this.loadingService.hide();
+        this.router.navigate(['../../../'], { relativeTo: this.route });
+      },
+      error: (err) => {
+        this.loadingService.hide();
+      }
     });
   }
 }

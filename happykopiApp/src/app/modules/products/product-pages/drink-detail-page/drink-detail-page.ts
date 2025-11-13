@@ -55,7 +55,7 @@ export class DrinkDetailPage implements OnInit {
           relativeTo: this.route
         });
       }else if(action === "BACK") {
-        this.router.navigate(['../'], {
+        this.router.navigate(['../../'], {
           relativeTo: this.route
         });
       }
