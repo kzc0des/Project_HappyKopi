@@ -1,14 +1,24 @@
-<div class="order-card" (click)="onClick()">
+<div class="order-card" [class.unavailable]="isUnavailable" (click)="onClick()"> 
+  @if (isUnavailable) {
+  <div class="unavailable-badge">Unavailable</div>
+  }
+
   <div class="oc-upper-content">
     @if (drinkImage) {
-      <img [src]="drinkImage" alt="orderCard.name" class="oc-drink-img" />
+    <img
+      [src]="drinkImage"
+      alt="orderCard.name"
+      class="oc-drink-img"
+      [class.grayscale]="isUnavailable"
+    />
     } @else {
-      <div class="oc-placeholder">No image available</div>
+    <div class="oc-placeholder">No image available</div>
     }
   </div>
 
   <div class="oc-lower-content">
     <div class="oc-drink-name">{{ orderCard.name }}</div>
     <div class="oc-drink-cat">{{ orderCard.categoryName }}</div>
+
   </div>
 </div>

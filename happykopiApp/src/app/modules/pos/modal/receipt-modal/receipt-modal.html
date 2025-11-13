@@ -1,0 +1,88 @@
+<div class="receipt-modal-overlay" (click)="onClose()">
+      <div class="receipt-container" (click)="$event.stopPropagation()"> 
+        <div class="receipt-header">
+          <div class="receipt-logo">happykopi</div> 
+        </div>
+ 
+        <div class="receipt-body">
+          <div class="receipt-info">
+            <div class="info-row">
+              <span class="text-[16px]">Order #:</span>
+              <span class="text-[16px]">{{ receipt.orderNumber }}</span>
+            </div>
+            <div class="info-row">
+              <span class="text-[16px]">Barista:</span>
+              <span class="text-[16px]">{{ receipt.baristaName }}</span>
+            </div>
+            <div class="info-row">
+              <span class="text-[16px]">Date:</span>
+              <span class="text-[16px]">{{ getDate(receipt.timestamp) }}</span>
+            </div>
+            <div class="info-row">
+              <span class="text-[16px]">Time:</span>
+              <span class="text-[16px]">{{ getTime(receipt.timestamp) }}</span>
+            </div>
+            <div class="info-row">
+              <span class="text-[16px]">Payment:</span>
+              <span class="text-[16px]">{{ receipt.paymentType }}</span>
+            </div>
+            @if (receipt.referenceNumber) {
+              <div class="info-row">
+                <span class="text-[16px]">Ref #:</span>
+                <span class="text-[16px]">{{ receipt.referenceNumber }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="receipt-divider"></div>
+
+          <!-- Order Items -->
+          <div class="receipt-items">
+            @for (order of receipt.orders; track order.tempOrderID; let i = $index) {
+              <div class="receipt-item">
+                <div class="item-header">
+                  <span class="item-name">{{ i + 1 }}. {{ order.drinkName }}</span>
+                  <span class="item-size">({{ order.size }})</span>
+                </div>
+                <div class="item-price-row">
+                  <span class="text-[16px]">{{ order.quantity }} x {{ order.sizePrice | currency: 'PHP' }}</span>
+                  <span class="font-bold text-[16px]]">{{ (order.sizePrice * order.quantity) | currency: 'PHP' }}</span>
+                </div>
+                
+                @if (order.addons && order.addons.length > 0) {
+                  @for (addon of order.addons; track addon.modifierId) {
+                    <div class="addon-row">
+                      <span>+ {{ addon.name }} x{{ addon.quantity }}</span>
+                      <span>{{ (addon.price * addon.quantity) | currency: 'PHP' }}</span>
+                    </div>
+                  }
+                }
+                
+                <div class="item-total">
+                  <span class="text-[16px]">Subtotal:</span>
+                  <span class="font-bold text-[16px]">{{ order.total | currency: 'PHP' }}</span>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="receipt-divider"></div>
+
+          <!-- Total -->
+          <div class="receipt-total">
+            <span class="text-[20px]">TOTAL:</span>
+            <span class="total-amount">{{ receipt.totalAmount | currency: 'PHP' }}</span>
+          </div>
+        </div>
+
+        <!-- Receipt Footer -->
+        <div class="receipt-footer">
+          <div class="footer-message">Thank you for your purchase!</div>
+          <div class="footer-message">Visit us again soon!</div>
+          <div class="receipt-tearline">- - - - - - - - - - - - - - - - - - - - - -</div>
+        </div>
+
+        <!-- Close Button -->
+        <button class="close-btn" (click)="onClose()">Close</button>
+      </div>
+    </div>

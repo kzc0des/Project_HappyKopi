@@ -1,11 +1,7 @@
 <div class="order-body">
   <div class="upper-content">
-    <div class="amount-received">
-      <div class="amount-received-value">₱500.00</div>
-      <div class="amount-received-label">Amount received</div>
-    </div>
     <div class="total-price">
-      <div class="total-price-value">₱200.00</div>
+      <div class="total-price-value">{{ receiptData?.totalAmount | currency : 'PHP' }}</div>
       <div class="total-price-label">Order Total</div>
     </div>
   </div>
@@ -14,31 +10,35 @@
     <app-charge-cash-summary-card
       mode="order-number"
       [chargeSummary]="{
-        Total: 0,
+        Total: receiptData?.totalAmount || 0,
         ModeOfPayment: '',
-        OrderNumber: '1'
-      }"
-    ></app-charge-cash-summary-card>
-    <app-charge-cash-summary-card
-      mode="total"
-      [chargeSummary]="{
-        Total: 230,
-        ModeOfPayment: '',
-        OrderNumber: ''
+        OrderNumber: receiptData?.orderNumber || '0'
       }"
     ></app-charge-cash-summary-card>
     <app-charge-cash-summary-card
       mode="payment_cash"
       [chargeSummary]="{
-        Total: 0,
-        ModeOfPayment: 'Cash',
+        Total: receiptData?.totalAmount || 0,
+        ModeOfPayment: receiptData?.paymentType || 'Cash',
         OrderNumber: ''
       }"
     ></app-charge-cash-summary-card>
   </div>
 
   <div class="btns">
-    <app-long-yellow-button buttonSize="long" buttonTitle="Print Transaction"></app-long-yellow-button>
-    <app-long-yellow-button buttonSize="long" buttonTitle="New Order"></app-long-yellow-button>
+    <app-long-yellow-button
+      buttonSize="long"
+      buttonTitle="Print Transaction"
+      (click)="printTransaction()"
+    ></app-long-yellow-button>
+    <app-long-yellow-button
+      buttonSize="long"
+      buttonTitle="New Order"
+      (click)="newOrder()"
+    ></app-long-yellow-button>
   </div>
 </div>
+
+@if (showReceiptModal && receiptData) {
+<app-receipt-modal [receipt]="receiptData" (closeModal)="closeReceiptModal()"></app-receipt-modal>
+}

@@ -1,16 +1,10 @@
-namespace happykopiAPI.DTOs.Transaction.Outgoing_Data
+﻿namespace happykopiAPI.DTOs.Transaction.Outgoing_Data
 {
-    public class PaymentSummaryDto
-    {
-        public decimal TotalAmount { get; set; }
-        public int TotalTransactions { get; set; }
-    }
-
     public class TransactionSummaryDto
     {
-        public decimal TotalSales { get; set; }
-        public int TotalTransactions { get; set; }
-        public PaymentSummaryDto CashSummary { get; set; } = new();
-        public PaymentSummaryDto CashlessSummary { get; set; } = new();
+        public decimal TotalSalesToday { get; set; }
+        public int TransactionsToday { get; set; }
+        public int CashPayments { get; set; }
+        public int CashlessPayments { get; set; }
     }
 }

@@ -1,0 +1,78 @@
+<div class="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="header-content">
+        <h2 class="product-name">{{ modalData.productName }}</h2>
+        <p class="category-name">{{ modalData.categoryName }}</p>
+      </div>
+      <button class="close-btn" (click)="closeModal.emit()">×</button>
+    </div>
+
+    <div class="alert-box">
+      <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+        />
+      </svg>
+      <span>{{ getReasonMessage() }}</span>
+    </div>
+
+    <div class="ingredients-section">
+      <h3 class="section-title">Ingredient Details</h3>
+
+      <div class="table-wrapper">
+        <table class="ingredients-table">
+          <thead>
+            <tr>
+              <th>Ingredient</th>
+              <th>Required</th>
+              <th>Available</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let detail of modalData.unavailableInfo.details"
+              [class.row-alert]="
+                detail.available < detail.required ||
+                (detail.expiredBatchCount && detail.expiredBatchCount > 0)
+              "
+            >
+              <td class="ingredient-name">{{ detail.ingredientName }}</td>
+              <td>{{ detail.required }} {{ detail.unitOfMeasure }}</td>
+              <td>{{ detail.available }} {{ detail.unitOfMeasure }}</td>
+              <td>
+                <span
+                  *ngIf="detail.expiredBatchCount && detail.expiredBatchCount > 0"
+                  class="status-tag expired"
+                >
+                  {{ detail.expiredBatchCount }} Expired
+                </span>
+                <span
+                  *ngIf="
+                    detail.available < detail.required &&
+                    (!detail.expiredBatchCount || detail.expiredBatchCount === 0)
+                  "
+                  class="status-tag insufficient"
+                >
+                  Short {{ detail.required - detail.available }} {{ detail.unitOfMeasure }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>  
+    <div class="pb-6">
+      <app-long-yellow-button
+        class="w-full flex justify-center items-center"
+        (click)="closeModal.emit()"
+        buttonTitle="Close"
+        buttonSize="long"
+      ></app-long-yellow-button>
+    </div>
+  </div>
+</div>

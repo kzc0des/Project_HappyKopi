@@ -1,44 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TransactionService } from '../../services/transaction.service';
-import { TransactionDetailsDto } from '../../../../core/dtos/transaction/transaction-details-dto';
+import { TransactionsService } from '../../services/transactions.service';
 import { DescriptionCard } from "../../../../shared/components/description-card/description-card";
 import { ChargeItem } from "../../../pos/components/charge-item/charge-item";
+import { TransactionDetailsDto } from '../../../../core/dtos/transaction/transaction-detail.dto';
+import { TransactionListItemDto } from '../../../../core/dtos/transaction/transaction-list-item.dto';
 
 @Component({
-    selector: 'app-transaction-individual',
-    standalone: true,
-    imports: [CommonModule, DescriptionCard, ChargeItem],
-    templateUrl: './transaction-individual.html',
-    styleUrls: ['./transaction-individual.css']
+  selector: 'app-transaction-individual',
+  standalone: true,
+  imports: [CommonModule, DescriptionCard, ChargeItem],
+  templateUrl: './transaction-individual.html',
+  styleUrls: ['./transaction-individual.css']
 })
 export class TransactionIndividual implements OnInit {
-    transaction?: TransactionDetailsDto;
+  transaction?: TransactionDetailsDto;
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private transactionService: TransactionService
-    ) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private transactionsService: TransactionsService
+  ) { }
 
-    ngOnInit(): void {
-        this.route.params.subscribe(params => {
-            if (params['id']) {
-                this.loadTransaction(params['id']);
-            }
-        });
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      if (id) {
+        this.loadTransaction(id);
+      }
+    });
+  }
+
+  private loadTransaction(id: string): void {
+  this.transactionsService.getTransactionDetails(+id).subscribe({
+    next: (details: TransactionDetailsDto) => {
+      this.transaction = details; // Use the correct DTO here
+    },
+    error: (error) => {
+      console.error('Error loading transaction:', error);
+      this.router.navigate(['/transactions']);
     }
-
-    private loadTransaction(id: string): void {
-        this.transactionService.getTransactionById(id).subscribe({
-            next: (details) => {
-                this.transaction = details;
-            },
-            error: (error) => {
-                console.error('Error loading transaction:', error);
-                this.router.navigate(['/transactions']);
-            }
-        });
-    }
+  });
+}
 }
