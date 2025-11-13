@@ -19,19 +19,19 @@
 
   <div class="payment-cards">
     <app-transaction-individual-card
-        cardMode="cash"
-        [transactionCard]="{
-        TotalAmount: summary?.cashPayments?.total ?? 0,
-        TotalTransactions: summary?.cashPayments?.total ?? 0
-        }">
+      cardMode="cash"
+      [transactionCard]="{
+        TotalAmount: cashTotal, 
+        TotalTransactions: cashTransactions 
+      }">
     </app-transaction-individual-card>
 
     <app-transaction-individual-card
-        cardMode="gcash"
-        [transactionCard]="{
-        TotalAmount: summary?.cashlessPayments?.total ?? 0,
-        TotalTransactions: summary?.cashlessPayments?.total ?? 0
-        }">
+      cardMode="gcash"
+      [transactionCard]="{
+        TotalAmount: gcashTotal,
+        TotalTransactions: gcashTransactions 
+      }">
     </app-transaction-individual-card>
   </div>
 
@@ -40,7 +40,7 @@
 
     @for (transaction of transactions; track transaction.orderId) {
       <app-transaction-payment-card
-        [paymentType]="getPaymentTypeFlag(transaction.paymentMethod)"
+        [paymentMethod]="getPaymentTypeFlag(transaction.paymentMethod)"
         [transactionPayment]="transaction">
       </app-transaction-payment-card>
     }
