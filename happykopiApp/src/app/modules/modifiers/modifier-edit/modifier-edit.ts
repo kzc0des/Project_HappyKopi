@@ -91,6 +91,23 @@ export class ModifierEdit implements OnInit, OnDestroy {
     this.router.navigate([...segments, 'link', 'Miscellaneous']);
   }
 
+  async unlinkStockItem(stockItemId: number) {
+    const confirmed = await this.confirmationService.confirm(
+      'Unlink Item?',
+      `Are you sure you want to unlink this stock item?`,
+      'danger',
+      'Unlink',
+      'Cancel'
+    );
+
+    if (confirmed) {
+      this.modifierService.unlinkStockItem(this.modifierDetails.id, stockItemId).subscribe({
+        next: () => this.reloadModifierDetails(),
+        error: (err) => console.error('Failed to unlink stock item', err)
+      });
+    }
+  }
+
 
   private removeTrailingS(word: string): string {
     return word.endsWith('s') ? word.slice(0, -1) : word;
