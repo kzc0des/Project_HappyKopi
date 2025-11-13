@@ -93,7 +93,8 @@ export class AssignDrinkPage implements OnInit, OnDestroy{
     this.categoryService.assignProductsToCategory(this.categoryId, productIds).subscribe({
       next: () => {
         this.loadingService.hide();
-        this.router.navigate(['/app/category', this.categoryId]);
+        this.headerService.notifyItemAdded(true);
+        this.headerService.resetAction(); // I-reset muna ang action
       },
       error: () => this.loadingService.hide()
     });

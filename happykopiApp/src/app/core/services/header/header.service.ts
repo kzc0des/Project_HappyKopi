@@ -25,6 +25,10 @@ export class HeaderService {
     this.actionSource.next(action);
   }
 
+  resetAction(): void {
+    this.actionSource.next(undefined as any); 
+  }
+
   notifyValueChanged(itemTitle: string, hasChanged: boolean): void {
     if (hasChanged) {
       this.changedInputs.add(itemTitle);

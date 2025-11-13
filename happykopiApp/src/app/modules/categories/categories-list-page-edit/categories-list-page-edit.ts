@@ -23,6 +23,7 @@ export class CategoriesListPageEdit implements OnInit {
 
   ngOnInit(): void {
     this.categories = this.route.snapshot.data['categorylist'];
+    this.headerService.notifyItemAdded(false);
     console.log(this.categories);
 
     this.actionSubscription = this.headerService.action$.subscribe(action => {

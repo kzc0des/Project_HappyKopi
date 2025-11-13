@@ -48,6 +48,10 @@ export class EditCategoryPage implements OnInit {
     this.category = this.route.snapshot.data['categoryDetail'];
     this.revertVersion = this.category.name;
     console.log(`Revert Version: ${this.revertVersion}`);
+    
+    // **CRITICAL FIX**: I-reset ang action bago mag-subscribe.
+    // Tinitiyak nito na hindi mapoproseso ang 'SAVE' action mula sa `assign-drink-page`.
+    this.headerService.resetAction();
 
     this.actionSubscription = this.headerService.action$.subscribe(async action => {
       if (action === 'DELETE') {
@@ -72,6 +76,9 @@ export class EditCategoryPage implements OnInit {
         if(confirmedSave){
           this.updateCategory();
         }
+      }
+      else if (action === 'BACK') {
+        this.router.navigate(['/app/category'], { relativeTo: this.route, replaceUrl: true });
       }
     })
 
