@@ -11,9 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 var AllowSpecificOrigins = "_allowSpecificOrigins";
 
-// Register Dapper enum handler early
-Dapper.SqlMapper.AddTypeHandler(new EnumStringTypeHandler<happykopiAPI.Enums.PaymentType>());
-
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5000); 
@@ -66,7 +63,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: AllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200", "http://192.168.0.233:4200")
+            policy.WithOrigins("http://localhost:4200", "http://192.168.1.7:4200")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
