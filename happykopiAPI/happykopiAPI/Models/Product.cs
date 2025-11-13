@@ -12,10 +12,10 @@ namespace happykopiAPI.Models
         [MaxLength(150)]
         public string Name { get; set; } 
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public string ImageUrl { get; set; } 
-        public string ImagePublicId { get; set; }
+        public string? ImageUrl { get; set; } 
+        public string? ImagePublicId { get; set; }
 
         [Required]
         public bool IsAvailable { get; set; }
