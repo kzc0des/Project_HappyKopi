@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { UnavailableModal } from './unavailable-modal';
+import { UnavailableProductModal } from './unavailable-modal';
+ 
 
 describe('UnavailableModal', () => {
-  let component: UnavailableModal;
-  let fixture: ComponentFixture<UnavailableModal>;
+  let component: UnavailableProductModal;
+  let fixture: ComponentFixture<UnavailableProductModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UnavailableModal]
+      imports: [UnavailableProductModal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UnavailableModal);
+    fixture = TestBed.createComponent(UnavailableProductModal);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
