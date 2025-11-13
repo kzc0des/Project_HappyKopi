@@ -71,6 +71,7 @@ import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver
 import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
 import { productsListResolver } from './modules/products/resolver/productslist/products-list-resolver';
 import { productDetailResolver } from './modules/products/resolver/productdetail/product-detail-resolver';
+import { InventoryBatchAdd } from './modules/inventory/inventory-batch-add/inventory-batch-add';
 
 export const routes: Routes = [
     {
@@ -116,11 +117,11 @@ export const routes: Routes = [
                         }
                     },
                     {
-                        path: 'item/:itemid/batch/add',
-                        component: InventoryBatchView
+                        path: ':itemtype/:itemid/batch/add',
+                        component: InventoryBatchAdd
                     },
                     {
-                        path: 'item/:itemid/batch/:batchid',
+                        path: ':itemtype/:itemid/batch/:batchid',
                         component: InventoryBatchView,
                         resolve: {
                             batchdetail: stockItemBatchResolver

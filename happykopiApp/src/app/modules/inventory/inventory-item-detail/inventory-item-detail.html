@@ -5,6 +5,6 @@
         <app-itemcard itemTitle="Measurement" [showIcon]="true" [isEditing]="false" [(ngModel)]="stockitemdetail.unitOfMeasure">
         </app-itemcard>
     </div>
-    <app-ingredient-batch-card [batches]="stockitemdetail.batches"
+    <app-ingredient-batch-card [batches]="stockitemdetail.batches" (addStock)="onAddStock()"
         [unit]="stockitemdetail.unitOfMeasure"></app-ingredient-batch-card>
 </div>
