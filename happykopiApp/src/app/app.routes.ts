@@ -76,6 +76,7 @@ import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
 import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
 import { roleGuard } from './core/guards/role-guard';
 import { ProductCategoriesPage } from './modules/products/product-pages/product-categories-page/product-categories-page';
+import { ModifierLink } from './modules/modifiers/modifier-link/modifier-link';
 
 export const routes: Routes = [
     {
@@ -171,6 +172,13 @@ export const routes: Routes = [
                         component: ModifierEdit,
                         resolve: {
                             modifierdetail: modifierDetailsResolver
+                        }
+                    },
+                    {
+                        path: ':type/:itemId/edit/link/:itemType',
+                        component: ModifierLink,
+                        resolve: {
+                            stockitemlist: stockItemSummaryResolver
                         }
                     },
                     {
@@ -337,7 +345,7 @@ export const routes: Routes = [
     {
         path: 'posoff',
         component: PosCategoryOff
-    }, 
+    },
     {
         path: 'cart-item',
         component: CartItem
@@ -353,7 +361,7 @@ export const routes: Routes = [
     {
         path: 'charge',
         component: Charge
-    }, 
+    },
     {
         path: 'create-drink-page',
         component: CreateDrinkPage

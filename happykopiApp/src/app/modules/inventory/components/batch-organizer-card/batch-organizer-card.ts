@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -13,4 +13,9 @@ export class BatchOrganizerCard {
   @Input() totalQuantity:number = 0;
   @Input() unitOfMeasurement:string = '';
   @Input() itemId:number = 0;
+  @Output() cardClick = new EventEmitter<void>();
+
+  onCardClick() : void {
+    this.cardClick.emit();
+  }
 }

@@ -3,7 +3,7 @@
 }">
     @if(stockitemsummaries.length > 0){
     @for(item of stockitemsummaries; track $index;) {
-    <app-batch-organizer-card class="w-full" [itemId]="item.id" [name]="item.name" [batches]="item.batchCount"
+    <app-batch-organizer-card class="w-full cursor-pointer" (cardClick)="onCardClick(item.id)" [itemId]="item.id" [name]="item.name" [batches]="item.batchCount"
         [totalQuantity]="item.totalStockQuantity" [unitOfMeasurement]="item.unitOfMeasure"></app-batch-organizer-card>
     }
     }@else{

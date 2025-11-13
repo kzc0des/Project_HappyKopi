@@ -1,18 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModifierDetailsDto } from '../../../core/dtos/modifier/modifier-details-dto';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Itemcard } from '../../../shared/components/itemcard/itemcard';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header/header.service';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 import { ModifierService } from '../services/modifier.service';
 import { ModifierForUpdate } from '../../../core/dtos/modifier/modifier-for-update.model';
 import { Location } from '@angular/common';
+import { YellowButton } from '../../../shared/components/yellow-button/yellow-button';
 
 @Component({
   selector: 'app-modifier-edit',
-  imports: [Itemcard, FormsModule],
+  imports: [Itemcard, FormsModule, YellowButton],
   templateUrl: './modifier-edit.html',
   styleUrl: './modifier-edit.css'
 })
@@ -22,6 +23,7 @@ export class ModifierEdit implements OnInit, OnDestroy {
   currentUrl !: string;
   itemTitle !: string;
   actionSubscription !: Subscription;
+  routerSubscription !: Subscription;
   modifierDetailForUpdate !: ModifierForUpdate;
 
   isDeleting = false;
@@ -39,6 +41,17 @@ export class ModifierEdit implements OnInit, OnDestroy {
     this.modifierDetails = this.route.snapshot.data['modifierdetail'];
     this.currentUrl = this.router.url;
     this.updateItemTitle(this.currentUrl);
+
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      const state = this.router.getCurrentNavigation()?.extras.state;
+      if (state && state['selectedStockItemId']) {
+        this.modifierService.linkStockItem(this.modifierDetails.id, { stockItemId: state['selectedStockItemId'], quantityNeeded: 1 }).subscribe(() => {
+          this.reloadModifierDetails();
+        });
+      }
+    });
 
     this.actionSubscription = this.headerService.action$.subscribe(async action => {
       switch (action) {
@@ -69,6 +82,18 @@ export class ModifierEdit implements OnInit, OnDestroy {
       }
     })
   }
+
+  private reloadModifierDetails() {
+    this.modifierService.getModifierById(this.modifierDetails.id).subscribe(details => {
+      this.modifierDetails = details;
+    });
+  }
+
+  linkStockItem() {
+    const segments = this.currentUrl.split('/');
+    this.router.navigate([...segments, 'link', 'Miscellaneous']);
+  }
+
 
   private removeTrailingS(word: string): string {
     return word.endsWith('s') ? word.slice(0, -1) : word;
@@ -117,7 +142,7 @@ export class ModifierEdit implements OnInit, OnDestroy {
       next: response => {
         console.log(`Delete successfully.`);
         this.headerService.notifyItemDeleted(true);
-        this.router.navigate(['../../'], {relativeTo: this.route})
+        this.router.navigate(['../../'], { relativeTo: this.route })
       },
       error: err => {
         console.error(`Failed to delete. ${err}`);
@@ -129,6 +154,9 @@ export class ModifierEdit implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.actionSubscription) {
       this.actionSubscription.unsubscribe();
+    }
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
     }
   }
 }
