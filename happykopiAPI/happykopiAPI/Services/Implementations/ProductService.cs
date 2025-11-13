@@ -1,4 +1,5 @@
 ﻿using Dapper;
+﻿using Dapper;
 using happykopiAPI.DTOs.Product.Dropdown_Data;
 using happykopiAPI.DTOs.Product.Incoming_Data;
 using happykopiAPI.DTOs.Product.Internal;
@@ -107,7 +108,7 @@ namespace happykopiAPI.Services.Implementations
                     var variantParams = new
                     {
                         ProductId = newProductId,
-                        variant.Size,
+                        variant.SizeId,
                         variant.Price
                     };
                     int newVariantId = await connection.QuerySingleAsync<int>(
@@ -183,15 +184,14 @@ namespace happykopiAPI.Services.Implementations
             var ingredients = (await multi.ReadAsync<ProductVariantIngredientDetailDto>()).ToList();
             var addOns = (await multi.ReadAsync<ProductVariantAddOnDetailDto>()).ToList();
 
-            var variantIngredients = ingredients.ToLookup(i => i.StockItemId);
-            var variantAddOns = addOns.ToLookup(a => a.ModifierId);
+            var variantIngredients = ingredients.ToLookup(i => i.ProductVariantId);
+            var variantAddOns = addOns.ToLookup(a => a.ProductVariantId);
 
             foreach (var variant in variants)
             {
                 variant.Recipe = variantIngredients[variant.Id].ToList();
                 variant.AddOns = variantAddOns[variant.Id].ToList();
             }
-
             product.Variants = variants;
 
             return product;
@@ -231,7 +231,7 @@ namespace happykopiAPI.Services.Implementations
                     var variantParams = new
                     {
                         ProductId = productId,
-                        variant.Size,
+                        variant.SizeId,
                         variant.Price
                     };
                     int newVariantId = await connection.QuerySingleAsync<int>(

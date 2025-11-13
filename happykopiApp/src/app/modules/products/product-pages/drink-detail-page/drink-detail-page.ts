@@ -1,38 +1,83 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IngredientCard } from '../../components/ingredient-card/ingredient-card';
-import { SizeCard } from '../../components/size-card/size-card';
-import { ProductsInfoCard } from '../../components/products-info-card/products-info-card';
+import { AddOnItem, ProductDetailDto, ProductVariantDetailDto, RecipeItem } from '../../../../core/dtos/product/product.model';
+import { Itemcard } from '../../../../shared/components/itemcard/itemcard';
+import { ModifierSizeCard } from '../../components/modifier-size-card/modifier-size-card';
+import { SelectedAddonCard } from '../../components/selected-addon-card/selected-addon-card';
+import { SelectedIngredientCard } from '../../components/selected-ingredient-card/selected-ingredient-card';
+import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
+import { AvailabilityCard } from "../../../../shared/components/availability-card/availability-card";
+import { HeaderService } from '../../../../core/services/header/header.service';
 
 @Component({
   selector: 'app-drink-detail-page',
-  imports: [FormsModule, CommonModule, IngredientCard, SizeCard, ProductsInfoCard],
+  imports: [CommonModule, Itemcard, ModifierSizeCard, SelectedAddonCard, SelectedIngredientCard, FormsModule, AvailabilityCard],
   templateUrl: './drink-detail-page.html',
   styleUrl: './drink-detail-page.css'
 })
-export class DrinkDetailPage {
-  ingredients = [
-    {name: "Milk", unit: "mL", value: 11},
-    {name: "Water", unit: "mL", value: 15},
-    {name: "Boba", unit: "g", value: 5},
-    {name: "Sugar", unit: "tsp", value: 2},
-    {name: "Ice", unit: "pcs", value: 10}
-  ];
+export class DrinkDetailPage implements OnInit {
+  productPayload!: ProductDetailDto;
+  displayVariants: ProductVariantDetailDto[] = [];
+  availableSizes: ModifierDto[] = [];
+  selectedSizeId: number | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
 
-  drink: any;
+  constructor(
+    private route: ActivatedRoute,
+    private headerService: HeaderService,
+    private router: Router
+  ) { }
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    const nav = this.router.getCurrentNavigation();
-    this.drink = nav?.extras.state?.['drink'];
+  ngOnInit(): void {
+    this.productPayload = this.route.snapshot.data['drink'];
+    this.displayVariants = this.productPayload.variants.filter(variant => 
+      (variant.recipe && variant.recipe.length > 0) || (variant.addOns && variant.addOns.length > 0)
+    );
+
+    this.availableSizes = this.displayVariants.map(variant => ({
+      id: variant.id,
+      name: variant.size,
+      price: variant.price,
+      ozAmount: variant.ozAmount
+    }));
+
+    if (this.availableSizes.length > 0) {
+      this.selectedSizeId = this.availableSizes[0].id;
+    }
+
+    this.imagePreview = this.productPayload.imageUrl;
+
+    this.headerService.action$.subscribe(action => {
+      if(action === "EDIT"){
+        this.router.navigate(['edit'], {
+          relativeTo: this.route
+        });
+      }else if(action === "BACK") {
+        this.router.navigate(['../../'], {
+          relativeTo: this.route
+        });
+      }
+    });
   }
 
-  selectedSize = 'grande'; 
-
-  onSizeChange(newSize: string) {
-    this.selectedSize = newSize;
-    console.log('Parent got:', this.selectedSize);
+  get currentVariant(): ProductVariantDetailDto | undefined {
+    if (this.selectedSizeId === null) {
+      return undefined;
+    }
+    return this.displayVariants.find(v => v.id === this.selectedSizeId);
   }
 
+  get currentPrice(): number {
+    const variant = this.currentVariant;
+    if (variant) {
+      return variant.price;
+    }
+    return 0;
+  }
+
+  onSizeSelect(size: ModifierDto) {
+    this.selectedSizeId = size.id;
+  }
 }

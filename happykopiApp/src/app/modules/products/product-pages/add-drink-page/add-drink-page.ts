@@ -321,7 +321,7 @@ export class AddDrinkPage implements OnInit {
         )
 
         const leanVariant: ProductVariantCreateDto = {
-          Size: uiVariant.size,
+          SizeId: uiVariant.sizeId,
           Price: uiVariant.price + sumOfAddOns + (this.basePrice || 0),
           Recipe: leanRecipe,
           AddOns: leanAddOns

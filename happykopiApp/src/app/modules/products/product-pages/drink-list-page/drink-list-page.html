@@ -6,8 +6,8 @@
         <app-search-field-card></app-search-field-card>
         <div class="flex flex-col">
             @for(drink of drinks; track $index){
-            <app-product-list-card [name]="drink.name" [category]="drink.category"
-                (cardClick)="goToDrink(drink)"></app-product-list-card>
+            <app-product-list-card [name]="drink.name" [category]="drink.categoryName" [imageUrl]="transformImageUrl(drink.imageUrl, 64, 64)"
+                (cardClick)="goToDrink(drink.id)"></app-product-list-card>
             }
         </div>
     </div>

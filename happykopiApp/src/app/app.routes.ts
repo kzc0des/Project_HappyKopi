@@ -17,8 +17,8 @@ import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
 import { DrinkListPage } from './modules/products/product-pages/drink-list-page/drink-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
-import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
-import { Order } from './modules/pos/forms/order/order'; 
+import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
+import { Order } from './modules/pos/forms/order/order';
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
@@ -70,6 +70,8 @@ import { activeAddonsResolver } from './modules/products/resolver/adddrinkresolv
 import { drinkCategoriesResolver } from './modules/products/resolver/adddrinkresolvers/drink-categories-resolver';
 import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver/adddrinkresolvers/powder-and-liquids-ingredients-resolver';
 import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
+import { productsListResolver } from './modules/products/resolver/productslist/products-list-resolver';
+import { productDetailResolver } from './modules/products/resolver/productdetail/product-detail-resolver';
 
 export const routes: Routes = [
     {
@@ -169,7 +171,7 @@ export const routes: Routes = [
                         resolve: {
                             modifierdetail: modifierDetailsResolver
                         }
-                    },                    
+                    },
                     {
                         path: ':type',
                         component: ModifierList,
@@ -185,7 +187,10 @@ export const routes: Routes = [
                     {
                         path: '',
                         component: DrinkListPage,
-                        pathMatch: 'full'
+                        pathMatch: 'full',
+                        resolve: {
+                            productslist: productsListResolver
+                        }
                     },
                     {
                         path: 'filter',
@@ -195,6 +200,24 @@ export const routes: Routes = [
                         path: 'create',
                         component: AddDrinkPage,
                         resolve: {
+                            sizes: activeSizeResolver,
+                            categories: drinkCategoriesResolver,
+                            ingredients: powderAndLiquidsIngredientsResolver,
+                            addOns: activeAddonsResolver
+                        }
+                    },
+                    {
+                        path: 'drink/:id',
+                        component: DrinkDetailPage,
+                        resolve: {
+                            drink: productDetailResolver
+                        }
+                    },
+                    {
+                        path: 'drink/:id/edit',
+                        component: EditDrinkPage,
+                        resolve: {
+                            drink: productDetailResolver,
                             sizes: activeSizeResolver,
                             categories: drinkCategoriesResolver,
                             ingredients: powderAndLiquidsIngredientsResolver,
@@ -221,7 +244,7 @@ export const routes: Routes = [
                         path: ':categoryId/assign',
                         component: AssignDrinkPage,
                         resolve: {
-                            products: productsInCategoryResolver 
+                            products: productsInCategoryResolver
                         }
                     },
                     {
@@ -262,7 +285,7 @@ export const routes: Routes = [
     {
         path: 'order-quick-view',
         component: OrderQuickView
-    }, 
+    },
     {
         path: 'order',
         component: Order,
@@ -270,7 +293,7 @@ export const routes: Routes = [
             categories: CategoriesResolver
         }
 
-    }, 
+    },
     {
         path: 'posoff',
         component: PosCategoryOff
@@ -298,7 +321,7 @@ export const routes: Routes = [
     {
         path: 'charge-summary',
         component: ChargeSummary
-    }, 
+    },
     {
         path: 'add-drink-page',
         component: AddDrinkPage

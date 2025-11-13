@@ -33,5 +33,6 @@ namespace happykopiAPI.Models
         public DateTime LastUpdated { get; set; }
 
         public ICollection<OrderItemModifier> OrderItemModifiers { get; set; }
+        public ICollection<ProductVariant> ProductVariantsSized { get; set; }
     }
 }
