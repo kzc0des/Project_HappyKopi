@@ -7,16 +7,21 @@ namespace happykopiAPI.Services.Interfaces
 {
     public interface IOrderService
     {
-        // NEW METHOD
+        // ORDER METHODS
         Task<NewOrderResponseDto> CreateOrderAsync(NewOrderRequestDto request);
 
-        // EXISTING METHODS
+        // CATEGORY & PRODUCT METHODS
         Task<IEnumerable<CategoryWithProductCountDto>> GetCategoriesWithProductCountAsync();
         Task<IEnumerable<ProductsWithCategoryDto>> GetProductsWithCategoriesAsync(int categoryId);
+        Task<ProductConfigurationResultDto> GetProductConfigurationByIdAsync(int productId);
+
+        // NEW: PRODUCT AVAILABILITY METHOD
+        Task<ProductAvailabilityResponseDto> GetProductAvailabilityAsync(int? categoryId = null);
+
+        // MODIFIER METHODS
         Task<IEnumerable<ModifierCountDto>> GetModifierCountByTypeAsync();
         Task<IEnumerable<OrderModifierSummaryDto>> GetModifiersByTypeAsync(ModifierType modifierType);
         Task<IEnumerable<OrderModifierSummaryDto>> GetAvailableModifiersAsync();
         Task<IEnumerable<OrderModifierSummaryDto>> GetAllModifiersAsync();
-        Task<ProductConfigurationResultDto> GetProductConfigurationByIdAsync(int productId);
     }
 }

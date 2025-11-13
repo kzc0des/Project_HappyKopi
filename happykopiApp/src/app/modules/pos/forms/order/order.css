@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: #fafafa;
 }
 .order-body::-webkit-scrollbar {
   width: 0;
@@ -34,13 +34,13 @@
 }
 
 .categories {
-  margin: 30px 0 0px 0;
-  padding: 10px 25px 10px 25px;
+  padding: 40px 25px 0 25px;
   display: flex;
   gap: 20px;
   overflow-x: auto;
   width: 100%;
   justify-content: flex-start;
+  background-color: #f0f0f0;
 }
 
 .categories::-webkit-scrollbar {
@@ -55,15 +55,14 @@ app-search-drink {
 .drinks-table {
   background-color: #fafafa;
   width: 100%;
-  height: 100%;
-  padding: 30px 5px 30px 5px;
+  padding: 30px 20px;
   margin-bottom: 310px;
 
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: flex-start;
-  gap: 30px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px 20px; 
+  justify-content: center; 
+  align-items: start; 
 }
 
 app-order-quick-view {
@@ -72,4 +71,41 @@ app-order-quick-view {
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
+}
+
+
+/* order.css */
+
+/* Empty State Styles */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  min-height: 400px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-state-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #282828;
+  margin: 0 0 12px 0;
+}
+
+.empty-state-message {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #919191;
+  margin: 0;
+  max-width: 400px;
 }

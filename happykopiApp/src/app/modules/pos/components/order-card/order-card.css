@@ -1,3 +1,4 @@
+/* features/order/components/order-card/order-card.css */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
 body {
@@ -8,42 +9,75 @@ body {
   width: 157px;
   height: 242px;
   position: relative;
-  background: #FAFAFA;
+  background: #fafafa;
   overflow: hidden;
-  font-family: "Outfit", sans-serif;
+  font-family: 'Outfit', sans-serif;
   border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
-/* 🔝 Upper content area */
+.order-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+ 
+.order-card.unavailable {
+  opacity: 0.8;
+  border: 2px dashed #ffc107;
+  background: #fff9e6;
+}
+
+.order-card.unavailable:hover {
+  border-color: #ff6b6b;
+}
+ 
+.unavailable-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #dc3545;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+ 
 .oc-upper-content {
   width: 133px;
   height: 154px;
   left: 12px;
   top: 8px;
   position: absolute;
-  background: #F0F0F0;
+  background: #f0f0f0;
   border-radius: 24px;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-/* 🖼️ Image styling */
+ 
 .oc-drink-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: filter 0.3s ease;
 }
-
-/* 📷 Placeholder if no image */
+ 
+.oc-drink-img.grayscale {
+  filter: grayscale(100%);
+}
+ 
 .oc-placeholder {
   color: #777;
   font-size: 14px;
   font-weight: 500;
 }
-
-/* 🔻 Lower content */
+ 
 .oc-lower-content {
   width: 136px;
   left: 21px;
@@ -68,4 +102,12 @@ body {
   color: #919191;
   font-weight: 400;
   font-size: 16px;
+}
+ 
+.unavailable-text {
+  color: #dc3545;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 3px;
+  display: block;
 }
