@@ -298,7 +298,7 @@ export class EditDrinkPage implements OnInit {
     this.productsService.updateProduct(this.productPayload.id, updatePayload).subscribe({
       next: () => {
         this.loadingService.hide();
-        this.router.navigate(['/products']);
+        this.router.navigate(['../'], { relativeTo: this.route });
       },
       error: (err) => this.loadingService.hide()
     });
