@@ -74,6 +74,7 @@ import { productDetailResolver } from './modules/products/resolver/productdetail
 import { InventoryBatchAdd } from './modules/inventory/inventory-batch-add/inventory-batch-add';
 import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
 import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
+import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
     {
@@ -92,12 +93,11 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
             {
-                path: '',
-                redirectTo: 'inventory',
-                pathMatch: 'full'
-            },
-            {
                 path: 'inventory',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
                 children: [
                     {
                         path: '',
@@ -148,6 +148,10 @@ export const routes: Routes = [
             },
             {
                 path: 'modifiers',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
                 children: [
                     {
                         path: '',
@@ -186,6 +190,10 @@ export const routes: Routes = [
             },
             {
                 path: 'products',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
                 children: [
                     {
                         path: '',
@@ -231,6 +239,10 @@ export const routes: Routes = [
             },
             {
                 path: 'category',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
                 children: [
                     {
                         path: '',
@@ -255,6 +267,22 @@ export const routes: Routes = [
                         component: EditCategoryPage,
                         resolve: {
                             categoryDetail: categoryWithCountResolver
+                        }
+                    }
+                ]
+            },
+            {
+                path: 'orders',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Barista']
+                },
+                children: [
+                    {
+                        path: '',
+                        component: Order,
+                        resolve: {
+                            categories: CategoriesResolver
                         }
                     }
                 ]
@@ -393,7 +421,7 @@ export const routes: Routes = [
         path: 'transactions-individual/:id',
         component: TransactionIndividual,
         resolve: {
-            transactions : transactionsResolver
+            transactions: transactionsResolver
         }
     },
     {

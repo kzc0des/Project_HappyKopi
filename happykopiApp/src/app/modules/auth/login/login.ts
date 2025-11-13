@@ -32,7 +32,8 @@ export class Login {
       this._authService.login(this.user).subscribe({
         next: (response) => {
           alert(`Welcome, ${response.user.username}`);
-          this.router.navigate(['app'])
+          this.router.navigate(['/app']);
+          // The AuthService will now handle the redirection.
         },
         error: (err) => {alert('Wrong Credentials')}
       });
