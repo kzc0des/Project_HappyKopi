@@ -20,7 +20,8 @@ app-long-yellow-button {
 
 .btns {
   position: fixed;
-  bottom: 40px;
+  padding-bottom: 40px;
+  bottom: 0;
   left: 0;
   width: 100%;
   display: flex;
@@ -70,4 +71,38 @@ app-long-yellow-button {
 
 .cart-item-container app-cart-item:last-child {
   margin-bottom: 100px;
+}
+
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  min-height: 400px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-state-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #282828;
+  margin: 0 0 12px 0;
+}
+
+.empty-state-message {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #919191;
+  margin: 0;
+  max-width: 400px;
 }

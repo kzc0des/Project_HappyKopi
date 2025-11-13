@@ -1,4 +1,3 @@
-/* features/order/components/order-card/order-card.css */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
 body {
@@ -15,38 +14,13 @@ body {
   border-radius: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
 }
 
-.order-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
- 
 .order-card.unavailable {
-  opacity: 0.8;
-  border: 2px dashed #ffc107;
-  background: #fff9e6;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.order-card.unavailable:hover {
-  border-color: #ff6b6b;
-}
- 
-.unavailable-badge {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: #dc3545;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  z-index: 10;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
- 
 .oc-upper-content {
   width: 133px;
   height: 154px;
@@ -59,25 +33,40 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
- 
+
 .oc-drink-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: filter 0.3s ease;
+  transition: all 0.3s ease;
 }
- 
-.oc-drink-img.grayscale {
-  filter: grayscale(100%);
+
+.oc-drink-img.faded {
+  filter: grayscale(100%) brightness(1.1);
+  opacity: 0.5;
 }
- 
+
+.unavailable-overlay {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 0, 0, 0.03) 10px,
+    rgba(0, 0, 0, 0.03) 20px
+  );
+  pointer-events: none;
+}
+
 .oc-placeholder {
   color: #777;
   font-size: 14px;
   font-weight: 500;
 }
- 
+
 .oc-lower-content {
   width: 136px;
   left: 21px;
@@ -95,6 +84,14 @@ body {
   font-weight: 700;
   color: #282828;
   font-size: 16px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.oc-drink-name.unavailable-text {
+  color: #999;  
 }
 
 .oc-drink-cat {
@@ -102,12 +99,8 @@ body {
   color: #919191;
   font-weight: 400;
   font-size: 16px;
-}
- 
-.unavailable-text {
-  color: #dc3545;
-  font-size: 0.7rem;
-  font-weight: 600;
-  margin-top: 3px;
-  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
