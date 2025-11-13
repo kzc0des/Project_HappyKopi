@@ -22,32 +22,63 @@ import { TransactionSummaryDto } from '../../../../core/dtos/transaction/transac
 export class TransactionHome implements OnInit {
   private transactionsService = inject(TransactionsService);
 
+  cashTotal: number = 0;
+  cashTransactions: number = 0;
+  gcashTotal: number = 0;
+  gcashTransactions: number = 0;
+
   transactions: TransactionListItemDto[] = [];
   summary?: TransactionSummaryDto;
 
   ngOnInit(): void {
-    console.log('[TransactionHome] ngOnInit called - START');
-    
-    this.loadSummary();
-    this.loadHistory();
-  }
-
-  private loadSummary(): void {
-    this.transactionsService.getDailySummary().subscribe({
-      next: (summary) => this.summary = summary,
-      error: (err) => console.error('Error loading summary:', err)
-    });
+    this.loadHistory();   
+    this.loadSummary();  
   }
 
   private loadHistory(): void {
     this.transactionsService.getTransactionHistoryToday().subscribe({
-      next: (transactions) => this.transactions = transactions,
-      error: (err) => console.error('Error loading history:', err)
+      next: (transactions) => {
+        this.transactions = transactions;
+
+        this.cashTransactions = this.transactions.filter(
+          t => this.getPaymentTypeFlag(t.paymentMethod) === 'cash'
+        ).length;
+
+        this.gcashTransactions = this.transactions.filter(
+          t => this.getPaymentTypeFlag(t.paymentMethod) === 'gcash'
+        ).length;
+
+        this.cashTotal = this.transactions
+          .filter(t => this.getPaymentTypeFlag(t.paymentMethod) === 'cash')
+          .reduce((sum, t) => sum + t.total, 0);
+
+        this.gcashTotal = this.transactions
+          .filter(t => this.getPaymentTypeFlag(t.paymentMethod) === 'gcash')
+          .reduce((sum, t) => sum + t.total, 0);
+
+        console.log("Cash transactions:", this.cashTransactions);
+        console.log("G-Cash transactions:", this.gcashTransactions);
+        console.log("Cash Total:", this.cashTotal);
+        console.log("G-Cash Total:", this.gcashTotal);
+      },
+      error: (err) => console.error('Error loading transaction history:', err)
     });
   }
 
-  getPaymentTypeFlag(paymentType: string): 'cash' | 'gcash' {
-    const type = paymentType;
-    return type === 'cash' ? 'cash' : 'gcash';
+  private loadSummary(): void {
+    this.transactionsService.getDailySummary().subscribe({
+      next: (summary) => {
+        this.summary = summary;
+
+        console.log("Loaded summary:", summary);
+      },
+      error: (err) => console.error('Error loading summary:', err)
+    });
+  }
+
+  getPaymentTypeFlag(paymentMethod: string): 'cash' | 'gcash' {
+    const normalized = paymentMethod.toLowerCase();
+    if (normalized === 'cash' || normalized === '0') return 'cash';
+    return 'gcash';
   }
 }

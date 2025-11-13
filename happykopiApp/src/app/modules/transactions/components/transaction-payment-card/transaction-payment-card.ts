@@ -10,6 +10,6 @@ import { TransactionListItemDto } from '../../../../core/dtos/transaction/transa
   styleUrls: ['./transaction-payment-card.css'],
 })
 export class TransactionPaymentCard {
-  @Input() paymentType: 'cash' | 'gcash' = 'gcash';
+  @Input() paymentMethod: 'cash' | 'gcash' = 'gcash';
   @Input() transactionPayment!: TransactionListItemDto;  
 }
