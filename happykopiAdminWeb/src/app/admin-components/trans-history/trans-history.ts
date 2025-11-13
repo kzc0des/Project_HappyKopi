@@ -10,7 +10,8 @@ import { CommonModule } from '@angular/common';
 })
 export class TransHistory {
   @Input() baristaName: string = '';
-  @Input() orderId: string = '';
+  @Input() orderId?: number;
+  @Input() orderNumber!: string;
   @Input() orderTime: string = '';
   @Input() paymentMethod: 'cash' | 'gcash' = 'cash';
   @Input() totalPayment: number = 0;

@@ -1,41 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Dashboard</title>
-</head>
-<body class="body">
+  <head>
+    <title>Dashboard</title>
+  </head>
+  <body class="body">
+    <nav class="navbar">
+      <h1 class="nav-text">HappyKopi Dashboard</h1>
 
-  <nav class="navbar">
-    <h1 class="nav-text">HappyKopi Dashboard</h1>
+      <div class="dropdown-container date-filter">
+        <button class="dropdown-btn" (click)="toggleDropdown()">
+          Filter by Date
+          <svg
+            class="arrow-icon"
+            [class.rotate]="isDropdownOpen"
+            width="20"
+            height="20"
+            viewBox="0 0 16 16"
+            fill="none"
+          >
+            <path
+              d="M4 6L8 10L12 6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
 
-    <div class="dropdown-container date-filter">
-      <button class="dropdown-btn" (click)="toggleDropdown()">
-        Filter by Date
-        <svg class="arrow-icon" [class.rotate]="isDropdownOpen" width="20" height="20" viewBox="0 0 16 16" fill="none">
-          <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-
-      @if (isDropdownOpen) {
-        <div class="dropdown-menu">
+        <div *ngIf="isDropdownOpen" class="dropdown-menu">
           <button class="dropdown-item" (click)="changePeriod('today')">Today</button>
           <button class="dropdown-item" (click)="changePeriod('this-week')">This Week</button>
           <button class="dropdown-item" (click)="changePeriod('this-month')">This Month</button>
-          <hr class="dropdown-divider">
+          <hr class="dropdown-divider" />
           <button class="dropdown-item signout" (click)="openSignOutModal()">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M6 14H3C2.73478 14 2.48043 13.8946 2.29289 13.7071C2.10536 13.5196 2 13.2652 2 13V3C2 2.73478 2.10536 2.48043 2.29289 2.29289C2.48043 2.10536 2.73478 2 3 2H6M11 11L14 8M14 8L11 5M14 8H6"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M6 14H3C2.73478 14 2.48043 13.8946 2.29289 13.7071C2.10536 13.5196 2 13.2652 2 13V3C2 2.73478 2.10536 2.48043 2.29289 2.29289C2.48043 2.10536 2.73478 2 3 2H6M11 11L14 8M14 8L11 5M14 8H6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
             Sign Out
           </button>
         </div>
-      }
-    </div>
-  </nav>
+      </div>
+    </nav>
 
-  @if (isSignOutModalOpen) {
-    <div class="modal-overlay" (click)="closeSignOutModal()">
+    <div *ngIf="isSignOutModalOpen" class="modal-overlay" (click)="closeSignOutModal()">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <h2 class="modal-title">Sign Out</h2>
         <p class="modal-message">Are you sure you want to sign out?</p>
@@ -45,74 +59,84 @@
         </div>
       </div>
     </div>
-  }
 
-  <div class="container">
-    <div class="flex-layout">
-      <div class="left-column">
+    <div class="container">
+      <div class="flex-layout">
+        <div class="left-column">
+          <div class="summary-container">
+            <div class="summary-box">
+              <app-dashboard-card [amount]="totalSales" [title]="'Total Sales'">
+              </app-dashboard-card>
+            </div>
 
-        <div class="summary-container">
-          <!-- SALES BOX -->
-          <div class="summary-box">
-            <app-dashboard-card
-              [amount]="totalSales"
-              [title]="'Total Sales'">
-            </app-dashboard-card>
+            <div class="summary-box">
+              <app-admin-dashboard-transaction
+                [value]="totalTransactions"
+                [subtitle]="'Total Transactions'"
+              >
+              </app-admin-dashboard-transaction>
+            </div>
           </div>
 
-          <!-- TRANSACTION BOX -->
-          <div class="summary-box">
-            <app-admin-dashboard-transaction
-              [value]="totalTransactions"
-              [subtitle]="'Total Transactions'">
-            </app-admin-dashboard-transaction>
+          <div class="flex-item left-bottom">
+            <h3 class="weekly-text">
+              {{
+                selectedPeriod === 'today'
+                  ? "Today's Sales"
+                  : selectedPeriod === 'this-week'
+                  ? "This Week's Sales"
+                  : "This Month's Sales"
+              }}
+            </h3>
+            <app-admin-line-chart [period]="selectedPeriod"></app-admin-line-chart>
           </div>
         </div>
 
-        <!-- CHART -->
-        <div class="flex-item left-bottom">
-          <h3 class="weekly-text">
-            {{ selectedPeriod === 'today'
-              ? "Today's Sales"
-              : selectedPeriod === 'this-week'
-                ? 'This Week’s Sales'
-                : 'This Month’s Sales' }}
-          </h3> 
-          <app-admin-line-chart [period]="selectedPeriod"></app-admin-line-chart>
-        </div>
-      </div>
+        <div class="right-column">
+          <div class="flex-item right-top">
+            <app-dashboard-cash-payment
+              [title]="'Cash Transactions'"
+              [count]="cashTransactionCount"
+              [amount]="cashTransactionAmount"
+            >
+            </app-dashboard-cash-payment>
 
-      <!-- RIGHT SIDE -->
-      <div class="right-column">
-        <div class="flex-item right-top">
-          <app-dashboard-cash-payment
-            [title]="'Cash Transactions'"
-            [count]="cashTransactionCount"
-            [amount]="cashTransactionAmount">
-          </app-dashboard-cash-payment>
+            <app-dashboard-gcash-payment
+              [title]="'Cashless Payments'"
+              [count]="gcashPaymentCount"
+              [amount]="gcashPaymentAmount"
+              color="#FFD966"
+            >
+            </app-dashboard-gcash-payment>
+          </div>
+          <div class="flex-item right-bottom">
+            <h3 class="sales-text">Transaction History</h3>
 
-          <app-dashboard-gcash-payment
-            title="Gcash Payments"
-            [count]="gcashPaymentCount"
-            [amount]="gcashPaymentAmount"
-            color="#FFD966">
-          </app-dashboard-gcash-payment>
-        </div>
-        <div class="flex-item right-bottom">
-          <h3 class="sales-text">Transaction History</h3>
-          
-          @for (transaction of transactionHistory; track transaction.orderId) {
-            <app-trans-history
-              [orderId]="transaction.orderId"
-              [orderTime]="transaction.orderTime"
+            <ng-container *ngIf="transactionHistory.length > 0; else noTransactions">
+              <!-- <app-trans-history *ngFor="let transaction of transactionHistory"
+              [orderNumber]="transaction.orderNumber"
+              [orderTime]="formatOrderTime(transaction.transactionDate)"
               [baristaName]="transaction.baristaName"
-              [paymentMethod]="transaction.paymentMethod"
-              [totalPayment]="transaction.totalPayment">
-            </app-trans-history>
-          }
+              
+              [totalPayment]="transaction.total">
+            </app-trans-history> -->
+              <app-trans-history
+                *ngFor="let transaction of transactionHistory"
+                [orderNumber]="transaction.orderNumber"
+                [orderTime]="formatOrderTime(transaction.transactionDate)"
+                [baristaName]="transaction.baristaName"
+                [paymentMethod]="transaction.paymentMethod.toLowerCase() === 'cash' ? 'cash' : 'gcash'"
+                [totalPayment]="transaction.total"
+              >
+              </app-trans-history>
+            </ng-container>
+
+            <ng-template #noTransactions>
+              <p style="text-align: center; color: #999; padding: 20px">No transactions yet</p>
+            </ng-template>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { ChartPointDto, DashboardService } from '../../services/dashboard.service';
+import { ChartPointDto } from '../../transaction/chart-point.dto';
+import { DashboardService } from '../../services/dashboard.service';
 
 Chart.register(...registerables);
 

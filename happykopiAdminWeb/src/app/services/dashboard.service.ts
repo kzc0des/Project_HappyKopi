@@ -1,56 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { TransactionSummaryDto } from '../transaction/transaction-summary.dto';
+import { ChartPointDto } from '../transaction/chart-point.dto';
+import { TransactionListItemDto } from '../transaction/transaction-list-item.dto';
+import { environment } from '../environments/environment.development';
+import { ApiService } from './api.service';
 
-export interface TransactionSummaryDto {
-  totalSales: number;
-  totalTransactions: number;
-  cashSummary: {
-    totalTransactions: number;
-    totalAmount: number;
-  };
-  cashlessSummary: {
-    totalTransactions: number;
-    totalAmount: number;
-  };
-}
-
-export interface ChartPointDto {
-  label: string;
-  totalSales: number;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = 'https://192.168.1.12:5001/api/dashboard';
 
-  constructor(private http: HttpClient) {}
+  constructor(private api: ApiService) { }
 
-  // --- SUMMARY DATA ---
-  getToday(): Observable<TransactionSummaryDto> {
-    return this.http.get<TransactionSummaryDto>(`${this.apiUrl}/today`);
+  // ===== SUMMARY METHODS =====
+  getTodaySummary(): Observable<TransactionSummaryDto> {
+    return this.api.get<TransactionSummaryDto>('dashboard/today');
   }
 
-  getThisWeek(): Observable<TransactionSummaryDto> {
-    return this.http.get<TransactionSummaryDto>(`${this.apiUrl}/this-week`);
+  getWeeklySummary(): Observable<TransactionSummaryDto> {
+    return this.api.get<TransactionSummaryDto>('dashboard/this-week');
   }
 
-  getThisMonth(): Observable<TransactionSummaryDto> {
-    return this.http.get<TransactionSummaryDto>(`${this.apiUrl}/this-month`);
+  getMonthlySummary(): Observable<TransactionSummaryDto> {
+    return this.api.get<TransactionSummaryDto>('dashboard/this-month');
   }
 
-  // --- CHART DATA ---
+  // ===== CHART METHODS =====
   getChartToday(): Observable<ChartPointDto[]> {
-    return this.http.get<ChartPointDto[]>(`${this.apiUrl}/chart/today`);
+    return this.api.get<ChartPointDto[]>('dashboard/chart/today');
   }
 
   getChartThisWeek(): Observable<ChartPointDto[]> {
-    return this.http.get<ChartPointDto[]>(`${this.apiUrl}/chart/this-week`);
+    return this.api.get<ChartPointDto[]>('dashboard/chart/this-week');
   }
 
   getChartThisMonth(): Observable<ChartPointDto[]> {
-    return this.http.get<ChartPointDto[]>(`${this.apiUrl}/chart/this-month`);
+    return this.api.get<ChartPointDto[]>('dashboard/chart/this-month');
+  }
+
+  // ===== TRANSACTION HISTORY =====
+  getTransactionHistory(): Observable<TransactionListItemDto[]> {
+    return this.api.get<TransactionListItemDto[]>('dashboard/transactions/history');
   }
 }

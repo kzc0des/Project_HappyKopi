@@ -19,6 +19,8 @@ namespace happykopiAPI.Services.Implementations
         private SqlConnection CreateConnection()
             => new SqlConnection(_configuration.GetConnectionString("LocalDB"));
 
+        // --- Summary Methods ---
+
         public async Task<TransactionSummaryDto> GetTodaySummaryAsync()
         {
             var today = DateTime.Today;
@@ -41,7 +43,6 @@ namespace happykopiAPI.Services.Implementations
             return await GetSummaryForRangeAsync(startOfMonth, endOfMonth);
         }
 
-        // Common helper
         private async Task<TransactionSummaryDto> GetSummaryForRangeAsync(DateTime startDate, DateTime endDate)
         {
             await using var connection = CreateConnection();
@@ -49,41 +50,28 @@ namespace happykopiAPI.Services.Implementations
 
             var sql = @"
                 SELECT
-                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate THEN AmountPaid ELSE 0 END), 0) AS TotalSales,
-                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate THEN 1 ELSE 0 END), 0) AS TotalTransactions,
-                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate AND PaymentType = 'Cash' THEN AmountPaid ELSE 0 END), 0) AS CashTotal,
-                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate AND PaymentType = 'Cash' THEN 1 ELSE 0 END), 0) AS CashTransactions,
-                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate AND PaymentType <> 'Cash' THEN AmountPaid ELSE 0 END), 0) AS CashlessTotal,
-                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate AND PaymentType <> 'Cash' THEN 1 ELSE 0 END), 0) AS CashlessTransactions
+                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate THEN AmountPaid ELSE 0 END), 0) AS TotalSalesToday,
+                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate THEN 1 ELSE 0 END), 0) AS TransactionsToday,
+                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate AND PaymentType = 'Cash' THEN 1 ELSE 0 END), 0) AS CashPayments,
+                    ISNULL(SUM(CASE WHEN TransactionDate BETWEEN @StartDate AND @EndDate AND PaymentType <> 'Cash' THEN 1 ELSE 0 END), 0) AS CashlessPayments
                 FROM dbo.Transactions;
             ";
 
-            var row = await connection.QuerySingleAsync(sql, new { StartDate = startDate, EndDate = endDate });
+            var summary = await connection.QuerySingleAsync<TransactionSummaryDto>(
+                sql,
+                new { StartDate = startDate, EndDate = endDate }
+            );
 
-            return new TransactionSummaryDto
-            {
-                TotalSales = (decimal)row.TotalSales,
-                TotalTransactions = (int)row.TotalTransactions,
-                CashSummary = new PaymentSummaryDto
-                {
-                    TotalAmount = (decimal)row.CashTotal,
-                    TotalTransactions = (int)row.CashTransactions
-                },
-                CashlessSummary = new PaymentSummaryDto
-                {
-                    TotalAmount = (decimal)row.CashlessTotal,
-                    TotalTransactions = (int)row.CashlessTransactions
-                }
-            };
+            return summary;
         }
 
-        //Chart
+        // --- Chart Methods ---
 
         public async Task<IEnumerable<ChartPointDto>> GetChartTodayAsync()
         {
             var today = DateTime.Today;
             var start = today;
-            var end = today.AddDays(1);
+            var end = today.AddDays(1).AddTicks(-1);
 
             await using var connection = CreateConnection();
             await connection.OpenAsync();
@@ -98,15 +86,14 @@ namespace happykopiAPI.Services.Implementations
                 ORDER BY Label;
             ";
 
-            var result = await connection.QueryAsync<ChartPointDto>(sql, new { StartDate = start, EndDate = end });
-            return result;
+            return await connection.QueryAsync<ChartPointDto>(sql, new { StartDate = start, EndDate = end });
         }
 
         public async Task<IEnumerable<ChartPointDto>> GetChartThisWeekAsync()
         {
             var today = DateTime.Today;
             var startOfWeek = today.AddDays(-(int)today.DayOfWeek + (int)DayOfWeek.Monday);
-            var endOfWeek = startOfWeek.AddDays(7);
+            var endOfWeek = startOfWeek.AddDays(7).AddTicks(-1);
 
             await using var connection = CreateConnection();
             await connection.OpenAsync();
@@ -121,15 +108,14 @@ namespace happykopiAPI.Services.Implementations
                 ORDER BY DATEPART(WEEKDAY, TransactionDate);
             ";
 
-            var result = await connection.QueryAsync<ChartPointDto>(sql, new { StartDate = startOfWeek, EndDate = endOfWeek });
-            return result;
+            return await connection.QueryAsync<ChartPointDto>(sql, new { StartDate = startOfWeek, EndDate = endOfWeek });
         }
 
         public async Task<IEnumerable<ChartPointDto>> GetChartThisMonthAsync()
         {
             var today = DateTime.Today;
             var startOfMonth = new DateTime(today.Year, today.Month, 1);
-            var endOfMonth = startOfMonth.AddMonths(1);
+            var endOfMonth = startOfMonth.AddMonths(1).AddTicks(-1);
 
             await using var connection = CreateConnection();
             await connection.OpenAsync();
@@ -144,8 +130,34 @@ namespace happykopiAPI.Services.Implementations
                 ORDER BY DAY(TransactionDate);
             ";
 
-            var result = await connection.QueryAsync<ChartPointDto>(sql, new { StartDate = startOfMonth, EndDate = endOfMonth });
+            return await connection.QueryAsync<ChartPointDto>(sql, new { StartDate = startOfMonth, EndDate = endOfMonth });
+        }
+
+        public async Task<IEnumerable<TransactionListItemAdminDto>> GetTransactionHistoryAsync()
+        {
+            await using var connection = CreateConnection();
+            await connection.OpenAsync();
+
+            var sql = @"
+    SELECT 
+        o.Id AS OrderId,
+        o.OrderNumber,
+        u.FullName AS BaristaName,
+        t.TransactionDate,
+        o.TotalAmount AS Total,
+        -- Compare string literals instead of 0
+        CASE WHEN t.PaymentType = 'Cash' THEN 'Cash' ELSE 'Cashless' END AS PaymentMethod
+    FROM Transactions t
+    INNER JOIN Orders o ON o.Id = t.OrderId
+    INNER JOIN Users u ON o.UserId = u.Id
+    WHERE CAST(t.TransactionDate AS DATE) = CAST(GETDATE() AS DATE)
+    ORDER BY t.TransactionDate DESC;
+";
+
+
+            var result = await connection.QueryAsync<TransactionListItemAdminDto>(sql);
             return result;
         }
+
     }
 }
