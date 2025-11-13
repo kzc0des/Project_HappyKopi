@@ -1,1 +1,14 @@
-<p>inventory-batch-add works!</p>
+<div class="flex flex-col bg-white py-4 px-5">
+    <div class="flex justify-end">
+        <app-date-card itemTitle="Date Today" [itemValue]="dateAdded"></app-date-card>
+    </div>
+    <div class="flex flex-col gap-5">
+        <app-itemcard itemTitle="Quantity" [showIcon]="false" [isEditing]="true" type="number" required
+            [(ngModel)]="batchDetail.quantityAdded">
+        </app-itemcard>
+        <app-expiry-date-card itemTitle="Expiry Date" [(ngModel)]="batchDetail.expiryDate"></app-expiry-date-card>
+        <app-itemcard itemTitle="Remarks" [showIcon]="false" [isEditing]="true"
+            [(ngModel)]="batchDetail.remarks">
+        </app-itemcard>
+    </div>
+</div>
