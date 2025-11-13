@@ -34,7 +34,7 @@ focus-within:ring-hapikopi-yellow">
             </svg>
         </button>
 
-        <input #nativeDatePicker type="date" (change)="onNativeDateChange($event)"
+        <input #nativeDatePicker type="date" [min]="minDate" (change)="onNativeDateChange($event)"
             class="absolute -z-10 h-0 w-0 opacity-0" tabindex="-1" />
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, forwardRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { HeaderService } from '../../../../core/services/header/header.service';
 
@@ -15,10 +15,11 @@ import { HeaderService } from '../../../../core/services/header/header.service';
     },
   ],
 })
-export class ExpiryDateCard implements ControlValueAccessor {
+export class ExpiryDateCard implements ControlValueAccessor, OnInit {
  month: string = '';
   day: string = '';
   year: string = '';
+  minDate: string = '';
 
   @ViewChild('nativeDatePicker') nativeDatePicker!: ElementRef<HTMLInputElement>;
 
@@ -26,6 +27,11 @@ export class ExpiryDateCard implements ControlValueAccessor {
   private onTouched: () => void = () => {};
 
   constructor(private elementRef: ElementRef, private headerService: HeaderService) {}
+
+  ngOnInit(): void {
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
+  }
 
   writeValue(value: Date | string | null): void {
     if (value instanceof Date && !isNaN(value.getTime())) {
@@ -70,8 +76,11 @@ export class ExpiryDateCard implements ControlValueAccessor {
       this.day.length >= 1 &&
       this.year.length === 4
     ) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Compare dates without time
+
       const date = new Date(yearNum, monthNum - 1, dayNum);
-      if (date.getFullYear() === yearNum && date.getMonth() === monthNum - 1 && date.getDate() === dayNum) {
+      if (date.getFullYear() === yearNum && date.getMonth() === monthNum - 1 && date.getDate() === dayNum && date >= today) {
         this.onChange(date);
       } else {
         this.onChange(null);
@@ -100,39 +109,27 @@ export class ExpiryDateCard implements ControlValueAccessor {
     this.onTouched();
   }
 
-  /**
-   * BAGO: Method para buksan ang native date picker.
-   */
   openCalendar(): void {
     try {
-      // Modern way para ipakita ang picker
       this.nativeDatePicker.nativeElement.showPicker();
     } catch (error) {
-      // Fallback para sa mga lumang browser
       this.nativeDatePicker.nativeElement.click();
     }
   }
 
-  /**
-   * BAGO: Kukunin ang value kapag pumili ang user sa native date picker.
-   */
   onNativeDateChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const value = input.value; // Format nito ay "YYYY-MM-DD"
 
     if (value) {
-      // Kinukuha natin ang date pero kailangan i-adjust sa timezone
-      // para maiwasan na maging "previous day" ito.
       const date = new Date(value);
       const userTimezoneOffset = date.getTimezoneOffset() * 60000;
       const localDate = new Date(date.getTime() + userTimezoneOffset);
 
-      // I-update ang mga input fields
       this.year = localDate.getFullYear().toString();
       this.month = (localDate.getMonth() + 1).toString().padStart(2, '0');
       this.day = localDate.getDate().toString().padStart(2, '0');
 
-      // I-trigger ang update sa ngModel
       this.onDateChange();
     }
   }
