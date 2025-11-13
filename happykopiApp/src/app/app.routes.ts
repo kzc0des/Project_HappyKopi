@@ -199,10 +199,7 @@ export const routes: Routes = [
                     {
                         path: '',
                         component: DrinkListPage,
-                        pathMatch: 'full',
-                        resolve: {
-                            productslist: productsListResolver
-                        }
+                        pathMatch: 'full'
                     },
                     {
                         path: 'category',

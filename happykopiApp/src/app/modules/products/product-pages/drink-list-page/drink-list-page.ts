@@ -11,7 +11,12 @@ import { ProductsService } from '../../services/products-service/products.servic
 
 @Component({
   selector: 'app-drink-list-page',
-  imports: [CommonModule, CategoryButtonField, ProductListCard, ProductSearchBar],
+  imports: [
+    CommonModule, 
+    CategoryButtonField, 
+    ProductListCard, 
+    ProductSearchBar
+  ],
   templateUrl: './drink-list-page.html',
   styleUrl: './drink-list-page.css'
 })
