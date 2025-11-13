@@ -1,0 +1,17 @@
+<div class="h-full flex flex-col items-center w-full gap-0.5" [ngClass]="{
+    'justify-center' : stockitemsummaries.length === 0
+}">
+    @if(stockitemsummaries.length > 0){
+    @for(item of stockitemsummaries; track $index;) {
+    <app-batch-organizer-card class="w-full cursor-pointer" (cardClick)="onCardClick(item.id)" [itemId]="item.id"
+        [name]="item.name" [batches]="item.batchCount" [totalQuantity]="item.totalStockQuantity"
+        [unitOfMeasurement]="item.unitOfMeasure"></app-batch-organizer-card>
+    }
+    }@else{
+    <div class="flex flex-col gap-3 items-center justify-center w-[50%]">
+        <h3 class="text-[#777777] font-bold">No Item Found!</h3>
+        <p class="text-[#777777] text-sm text-center">The items you will be adding will appear here.</p>
+    </div>
+    }
+
+</div>

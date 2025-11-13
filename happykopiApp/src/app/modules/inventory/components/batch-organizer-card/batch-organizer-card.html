@@ -1,4 +1,4 @@
-<button class="flex items-center w-full p-5 bg-white" [routerLink]="[itemId]">
+<div class="flex items-center w-full p-5 bg-white" (click)="onCardClick()">
   <div class="flex flex-col flex-1 gap-1 text-start">
     <p class="font-[600]">{{name || 'Stock Item Name'}}</p>
 
@@ -38,4 +38,4 @@
         clip-rule="evenodd" />
     </svg>
 
-</button>
+  </div>

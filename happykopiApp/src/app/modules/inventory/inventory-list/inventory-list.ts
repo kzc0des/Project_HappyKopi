@@ -50,6 +50,10 @@ export class InventoryList implements OnInit, OnDestroy {
     });
   }
 
+  onCardClick(itemId: number) {
+    this.router.navigate([itemId], { relativeTo: this.route });
+  }
+
   ngOnDestroy(): void {
     if (this.actionSubscription) {
       this.actionSubscription.unsubscribe();
