@@ -7,10 +7,11 @@ import { ProductListCard } from '../../components/product-list-card/product-list
 import { HeaderService } from '../../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
 import { ProductListItemDto } from '../../../../core/dtos/product/product.model';
+import { ProductSearchBar } from "../../components/product-search-bar/product-search-bar";
 
 @Component({
   selector: 'app-drink-list-page',
-  imports: [CommonModule, SearchFieldCard, CategoryButtonField, ProductListCard],
+  imports: [CommonModule, SearchFieldCard, CategoryButtonField, ProductListCard, ProductSearchBar],
   templateUrl: './drink-list-page.html',
   styleUrl: './drink-list-page.css'
 })

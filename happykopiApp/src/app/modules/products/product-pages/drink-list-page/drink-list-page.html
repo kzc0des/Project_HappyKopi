@@ -3,7 +3,7 @@
         <app-category-button-field></app-category-button-field>
     </div>
     <div class="flex flex-col gap-5">
-        <app-search-field-card></app-search-field-card>
+        <app-product-search-bar></app-product-search-bar>
         <div class="flex flex-col">
             @for(drink of drinks; track $index){
             <app-product-list-card [name]="drink.name" [category]="drink.categoryName" [imageUrl]="transformImageUrl(drink.imageUrl, 64, 64)"
