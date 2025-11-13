@@ -40,4 +40,9 @@ export class CategoryService {
     const path = `${this.controllerPath}/${id}`;
     return this.apiService.delete<void>(path);
   }
+
+  assignProductsToCategory(categoryId: number, productIds: number[]): Observable<void> {
+    const path = `${this.controllerPath}/${categoryId}/assign-products`;
+    return this.apiService.put<void>(path, { productIds });
+  }
 }

@@ -227,6 +227,7 @@ export class Header implements OnInit, OnDestroy {
       this.onSelected = true;
     }
 
+    // Route: /app/category/:categoryId/assign
     else if (segments.includes('category') && segments.includes('assign') && segments.length === 4) {
       this.headerTitle = `Assign to Category`;
       this.showBackButton = true;
