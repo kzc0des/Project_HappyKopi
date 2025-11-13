@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-text-box-price',
@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './text-box-price.css'
 })
 export class TextBoxPrice {
-
+  @Input() inputType? : 'charge' | 'create' = 'charge';
 }

@@ -1,21 +1,48 @@
 <div class="body">
-    <div class="cards">
-        <app-transaction-card cardMode="sales" [transactionCard]="{ Sales: salesTotal, Transactions: transactionsCount }"></app-transaction-card>
-        <app-transaction-card cardMode="transactions" [transactionCard]="{ Sales: salesTotal, Transactions: transactionsCount }"></app-transaction-card>
-    </div>
+  <div class="cards">
+    <app-transaction-card
+      cardMode="sales"
+      [transactionCard]="{
+        Sales: summary?.totalSalesToday ?? 0,
+        Transactions: summary?.transactionsToday ?? 0
+      }">
+    </app-transaction-card>
 
-    <div class="payment-cards">
-        <app-transaction-individual-card cardMode="cash" [transactionCard]="{ TotalAmount: cashTotal, TotalTransactions: cashTransactionsCount }"></app-transaction-individual-card>
-        <app-transaction-individual-card cardMode="gcash" [transactionCard]="{ TotalAmount: cashlessTotal, TotalTransactions: cashlessTransactionsCount }"></app-transaction-individual-card>
-    </div>
+    <app-transaction-card
+      cardMode="transactions"
+      [transactionCard]="{
+        Sales: summary?.totalSalesToday ?? 0,
+        Transactions: summary?.transactionsToday ?? 0
+      }">
+    </app-transaction-card>
+  </div>
 
-    <div class="transaction-list">
-        <div class="transaction-list-header">Transaction History</div>
-        @for (transaction of transactions; track transaction.id) {
-            <app-transaction-payment-card 
-                [paymentType]="getPaymentTypeFlag(transaction.paymentType)" 
-                [transactionPayment]="transaction">
-            </app-transaction-payment-card>
-        }
-    </div>
+  <div class="payment-cards">
+    <app-transaction-individual-card
+        cardMode="cash"
+        [transactionCard]="{
+        TotalAmount: summary?.cashPayments?.total ?? 0,
+        TotalTransactions: summary?.cashPayments?.total ?? 0
+        }">
+    </app-transaction-individual-card>
+
+    <app-transaction-individual-card
+        cardMode="gcash"
+        [transactionCard]="{
+        TotalAmount: summary?.cashlessPayments?.total ?? 0,
+        TotalTransactions: summary?.cashlessPayments?.total ?? 0
+        }">
+    </app-transaction-individual-card>
+  </div>
+
+  <div class="transaction-list">
+    <div class="transaction-list-header">Transaction History</div>
+
+    @for (transaction of transactions; track transaction.orderId) {
+      <app-transaction-payment-card
+        [paymentType]="getPaymentTypeFlag(transaction.paymentMethod)"
+        [transactionPayment]="transaction">
+      </app-transaction-payment-card>
+    }
+  </div>
 </div>

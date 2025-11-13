@@ -14,9 +14,10 @@ namespace happykopiAPI.Models
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string Size { get; set; }
+        public int? SizeId { get; set; }
+
+        [ForeignKey("SizeId")]
+        public Modifier Size { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]

@@ -6,7 +6,7 @@
   position: fixed; 
   display: flex;
   flex-direction: column;
-  height: 100vh; /* full viewport height */
+  height: 100vh; 
   font-family: 'Outfit', sans-serif;
 
 }
@@ -29,7 +29,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 62px;
+  margin-bottom: 4vh;
+  gap: 16px;
 }
 
 .total-price-value {
@@ -57,8 +58,8 @@
 
 
 app-long-yellow-button {
-  display: block;         /* ensure it takes width of its content */
-  width: 100%;            /* make it expand across the flex center */
+  display: block;    
+  width: 100%;           
   display: flex;
   justify-content: center;
 }

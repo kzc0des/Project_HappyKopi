@@ -71,6 +71,11 @@
                 stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
         }
+        @if(page === 'transactions') {
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
+            <path d="M4.99986 6.50005H12.9999M12.9999 10.5001H4.99986M12.9999 14.5001H4.99986M1 1V21L3 20L5 21L7 20L9 21L11 20L13 21L15 20L17 21V1L15 2L13 1L11 2L9 1L7 2L5 1L3 2L1 1Z" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        }
     </div>
-    <p class="font-medium text-start">{{page | titlecase}}</p>
+    <p class="text-lg font-medium ml-2 font-[#FAFAFA] text-start">{{page | titlecase}}</p>
 </button>

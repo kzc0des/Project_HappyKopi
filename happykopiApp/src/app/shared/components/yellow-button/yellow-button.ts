@@ -9,7 +9,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class YellowButton {
   @Input() buttonTitle !: string;
   @Input() itemTitle !: string;
-  @Output() isClick = new EventEmitter<boolean>();
+  @Input() isDisabled: boolean = false; // Added isDisabled input
+  @Output() isClick = new EventEmitter<void>(); // Changed to emit void
 
   notifyClickButton() : void {
     this.isClick.emit();

@@ -11,9 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 var AllowSpecificOrigins = "_allowSpecificOrigins";
 
-// Register Dapper enum handler early
-Dapper.SqlMapper.AddTypeHandler(new EnumStringTypeHandler<happykopiAPI.Enums.PaymentType>());
-
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5000); 
@@ -58,7 +55,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 builder.Services.AddCors(options =>

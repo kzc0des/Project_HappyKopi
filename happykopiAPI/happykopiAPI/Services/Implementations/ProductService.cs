@@ -1,7 +1,9 @@
 ﻿using Dapper;
+﻿using Dapper;
 using happykopiAPI.DTOs.Product.Dropdown_Data;
 using happykopiAPI.DTOs.Product.Incoming_Data;
 using happykopiAPI.DTOs.Product.Internal;
+using happykopiAPI.DTOs.Product.Outgoing_Data;
 using happykopiAPI.Enums;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
@@ -106,7 +108,7 @@ namespace happykopiAPI.Services.Implementations
                     var variantParams = new
                     {
                         ProductId = newProductId,
-                        variant.Size,
+                        variant.SizeId,
                         variant.Price
                     };
                     int newVariantId = await connection.QuerySingleAsync<int>(
@@ -158,6 +160,112 @@ namespace happykopiAPI.Services.Implementations
                 await transaction.RollbackAsync();
                 throw; 
             }
+        }
+
+        public async Task<IEnumerable<ProductListItemDto>> GetActiveProductsAsync()
+        {
+            using var connection = CreateConnection();
+            return await connection.QueryAsync<ProductListItemDto>(
+                "sp_GetActiveProducts",
+                commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<ProductDetailDto> GetProductDetailByIdAsync(int productId)
+        {
+            using var connection = CreateConnection();
+            var parameters = new { ProductId = productId };
+
+            using var multi = await connection.QueryMultipleAsync("sp_GetProductDetailById", parameters, commandType: CommandType.StoredProcedure);
+
+            var product = await multi.ReadSingleOrDefaultAsync<ProductDetailDto>();
+            if (product == null) return null;
+
+            var variants = (await multi.ReadAsync<ProductVariantDetailDto>()).ToList();
+            var ingredients = (await multi.ReadAsync<ProductVariantIngredientDetailDto>()).ToList();
+            var addOns = (await multi.ReadAsync<ProductVariantAddOnDetailDto>()).ToList();
+
+            var variantIngredients = ingredients.ToLookup(i => i.ProductVariantId);
+            var variantAddOns = addOns.ToLookup(a => a.ProductVariantId);
+
+            foreach (var variant in variants)
+            {
+                variant.Recipe = variantIngredients[variant.Id].ToList();
+                variant.AddOns = variantAddOns[variant.Id].ToList();
+            }
+            product.Variants = variants;
+
+            return product;
+        }
+
+        public async Task UpdateProductAsync(int productId, ProductUpdateDto productDto)
+        {
+            var connectionString = _configuration.GetConnectionString("LocalDB");
+            await using var connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+
+            await using var transaction = await connection.BeginTransactionAsync();
+
+            try
+            {
+                var productParams = new
+                {
+                    ProductId = productId,
+                    productDto.Name,
+                    productDto.Description,
+                    productDto.ImageUrl,
+                    productDto.ImagePublicId,
+                    productDto.CategoryId,
+                    productDto.IsAvailable,
+                    productDto.IsActive
+                };
+
+                await connection.ExecuteAsync(
+                    "sp_UpdateProductMain",
+                    productParams,
+                    transaction: transaction,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                foreach (var variant in productDto.Variants)
+                {
+                    var variantParams = new
+                    {
+                        ProductId = productId,
+                        variant.SizeId,
+                        variant.Price
+                    };
+                    int newVariantId = await connection.QuerySingleAsync<int>(
+                        "sp_CreateProductVariant",
+                        variantParams,
+                        transaction: transaction,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    foreach (var ingredient in variant.Recipe)
+                    {
+                        await connection.ExecuteAsync("sp_CreateVariantIngredient", new { ProductVariantId = newVariantId, ingredient.StockItemId, ingredient.QuantityNeeded }, transaction: transaction, commandType: CommandType.StoredProcedure);
+                    }
+
+                    foreach (var addOn in variant.AddOns)
+                    {
+                        await connection.ExecuteAsync("sp_CreateVariantAddOn", new { ProductVariantId = newVariantId, addOn.ModifierId, addOn.DefaultQuantity }, transaction: transaction, commandType: CommandType.StoredProcedure);
+                    }
+                }
+
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task DeleteProductAsync(int productId)
+        {
+            using var connection = CreateConnection();
+            var parameters = new { ProductId = productId };
+            await connection.ExecuteAsync("sp_DeleteProduct", parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

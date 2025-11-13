@@ -1,23 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
-
 .drink-card {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  background: #FAFAFA;
+  background: #fafafa;
   padding: 24px;
-  width: 100%; 
+  width: 100%;
   box-sizing: border-box;
-  gap: 24px; 
+  gap: 24px;
   margin-bottom: 2px;
+  font-family: 'Outfit', sans-serif;
 }
 
 .drink-image {
   width: 103px;
   height: 122px;
-  background: #F0F0F0;
+  background: #f0f0f0;
   border-radius: 24px;
   flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-drink-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.image-placeholder {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
 }
 
 .drink-info {
@@ -39,6 +56,14 @@
   font-weight: 700;
   font-size: 16px;
   color: #282828;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.drink-qty {
+  font-weight: 400;
+  color: #777777;
 }
 
 .drink-price {
@@ -49,7 +74,7 @@
 
 .drink-size {
   font-size: 16px;
-  color: #D59400;
+  color: #d59400;
   font-weight: 700;
 }
 
@@ -59,9 +84,11 @@
   gap: 4px;
 }
 
-.addon-list div {
+.addon {
   font-size: 16px;
   color: #777777;
+  display: flex;
+  align-items: center;
 }
 
 .price-and-qty {
@@ -76,26 +103,26 @@
 .quantity-control {
   width: 134px;
   height: 54px;
-  background: #FAFAFA;
+  background: #fafafa;
   border-radius: 12px;
-  outline: 3px solid #F3B72C;
+  outline: 3px solid #f3b72c;
   position: relative;
   flex-shrink: 0;
-  color: #F3B72C;
+  color: #f3b72c;
   font-weight: bold;
   font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.addon, .drink-name {
-  display:flex;
+.quantity-control:hover {
+  background: #fff9e6;
+  outline-color: #e5a820;
 }
 
-.addon-qty{
-  margin-left: 8px;
-}
-.drink-qty{
-  margin-left: 8px;
+.quantity-control:active {
+  transform: scale(0.98);
 }

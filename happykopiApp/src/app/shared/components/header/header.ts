@@ -17,6 +17,7 @@ export class Header implements OnInit, OnDestroy {
   showAddButton = false;
   showEditButton = false;
   showBackButton = false;
+  showMenuButton = true; 
 
   // under editing state
   isEditing = false;
@@ -31,6 +32,7 @@ export class Header implements OnInit, OnDestroy {
   headerTitle!: string | null;
   hasValueChanged = false;
   isItemDeleted = false;
+  isItemAdded = false;
 
   // for getting the router navigations
   private routerSubscription!: Subscription;
@@ -39,7 +41,9 @@ export class Header implements OnInit, OnDestroy {
   private valueChangeSubscription!: Subscription;
 
   // detection for deletion
-  private isDeleteItemSubscription !: Subscription;
+  private isDeleteItemSubscription!: Subscription;
+
+  private isAddedItemSubscription!: Subscription;
 
   currentPageSelected: Observable<string>;
 
@@ -74,6 +78,10 @@ export class Header implements OnInit, OnDestroy {
       this.isItemDeleted = deleted;
     });
 
+    this.isAddedItemSubscription = this.headerActionService.isItemAdded$.subscribe(added => {
+      this.isItemAdded = added;
+    });
+
     console.log(`show back button state: ${this.showBackButton}`);
     console.log(`show isEditing state: ${this.isEditing}`);
   }
@@ -84,6 +92,7 @@ export class Header implements OnInit, OnDestroy {
     this.showBackButton = false;
     this.showSaveButton = false;
     this.showDeleteButton = false;
+    this.showMenuButton = true;
     this.onSelected = false;
     this.headerTitle = null;
     this.headerActionService.resetValueChangedState();
@@ -115,15 +124,16 @@ export class Header implements OnInit, OnDestroy {
       this.showSaveButton = true;
     }
     // Route: 'item/:itemid/batch/add'
-    else if (segments.includes('item') && segments.includes('batch') && segments.includes('add')) {
+    else if (segments.includes('batch') && segments.includes('add')) {
       this.headerTitle = 'Add Batch';
       this.showBackButton = true;
       this.showSaveButton = true;
     }
-    // Route: 'item/:itemid/batch/:batchid'
-    else if (segments.includes('item') && segments.includes('batch') && segments.length >= 5) {
+    // Route: ':itemtype/:itemid/batch/:batchid'
+    else if (segments.includes('batch') && segments.length >= 6) {
       this.showBackButton = true;
-      this.showEditButton = true;
+      this.showDeleteButton = true;
+      this.onSelected = true;
     }
 
     else if (segments.includes('inventory') && segments.length === 4) {
@@ -193,6 +203,12 @@ export class Header implements OnInit, OnDestroy {
     }
 
     /* products routing */
+    else if (segments.includes('products') && segments.includes('edit') && segments.length >= 5) {
+      this.showBackButton = true;
+      this.onSelected = true;
+      this.showSaveButton = true;
+      this.showDeleteButton = true;
+    }
 
     else if (segments.includes('products') && segments.length === 2) {
       this.showAddButton = true;
@@ -201,7 +217,30 @@ export class Header implements OnInit, OnDestroy {
     else if (segments.includes('products') && segments.length === 3) {
       this.headerTitle = 'Create Drink';
       this.showBackButton = true;
-      this.showSaveButton = true;
+    }
+
+    else if (segments.includes('products') && segments.includes('drink') && segments.length >= 4) {
+      this.showBackButton = true;
+      this.showEditButton = true;
+      this.onSelected = true;
+    }
+
+        /* orders routing */
+    else if (segments.includes('orders') && segments.includes('cart') && segments.length === 3) {
+      this.headerTitle = 'Your Cart';
+      this.showBackButton = true;
+    }
+
+    else if (segments.includes('orders') && segments.includes('summary') && segments.length === 3) {
+      this.headerTitle = 'Order Summary';
+      this.showBackButton = false;
+      this.showMenuButton = false; 
+    }
+
+    else if (segments.includes('orders') && segments.length === 2) {
+      this.headerTitle = 'Order';
+      this.showBackButton = false;
+      
     }
   }
 
@@ -259,10 +298,10 @@ export class Header implements OnInit, OnDestroy {
   }
 
   async onBackClick() {
-    if (!this.isItemDeleted && !this.hasValueChanged) {
+    if (!this.isItemDeleted && !this.hasValueChanged && !this.isItemAdded) {
       this.location.back();
     }
-    
+
     if (this.hasValueChanged) {
       const confirmation = await this.confirmationService.confirm(
         "Cancel Edit?",
@@ -270,9 +309,9 @@ export class Header implements OnInit, OnDestroy {
         "primary",
         'Yes, Go Back',
         'Stay'
-      ) 
-      
-      if(confirmation){
+      )
+
+      if (confirmation) {
         this.location.back();
       }
     }

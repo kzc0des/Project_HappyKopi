@@ -28,6 +28,7 @@
       @for (addon of addons; track addon.Name) {
       <app-addon-card-active
         [addonCard]="addon"
+        [minQuantity]="addon.minQuantity"
         (quantityChange)="onAddonQuantityChange(addon.Name, $event)"
       ></app-addon-card-active>
       }

@@ -1,3 +1,4 @@
+// features/order/pages/order/order.ts
 import { Component, signal, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { CategoryWithProductCountDto } from '../../../../core/dtos/order/category-with-product-count.dto';
@@ -5,23 +6,50 @@ import { PosCategoryOff } from '../../components/pos-category-off/pos-category-o
 import { OrderCard } from '../../components/order-card/order-card';
 import { SearchDrink } from '../../../../shared/components/search-drink/search-drink';
 import { OrderQuickView } from '../../components/order-quick-view/order-quick-view';
-import { ActivatedRoute } from '@angular/router';
 import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-with-category.dto';
 import { AddOrderModal, addOrderModalDto } from '../../modal/add-order-modal/add-order-modal';
+import { UnavailableProductDto } from '../../../../core/dtos/order/product-availability.dto';
+import {
+  UnavailableProductModal,
+  UnavailableProductModalData,
+} from '../../modal/unavailable-modal/unavailable-modal';
 
 @Component({
   selector: 'app-order',
-  imports: [PosCategoryOff, OrderCard, SearchDrink, OrderQuickView, AddOrderModal],
+  imports: [
+    PosCategoryOff,
+    OrderCard,
+    SearchDrink,
+    OrderQuickView,
+    AddOrderModal,
+    UnavailableProductModal,
+  ],
   templateUrl: './order.html',
   styleUrls: ['./order.css'],
 })
 export class Order implements OnInit {
+  // for category
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
+
+  // for searching
+  allDrinks = signal<ProductsWithCategoryDto[]>([]);
   drinks = signal<ProductsWithCategoryDto[]>([]);
 
+  // for unavailable drinks
+  unavailableMap = signal<Map<number, UnavailableProductDto>>(new Map());
+
+  // for default na allDrinks
+  allDrinksCategory: CategoryWithProductCountDto = {
+    id: -1,
+    name: 'All Drinks',
+    productCount: 0,
+  };
+
   showModal = signal(false);
+  showUnavailableModal = signal(false);
   selectedDrink = signal<addOrderModalDto | undefined>(undefined);
+  selectedUnavailableProduct = signal<UnavailableProductModalData | undefined>(undefined);
 
   constructor(private orderService: OrderService) {}
 
@@ -33,9 +61,22 @@ export class Order implements OnInit {
     this.orderService.getCategories().subscribe({
       next: (data) => {
         this.categories.set(data);
-        if (data.length) {
-          this.selectCategory(data[0]);
-        }
+        const totalProducts = data.reduce((sum, category) => sum + category.productCount, 0);
+        this.allDrinksCategory.productCount = totalProducts;
+        this.selectAllDrinks();
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
+  selectAllDrinks() {
+    this.selectedCategory.set(this.allDrinksCategory);
+
+    this.orderService.getProductsWithAvailability().subscribe({
+      next: ({ products, unavailableMap }) => {
+        this.allDrinks.set(products); // Store all drinks
+        this.drinks.set(products); // Display all drinks initially
+        this.unavailableMap.set(unavailableMap);
       },
       error: (err) => console.error(err),
     });
@@ -43,32 +84,77 @@ export class Order implements OnInit {
 
   selectCategory(category: CategoryWithProductCountDto) {
     this.selectedCategory.set(category);
-    this.orderService.getProductsByCategory(category.id).subscribe({
-      next: (drinks) => this.drinks.set(drinks),
+
+    this.orderService.getProductsWithAvailability(category.id).subscribe({
+      next: ({ products, unavailableMap }) => {
+        this.allDrinks.set(products); // Store all drinks in category
+        this.drinks.set(products); // Display all drinks initially
+        this.unavailableMap.set(unavailableMap);
+      },
       error: (err) => console.error(err),
     });
+  }
+
+  onAllDrinksClick() {
+    this.selectAllDrinks();
   }
 
   onCategoryClick(category: CategoryWithProductCountDto) {
     this.selectCategory(category);
   }
 
-  openDrinkModal(drink: ProductsWithCategoryDto) {}
+  onSearchResults(filteredDrinks: ProductsWithCategoryDto[]) {
+    this.drinks.set(filteredDrinks);
+  }
 
   closeModal() {
     this.showModal.set(false);
   }
 
   onDrinkClicked(drink: ProductsWithCategoryDto): void {
-    this.selectedDrink.set({
-      DrinkName: drink.name,
-      DrinkCategory: drink.categoryName,
-      BasePrice: 0,
-    });
-    this.showModal.set(true);
+    const unavailableInfo = this.unavailableMap().get(drink.id);
+
+    if (unavailableInfo) {
+      this.selectedUnavailableProduct.set({
+        productName: drink.name,
+        categoryName: drink.categoryName,
+        price: drink.price,
+        imageUrl: drink.imageUrl || '',
+        unavailableInfo: unavailableInfo,
+      });
+      this.showUnavailableModal.set(true);
+    } else {
+      this.selectedDrink.set({
+        ProductId: drink.id,
+        DrinkName: drink.name,
+        DrinkCategory: drink.categoryName,
+        BasePrice: drink.price,
+        ImageUrl: drink.imageUrl || '',
+      });
+      this.showModal.set(true);
+    }
   }
 
   onCloseModal() {
     this.showModal.set(false);
+  }
+
+  onCloseUnavailableModal() {
+    this.showUnavailableModal.set(false);
+  }
+
+  isProductAvailable(drinkId: number): boolean {
+    return !this.unavailableMap().has(drinkId);
+  }
+
+  getUniqueDrinks(): ProductsWithCategoryDto[] {
+    const seen = new Set<number>();
+    return this.drinks().filter((drink) => {
+      if (seen.has(drink.id)) {
+        return false;
+      }
+      seen.add(drink.id);
+      return true;
+    });
   }
 }

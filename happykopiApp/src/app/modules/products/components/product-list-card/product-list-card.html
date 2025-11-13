@@ -1,6 +1,8 @@
-<div class="card bg-white flex items-center gap-6 py-2 rounded-0 cursor-pointer hover:bg-gray-50 transition px-6"
+<div class="card bg-white flex items-center gap-6 py-4 rounded-0 cursor-pointer hover:bg-gray-50 transition px-6"
     (click)="onCardClick()">
-    <div class="menu-image"></div>
+    <div class="w-16 h-26 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200 flex justify-center items-center">
+        <img [src]="imageUrl" alt="{{name}}" class="w-full h-full object-cover" />
+    </div>
     <div class="flex flex-1 justify-between items-center gap-6">
         <div class="flex flex-col gap-2">
             <div class="text-[16px] font-semibold text-gray-800">{{ name }}</div>

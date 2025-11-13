@@ -1,7 +1,17 @@
-@if(!isEditing){
-<div class="flex gap-5 items-center p-6 bg-white">
+@if(!isEditing && isBatch) {
+<div class="
+    flex flex-col px-3 py-4 w-full gap-2 bg-white
+    border-1 rounded-xl border-gray-300">
+    <p class="text-gray-500">{{itemTitle || 'Item Title'}}</p>
+
+    <h1 class="font-semibold text-hapikopi-dark font-semibold text-hapikopi-dark">{{internalValue}}</h1>
+</div>
+}
+
+@else if(!isEditing){
+<div class="flex gap-5 items-center px-6 py-3 bg-white">
     @if(showIcon){
-    <div class="p-3 bg-hapikopi-yellow rounded-2xl">
+    <div class="p-3 bg-hapikopi-yellow rounded-xl">
         @if(itemTitle.toLowerCase() === 'ingredient name'){
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5" viewBox="0 0 48 48">
             <path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
@@ -14,18 +24,62 @@
                 d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Zm-6.8-2.8l2-2m-5-1l2-2m-5-1l2-2m7 11l2-2" />
         </svg>
         }
+        @if(itemTitle.toLowerCase() === 'drink name'){
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 18 25" fill="none">
+            <path d="M1 7.85742H17" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" />
+            <path
+                d="M3.37308 9.08171C3.32582 8.42016 3.84982 7.85742 4.51308 7.85742H13.4868C14.1501 7.85742 14.6741 8.42016 14.6268 9.08171L13.6472 22.796C13.6045 23.3941 13.1068 23.8574 12.5073 23.8574H5.49262C4.89308 23.8574 4.39542 23.3941 4.35268 22.796L3.37308 9.08171Z"
+                stroke="#FAFAFA" stroke-width="2" />
+            <path d="M9 4.42857V2.14286C9 1.51167 9.51166 1 10.1429 1H11.8571" stroke="#FAFAFA" stroke-width="2"
+                stroke-linecap="round" />
+            <path
+                d="M3.69793 5.38368C3.78976 4.8326 4.26656 4.42871 4.82524 4.42871H13.1746C13.7333 4.42871 14.2101 4.8326 14.3019 5.38368L14.7142 7.85728H3.28564L3.69793 5.38368Z"
+                stroke="#FAFAFA" stroke-width="2" />
+        </svg>
+        }
+        @if(itemTitle.toLowerCase() === 'description'){
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 14 14">
+            <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+                <path d="M5.5 4.054a1.5 1.5 0 1 1 1.5 1.5v.5m0 2.062a.25.25 0 0 1 0-.5m0 .5a.25.25 0 0 0 0-.5" />
+                <path
+                    d="M12.5 13.5H3a1.5 1.5 0 1 1 0-3h8.5a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1H3a1.5 1.5 0 0 0-1.5 1.46v10m10-1.46v3" />
+            </g>
+        </svg>
+        }
+        @if(itemTitle.toLowerCase() === 'category'){
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 24 24" fill="none">
+            <path
+                d="M20.5556 14.4443H3.44444C2.09441 14.4443 1 15.5388 1 16.8888V20.5554C1 21.9055 2.09441 22.9999 3.44444 22.9999H20.5556C21.9056 22.9999 23 21.9055 23 20.5554V16.8888C23 15.5388 21.9056 14.4443 20.5556 14.4443Z"
+                stroke="#F0F0F0" stroke-width="2" />
+            <path
+                d="M9.55556 1.61133H3.44444C2.09441 1.61133 1 2.70574 1 4.05577V7.72244C1 9.07244 2.09441 10.1669 3.44444 10.1669H9.55556"
+                stroke="#F0F0F0" stroke-width="2" stroke-linecap="round" />
+            <path
+                d="M18.1111 10.7778C20.8111 10.7778 22.9999 8.58895 22.9999 5.88889C22.9999 3.18883 20.8111 1 18.1111 1C15.411 1 13.2222 3.18883 13.2222 5.88889C13.2222 8.58895 15.411 10.7778 18.1111 10.7778Z"
+                stroke="#F0F0F0" stroke-width="2" />
+            <path
+                d="M18.1112 7.72233C19.1237 7.72233 19.9445 6.90152 19.9445 5.889C19.9445 4.87648 19.1237 4.05566 18.1112 4.05566C17.0986 4.05566 16.2778 4.87648 16.2778 5.889C16.2778 6.90152 17.0986 7.72233 18.1112 7.72233Z"
+                fill="#F0F0F0" />
+        </svg>
+        }
+        @if(itemTitle.toLowerCase() === 'price'){
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 18 20" fill="none">
+            <path
+                d="M17 9H1M17 5H1M4 19V2C4 1.73478 4.10536 1.48043 4.29289 1.29289C4.48043 1.10536 4.73478 1 5 1H9C10.5913 1 12.1174 1.63214 13.2426 2.75736C14.3679 3.88258 15 5.4087 15 7C15 8.5913 14.3679 10.1174 13.2426 11.2426C12.1174 12.3679 10.5913 13 9 13H4"
+                stroke="#F0F0F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        }
     </div>
     }
     <div class="
     flex flex-col w-full gap-2
     rounded-2xl">
         <p class="text-gray-500">{{itemTitle}}</p>
-        <h1 class="font-bold">
+        <h1 class="font-semibold text-hapikopi-dark">
             {{ internalValue }}
         </h1>
     </div>
 </div>
-
 }
 
 @if(isEditing){
@@ -43,3 +97,4 @@
     }
 </div>
 }
+

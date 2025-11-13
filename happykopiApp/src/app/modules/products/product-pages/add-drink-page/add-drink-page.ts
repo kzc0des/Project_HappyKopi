@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddButtonCard } from '../../components/add-button-card/add-button-card';
@@ -24,6 +24,13 @@ import { ProductsService } from '../../services/products-service/products.servic
 import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
 import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dto';
 import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
+import { HeaderService } from '../../../../core/services/header/header.service';
+import { AlertService } from '../../../../core/services/alert/alert.service';
+import { SelectedIngredientCard } from '../../components/selected-ingredient-card/selected-ingredient-card';
+import { SelectedAddonCard } from '../../components/selected-addon-card/selected-addon-card';
+import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
+import { LoadingService } from '../../../../core/services/loading/loading.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-add-drink-page',
@@ -36,7 +43,10 @@ import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item
     ModifierSizeCard,
     AddIngredientModal,
     AddAddonModal,
-    YellowButton
+    YellowButton,
+    SelectedIngredientCard,
+    SelectedAddonCard,
+    LoadingSpinner
   ],
   templateUrl: './add-drink-page.html',
   styleUrl: './add-drink-page.css'
@@ -68,11 +78,20 @@ export class AddDrinkPage implements OnInit {
 
   isRecipeBuilderVisible = false;
 
+  // Properties for editing
+  editingIngredient: RecipeItem | null = null;
+  editingIngredientIndex: number | null = null;
+  editingAddOn: AddOnItem | null = null;
+  editingAddOnIndex: number | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private headerService: HeaderService,
+    private alertService: AlertService,
+    private loadingService: LoadingService
   ) {
     const nav = this.router.getCurrentNavigation();
     this.drink = nav?.extras.state?.['drink'];
@@ -185,33 +204,93 @@ export class AddDrinkPage implements OnInit {
 
   openIngredientModal() {
     if (this.selectedSizeId === null) return;
+    this.resetEditingState();
     this.modalService.openIngredientModal();
   }
 
   openAddOnModal() {
     if (this.selectedSizeId === null) return;
+    this.resetEditingState();
     this.modalService.openAddOnModal();
   }
 
   onSaveIngredient(item: RecipeItem) {
     if (this.currentVariant) {
-      this.currentVariant.recipe.push(item);
+      if (this.editingIngredientIndex !== null) {
+        this.currentVariant.recipe[this.editingIngredientIndex] = item;
+        console.log('Updated Ingredient:', item);
+      } else {
+        this.currentVariant.recipe.push(item);
+      }
       console.log('Updated Variants Payload:', this.productPayload.variants);
     } else {
-      console.error('No size selected to add ingredient to.');
+      console.error('No size selected to add or update ingredient.');
     }
+    this.resetEditingState();
+  }
+
+  onEditIngredient(ingredient: RecipeItem, index: number) {
+    if (this.selectedSizeId === null) return;
+    this.editingIngredient = { ...ingredient };
+    this.editingIngredientIndex = index;
+    this.modalService.openIngredientModal();
+    console.log('Editing ingredient:', this.editingIngredient);
+  }
+
+  onDeleteIngredient(): void {
+    if (this.currentVariant && this.editingIngredientIndex !== null) {
+      this.currentVariant.recipe.splice(this.editingIngredientIndex, 1);
+      console.log('Deleted ingredient at index:', this.editingIngredientIndex);
+      console.log('Updated Variants Payload:', this.productPayload.variants);
+    } else {
+      console.error('No ingredient selected for deletion or no size selected.');
+    }
+    this.resetEditingState();
   }
 
   onSaveAddOn(item: AddOnItem) {
     if (this.currentVariant) {
-      this.currentVariant.addOns.push(item);
+      if (this.editingAddOnIndex !== null) {
+        // Update existing add-on
+        this.currentVariant.addOns[this.editingAddOnIndex] = item;
+        console.log('Updated Add-on:', item);
+      } else {
+        // Add new add-on
+        this.currentVariant.addOns.push(item);
+      }
       console.log('Updated Variants Payload:', this.productPayload.variants);
     } else {
-      console.error('No size selected to add add-on to.');
+      console.error('No size selected to add or update add-on.');
     }
+    this.resetEditingState();
   }
 
-  submitNewProduct() {
+  onEditAddOn(addOn: AddOnItem, index: number) {
+    if (this.selectedSizeId === null) return;
+    this.editingAddOn = { ...addOn };
+    this.editingAddOnIndex = index;
+    this.modalService.openAddOnModal();
+  }
+
+  onDeleteAddOn(): void {
+    if (this.currentVariant && this.editingAddOnIndex !== null) {
+      this.currentVariant.addOns.splice(this.editingAddOnIndex, 1);
+      console.log('Deleted add-on at index:', this.editingAddOnIndex);
+      console.log('Updated Variants Payload:', this.productPayload.variants);
+    } else {
+      console.error('No add-on selected for deletion or no size selected.');
+    }
+    this.resetEditingState();
+  }
+
+  submitNewProduct(productForm: NgForm) {
+    productForm.form.markAllAsTouched();
+
+    if (productForm.invalid) {
+      console.log("Form is invalid. Please check errors.");
+      return;
+    }
+
     const payloadForBackend: ProductCreateDto = {
       name: this.productPayload.name,
       categoryId: this.productPayload.categoryId,
@@ -242,7 +321,7 @@ export class AddDrinkPage implements OnInit {
         )
 
         const leanVariant: ProductVariantCreateDto = {
-          Size: uiVariant.size,
+          SizeId: uiVariant.sizeId,
           Price: uiVariant.price + sumOfAddOns + (this.basePrice || 0),
           Recipe: leanRecipe,
           AddOns: leanAddOns
@@ -254,13 +333,21 @@ export class AddDrinkPage implements OnInit {
 
     console.log('Final payload for backend:', payloadForBackend);
 
-    this.productsService.createProduct(payloadForBackend).subscribe({
-      next: (response) => {
+    this.loadingService.show();
+    this.productsService.createProduct(payloadForBackend)
+    .pipe(finalize(() => this.loadingService.hide()))
+    .subscribe({
+      next: async (response) => {
         console.log('Product created successfully!', response);
-        this.router.navigate(['../products'], { relativeTo: this.route, replaceUrl: true});
+        this.headerService.notifyItemAdded(true);
+        await this.alertService.showSuccess(
+          'Success!',
+          'Product has been created successfully.'
+        );
+        this.router.navigate(['../'], { relativeTo: this.route, replaceUrl: true });
       },
 
-      error: (err) => {
+      error: async (err) => {
         console.error('Failed to create product (Full Error Object):', err);
 
         let displayMessage = 'An unexpected error occurred. Please try again.';
@@ -291,8 +378,26 @@ export class AddDrinkPage implements OnInit {
           displayMessage = '500 Internal Server Error. Check the backend logs.';
         }
 
-        alert(displayMessage);
+        await this.alertService.showError(
+          'Failed',
+          'An error occurred while creating the product.'
+        );
       }
     });
+  }
+
+  private resetEditingState() {
+    this.editingIngredient = null;
+    this.editingIngredientIndex = null;
+    this.editingAddOn = null;
+    this.editingAddOnIndex = null;
+  }
+
+  trackByIngredientId(index: number, ingredient: RecipeItem): number {
+    return ingredient.ingredientId;
+  }
+
+  trackByAddOnId(index: number, addOn: AddOnItem): number {
+    return addOn.addOnId;
   }
 }

@@ -6,15 +6,27 @@ import {
 import { OrderQuantityModifier } from '../../components/order-quantity-modifier/order-quantity-modifier';
 import { GrandeActive, sizeButtonDto } from '../../components/grande-active/grande-active';
 import { LongYellowButton } from '../../../../shared/components/long-yellow-button/long-yellow-button';
+import { RedButton } from '../../../../shared/components/red-button/red-button';
 import { CurrencyPipe } from '@angular/common';
-import { OrderModifierSummaryDto } from '../../../../core/dtos/order/order-modifier-summary.to';
-import { ModifierType } from '../../../../core/enums/modifier-type';
 import { OrderService } from '../../services/order.service';
 import { Addon, OrderItem } from '../../../../core/dtos/order/order-item.dto';
+import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
+
+interface AddonWithConfig extends addonCardDto {
+  minQuantity: number;
+  modifierId: number;
+}
 
 @Component({
   selector: 'app-edit-order-modal',
-  imports: [AddonCardActive, OrderQuantityModifier, GrandeActive, LongYellowButton, CurrencyPipe],
+  imports: [
+    AddonCardActive,
+    OrderQuantityModifier,
+    GrandeActive,
+    LongYellowButton,
+    RedButton,
+    CurrencyPipe,
+  ],
   templateUrl: './edit-order-modal.html',
   styleUrl: './edit-order-modal.css',
 })
@@ -23,16 +35,16 @@ export class EditOrderModal implements OnInit {
   @Output() closeModal = new EventEmitter<void>();
 
   sizes: sizeButtonDto[] = [];
-  addons: addonCardDto[] = [];
+  addons: AddonWithConfig[] = [];
   activeSize: string = '';
+  selectedVariantId: number = 0;
   quantity: number = 1;
   orderData?: OrderItem;
+  productConfig?: ProductConfigurationResultDto;
 
   constructor(private orderService: OrderService) {}
 
   ngOnInit() {
-    this.loadSizes();
-    this.loadAddons();
     this.loadOrderData();
   }
 
@@ -43,43 +55,79 @@ export class EditOrderModal implements OnInit {
     if (this.orderData) {
       this.activeSize = this.orderData.size;
       this.quantity = this.orderData.quantity;
-
-      // Match addons from DB with saved quantities
-      this.addons.forEach((addon) => {
-        const existing = this.orderData!.addons.find((a) => a.name === addon.Name);
-        if (existing) addon.Quantity = existing.quantity;
-      });
+ 
+      if (this.orderData.drinkID) {
+        this.loadProductConfiguration(this.orderData.drinkID);
+      }
     }
   }
 
-  loadSizes() {
-    this.orderService.getModifiersByType(ModifierType.Sizes).subscribe({
-      next: (sizes: OrderModifierSummaryDto[]) => {
-        this.sizes = sizes.map((s) => ({
-          SizeName: s.name,
-          SizeQuantity: s.price ?? 0,
-        }));
+  loadProductConfiguration(productId: number) {
+    this.orderService.getProductConfiguration(productId).subscribe({
+      next: (config: ProductConfigurationResultDto) => {
+        console.log('Product Configuration:', config);
+        this.productConfig = config;
+
+        if (config.variants && config.variants.length > 0) {
+          this.sizes = config.variants.map((v) => ({
+            SizeName: v.sizeName,
+            SizeQuantity: v.price,
+          }));
+ 
+          const savedVariant = config.variants.find((v) => v.sizeName === this.orderData!.size);
+          if (savedVariant) {
+            this.selectedVariantId = savedVariant.id;
+          } else {
+            this.selectedVariantId = config.variants[0].id;
+          }
+
+          this.loadAddonsForVariant(this.selectedVariantId);
+        } else {
+          console.warn('No variants with ingredients found for this product');
+        }
       },
-      error: (err) => console.error('Error loading sizes:', err),
+      error: (err) => {
+        console.error('Error loading product configuration:', err);
+      },
     });
   }
 
-  loadAddons() {
-    this.orderService.getModifiersByType(ModifierType.AddOns).subscribe({
-      next: (addons: OrderModifierSummaryDto[]) => {
-        this.addons = addons.map((a) => ({
-          Name: a.name,
-          Quantity: 0,
-          Price: a.price ?? 0,
-        }));
-        this.loadOrderData(); // reload after addons loaded
-      },
-      error: (err) => console.error('Error loading addons:', err),
+  loadAddonsForVariant(variantId: number) {
+    if (!this.productConfig) return;
+
+    const variantAddons = this.productConfig.addOns.filter((a) => a.productVariantId === variantId);
+
+    const defaultQuantities = new Map<number, number>();
+    variantAddons.forEach((va) => {
+      defaultQuantities.set(va.modifierId, va.defaultQuantity);
     });
+
+    this.addons = this.productConfig.allAvailableAddons.map((addon) => {
+      const defaultQty = defaultQuantities.get(addon.id) || 0;
+ 
+      const savedAddon = this.orderData?.addons.find((a) => a.name === addon.name);
+      const quantity = savedAddon ? savedAddon.quantity : defaultQty;
+
+      return {
+        Name: addon.name,
+        Quantity: quantity,
+        Price: addon.price,
+        minQuantity: defaultQty,
+        modifierId: addon.id
+      };
+    });
+
+    console.log('Loaded addons for variant:', variantId, this.addons);
   }
 
   selectSize(size: sizeButtonDto) {
     this.activeSize = size.SizeName;
+
+    const variant = this.productConfig?.variants.find((v) => v.sizeName === size.SizeName);
+    if (variant) {
+      this.selectedVariantId = variant.id;
+      this.loadAddonsForVariant(variant.id);
+    }
   }
 
   onQuantityChange(newQuantity: number) {
@@ -88,7 +136,14 @@ export class EditOrderModal implements OnInit {
 
   onAddonQuantityChange(addonName: string, newQuantity: number) {
     const addon = this.addons.find((a) => a.Name === addonName);
-    if (addon) addon.Quantity = newQuantity;
+    if (addon) {
+      if (newQuantity < addon.minQuantity) {
+        console.warn(`Cannot decrease ${addonName} below ${addon.minQuantity}`);
+        addon.Quantity = addon.minQuantity;
+        return;
+      }
+      addon.Quantity = newQuantity;
+    }
   }
 
   get sizePrice(): number {
@@ -97,21 +152,11 @@ export class EditOrderModal implements OnInit {
   }
 
   getTotal(): number {
-    if (!this.orderData) return 0;
- 
-    const originalSizePrice =
-      this.sizes.find((s) => s.SizeName === this.orderData!.size)?.SizeQuantity ?? 0;
-    const originalAddonsTotal = this.orderData.addons.reduce(
-      (sum, a) => sum + a.price * a.quantity, 0
-    );
-    const basePrice =
-      this.orderData.total / this.orderData.quantity - originalSizePrice - originalAddonsTotal;
- 
-    const newAddonsTotal = this.addons
+    const addonsTotal = this.addons
       .filter((a) => a.Quantity > 0)
       .reduce((sum, a) => sum + (a.Price ?? 0) * a.Quantity, 0);
 
-    return (basePrice + this.sizePrice + newAddonsTotal) * this.quantity;
+    return (this.sizePrice + addonsTotal) * this.quantity;
   }
 
   saveChanges() {
@@ -121,7 +166,37 @@ export class EditOrderModal implements OnInit {
         name: a.Name,
         quantity: a.Quantity,
         price: a.Price ?? 0,
+        modifierId: a.modifierId
       }));
+
+    const variantIngredients =
+      this.productConfig?.ingredients.filter(
+        (ing) => ing.productVariantId === this.selectedVariantId
+      ) || [];
+
+    const updatedOrder = {
+      productId: this.orderData?.drinkID,
+      productVariantId: this.selectedVariantId,
+      drinkName: this.orderData?.drinkName ?? '',
+      drinkCategory: this.orderData?.drinkCategory ?? '',
+      size: this.activeSize,
+      sizePrice: this.sizePrice,
+      quantity: this.quantity,
+      addons: selectedAddons,
+      ingredients: variantIngredients.map((ing) => ({
+        stockItemId: ing.stockItemId,
+        stockItemName: ing.stockItemName,
+        quantityNeeded: ing.quantityNeeded,
+        totalQuantityNeeded: ing.quantityNeeded * this.quantity,
+      })),
+      subtotal: this.getTotal() / this.quantity,
+      total: this.getTotal(),
+      timestamp: new Date().toISOString(),
+    };
+
+    console.log('=== UPDATED ORDER PAYLOAD ===');
+    console.log(JSON.stringify(updatedOrder, null, 2));
+    console.log('============================');
 
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
     const index = existingOrders.findIndex((o) => o.tempOrderID === this.orderId);
@@ -129,6 +204,8 @@ export class EditOrderModal implements OnInit {
     if (index !== -1) {
       existingOrders[index] = {
         ...existingOrders[index],
+        drinkName: updatedOrder.drinkName,
+        drinkCategory: updatedOrder.drinkCategory,
         size: this.activeSize,
         quantity: this.quantity,
         addons: selectedAddons,
@@ -139,6 +216,14 @@ export class EditOrderModal implements OnInit {
       console.log('Order updated:', existingOrders[index]);
     }
 
+    this.closeModal.emit();
+  }
+
+  delete() {
+    let existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+    existingOrders = existingOrders.filter((o) => o.tempOrderID !== this.orderId);
+    localStorage.setItem('orders', JSON.stringify(existingOrders));
+    console.log('Order deleted:', this.orderId);
     this.closeModal.emit();
   }
 }

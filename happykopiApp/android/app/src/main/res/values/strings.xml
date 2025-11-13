@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">happykopi-app</string>
-    <string name="title_activity_main">happykopi-app</string>
+    <string name="app_name">HappyKopi</string>
+    <string name="title_activity_main">HappyKopi</string>
     <string name="package_name">com.happykopi.app</string>
     <string name="custom_url_scheme">com.happykopi.app</string>
 </resources>

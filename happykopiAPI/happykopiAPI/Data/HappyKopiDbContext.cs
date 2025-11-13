@@ -47,6 +47,12 @@ namespace happykopiAPI.Data
                 .HasForeignKey(oi => oi.ProductVariantId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<ProductVariant>()
+                .HasOne(pv => pv.Size)
+                .WithMany(m => m.ProductVariantsSized)
+                .HasForeignKey(pv => pv.SizeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<ProductVariantIngredient>()
                 .HasKey(pvi => new { pvi.ProductVariantId, pvi.StockItemId }); 
 

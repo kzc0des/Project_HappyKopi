@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.happykopi.app',
-  appName: 'happykopi-app',
+  appName: 'HappyKopi',
   webDir: 'dist/happykopiApp/browser',
   server: {
     url: "http://192.168.1.5:4200",

@@ -17,8 +17,8 @@ import { ModifierPage } from './modules/modifiers/modifier-page/modifier-page';
 import { DrinkListPage } from './modules/products/product-pages/drink-list-page/drink-list-page';
 import { stockitemdetailResolver } from './modules/inventory/resolver/stockitemdetail/stockitemdetail-resolver';
 import { DrinkDetailPage } from './modules/products/product-pages/drink-detail-page/drink-detail-page';
-import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view'; 
-import { Order } from './modules/pos/forms/order/order'; 
+import { OrderQuickView } from './modules/pos/components/order-quick-view/order-quick-view';
+import { Order } from './modules/pos/forms/order/order';
 import { PosCategoryOff } from './modules/pos/components/pos-category-off/pos-category-off';
 import { ViewOrder } from './modules/pos/forms/view-order/view-order';
 import { CartItem } from './modules/pos/components/cart-item/cart-item';
@@ -29,7 +29,6 @@ import { AddDrinkPage } from './modules/products/product-pages/add-drink-page/ad
 import { InventoryAddItem } from './modules/inventory/inventory-add-item/inventory-add-item';
 import { InventoryEditItem } from './modules/inventory/inventory-edit-item/inventory-edit-item';
 import { EditDrinkPage } from './modules/products/product-pages/edit-drink-page/edit-drink-page';
-import { EditProductsPage } from './modules/modifiers/edit-products-page/edit-products-page';
 import { SaveDrinkComponent } from './shared/components/save-drink/save-drink';
 import { modifierTypeCountResolver } from './modules/modifiers/resolver/modifiertypecount/modifiertype/modifier-type-count-resolver';
 import { InventoryBatchView } from './modules/inventory/inventory-batch-view/inventory-batch-view';
@@ -70,6 +69,12 @@ import { activeAddonsResolver } from './modules/products/resolver/adddrinkresolv
 import { drinkCategoriesResolver } from './modules/products/resolver/adddrinkresolvers/drink-categories-resolver';
 import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver/adddrinkresolvers/powder-and-liquids-ingredients-resolver';
 import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
+import { productsListResolver } from './modules/products/resolver/productslist/products-list-resolver';
+import { productDetailResolver } from './modules/products/resolver/productdetail/product-detail-resolver';
+import { InventoryBatchAdd } from './modules/inventory/inventory-batch-add/inventory-batch-add';
+import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
+import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
+import { roleGuard } from './core/guards/role-guard';
 
 export const routes: Routes = [
     {
@@ -88,12 +93,11 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
             {
-                path: '',
-                redirectTo: 'inventory',
-                pathMatch: 'full'
-            },
-            {
                 path: 'inventory',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
                 children: [
                     {
                         path: '',
@@ -115,14 +119,15 @@ export const routes: Routes = [
                         }
                     },
                     {
-                        path: 'item/:itemid/batch/add',
-                        component: InventoryBatchView
+                        path: ':itemtype/:itemid/batch/add',
+                        component: InventoryBatchAdd
                     },
                     {
-                        path: 'item/:itemid/batch/:batchid',
+                        path: ':itemType/:itemId/batch/:batchid',
                         component: InventoryBatchView,
                         resolve: {
-                            batchdetail: stockItemBatchResolver
+                            batchdetail: stockItemBatchResolver,
+                            stockitemdetail: stockitemdetailResolver
                         }
                     },
                     {
@@ -143,6 +148,10 @@ export const routes: Routes = [
             },
             {
                 path: 'modifiers',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
                 children: [
                     {
                         path: '',
@@ -169,7 +178,7 @@ export const routes: Routes = [
                         resolve: {
                             modifierdetail: modifierDetailsResolver
                         }
-                    },                    
+                    },
                     {
                         path: ':type',
                         component: ModifierList,
@@ -181,11 +190,18 @@ export const routes: Routes = [
             },
             {
                 path: 'products',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
                 children: [
                     {
                         path: '',
                         component: DrinkListPage,
-                        pathMatch: 'full'
+                        pathMatch: 'full',
+                        resolve: {
+                            productslist: productsListResolver
+                        }
                     },
                     {
                         path: 'filter',
@@ -200,11 +216,33 @@ export const routes: Routes = [
                             ingredients: powderAndLiquidsIngredientsResolver,
                             addOns: activeAddonsResolver
                         }
+                    },
+                    {
+                        path: 'drink/:id',
+                        component: DrinkDetailPage,
+                        resolve: {
+                            drink: productDetailResolver
+                        }
+                    },
+                    {
+                        path: 'drink/:id/edit',
+                        component: EditDrinkPage,
+                        resolve: {
+                            drink: productDetailResolver,
+                            sizes: activeSizeResolver,
+                            categories: drinkCategoriesResolver,
+                            ingredients: powderAndLiquidsIngredientsResolver,
+                            addOns: activeAddonsResolver
+                        }
                     }
                 ]
             },
             {
                 path: 'category',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
                 children: [
                     {
                         path: '',
@@ -221,7 +259,7 @@ export const routes: Routes = [
                         path: ':categoryId/assign',
                         component: AssignDrinkPage,
                         resolve: {
-                            products: productsInCategoryResolver 
+                            products: productsInCategoryResolver
                         }
                     },
                     {
@@ -230,6 +268,30 @@ export const routes: Routes = [
                         resolve: {
                             categoryDetail: categoryWithCountResolver
                         }
+                    }
+                ]
+            },
+            {
+                path: 'orders',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Barista']
+                },
+                children: [
+                    {
+                        path: '',
+                        component: Order,
+                        resolve: {
+                            categories: CategoriesResolver
+                        }
+                    },
+                    {
+                        path: 'cart',
+                        component: ViewOrder
+                    },
+                    {
+                        path: 'summary',
+                        component: ChargeSummary
                     }
                 ]
             }
@@ -262,7 +324,7 @@ export const routes: Routes = [
     {
         path: 'order-quick-view',
         component: OrderQuickView
-    }, 
+    },
     {
         path: 'order',
         component: Order,
@@ -270,15 +332,11 @@ export const routes: Routes = [
             categories: CategoriesResolver
         }
 
-    }, 
+    },
     {
         path: 'posoff',
         component: PosCategoryOff
-    },
-    {
-        path: 'view-order',
-        component: ViewOrder
-    },
+    }, 
     {
         path: 'cart-item',
         component: CartItem
@@ -294,27 +352,7 @@ export const routes: Routes = [
     {
         path: 'charge',
         component: Charge
-    },
-    {
-        path: 'charge-summary',
-        component: ChargeSummary
     }, 
-    {
-        path: 'add-drink-page',
-        component: AddDrinkPage
-    },
-    {
-        path: 'edit-category',
-        component: EditCategoryPage
-    },
-    {
-        path: 'edit-drink-page',
-        component: EditDrinkPage
-    },
-    {
-        path: 'edit-products',
-        component: EditProductsPage
-    },
     {
         path: 'create-drink-page',
         component: CreateDrinkPage
@@ -380,12 +418,18 @@ export const routes: Routes = [
         component: DescriptionCard
     },
     {
-        path: 'transaction-individual',
-        component: TransactionIndividual
+        path: 'transactions-individual/:id',
+        component: TransactionIndividual,
+        resolve: {
+            transactions: transactionsResolver
+        }
     },
     {
         path: 'recipe-modal',
         component: AddIngredientModal
-    }
-    // save drink component
+    },
+    {
+        path: 'charge-item',
+        component: ChargeItem
+    },
 ];

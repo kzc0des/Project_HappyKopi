@@ -1,4 +1,9 @@
 <div class="price-box">
-  <label class="price-label">Base Price</label>
+  @if (inputType == "charge") {
+    <label class="price-label">Amount provided</label>
+  }
+  @else if (inputType == "create") {
+    <label class="price-label">Base Price</label>
+  }
   <div class="price-value">₱500.00</div>
 </div>

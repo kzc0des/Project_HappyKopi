@@ -9,29 +9,65 @@
   </app-order-quick-view>
 
   <div class="categories">
+    <app-pos-category-off
+      [categoryCard]="allDrinksCategory"
+      [mode]="selectedCategory()?.id === -1 ? 'active' : 'inactive'"
+      (click)="onAllDrinksClick()"
+    >
+    </app-pos-category-off>
+
     @for(category of categories(); track category.id) {
     <app-pos-category-off
       [categoryCard]="category"
-      [mode]="selectedCategory() === category ? 'active' : 'inactive'"
+      [mode]="selectedCategory()?.id === category.id ? 'active' : 'inactive'"
       (click)="onCategoryClick(category)"
     >
     </app-pos-category-off>
     }
   </div>
 
-  <app-search-drink></app-search-drink>
+  <div class="bg-[#f0f0f0] w-full flex justify-center align-middle pt-[10px]">
+    <app-search-drink
+      [allItems]="allDrinks()"
+      [searchProperties]="['name', 'categoryName']"
+      [placeholder]="'Search drinks...'"
+      (searchResults)="onSearchResults($event)"
+    >
+    </app-search-drink>
+  </div>
 
+  @if (drinks().length > 0) {
   <div class="drinks-table">
-    @for (drink of drinks(); track drink.id) {
-    <app-order-card [orderCard]="drink" (cardClick)="onDrinkClicked(drink)"> </app-order-card>
+    @for (drink of getUniqueDrinks(); track drink.id) {
+    <app-order-card
+      [orderCard]="drink"
+      [isUnavailable]="!isProductAvailable(drink.id)"
+      (cardClick)="onDrinkClicked(drink)"
+    >
+    </app-order-card>
     }
   </div>
+  } @else {
+  <div class="empty-state">
+    <h3 class="empty-state-title">Uh-oh, no drinks found!</h3>
+    <p class="empty-state-message">Try searching for something else or check another category.</p>
+  </div>
+  }
 </div>
 
-@if (showModal()) { 
+@if (showModal()) {
 <div class="modal-overlay" (click)="closeModal()"></div>
- 
 <div class="modal-wrapper">
-  <app-add-order-modal [addOrderModal]="selectedDrink()" (closeModal)="onCloseModal()"></app-add-order-modal>
+  <app-add-order-modal [addOrderModal]="selectedDrink()" (closeModal)="onCloseModal()">
+  </app-add-order-modal>
+</div>
+} @if (showUnavailableModal()) {
+<div class="modal-overlay" (click)="onCloseUnavailableModal()"></div>
+<div class="modal-wrapper">
+  <app-unavailable-product-modal
+    [modalData]="selectedUnavailableProduct()!"
+    (closeModal)="onCloseUnavailableModal()"
+  >
+  </app-unavailable-product-modal>
 </div>
 }

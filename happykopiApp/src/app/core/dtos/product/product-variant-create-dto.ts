@@ -2,7 +2,7 @@ import { ProductVariantAddOnCreateDto } from "./product-variant-add-on-create-dt
 import { ProductVariantIngredientCreateDto } from "./product-variant-ingredient-create-dto";
 
 export interface ProductVariantCreateDto {
-    Size: string;
+    SizeId: number;
     Price: number;
     Recipe: ProductVariantIngredientCreateDto[];
     AddOns: ProductVariantAddOnCreateDto[];
