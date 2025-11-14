@@ -1,7 +1,9 @@
-<div class="p-5 flex flex-col gap-4">
+<div class="p-5 flex flex-col gap-4 bg-white">
     <h1 class="text-2xl font-bold text-hapikopi-yellow">Register New Barista</h1>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5" novalidate>
+        <app-text-box label="First Name" formControlName="firstName" [isInvalid]="!!(registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched)"></app-text-box>
+        <app-text-box label="Last Name" formControlName="lastName" [isInvalid]="!!(registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched)"></app-text-box>
         <app-text-box label="Username" formControlName="username" [isInvalid]="!!(registerForm.get('username')?.invalid && registerForm.get('username')?.touched)"></app-text-box>
         <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="text-red-500 text-sm -mt-3">
             <div *ngIf="registerForm.get('username')?.errors?.['required']">Username is required.</div>
@@ -21,9 +23,7 @@
         </div>
 
         <app-text-box label="Password" type="password" formControlName="password" [isInvalid]="!!(registerForm.get('password')?.invalid && registerForm.get('password')?.touched)"></app-text-box>
-        <app-text-box label="First Name" formControlName="firstName" [isInvalid]="!!(registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched)"></app-text-box>
-        <app-text-box label="Last Name" formControlName="lastName" [isInvalid]="!!(registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched)"></app-text-box>
 
-        <app-yellow-button buttonTitle="Register Barista" [isDisabled]="isLoading" (isClick)="onSubmit()"></app-yellow-button>
+        <app-yellow-button buttonTitle="Register Barista" [isDisabled]="(loading.loading$ | async)!"></app-yellow-button>
     </form>
 </div>

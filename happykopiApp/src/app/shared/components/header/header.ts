@@ -214,6 +214,10 @@ export class Header implements OnInit, OnDestroy {
       this.showAddButton = true;
     }
 
+    else if (segments.includes('register-barista') && segments.length === 2) {
+      this.headerTitle = 'Register Barista';
+    }
+
     /* category routing */
 
     else if (segments.includes('category') && segments.length === 2) {

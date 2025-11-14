@@ -6,6 +6,7 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 import { TextBoxComponent } from '../../../shared/components/text-box/text-box';
 import { YellowButton } from '../../../shared/components/yellow-button/yellow-button';
 import { CommonModule } from '@angular/common';
+import { LoadingService } from '../../../core/services/loading/loading.service';
 
 @Component({
   selector: 'app-register-barista',
@@ -21,7 +22,8 @@ export class RegisterBarista {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public loading: LoadingService
   ) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(4)]],
@@ -39,16 +41,16 @@ export class RegisterBarista {
       return;
     }
 
-    this.isLoading = true;
+    this.loading.show();
     this.authService.registerBarista(this.registerForm.value).subscribe({
       next: () => {
-        this.isLoading = false;
+        this.loading.hide();
         this.alertService.show('Success', 'Barista registered successfully!', 'success').then(() => {
           this.registerForm.reset();
         });
       },
       error: (err) => {
-        this.isLoading = false;
+        this.loading.hide();
         this.alertService.show('Registration Failed', err.error?.message || 'An unknown error occurred.', 'danger');
       }
     });
