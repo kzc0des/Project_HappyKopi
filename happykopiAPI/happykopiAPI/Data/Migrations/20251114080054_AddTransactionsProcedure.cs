@@ -10,7 +10,6 @@ namespace happykopiAPI.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Create stored procedure: GetDailyTransactionSummary
             migrationBuilder.Sql(@"
                 CREATE PROCEDURE [dbo].[sp_GetDailyTransactionSummary]
                 AS
@@ -19,17 +18,16 @@ namespace happykopiAPI.Data.Migrations
                     DECLARE @Today DATE = CAST(GETDATE() AS DATE);
 
                     SELECT
-                    SUM(o.TotalAmount) AS TotalSalesToday,
-                    COUNT(*) AS TransactionsToday,
-                    SUM(CASE WHEN t.PaymentType = 0 THEN 1 ELSE 0 END) AS CashPayments,
-                    SUM(CASE WHEN t.PaymentType = 1 THEN 1 ELSE 0 END) AS CashlessPayments
-                FROM Transactions t
-                INNER JOIN Orders o ON o.Id = t.OrderId
-                WHERE CAST(t.TransactionDate AS DATE) = @Today;
+                        SUM(o.TotalAmount) AS TotalSalesToday,
+                        COUNT(*) AS TransactionsToday,
+                        SUM(CASE WHEN t.PaymentType = 'Cash' THEN 1 ELSE 0 END) AS CashPayments,
+                        SUM(CASE WHEN t.PaymentType = 'Cashless' THEN 1 ELSE 0 END) AS CashlessPayments
+                    FROM Transactions t
+                    INNER JOIN Orders o ON o.Id = t.OrderId
+                    WHERE CAST(t.TransactionDate AS DATE) = @Today;
                 END
-            ");
+                ");
 
-            // Create stored procedure: GetTransactionHistoryToday
             migrationBuilder.Sql(@"
                 CREATE PROCEDURE [dbo].[sp_GetTransactionHistoryToday]
                 AS
@@ -39,34 +37,31 @@ namespace happykopiAPI.Data.Migrations
 
                     SELECT 
                         o.Id AS OrderId,
-                        o.OrderNumber,
                         u.FullName AS BaristaName,
                         t.TransactionDate,
-                        o.TotalAmount AS Total,
-                        CASE WHEN t.PaymentType = 0 THEN 'Cash' ELSE 'Cashless' END AS PaymentMethod
+                        o.TotalAmount AS TotalAmount,
+                        t.PaymentType AS PaymentMethod
                     FROM Transactions t
                     INNER JOIN Orders o ON o.Id = t.OrderId
                     INNER JOIN Users u ON o.UserId = u.Id
                     WHERE CAST(t.TransactionDate AS DATE) = @Today
                     ORDER BY t.TransactionDate DESC;
                 END
-            ");
+                ");
 
-            // Create stored procedure: GetTransactionDetails
             migrationBuilder.Sql(@"
-                CREATE PROCEDURE [dbo].[sp_GetTransactionDetails]
+                 CREATE PROCEDURE [dbo].[sp_GetTransactionDetails]
                     @OrderId INT
                 AS
                 BEGIN
                     SET NOCOUNT ON;
 
-                    -- Header / transaction summary
+                    -- Transaction Details
                     SELECT 
                         o.Id AS OrderId,
-                        o.OrderNumber,
                         o.TotalAmount AS Total,
                         t.TransactionDate,
-                        CASE WHEN t.PaymentType = 0 THEN 'Cash' ELSE 'Cashless' END AS PaymentMethod,
+                        t.PaymentType AS PaymentMethod,
                         u.FullName AS BaristaName,
                         t.AmountPaid,
                         t.Change,
@@ -76,19 +71,18 @@ namespace happykopiAPI.Data.Migrations
                     INNER JOIN Users u ON o.UserId = u.Id
                     WHERE o.Id = @OrderId;
 
-                    -- Line items (from OrderItems -> ProductVariants -> Products)
+                    -- Transaction Items
                     SELECT 
                         p.Name AS ProductName,
                         p.ImageUrl AS ProductImage,
                         oi.Quantity,
-                        oi.Price AS Price,
-                        oi.Subtotal
+                        oi.Price AS Price
                     FROM OrderItems oi
                     INNER JOIN ProductVariants pv ON oi.ProductVariantId = pv.Id
                     INNER JOIN Products p ON pv.ProductId = p.Id
                     WHERE oi.OrderId = @OrderId;
                 END
-            ");
+                ");
         }
 
         /// <inheritdoc />
