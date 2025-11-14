@@ -16,7 +16,7 @@ import { TransactionDrinkListItem } from '../../components/transaction-drink-lis
 })
 export class TransactionIndividual implements OnInit {
   transaction?: TransactionDetailsDto;
-  paymentMethodTran: { paymentMethod: string } = { paymentMethod: '' };  // Initialize as an object
+  paymentMethodTran: { paymentMethod: string } = { paymentMethod: '' }; 
 
   constructor(
     private route: ActivatedRoute,
