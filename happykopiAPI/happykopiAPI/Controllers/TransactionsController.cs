@@ -33,7 +33,7 @@ namespace happykopiAPI.Controllers
         }
 
         [HttpGet("{orderId}")]
-        public async Task<ActionResult<TransactionDetailsDto>> GetTransactionById(string orderId)
+        public async Task<ActionResult<TransactionDetailsDto>> GetTransactionById(int orderId)
         {
             var transaction = await _transactionService.GetTransactionByIdAsync(orderId);
             if (transaction == null)

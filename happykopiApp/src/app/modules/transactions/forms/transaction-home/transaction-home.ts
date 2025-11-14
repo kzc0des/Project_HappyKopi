@@ -1,5 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 import { TransactionsService } from '../../services/transactions.service';
 import { TransactionCard } from "../../components/transaction-card/transaction-card";
 import { TransactionIndividualCard } from "../../components/transaction-individual-card/transaction-individual-card";
@@ -20,8 +21,9 @@ import { Router } from '@angular/router';
   templateUrl: './transaction-home.html',
   styleUrls: ['./transaction-home.css']
 })
-export class TransactionHome implements OnInit {
+export class TransactionHome implements OnInit, OnDestroy {
   private transactionsService = inject(TransactionsService);
+  private destroy$ = new Subject<void>();
 
   cashTotal: number = 0;
   cashTransactions: number = 0;
@@ -31,8 +33,16 @@ export class TransactionHome implements OnInit {
   summary?: TransactionSummaryDto;
 
   ngOnInit(): void {
-    this.loadHistory();   
-    this.loadSummary();  
+    this.loadHistory();
+    this.loadSummary();
+
+    this.transactionsService.transactionUpdated$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        console.log('Real-time transaction update received! Reloading data...');
+        this.loadHistory();
+        this.loadSummary();
+      });
   }
 
   private loadHistory(): void {
@@ -90,5 +100,10 @@ export class TransactionHome implements OnInit {
 
   goToTransaction(id: number) {
     this.router.navigate(['/transactions-individual', id]);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

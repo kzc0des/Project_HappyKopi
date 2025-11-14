@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../../core/services/api/api.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { TransactionSummaryDto } from '../../../core/dtos/transaction/transaction-summary.dto';
 import { TransactionListItemDto } from '../../../core/dtos/transaction/transaction-list-item.dto';
 import { TransactionDetailsDto } from '../../../core/dtos/transaction/transaction-detail.dto';
+import { SignalRService } from '../../../core/services/signalR/signal-r.service';
 
 
 @Injectable({
@@ -12,7 +13,16 @@ import { TransactionDetailsDto } from '../../../core/dtos/transaction/transactio
 export class TransactionsService {
   private readonly controllerPath = 'Transactions';
 
-  constructor(private readonly apiService: ApiService) {}
+  private transactionUpdateSubject = new Subject<void>();
+  public transactionUpdated$ = this.transactionUpdateSubject.asObservable();
+
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly signalRService: SignalRService) {
+    this.signalRService.on('ReceiveTransactionUpdate', () => {
+      this.transactionUpdateSubject.next();
+    });
+  }
 
   getDailySummary(): Observable<TransactionSummaryDto> {
     return this.apiService.get<TransactionSummaryDto>(`${this.controllerPath}/summary`);
