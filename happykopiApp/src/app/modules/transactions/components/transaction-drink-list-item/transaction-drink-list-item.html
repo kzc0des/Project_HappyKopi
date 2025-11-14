@@ -1,0 +1,23 @@
+<div class="drink-item">
+  @if (drinkItem.productImage) {
+    <div class="product-image">
+      <img src="{{ drinkItem.productImage }}" alt="{{ drinkItem.productName }}" />
+    </div>
+  }
+
+  <div class="product-details">
+    <div class="product-name">
+      <strong>{{ drinkItem.productName }}</strong>
+    </div>
+    <div class="product-size">
+      <small>{{ drinkItem.variant }}</small>
+    </div>
+    <div class="quantity">
+      <span>Quantity: {{ drinkItem.quantity }}</span>
+    </div>
+  </div>
+
+  <div class="subtotal">
+      <span>₱{{ drinkItem.subtotal }}</span>
+    </div>
+</div>

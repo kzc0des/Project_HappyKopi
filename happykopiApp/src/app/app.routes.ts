@@ -77,6 +77,8 @@ import { transactionsResolver } from './modules/transactions/resolvers/transacti
 import { roleGuard } from './core/guards/role-guard';
 import { ProductCategoriesPage } from './modules/products/product-pages/product-categories-page/product-categories-page';
 import { ModifierLink } from './modules/modifiers/modifier-link/modifier-link';
+import { transactionIndivResolverResolver } from './modules/transactions/resolvers/transaction-indiv-resolver-resolver';
+import { TransactionDrinkListItem } from './modules/transactions/components/transaction-drink-list-item/transaction-drink-list-item';
 
 export const routes: Routes = [
     {
@@ -416,7 +418,10 @@ export const routes: Routes = [
     },
     {
         path: 'transaction-payment-card',
-        component: TransactionPaymentCard
+        component: TransactionPaymentCard,
+        resolve: {
+            transactions: transactionsResolver
+        }
     },
     {
         path: 'transaction-home',
@@ -428,10 +433,7 @@ export const routes: Routes = [
     },
     {
         path: 'transactions-individual/:id',
-        component: TransactionIndividual,
-        resolve: {
-            transactions: transactionsResolver
-        }
+        component: TransactionIndividual
     },
     {
         path: 'recipe-modal',
@@ -441,4 +443,8 @@ export const routes: Routes = [
         path: 'charge-item',
         component: ChargeItem
     },
+    {
+        path: 'transaction-drink-list-item',
+        component: TransactionDrinkListItem
+    }
 ];

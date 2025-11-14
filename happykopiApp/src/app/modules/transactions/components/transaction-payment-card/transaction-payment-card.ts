@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TransactionListItemDto } from '../../../../core/dtos/transaction/transaction-list-item.dto';
 
 @Component({
@@ -11,5 +11,10 @@ import { TransactionListItemDto } from '../../../../core/dtos/transaction/transa
 })
 export class TransactionPaymentCard {
   @Input() paymentMethod: 'cash' | 'gcash' = 'gcash';
-  @Input() transactionPayment!: TransactionListItemDto;  
+  @Input() transactionPayment!: TransactionListItemDto;
+
+  @Output() cardClick = new EventEmitter<number>();
+  onClick() {
+    this.cardClick.emit(Number(this.transactionPayment.orderId));
+  }
 }
