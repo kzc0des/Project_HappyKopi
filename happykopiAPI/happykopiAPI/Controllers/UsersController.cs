@@ -45,7 +45,7 @@ namespace happykopiAPI.Controllers
             }            
         }
 
-        [HttpPost("register")]
+        [HttpPost("register/barista")]
         public async Task<ActionResult<UserDto>> Register(UserForRegisterDto userForRegisterDto)
         {
             try

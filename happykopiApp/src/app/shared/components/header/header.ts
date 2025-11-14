@@ -214,6 +214,10 @@ export class Header implements OnInit, OnDestroy {
       this.showAddButton = true;
     }
 
+    else if (segments.includes('register-barista') && segments.length === 2) {
+      this.headerTitle = 'Register Barista';
+    }
+
     /* category routing */
 
     else if (segments.includes('category') && segments.length === 2) {
@@ -227,10 +231,17 @@ export class Header implements OnInit, OnDestroy {
       this.onSelected = true;
     }
 
+    // Route: /app/category/:categoryId/assign
     else if (segments.includes('category') && segments.includes('assign') && segments.length === 4) {
       this.headerTitle = `Assign to Category`;
       this.showBackButton = true;
       this.showSaveButton = true;
+    }
+
+    // Route: /app/category/:categoryId/create
+    else if (segments.includes('category') && segments.includes('create') && segments.length === 4) {
+      this.headerTitle = 'Create Drink';
+      this.showBackButton = true;
     }
 
     /* orders routing */

@@ -76,6 +76,7 @@ import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
 import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
 import { roleGuard } from './core/guards/role-guard';
 import { ProductCategoriesPage } from './modules/products/product-pages/product-categories-page/product-categories-page';
+import { RegisterBarista } from './modules/auth/register-barista/register-barista';
 import { ModifierLink } from './modules/modifiers/modifier-link/modifier-link';
 import {  transactionIndivResolverResolver} from './modules/transactions/resolvers/transaction-indiv-resolver-resolver';
 import { TransactionDrinkListItem } from './modules/transactions/components/transaction-drink-list-item/transaction-drink-list-item';
@@ -274,6 +275,16 @@ export const routes: Routes = [
                         }
                     },
                     {
+                        path: ':categoryId/create',
+                        component: AddDrinkPage,
+                        resolve: {
+                            sizes: activeSizeResolver,
+                            categories: drinkCategoriesResolver,
+                            ingredients: powderAndLiquidsIngredientsResolver,
+                            addOns: activeAddonsResolver
+                        }
+                    },
+                    {
                         path: ':categoryId',
                         component: EditCategoryPage,
                         resolve: {
@@ -328,9 +339,17 @@ export const routes: Routes = [
                         }
                     }
                 ]
-            }
-        ]
-    },
+              },        
+              {
+                path: 'register-barista',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
+                component: RegisterBarista
+              }
+          }
+    }.
     {
         path: 'textbox',
         component: TextBoxComponent

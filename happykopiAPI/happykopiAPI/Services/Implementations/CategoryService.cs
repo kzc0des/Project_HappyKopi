@@ -89,5 +89,28 @@ namespace happykopiAPI.Services.Implementations
                 commandType: CommandType.StoredProcedure);
 
         }
+
+        public async Task AssignProductsToCategoryAsync(int categoryId, List<int> productIds)
+        {
+            using var connection = CreateConnection();
+
+            var idTable = new DataTable();
+            idTable.Columns.Add("Id", typeof(int));
+            foreach (var id in productIds)
+            {
+                idTable.Rows.Add(id);
+            }
+
+            var parameters = new
+            {
+                CategoryId = categoryId,
+                ProductIds = idTable.AsTableValuedParameter("dbo.IntList")
+            };
+
+            await connection.ExecuteAsync(
+                "dbo.sp_AssignProductsToCategory", 
+                parameters, 
+                commandType: CommandType.StoredProcedure);
+        }
     }
 }

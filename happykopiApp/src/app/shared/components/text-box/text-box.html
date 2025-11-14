@@ -1,4 +1,11 @@
-<div class="drink-card">
-  <div class="drink-label">Drink Name</div>
-  <div class="drink-name">Thai</div>
+<div class="flex flex-col gap-2">
+  <label class="font-medium text-hapikopi-gray-3">{{ label }}</label>
+  <input 
+    [type]="type" 
+    [value]="value"
+    (input)="onInputChange($event)"
+    (blur)="onTouched()"
+    [disabled]="isDisabled"
+    class="p-4 bg-hapikopi-bg-secondary rounded-lg text-hapikopi-dark border focus:outline-0"
+    [ngClass]="isInvalid ? 'border-red-500 focus:ring-red-500' : ''">
 </div>
