@@ -292,59 +292,60 @@ export class AddOrderModal implements OnInit {
         modifierId: a.modifierId,
       }));
 
-    const variantIngredients =
-      this.productConfig?.ingredients.filter(
-        (ing) => ing.productVariantId === this.selectedVariantId
-      ) || [];
-
-    const newOrder = {
-      productId: this.addOrderModal?.ProductId,
-      productVariantId: this.selectedVariantId,
-      drinkName: this.addOrderModal?.DrinkName ?? '',
-      drinkCategory: this.addOrderModal?.DrinkCategory ?? '',
-      imageUrl: this.addOrderModal?.ImageUrl || '',
-      size: this.activeSize,
-      sizePrice: this.sizePrice,
-      quantity: this.quantity,
-      addons: selectedAddons,
-      ingredients: variantIngredients.map((ing) => ({
-        stockItemId: ing.stockItemId,
-        stockItemName: ing.stockItemName,
-        quantityNeeded: ing.quantityNeeded,
-        totalQuantityNeeded: ing.quantityNeeded * this.quantity,
-      })),
-      subtotal: this.getTotal() / this.quantity,
-      total: this.getTotal(),
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log('=== ORDER PAYLOAD ===');
-    console.log(JSON.stringify(newOrder, null, 2));
-    console.log('===================');
-
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    const orderItem: OrderItem = {
-      tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
-      drinkID: newOrder.productId,
-      drinkName: newOrder.drinkName,
-      drinkCategory: newOrder.drinkCategory,
-      imageUrl: newOrder.imageUrl,
-      size: newOrder.size,
-      quantity: newOrder.quantity,
-      total: newOrder.total,
-      addons: newOrder.addons,
-      productVariantId: newOrder.productVariantId,
-      sizePrice: newOrder.sizePrice,
-    };
+    // Try to find a matching order
+    const matchingOrder = existingOrders.find((order) => {
+      // Same drink & variant
+      if (
+        order.drinkID !== this.addOrderModal?.ProductId ||
+        order.productVariantId !== this.selectedVariantId
+      ) {
+        return false;
+      }
 
-    existingOrders.push(orderItem);
-    localStorage.setItem('orders', JSON.stringify(existingOrders));
+      // Same number of addons
+      if (order.addons.length !== selectedAddons.length) return false;
 
-    let lastID = orderItem.tempOrderID + 1;
-    localStorage.setItem('lastOrderID', lastID.toString());
+      // Compare addons by modifierId and quantity, ignoring order
+      const sortedExisting = [...order.addons].sort((a, b) => a.modifierId - b.modifierId);
+      const sortedNew = [...selectedAddons].sort((a, b) => a.modifierId - b.modifierId);
 
-    this.undoRedoService.saveAddedOrder(orderItem);
+      return sortedExisting.every(
+        (addon, idx) =>
+          addon.modifierId === sortedNew[idx].modifierId &&
+          addon.quantity === sortedNew[idx].quantity
+      );
+    });
+
+    if (matchingOrder) {
+      // Increment quantity of existing order
+      matchingOrder.quantity += this.quantity;
+      matchingOrder.total += this.getTotal();
+      matchingOrder.sizePrice = this.sizePrice; // optional, keep latest size price
+    } else {
+      // Create a new order item
+      const orderItem: OrderItem = {
+        tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
+        drinkID: this.addOrderModal?.ProductId,
+        drinkName: this.addOrderModal?.DrinkName ?? '',
+        drinkCategory: this.addOrderModal?.DrinkCategory ?? '',
+        imageUrl: this.addOrderModal?.ImageUrl || '',
+        size: this.activeSize,
+        sizePrice: this.sizePrice,
+        quantity: this.quantity,
+        total: this.getTotal(),
+        addons: selectedAddons,
+        productVariantId: this.selectedVariantId,
+      };
+
+      existingOrders.push(orderItem);
+
+      let lastID = orderItem.tempOrderID + 1;
+      localStorage.setItem('lastOrderID', lastID.toString());
+    }
+
+    localStorage.setItem('orders', JSON.stringify(existingOrders)); 
     window.dispatchEvent(new CustomEvent('ordersUpdated'));
 
     this.closeModal.emit();
