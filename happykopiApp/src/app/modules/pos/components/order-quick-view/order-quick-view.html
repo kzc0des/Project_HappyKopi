@@ -1,5 +1,9 @@
-<div class="card-container">
-  <div (click)="toggleCard()" class="arrow-button">
+<div class="relative w-full max-w-[472px] mx-auto font-[Outfit]">
+  <!-- Toggle Arrow -->
+  <div
+    (click)="toggleCard()"
+    class="absolute -top-8 left-1/2 -translate-x-1/2 w-[120px] h-[41px] flex justify-center items-center bg-[#fafafa] rounded-t-[30px] shadow-[0_-10px_16px_rgba(0,0,0,0.10)] cursor-pointer z-10 sm:-top-10 sm:w-[120px] sm:h-[41px]"
+  >
     <svg
       [class.rotate-180]="expanded"
       xmlns="http://www.w3.org/2000/svg"
@@ -7,7 +11,7 @@
       height="10"
       viewBox="0 0 28 10"
       fill="none"
-      class="arrow-icon"
+      class="transition-transform duration-300"
     >
       <path
         d="M1.5 1.50049L14 8.50049L26.5 1.50049"
@@ -19,71 +23,28 @@
     </svg>
   </div>
 
-  <div class="card-wrapper">
-    @if (expanded) {
-    <div class="card-content-wrapper">
-      <div class="card-expanded">
-        <div class="order-header">
-          <div>
-            <div class="order-number">Current Order</div>
-            <div class="order-quantity">{{ oqv.OrderQuantity }} Drinks</div>
+  <!-- Card Wrapper -->
+  <div class="relative">
+    <!-- Expanded Card -->
+    <div *ngIf="expanded" class="flex relative">
+      <div
+        class="w-full min-h-[219px] bg-[#fafafa] shadow-[0_4px_16px_rgba(0,0,0,0.25)] rounded-[32px] flex flex-col justify-start items-center p-[25px_20px] gap-4 sm:p-4 sm:gap-3"
+      >
+        <!-- Order Header -->
+        <div class="flex justify-between items-center w-full px-3 pt-2">
+          <div class="flex flex-col">
+            <div class="text-[20px] font-semibold">Current Order</div>
+            <div class="text-base text-gray-500 mt-1">{{ oqv.OrderQuantity }} Drinks</div>
           </div>
-          <div class="order-total">
-            {{ oqv.OrderTotal | currency : 'PHP' }}
-          </div>
+          <div class="text-[20px] font-semibold">{{ oqv.OrderTotal | currency : 'PHP' }}</div>
         </div>
 
-        <div class="actions-container">
-          <!-- Undo Button -->
+        <!-- Actions -->
+        <div class="w-full flex justify-center items-center">
           <div
-            class="action-button"
-            [class.disabled]="!canUndo"
-            (click)="canUndo && undo()"
-            [title]="canUndo ? 'Undo last action' : 'No actions to undo'"
+            class="w-full sm:w-auto h-[77px] sm:h-[65px] bg-[#f3b72c] rounded-xl flex justify-center items-center gap-2 sm:gap-2.5 cursor-pointer transition-all duration-200 hover:bg-[#f5c347] hover:-translate-y-[2px] hover:shadow-md active:translate-y-0"
+            (click)="viewDrinks()"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-            >
-              <path
-                d="M6 11L1 6M1 6L6 1M1 6H11.5C12.2223 6 12.9375 6.14226 13.6048 6.41866C14.272 6.69506 14.8784 7.10019 15.3891 7.61091C15.8998 8.12163 16.3049 8.72795 16.5813 9.39524C16.8577 10.0625 17 10.7777 17 11.5C17 12.2223 16.8577 12.9375 16.5813 13.6048C16.3049 14.272 15.8998 14.8784 15.3891 15.3891C14.8784 15.8998 14.272 16.3049 13.6048 16.5813C12.9375 16.8577 12.2223 17 11.5 17H8"
-                stroke="#282828"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-
-          <!-- Redo Button -->
-          <div
-            class="action-button"
-            [class.disabled]="!canRedo"
-            (click)="canRedo && redo()"
-            [title]="canRedo ? 'Redo last action' : 'No actions to redo'"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-            >
-              <path
-                d="M12 11L17 6M17 6L12 1M17 6H6.5C5.04131 6 3.64236 6.57946 2.61091 7.61091C1.57946 8.64236 1 10.0413 1 11.5C1 12.2223 1.14226 12.9375 1.41866 13.6048C1.69506 14.272 2.10019 14.8784 2.61091 15.3891C3.64236 16.4205 5.04131 17 6.5 17H10"
-                stroke="#282828"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-
-          <!-- View Drinks Button - ADD (click) HERE -->
-          <div class="view-drinks-button" (click)="viewDrinks()">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -99,16 +60,22 @@
                 stroke-linejoin="round"
               />
             </svg>
-            <div class="view-drinks-text">View Drinks</div>
+            <div class="text-[20px] font-semibold text-[#765302] sm:text-[18px]">View Drinks</div>
           </div>
         </div>
       </div>
     </div>
-    } @else {
-    <div class="card-content-wrapper">
-      <div class="card-collapsed"> 
-        <div class="collapsed-content" (click)="viewDrinks()">
-          <div class="collapsed-left">
+
+    <!-- Collapsed Card -->
+    <div *ngIf="!expanded" class="flex relative">
+      <div
+        class="w-full h-[78px] sm:h-[65px] bg-[#fafafa] shadow-[0_4px_16px_rgba(0,0,0,0.25)] rounded-[32px] px-2 flex items-center justify-center"
+      >
+        <div
+          class="w-full flex justify-between items-center px-5 sm:px-4 cursor-pointer"
+          (click)="viewDrinks()"
+        >
+          <div class="flex items-center gap-2 sm:gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -124,12 +91,13 @@
                 stroke-linejoin="round"
               />
             </svg>
-            <div class="collapsed-order-number">Current Order</div>
+            <div class="text-[20px] font-semibold sm:text-[16px]">Current Order</div>
           </div>
-          <div class="collapsed-total">{{ oqv.OrderTotal | currency : 'PHP' }}</div>
+          <div class="text-[20px] font-semibold sm:text-[16px]">
+            {{ oqv.OrderTotal | currency : 'PHP' }}
+          </div>
         </div>
       </div>
     </div>
-    }
   </div>
 </div>

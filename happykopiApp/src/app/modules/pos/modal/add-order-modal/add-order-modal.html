@@ -1,27 +1,33 @@
-<div class="modal-card">
-  <div class="product-header">
+<!-- MODAL CARD -->
+<div
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[465px] max-h-[90vh] overflow-y-auto bg-white rounded-2xl p-6 flex flex-col font-[Outfit] shadow-[0_4px_16px_rgba(0,0,0,0.1)]"
+>
+  <!-- HEADER -->
+  <div class="flex justify-between items-start mb-7 text-[#282828]">
     <div>
-      <h3 class="product-title">{{ addOrderModal?.DrinkName }}</h3>
-      <p class="product-subtitle">{{ addOrderModal?.DrinkCategory }}</p>
+      <h3 class="text-[20px] font-bold">{{ addOrderModal?.DrinkName }}</h3>
+      <p class="text-[14px] text-[#777] mt-1">{{ addOrderModal?.DrinkCategory }}</p>
     </div>
-    <div class="product-price">{{ getTotal() | currency : 'PHP' }}</div>
+
+    <div class="text-[20px] font-semibold">
+      {{ getTotal() | currency : 'PHP' }}
+    </div>
   </div>
 
-  <!-- FIX: Add [oqm] and [maxQuantity] inputs -->
+  <!-- ORDER QUANTITY MODIFIER -->
   <app-order-quantity-modifier
     [oqm]="{ Quantity: quantity }"
     [maxQuantity]="maxQuantity"
     (quantityChange)="onQuantityChange($event)"
   ></app-order-quantity-modifier>
 
-  <!-- Optional: Show warning when stock is low -->
+  <!-- LOW STOCK WARNING -->
   @if (maxQuantity < 10 && maxQuantity > 0) {
-  <div style="color: #ff6b00; font-size: 14px; text-align: center; margin-bottom: 8px">
-    Only {{ maxQuantity }} available
-  </div>
+  <div class="text-[#ff6b00] text-sm text-center mb-2">Only {{ maxQuantity }} available</div>
   }
 
-  <div class="size-container">
+  <!-- SIZES -->
+  <div class="flex gap-4 overflow-x-auto no-scrollbar py-3 px-2 flex-nowrap scroll-smooth">
     @for (size of sizes; track size.SizeName) {
     <app-grande-active
       [sizeButton]="size"
@@ -31,10 +37,11 @@
     }
   </div>
 
-  <div class="addons-section">
-    <h4 class="addons-title">Add-ons</h4>
+  <!-- ADD-ONS -->
+  <div class="mt-8 mb-7">
+    <h4 class="text-[20px] font-bold mb-4 text-[#282828]">Add-ons</h4>
 
-    <div class="addons-list">
+    <div class="flex gap-5 overflow-x-auto no-scrollbar py-1">
       @for (addon of addons; track addon.Name) {
       <app-addon-card-active
         [addonCard]="addon"
@@ -45,9 +52,11 @@
     </div>
   </div>
 
+  <!-- ADD BUTTON -->
   <app-long-yellow-button
     buttonSize="modal"
     buttonTitle="Add Drink"
     (click)="addToOrder()"
+    class="w-full flex justify-center"
   ></app-long-yellow-button>
 </div>
