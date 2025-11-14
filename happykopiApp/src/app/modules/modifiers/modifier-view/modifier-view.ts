@@ -30,6 +30,10 @@ export class ModifierView implements OnInit{
       if(action === 'EDIT'){
         this.router.navigate(['edit'], {relativeTo: this.route});
       }
+
+      else if(action === 'BACK'){
+        this.router.navigate(['/app/modifiers'], {relativeTo: this.route});
+      }
     })
 
   }
