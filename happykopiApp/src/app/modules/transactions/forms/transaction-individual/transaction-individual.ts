@@ -3,19 +3,20 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionsService } from '../../services/transactions.service';
 import { DescriptionCard } from "../../../../shared/components/description-card/description-card";
-import { ChargeItem } from "../../../pos/components/charge-item/charge-item";
 import { TransactionDetailsDto } from '../../../../core/dtos/transaction/transaction-detail.dto';
 import { TransactionListItemDto } from '../../../../core/dtos/transaction/transaction-list-item.dto';
+import { TransactionDrinkListItem } from '../../components/transaction-drink-list-item/transaction-drink-list-item';
 
 @Component({
   selector: 'app-transaction-individual',
   standalone: true,
-  imports: [CommonModule, DescriptionCard, ChargeItem],
+  imports: [CommonModule, DescriptionCard, TransactionDrinkListItem],
   templateUrl: './transaction-individual.html',
   styleUrls: ['./transaction-individual.css']
 })
 export class TransactionIndividual implements OnInit {
   transaction?: TransactionDetailsDto;
+  paymentMethodTran: { paymentMethod: string } = { paymentMethod: '' };  // Initialize as an object
 
   constructor(
     private route: ActivatedRoute,
@@ -33,14 +34,23 @@ export class TransactionIndividual implements OnInit {
   }
 
   private loadTransaction(id: string): void {
-  this.transactionsService.getTransactionDetails(+id).subscribe({
-    next: (details: TransactionDetailsDto) => {
-      this.transaction = details; // Use the correct DTO here
-    },
-    error: (error) => {
-      console.error('Error loading transaction:', error);
-      this.router.navigate(['/transactions']);
-    }
-  });
-}
+    this.transactionsService.getTransactionDetails(+id).subscribe({
+      next: (details: TransactionDetailsDto) => {
+        this.transaction = details;
+
+        this.transactionsService.getTransactionHistoryToday().subscribe({
+          next: (list: TransactionListItemDto[]) => {
+            const match = list.find(t => t.orderId === details.orderId);
+            if (match) {
+              this.paymentMethodTran.paymentMethod = match.paymentMethod;
+            }
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error loading transaction:', error);
+        this.router.navigate(['/transactions']);
+      }
+    });
+  }
 }

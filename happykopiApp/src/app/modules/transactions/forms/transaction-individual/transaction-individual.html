@@ -20,24 +20,15 @@
       [description]="{ Title: 'Total Amount', Content: transaction?.total || 0 }"
     ></app-description-card>
 
-    <!-- <app-description-card
+    <app-description-card
       descriptionType="text"
-      [description]="{ Title: 'Payment Method', Content: transaction?.paymentMethod || ''}"
-    ></app-description-card> -->
+      [description]="{ Title: 'Payment Method', Content: paymentMethodTran.paymentMethod || '' }"
+    ></app-description-card>
   </div>
 
   <div class="drink-list">
-    @for (item of transaction?.items || []; track item.productName) { 
-      <app-charge-item
-        [chargeItem]="{
-          Name: item.productName || '',
-          Size: item.variant || '',
-          Subtotal: item.subtotal || 0,
-          DrinkQuantity: item.quantity || 0,
-          AddOn: '',
-          AddOnQuantity: 0
-        }"
-      ></app-charge-item>
+    @for (item of transaction?.items || []; track item.productName) {
+      <app-transaction-drink-list-item [drinkItem]="item"></app-transaction-drink-list-item>
     }
   </div>
 </div>
