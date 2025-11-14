@@ -25,7 +25,7 @@ export class ViewOrder implements OnInit {
   orders: cartItemDto[] = [];
   showEditModal = false;
   selectedOrderId: number | null = null;
-  selectedMergedOrder: cartItemDto | null = null; // NEW: Track the merged order being edited
+  selectedMergedOrder: cartItemDto | null = null;
   isProcessing = false;
 
   currentUser: UserDto | null = null;
