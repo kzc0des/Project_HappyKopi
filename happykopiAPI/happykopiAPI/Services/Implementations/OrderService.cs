@@ -239,18 +239,33 @@ namespace happykopiAPI.Services.Implementations
             );
 
             var variants = (await multi.ReadAsync<OrderVariantDto>()).ToList();
-            Console.WriteLine($"Variants: {variants.Count}");
+            Console.WriteLine($"[DEBUG] Variants: {variants.Count}");
 
-            var ingredients = (await multi.ReadAsync<OrderVariantIngredientDto>()).ToList();
-            Console.WriteLine($"Ingredients: {ingredients.Count}");
+            // Read ingredients as dynamic to see actual column names
+            var ingredientsRaw = (await multi.ReadAsync<dynamic>()).ToList();
+            var ingredients = new List<OrderVariantIngredientDto>();
+
+            foreach (var raw in ingredientsRaw)
+            {
+                var ing = new OrderVariantIngredientDto
+                {
+                    ProductVariantId = raw.ProductVariantId,
+                    StockItemId = raw.StockItemId,
+                    StockItemName = raw.StockItemName,
+                    QuantityNeeded = raw.QuantityNeeded,
+                    UnitOfMeasure = raw.UnitOfMeasure,
+                    AvailableStock = raw.AvailableStock
+                };
+
+                Console.WriteLine($"[DEBUG] {ing.StockItemName}: Available={ing.AvailableStock}, Needed={ing.QuantityNeeded}");
+                ingredients.Add(ing);
+            }
 
             var addOns = (await multi.ReadAsync<OrderVarianAddontDto>())
                 .Where(a => a.ModifierId != null && a.ModifierId > 0)
                 .ToList();
-            Console.WriteLine($"AddOns: {addOns.Count}");
 
             var allAvailableAddons = (await multi.ReadAsync<OrderModifierSummaryDto>()).ToList();
-            Console.WriteLine($"AllAvailableAddons: {allAvailableAddons.Count}");
 
             return new ProductConfigurationResultDto
             {

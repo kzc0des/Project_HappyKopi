@@ -37,18 +37,30 @@ namespace happykopiAPI.Data.Migrations
                         )
                     ORDER BY PV.Id;  -- Ensure consistent ordering
                       
-                    -- 2. Get all Variant Ingredients (only for variants that will be shown)
+                    -- 2. Get all Variant Ingredients WITH AVAILABLE STOCK
                     SELECT   
                         PVI.ProductVariantId,   
                         PVI.StockItemId,
                         SI.Name AS StockItemName,
-                        PVI.QuantityNeeded  
+                        PVI.QuantityNeeded,
+                        SI.UnitOfMeasure,
+                        ISNULL(SUM(
+                            CASE 
+                                WHEN (SIB.ExpiryDate IS NULL OR SIB.ExpiryDate >= GETDATE())
+                                     AND SIB.DateUsed IS NULL 
+                                     AND SIB.StockQuantity > 0
+                                THEN SIB.StockQuantity
+                                ELSE 0
+                            END
+                        ), 0) AS AvailableStock
                     FROM   
                         dbo.ProductVariantIngredients AS PVI  
                     INNER JOIN   
                         dbo.ProductVariants AS PV ON PVI.ProductVariantId = PV.Id
                     INNER JOIN
                         dbo.StockItems AS SI ON PVI.StockItemId = SI.Id
+                    LEFT JOIN
+                        dbo.StockItemBatches AS SIB ON SI.Id = SIB.StockItemId
                     WHERE   
                         PV.ProductId = @p_ProductId
                         AND EXISTS (
@@ -56,6 +68,12 @@ namespace happykopiAPI.Data.Migrations
                             FROM dbo.ProductVariantIngredients PVI2
                             WHERE PVI2.ProductVariantId = PV.Id
                         )
+                    GROUP BY 
+                        PVI.ProductVariantId, 
+                        PVI.StockItemId, 
+                        SI.Name, 
+                        PVI.QuantityNeeded,
+                        SI.UnitOfMeasure
                     ORDER BY PVI.ProductVariantId, PVI.StockItemId;
                       
                     -- 3. Get all Variant AddOns WITH MODIFIER DETAILS (DISTINCT to avoid duplicates)
@@ -95,6 +113,7 @@ namespace happykopiAPI.Data.Migrations
                 GO";
 
             migrationBuilder.Sql(sql);
+
         }
 
         /// <inheritdoc />

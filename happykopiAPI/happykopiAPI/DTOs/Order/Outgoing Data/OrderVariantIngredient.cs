@@ -6,5 +6,8 @@ namespace happykopiAPI.DTOs.Order.Outgoing_Data
         public int StockItemId { get; set; }
         public string StockItemName { get; set; } = string.Empty;
         public decimal QuantityNeeded { get; set; }
+        public string UnitOfMeasure { get; set; } = string.Empty; 
+        public decimal AvailableStock { get; set; }  
+
     }
 }

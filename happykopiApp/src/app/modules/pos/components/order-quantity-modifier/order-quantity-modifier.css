@@ -53,3 +53,9 @@
 .quantity-btn.plus {
   left: 364px;
 }
+
+.quantity-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

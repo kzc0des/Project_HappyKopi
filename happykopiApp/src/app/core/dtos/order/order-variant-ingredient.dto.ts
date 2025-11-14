@@ -3,4 +3,5 @@ export interface OrderVariantIngredientDto {
   stockItemId: number;
   stockItemName: string;
   quantityNeeded: number;
+  availableStock: number;
 }
