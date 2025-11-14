@@ -34,33 +34,36 @@
     </div>
   </div>
 
-  <!-- Drinks Table -->
-  <div class="w-full max-w-[1200px] px-4 py-5 flex flex-col">
-    @if(drinks().length > 0) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-3">
-      @for(drink of getUniqueDrinks(); track drink.id) {
-      <app-order-card
-        [orderCard]="drink"
-        [isUnavailable]="!isProductEffectivelyAvailable(drink.id)"
-        (cardClick)="onDrinkClicked(drink)"
-      ></app-order-card>
+  <!-- Drinks Table - 3 COLUMNS MINIMUM -->
+  <div class="w-full flex justify-center px-2 py-5">
+    <div class="w-full max-w-[1200px]">
+      @if(drinks().length > 0) {
+      <div class="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 justify-items-center">
+        @for(drink of getUniqueDrinks(); track drink.id) {
+        <app-order-card
+          class="w-full"
+          [orderCard]="drink"
+          [isUnavailable]="!isProductEffectivelyAvailable(drink.id)"
+          (cardClick)="onDrinkClicked(drink)"
+        ></app-order-card>
+        }
+      </div>
+      } @else {
+      <!-- Empty State -->
+      <div
+        class="flex flex-col items-center justify-start w-full text-center min-h-[calc(100vh-300px)] pt-20 pb-10"
+      >
+        <h3 class="font-[Outfit] font-bold text-[#282828] text-[20px] sm:text-xl mb-3">
+          Uh-oh, no drinks found!
+        </h3>
+        <p class="font-[Outfit] font-normal text-[#919191] text-base sm:text-sm max-w-xs">
+          Try searching for something else or check another category.
+        </p>
+      </div>
       }
+      <!-- Bottom spacer to keep white background -->
+      <div class="h-32 sm:h-40 md:h-48 lg:h-56"></div>
     </div>
-    } @else {
-    <!-- Empty State -->
-    <div
-      class="flex flex-col items-center justify-start w-full text-center min-h-[calc(100vh-300px)] pt-20 pb-10"
-    >
-      <h3 class="font-[Outfit] font-bold text-[#282828] text-[20px] sm:text-xl mb-3">
-        Uh-oh, no drinks found!
-      </h3>
-      <p class="font-[Outfit] font-normal text-[#919191] text-base sm:text-sm max-w-xs">
-        Try searching for something else or check another category.
-      </p>
-    </div>
-    }
-    <!-- Bottom spacer to keep white background -->
-    <div class="h-32 sm:h-40 md:h-48 lg:h-56"></div>
   </div>
 
   <!-- Modals -->

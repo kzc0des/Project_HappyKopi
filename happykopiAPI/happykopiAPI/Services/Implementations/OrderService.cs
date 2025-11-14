@@ -241,11 +241,10 @@ namespace happykopiAPI.Services.Implementations
                 parameters,
                 commandType: CommandType.StoredProcedure
             );
-
+             
             var variants = (await multi.ReadAsync<OrderVariantDto>()).ToList();
             Console.WriteLine($"[DEBUG] Variants: {variants.Count}");
-
-            // Read ingredients as dynamic to see actual column names
+             
             var ingredientsRaw = (await multi.ReadAsync<dynamic>()).ToList();
             var ingredients = new List<OrderVariantIngredientDto>();
 
@@ -258,18 +257,25 @@ namespace happykopiAPI.Services.Implementations
                     StockItemName = raw.StockItemName,
                     QuantityNeeded = raw.QuantityNeeded,
                     UnitOfMeasure = raw.UnitOfMeasure,
-                    AvailableStock = raw.AvailableStock
+                    AvailableStock = raw.AvailableStock,
+                    IsModifierIngredient = raw.IsModifierIngredient,
+                    ModifierId = raw.ModifierId
                 };
 
-                Console.WriteLine($"[DEBUG] {ing.StockItemName}: Available={ing.AvailableStock}, Needed={ing.QuantityNeeded}");
+                string ingredientType = ing.IsModifierIngredient == 1 ? "MODIFIER" : "BASE";
+                Console.WriteLine($"[DEBUG] [{ingredientType}] {ing.StockItemName}: Available={ing.AvailableStock}, Needed={ing.QuantityNeeded}, VariantId={ing.ProductVariantId}");
+
                 ingredients.Add(ing);
             }
-
+             
             var addOns = (await multi.ReadAsync<OrderVarianAddontDto>())
                 .Where(a => a.ModifierId != null && a.ModifierId > 0)
                 .ToList();
 
+            Console.WriteLine($"[DEBUG] Variant-specific AddOns: {addOns.Count}");
+             
             var allAvailableAddons = (await multi.ReadAsync<OrderModifierSummaryDto>()).ToList();
+            Console.WriteLine($"[DEBUG] All Available AddOns: {allAvailableAddons.Count}");
 
             return new ProductConfigurationResultDto
             {
