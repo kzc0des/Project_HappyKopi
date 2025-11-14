@@ -34,7 +34,8 @@ export class Sidebar implements OnDestroy{
             {page: 'products', route: 'products'},
             {page: 'category', route: 'category'},
             {page: 'modifiers', route: 'modifiers'},
-            {page: 'inventory', route: 'inventory'}
+            {page: 'inventory', route: 'inventory'},
+            {page: 'register barista', route: 'register-barista'}
           ]
         }else if(user.role.toLowerCase() === 'barista') {
           this.pages = [

@@ -76,6 +76,7 @@ import { ChargeItem } from './modules/pos/components/charge-item/charge-item';
 import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
 import { roleGuard } from './core/guards/role-guard';
 import { ProductCategoriesPage } from './modules/products/product-pages/product-categories-page/product-categories-page';
+import { RegisterBarista } from './modules/auth/register-barista/register-barista';
 import { ModifierLink } from './modules/modifiers/modifier-link/modifier-link';
 
 export const routes: Routes = [
@@ -326,6 +327,14 @@ export const routes: Routes = [
                         component: TransactionHome
                     }
                 ]
+            },
+            {
+                path: 'register-barista',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Admin']
+                },
+                component: RegisterBarista
             }
         ]
     },

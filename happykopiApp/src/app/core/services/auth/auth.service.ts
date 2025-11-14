@@ -6,6 +6,7 @@ import { UserForLoginDto } from '../../dtos/auth/user-for-login-dto';
 import { LoginResponseDto } from '../../dtos/auth/login-response-dto';
 import { environment } from '../../../../environments/environment.development';
 import { jwtDecode } from 'jwt-decode';
+import { UserForRegisterDto } from '../../dtos/auth/user-for-register-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,10 @@ export class AuthService {
       );
   }
 
+  registerBarista(user: UserForRegisterDto): Observable<UserDto> {
+    return this.http.post<UserDto>(`${this.api}/register/barista`, user);
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     this.loggedIn.next(false);
@@ -65,10 +70,10 @@ export class AuthService {
     if (token) {
       try {
         const decodedToken: any = jwtDecode(token);
-        
+
         const expiry = decodedToken.exp;
         if (Date.now() >= expiry * 1000) {
-          this.logout(); 
+          this.logout();
           return;
         }
 
@@ -76,7 +81,7 @@ export class AuthService {
           id: decodedToken['nameid'],
           username: decodedToken['unique_name'],
           role: decodedToken['role'],
-          isActive: true 
+          isActive: true
         };
 
         this.currentUser.next(user);
@@ -84,7 +89,7 @@ export class AuthService {
 
       } catch (error) {
         console.error("Error decoding token:", error);
-        this.logout(); 
+        this.logout();
       }
     }
   }
