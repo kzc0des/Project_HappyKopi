@@ -31,6 +31,7 @@ import { SelectedAddonCard } from '../../components/selected-addon-card/selected
 import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { LoadingService } from '../../../../core/services/loading/loading.service';
 import { finalize } from 'rxjs';
+import { CategoryWithProductCountDto } from '../../../../core/dtos/category/category-with-product-count-dto';
 
 @Component({
   selector: 'app-add-drink-page',
@@ -53,7 +54,7 @@ import { finalize } from 'rxjs';
 })
 export class AddDrinkPage implements OnInit {
   isDropdownOpen = false;
-  drink: string;
+  drink!: string;
 
   availableSizes: ModifierDto[] = [];
   selectedSizeId: number | null = 1;
@@ -93,10 +94,15 @@ export class AddDrinkPage implements OnInit {
     private alertService: AlertService,
     private loadingService: LoadingService
   ) {
-    const nav = this.router.getCurrentNavigation();
-    this.drink = nav?.extras.state?.['drink'];
-
     this.productPayload = this.initializeEmptyPayload();
+    const nav = this.router.getCurrentNavigation();
+
+    if (nav?.extras.state) {
+      const passedCategory = nav.extras.state['category'] as CategoryWithProductCountDto;
+      if (passedCategory) {
+        this.productPayload.categoryId = passedCategory.id;
+      }
+    }
   }
 
   public get currentVariant(): ProductVariantCreateDtoUI | undefined {
@@ -335,55 +341,55 @@ export class AddDrinkPage implements OnInit {
 
     this.loadingService.show();
     this.productsService.createProduct(payloadForBackend)
-    .pipe(finalize(() => this.loadingService.hide()))
-    .subscribe({
-      next: async (response) => {
-        console.log('Product created successfully!', response);
-        this.headerService.notifyItemAdded(true);
-        await this.alertService.showSuccess(
-          'Success!',
-          'Product has been created successfully.'
-        );
-        this.router.navigate(['../'], { relativeTo: this.route, replaceUrl: true });
-      },
+      .pipe(finalize(() => this.loadingService.hide()))
+      .subscribe({
+        next: async (response) => {
+          console.log('Product created successfully!', response);
+          this.headerService.notifyItemAdded(true);
+          await this.alertService.showSuccess(
+            'Success!',
+            'Product has been created successfully.'
+          );
+          this.router.navigate(['../'], { relativeTo: this.route, replaceUrl: true });
+        },
 
-      error: async (err) => {
-        console.error('Failed to create product (Full Error Object):', err);
+        error: async (err) => {
+          console.error('Failed to create product (Full Error Object):', err);
 
-        let displayMessage = 'An unexpected error occurred. Please try again.';
+          let displayMessage = 'An unexpected error occurred. Please try again.';
 
-        if (err.status === 409) {
-          displayMessage = err.error?.message || 'A product with this name might already exist.';
+          if (err.status === 409) {
+            displayMessage = err.error?.message || 'A product with this name might already exist.';
 
-        } else if (err.status === 400) {
-          if (err.error && typeof err.error === 'string') {
-            displayMessage = `Error (400):\n${err.error}`;
+          } else if (err.status === 400) {
+            if (err.error && typeof err.error === 'string') {
+              displayMessage = `Error (400):\n${err.error}`;
 
-          } else if (err.error && err.error.errors) {
-            try {
-              const validationErrors = Object.values(err.error.errors) as string[];
-              displayMessage = `Validation Failed (400):\n- ${validationErrors.join('\n- ')}`;
-            } catch {
-              displayMessage = '400 Bad Request: Validation error (could not parse).';
+            } else if (err.error && err.error.errors) {
+              try {
+                const validationErrors = Object.values(err.error.errors) as string[];
+                displayMessage = `Validation Failed (400):\n- ${validationErrors.join('\n- ')}`;
+              } catch {
+                displayMessage = '400 Bad Request: Validation error (could not parse).';
+              }
+
+            } else if (err.error?.message) {
+              displayMessage = `Error (400):\n${err.error.message}`;
+
+            } else {
+              displayMessage = '400 Bad Request: Check console for error object.';
             }
 
-          } else if (err.error?.message) {
-            displayMessage = `Error (400):\n${err.error.message}`;
-
-          } else {
-            displayMessage = '400 Bad Request: Check console for error object.';
+          } else if (err.status === 500) {
+            displayMessage = '500 Internal Server Error. Check the backend logs.';
           }
 
-        } else if (err.status === 500) {
-          displayMessage = '500 Internal Server Error. Check the backend logs.';
+          await this.alertService.showError(
+            'Failed',
+            'An error occurred while creating the product.'
+          );
         }
-
-        await this.alertService.showError(
-          'Failed',
-          'An error occurred while creating the product.'
-        );
-      }
-    });
+      });
   }
 
   private resetEditingState() {
