@@ -11,10 +11,12 @@ namespace happykopiAPI.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly INotificationService _notificationService;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, INotificationService notificationService)
         {
             _orderService = orderService;
+            _notificationService = notificationService;
         }
 
         [HttpPost]
@@ -51,6 +53,8 @@ namespace happykopiAPI.Controllers
                     });
 
                 var result = await _orderService.CreateOrderAsync(request);
+
+                await _notificationService.NotifyTransactionUpdatedAsync();
 
                 return Ok(result);
             }
