@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -24,6 +24,14 @@ export class Login {
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
+  }
+
+  passwordVisible = signal(false);
+
+  passwordFieldType = computed(() => this.passwordVisible() ? 'text' : 'password');
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible.update(visible => !visible);
   }
 
   onSubmit(): void {
