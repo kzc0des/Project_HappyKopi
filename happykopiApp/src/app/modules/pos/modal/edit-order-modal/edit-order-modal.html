@@ -1,12 +1,19 @@
-<div class="modal-card">
-  <div class="product-header">
+<div
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[465px] max-w-[95%] bg-white rounded-2xl p-6 flex flex-col shadow-lg font-outfit"
+>
+  <!-- Header -->
+  <div class="flex justify-between items-start mb-7 text-[#282828]">
     <div>
-      <h3 class="product-title">{{ orderData?.drinkName }}</h3>
-      <p class="product-subtitle">{{ orderData?.drinkCategory }}</p>
+      <h3 class="text-[20px] font-bold m-0">{{ orderData?.drinkName }}</h3>
+      <p class="text-[14px] text-[#777] mt-[2px]">{{ orderData?.drinkCategory }}</p>
     </div>
-    <div class="product-price">{{ getTotal() | currency : 'PHP' }}</div>
+
+    <div class="text-[20px] font-semibold">
+      {{ getTotal() | currency : 'PHP' }}
+    </div>
   </div>
 
+  <!-- Quantity -->
   <app-order-quantity-modifier
     [oqm]="{ Quantity: quantity }"
     [maxQuantity]="maxQuantity"
@@ -14,12 +21,11 @@
   ></app-order-quantity-modifier>
 
   @if (maxQuantity < 10 && maxQuantity > 0) {
-  <div style="color: #ff6b00; font-size: 14px; text-align: center; margin-bottom: 8px">
-    Only {{ maxQuantity }} available
-  </div>
+  <div class="text-[#ff6b00] text-sm text-center mb-2">Only {{ maxQuantity }} available</div>
   }
 
-  <div class="size-container">
+  <!-- Size Scroll -->
+  <div class="flex gap-4 overflow-x-auto whitespace-nowrap px-2 py-2 scrollbar-hide">
     @for (size of sizes; track size.SizeName) {
     <app-grande-active
       [sizeButton]="size"
@@ -29,10 +35,11 @@
     }
   </div>
 
-  <div class="addons-section">
-    <h4 class="addons-title">Add-ons</h4>
+  <!-- Addons -->
+  <div class="mt-8 mb-7">
+    <h4 class="text-[20px] font-bold mb-4 text-[#282828]">Add-ons</h4>
 
-    <div class="addons-list">
+    <div class="flex gap-5 overflow-x-auto whitespace-nowrap pb-1 pt-1 scrollbar-hide">
       @for (addon of addons; track addon.Name) {
       <app-addon-card-active
         [addonCard]="addon"
@@ -42,11 +49,14 @@
     </div>
   </div>
 
-  <div class="modal-buttons">
-    <app-red-button buttonTitle="Delete" (isClick)="delete()"></app-red-button>
+  <!-- Bottom Buttons -->
+  <div class="flex gap-4 justify-between">
+    <app-red-button buttonTitle="Delete" (isClick)="delete()" class="flex-1"></app-red-button>
+
     <app-long-yellow-button
       buttonSize="modal"
-      buttonTitle="Save Changes"
+      buttonTitle="Save"
+      class="flex-1"
       (click)="saveChanges()"
     ></app-long-yellow-button>
   </div>

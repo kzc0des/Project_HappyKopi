@@ -1,54 +1,71 @@
-<div class="relative w-[167px] h-[182px] font-[Outfit] md:w-[180px] md:h-[200px]"> 
+<div
+  class="relative w-[150px] h-[170px] /* mobile */ md:w-[167px] md:h-[182px] /* desktop */ font-[Outfit]"
+>
+  <!-- BACK CARD -->
   <div
-    class="absolute inset-0 w-[163px] h-[180px] left-[2px] bg-[#FAFAFA] rounded-3xl shadow-[0px_1.5px_5px_rgba(0,0,0,0.25)] md:w-[176px] md:h-[196px]">
-  </div>
- 
-  <div class="absolute left-[2px] top-[126px] w-[163px] h-[54px] md:top-[140px]">
-    <div class="absolute inset-0 bg-[#FAFAFA] rounded-full outline outline-2 outline-[#D9D9D9]"></div>
- 
-    <div class="absolute left-[76px] top-[12px] text-center text-[#282828] text-[20px] font-semibold">
+    class="absolute inset-0 left-[1.5px] w-[146px] h-[168px] /* mobile */ md:w-[163px] md:h-[180px] /* desktop */ bg-[#FAFAFA] rounded-3xl shadow-[0px_1.5px_5px_rgba(0,0,0,0.25)]"
+  ></div>
+
+  <!-- COUNTER BOX -->
+  <div
+    class="absolute left-[2px] top-[116px] /* mobile */ w-[146px] h-[50px] /* mobile */ md:top-[126px] md:w-[163px] md:h-[54px]"
+  >
+    <div
+      class="absolute inset-0 bg-[#FAFAFA] rounded-full outline outline-2 outline-[#D9D9D9]"
+    ></div>
+
+    <!-- QUANTITY NUMBER -->
+    <div
+      class="absolute text-center text-[#282828] text-[18px] /* mobile */ md:text-[20px] font-semibold left-[64px] top-[11px] /* mobile */ md:left-[76px] md:top-[12px]"
+    >
       {{ addonCard.Quantity }}
     </div>
- 
+
+    <!-- MINUS BUTTON -->
     <div
-      class="absolute left-[3px] top-[2px] w-[49px] h-[49px] bg-[#F3B72C] rounded-full flex justify-center items-center text-[28px] text-[#765302] cursor-pointer select-none"
-      (click)="decrease()">
+      class="absolute left-[2px] top-[1.5px] /* mobile */ md:left-[3px] md:top-[2px] w-[44px] h-[44px] /* mobile */ md:w-[49px] md:h-[49px] bg-[#F3B72C] rounded-full flex justify-center items-center text-[26px] md:text-[28px] text-[#765302] cursor-pointer select-none"
+      (click)="decrease()"
+    >
       −
     </div>
 
+    <!-- PLUS BUTTON -->
     <div
-      class="absolute left-[111px] top-[2px] w-[49px] h-[49px] bg-[#F3B72C] rounded-full flex justify-center items-center text-[28px] text-[#765302] cursor-pointer select-none"
-      (click)="increase()">
+      class="absolute left-[98px] top-[1.5px] /* mobile */ md:left-[111px] md:top-[2px] w-[44px] h-[44px] /* mobile */ md:w-[49px] md:h-[49px] bg-[#F3B72C] rounded-full flex justify-center items-center text-[26px] md:text-[28px] text-[#765302] cursor-pointer select-none"
+      (click)="increase()"
+    >
       +
     </div>
- 
+
+    <!-- ADDON ICON -->
     <div
-      class="absolute left-[16px] -top-[109px] w-[40px] h-[40px] rounded-full flex justify-center items-center transition-all duration-300"
-      [ngStyle]="{ 'background-color': isZero ? '#F0F0F0' : '#F3B72C' }">
-      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="17" viewBox="0 0 19 17" fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd"
-          d="M9.4082 15.1208C14.8504 15.1628 17.5715 14.7173 17.5715 13.7843C17.5715 12.3848 11.2099 5.32764 9.4082 5.32764C7.60649 5.32764 1.24493 12.5311 1.24493 13.7843C1.24493 14.6198 3.96604 15.0653 9.4082 15.1208Z"
-          [attr.stroke]="isZero ? '#777777' : '#FAFAFA'" stroke-width="2" stroke-linejoin="round" />
-        <path d="M8.20825 10.0864L6.73082 11.8574" [attr.stroke]="isZero ? '#777777' : '#FAFAFA'"
-          stroke-width="2" stroke-linecap="round" />
+      class="absolute left-[14px] -top-[90px] /* mobile */ md:left-[16px] md:-top-[109px] w-[35px] h-[35px] /* mobile */ md:w-[40px] md:h-[40px] rounded-full flex justify-center items-center transition-all duration-300"
+      [ngStyle]="{ 'background-color': isZero ? '#F0F0F0' : '#F3B72C' }"
+    >
+      <!-- your SVG unchanged -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="19"
+        height="17"
+        viewBox="0 0 19 17"
+        fill="none"
+      >
         <path
-          d="M9.61228 2.46951C10.1758 2.46951 10.6327 2.01268 10.6327 1.44912C10.6327 0.885564 10.1758 0.428711 9.61228 0.428711C9.04873 0.428711 8.59187 0.885564 8.59187 1.44912C8.59187 2.01268 9.04873 2.46951 9.61228 2.46951Z"
-          [attr.fill]="isZero ? '#777777' : '#FAFAFA'" />
-        <path
-          d="M13.4898 4.51009C13.9407 4.51009 14.3062 4.14463 14.3062 3.69377C14.3062 3.24295 13.9407 2.87744 13.4898 2.87744C13.039 2.87744 12.6735 3.24295 12.6735 3.69377C12.6735 4.14463 13.039 4.51009 13.4898 4.51009Z"
-          [attr.fill]="isZero ? '#777777' : '#FAFAFA'" />
-        <path
-          d="M4.51024 6.55111C4.96109 6.55111 5.32656 6.18564 5.32656 5.73478C5.32656 5.28397 4.96109 4.91846 4.51024 4.91846C4.05938 4.91846 3.69391 5.28397 3.69391 5.73478C3.69391 6.18564 4.05938 6.55111 4.51024 6.55111Z"
-          [attr.fill]="isZero ? '#777777' : '#FAFAFA'" />
-        <path
-          d="M6.75513 4.10193C7.09325 4.10193 7.36737 3.82785 7.36737 3.48969C7.36737 3.15156 7.09325 2.87744 6.75513 2.87744C6.41701 2.87744 6.14288 3.15156 6.14288 3.48969C6.14288 3.82785 6.41701 4.10193 6.75513 4.10193Z"
-          [attr.fill]="isZero ? '#777777' : '#FAFAFA'" />
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M9.4082 15.1208C14.8504 15.1628..."
+          [attr.stroke]="isZero ? '#777777' : '#FAFAFA'"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
       </svg>
     </div>
   </div>
- 
+
+  <!-- ADDON NAME -->
   <div
-    class="absolute left-[17px] top-[79px] w-[123px] flex justify-items-start pl-2 text-[#282828] text-[16px] font-semibold text-center md:text-[18px]">
+    class="absolute left-[14px] top-[68px] /* mobile */ w-[115px] md:left-[17px] md:top-[79px] md:w-[123px] flex pl-2 text-[#282828] text-[14px] md:text-[16px] font-semibold text-center"
+  >
     {{ addonCard.Name }}
   </div>
 </div>

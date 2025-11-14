@@ -1,12 +1,22 @@
-<div class="order-body">
-  <div class="upper-content">
-    <div class="total-price">
-      <div class="total-price-value">{{ receiptData?.totalAmount | currency : 'PHP' }}</div>
-      <div class="total-price-label">Order Total</div>
+<div
+  class="w-full bg-[#f0f0f0] flex flex-col min-h-screen font-['Outfit'] [&::-webkit-scrollbar]:w-0"
+>
+  <!-- Upper Content -->
+  <div
+    class="flex flex-col items-center justify-center bg-[#fafafa] mb-6 sm:mb-[30px] pt-12 sm:pt-[60px] pb-10 sm:pb-[50px] px-4"
+  >
+    <div class="flex flex-col items-center justify-center gap-4 sm:gap-5">
+      <div class="text-3xl sm:text-[40px] font-bold text-[#282828] text-center">
+        {{ receiptData?.totalAmount | currency : 'PHP' }}
+      </div>
+      <div class="text-sm sm:text-base text-[#909090]">Order Total</div>
     </div>
   </div>
 
-  <div class="middle-content">
+  <!-- Middle Content -->
+  <div
+    class="flex flex-col items-center justify-center bg-[#fafafa] py-5 sm:py-[20px] pb-[50%] sm:pb-[100%] px-4"
+  >
     <app-charge-cash-summary-card
       mode="order-number"
       [chargeSummary]="{
@@ -14,6 +24,7 @@
         ModeOfPayment: '',
         OrderNumber: receiptData?.orderNumber || '0'
       }"
+      class="w-full max-w-md"
     ></app-charge-cash-summary-card>
     <app-charge-cash-summary-card
       mode="payment_cash"
@@ -22,19 +33,25 @@
         ModeOfPayment: receiptData?.paymentType || 'Cash',
         OrderNumber: ''
       }"
+      class="w-full max-w-md"
     ></app-charge-cash-summary-card>
   </div>
 
-  <div class="btns">
+  <!-- Buttons -->
+  <div
+    class="fixed bottom-4 sm:bottom-10 left-0 w-full flex flex-col gap-4 sm:gap-[19px] justify-center z-[999] px-4 sm:px-0"
+  >
     <app-long-yellow-button
       buttonSize="long"
       buttonTitle="Print Transaction"
       (click)="printTransaction()"
+      class="block w-full flex justify-center max-w-md mx-auto"
     ></app-long-yellow-button>
     <app-long-yellow-button
       buttonSize="long"
       buttonTitle="New Order"
       (click)="newOrder()"
+      class="block w-full flex justify-center max-w-md mx-auto"
     ></app-long-yellow-button>
   </div>
 </div>
