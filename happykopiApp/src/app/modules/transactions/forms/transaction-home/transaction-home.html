@@ -40,10 +40,9 @@
 
     @for (transaction of transactions; track transaction.orderId) {
       <app-transaction-payment-card
-        [paymentMethod]="getPaymentTypeFlag(transaction.paymentMethod)"
-        [transactionPayment]="transaction"
-        (cardClick)="goToTransaction($event)">
-      </app-transaction-payment-card>
+      [paymentMethod]="getPaymentTypeFlag(transaction.paymentMethod)"
+      [transactionPayment]="transaction">
+    </app-transaction-payment-card>
     }
   </div>
 </div>
