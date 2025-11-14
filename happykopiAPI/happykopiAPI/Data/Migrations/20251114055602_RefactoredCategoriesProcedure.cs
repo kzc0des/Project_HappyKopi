@@ -10,6 +10,15 @@ namespace happykopiAPI.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            var udttCreation = @"
+IF NOT EXISTS (SELECT * FROM sys.types WHERE is_table_type = 1 AND name = 'IntList')
+BEGIN
+    CREATE TYPE dbo.IntList AS TABLE (Id INT PRIMARY KEY);
+END
+";
+
+            migrationBuilder.Sql(udttCreation);
+
             var sp_AssignProductsToCategory = @"
 CREATE OR ALTER PROCEDURE [dbo].[sp_AssignProductsToCategory]
     @CategoryId INT,
