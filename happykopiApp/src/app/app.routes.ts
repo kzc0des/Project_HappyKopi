@@ -305,6 +305,29 @@ export const routes: Routes = [
                         component: ChargeSummary
                     }
                 ]
+            },
+            {
+                path: 'transactions',
+                canActivate: [roleGuard],
+                data: {
+                    roles: ['Barista']
+                },
+                children: [
+                    {
+                        path: '',
+                        component: TransactionHome,
+                        resolve: {
+                            transactions: transactionsResolver
+                        }
+                    },
+                    {
+                        path: ':id',
+                        component: TransactionIndividual,
+                        resolve: {
+                            transaction: transactionIndivResolverResolver
+                        }
+                    }
+                ]
             }
         ]
     },

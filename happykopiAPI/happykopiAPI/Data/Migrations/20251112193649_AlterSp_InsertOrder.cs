@@ -8,7 +8,6 @@ namespace happykopiAPI.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Drop the old stored procedure if it exists
             migrationBuilder.Sql(@"
                 IF OBJECT_ID('dbo.sp_InsertOrder', 'P') IS NOT NULL
                     DROP PROCEDURE dbo.sp_InsertOrder;
@@ -90,7 +89,7 @@ BEGIN
             '. Required: ' + CAST(ir.TotalQuantityNeeded AS NVARCHAR(20)) + ' ' + ir.UnitOfMeasure +
             ', Available: ' + CAST(ISNULL(SUM(
                 CASE 
-                    WHEN sib.ExpiryDate >= @OrderDate 
+                    WHEN (sib.ExpiryDate IS NULL OR sib.ExpiryDate >= @OrderDate)
                          AND sib.DateUsed IS NULL 
                          AND sib.StockQuantity > 0 
                     THEN sib.StockQuantity 
@@ -102,7 +101,7 @@ BEGIN
         GROUP BY ir.StockItemId, ir.StockItemName, ir.TotalQuantityNeeded, ir.UnitOfMeasure
         HAVING ISNULL(SUM(
             CASE 
-                WHEN sib.ExpiryDate >= @OrderDate 
+                WHEN (sib.ExpiryDate IS NULL OR sib.ExpiryDate >= @OrderDate)
                      AND sib.DateUsed IS NULL 
                      AND sib.StockQuantity > 0 
                 THEN sib.StockQuantity 
@@ -119,7 +118,7 @@ BEGIN
             SELECT 1 
             FROM StockItemBatches sib 
             WHERE sib.StockItemId = ir.StockItemId
-                AND sib.ExpiryDate >= @OrderDate
+                AND (sib.ExpiryDate IS NULL OR sib.ExpiryDate >= @OrderDate)
                 AND sib.DateUsed IS NULL
                 AND sib.StockQuantity > 0
         );
@@ -149,7 +148,7 @@ BEGIN
             SELECT Id, StockQuantity
             FROM StockItemBatches
             WHERE StockItemId = @StockItemId
-                AND ExpiryDate >= @OrderDate
+                AND (ExpiryDate IS NULL OR ExpiryDate >= @OrderDate)
                 AND DateUsed IS NULL
                 AND StockQuantity > 0
             ORDER BY DateReceived ASC;
