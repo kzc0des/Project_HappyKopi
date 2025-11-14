@@ -11,10 +11,12 @@ namespace happykopiAPI.Services.Implementations
     public class TransactionService : ITransactionService
     {
         private readonly IConfiguration _configuration;
+        private readonly INotificationService _notificationService;
 
-        public TransactionService(IConfiguration configuration)
+        public TransactionService(IConfiguration configuration, INotificationService notificationService)
         {
             _configuration = configuration;
+            _notificationService = notificationService;
         }
 
         private IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("LocalDB"));
@@ -43,7 +45,7 @@ namespace happykopiAPI.Services.Implementations
             return result;
         }
 
-        public async Task<TransactionDetailsDto> GetTransactionByIdAsync(string orderId)
+        public async Task<TransactionDetailsDto> GetTransactionByIdAsync(int orderId)
         {
             using var connection = CreateConnection();
 

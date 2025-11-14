@@ -8,6 +8,6 @@ namespace happykopiAPI.Services.Interfaces
     {
         Task<TransactionSummaryDto> GetDailySummaryAsync();
         Task<IEnumerable<TransactionListItemDto>> GetTransactionHistoryAsync();
-        Task<TransactionDetailsDto> GetTransactionByIdAsync(string orderId);
+        Task<TransactionDetailsDto> GetTransactionByIdAsync(int orderId);
     }
 }

@@ -16,10 +16,12 @@ namespace happykopiAPI.Services.Implementations
     public class OrderService : IOrderService
     {
         private readonly IConfiguration _configuration;
+        private readonly INotificationService _notificationService;
 
-        public OrderService(IConfiguration configuration)
+        public OrderService(IConfiguration configuration, INotificationService notificationService)
         {
             _configuration = configuration;
+            _notificationService = notificationService;
         }
 
         private IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("LocalDB"));
@@ -72,6 +74,8 @@ namespace happykopiAPI.Services.Implementations
                 var orderId = parameters.Get<int>("@OrderId");
                 var orderNumber = parameters.Get<string>("@OrderNumber");
 
+                await _notificationService.NotifyTransactionUpdatedAsync();
+
                 return new NewOrderResponseDto
                 {
                     OrderId = orderId,
@@ -86,7 +90,7 @@ namespace happykopiAPI.Services.Implementations
             }
             catch (SqlException ex)
             {
-                throw new Exception($"Database error while creating order: {ex.Message}", ex);
+                throw;
             }
             catch (Exception ex)
             {

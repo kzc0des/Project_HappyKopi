@@ -1,4 +1,4 @@
-﻿using happykopiAPI.Hubs;
+﻿﻿using happykopiAPI.Hubs;
 using happykopiAPI.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
@@ -19,6 +19,11 @@ namespace happykopiAPI.Services.Implementations
             /// </summary>
             /// 
             await _hubContext.Clients.All.SendAsync("ReceiveModifierUpdate");
+        }
+
+        public async Task NotifyTransactionUpdatedAsync()
+        {
+            await _hubContext.Clients.All.SendAsync("ReceiveTransactionUpdate");
         }
     }
 }

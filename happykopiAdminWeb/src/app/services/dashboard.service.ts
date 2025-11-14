@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { TransactionSummaryDto } from '../transaction/transaction-summary.dto';
 import { ChartPointDto } from '../transaction/chart-point.dto';
 import { TransactionListItemDto } from '../transaction/transaction-list-item.dto';
 import { environment } from '../environments/environment.development';
 import { ApiService } from './api.service';
+import { SignalrService } from './signalr.service';
 
 
 @Injectable({
@@ -13,7 +14,16 @@ import { ApiService } from './api.service';
 })
 export class DashboardService {
 
-  constructor(private api: ApiService) { }
+  private transactionUpdateSubject = new Subject<void>();
+  public transactionUpdated$ = this.transactionUpdateSubject.asObservable();
+
+  constructor(private api: ApiService, private signalRService: SignalrService) {
+    this.signalRService.startConnection();
+    this.signalRService.on('ReceiveTransactionUpdate', () => {
+      console.log('Transaction update received from SignalR.');
+      this.transactionUpdateSubject.next();
+    });
+  }
 
   // ===== SUMMARY METHODS =====
   getTodaySummary(): Observable<TransactionSummaryDto> {

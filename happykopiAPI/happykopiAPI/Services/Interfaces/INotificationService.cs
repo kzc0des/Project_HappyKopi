@@ -1,4 +1,4 @@
-﻿namespace happykopiAPI.Services.Interfaces
+﻿﻿namespace happykopiAPI.Services.Interfaces
 {
     public interface INotificationService
     {
@@ -6,5 +6,9 @@
         /// Notifies all connected clients that the list of modifiers has been updated.
         /// </summary>
         Task NotifyModifiersUpdatedAsync();
+        /// <summary>
+        /// Notifies all connected clients that a new transaction has been made.
+        /// </summary>
+        Task NotifyTransactionUpdatedAsync();
     }
 }
