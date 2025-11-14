@@ -6,6 +6,7 @@ import { ConfirmationDialog } from "../../shared/components/confirmation-dialog/
 import { AlertDialog } from "../../shared/components/alert-dialog/alert-dialog";
 import { LoadingSpinner } from "../../shared/components/loading-spinner/loading-spinner";
 import { AuthService } from '../../core/services/auth/auth.service';
+import { SignalRService } from '../../core/services/signalR/signal-r.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -14,7 +15,7 @@ import { AuthService } from '../../core/services/auth/auth.service';
   styleUrl: './main-layout.css'
 })
 export class MainLayout implements OnInit{
-  constructor (private router: Router, private authService: AuthService) {}
+  constructor (private router: Router, private authService: AuthService, private signalRService: SignalRService) {}
   
   ngOnInit(): void {
     // When the main layout loads, immediately redirect based on role.
@@ -33,5 +34,7 @@ export class MainLayout implements OnInit{
           break;
       }
     }
+
+    this.signalRService.startConnection();
   }
 }

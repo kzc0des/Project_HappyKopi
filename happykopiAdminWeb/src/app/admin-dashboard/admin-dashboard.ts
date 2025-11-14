@@ -11,6 +11,7 @@ import { TransactionListItemDto } from '../transaction/transaction-list-item.dto
 import { TransactionSummaryDto } from '../transaction/transaction-summary.dto';
 import { ChartPointDto } from '../transaction/chart-point.dto';
 import { AdminLineChart } from '../admin-components/admin-line-chart/admin-line-chart';
+import { AuthService } from '../auth/login/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -45,7 +46,8 @@ export class AdminDashboard implements OnInit {
 
   constructor(
     private router: Router,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -111,7 +113,11 @@ export class AdminDashboard implements OnInit {
   toggleDropdown(): void { this.isDropdownOpen = !this.isDropdownOpen; }
   openSignOutModal(): void { this.isSignOutModalOpen = true; this.isDropdownOpen = false; }
   closeSignOutModal(): void { this.isSignOutModalOpen = false; }
-  confirmSignOut(): void { console.log('Signed out'); this.closeSignOutModal(); }
+  confirmSignOut(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+    this.closeSignOutModal();
+  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {

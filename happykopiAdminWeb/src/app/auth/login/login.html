@@ -1,28 +1,30 @@
-<div class="flex flex-col h-[100dvh]">
+<div class="flex flex-col min-h-screen bg-gray-50">
     <div class="relative">
         <header class="bg-hapikopi-yellow w-full h-28 rounded-b-2xl"></header>
         <img class="absolute top-1/2 left-1/2 -translate-x-1/2 w-36 h-36" src="../../../assets/HappyKopiLogo.png" alt="HappyKopi Logo">
     </div>
-    <div class="flex flex-col justify-center items-center w-[100dvw] flex-1">
-        <main class="flex flex-col items-center justify-center w-full h-full">
-            <div class="flex flex-col items-center gap-2 pb-10">
+
+    <div class="flex flex-col justify-center items-center w-full flex-1 px-4 py-8 pt-24">
+        <main class="flex flex-col items-center justify-center w-full max-w-md">
+            <div class="flex flex-col items-center gap-2 pb-8">
                 <h1 class="font-black text-5xl text-hapikopi-yellow">HappyKopi</h1>
                 <p>Sign in to start your session</p>
             </div>
-            <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+            <!-- Add a container for the form for better structure -->
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="w-full">
                 <div class="mb-6">
                     <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                     <input type="text" id="username" name="username" ngModel required
                         class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
                         placeholder="Enter your username"
-                        [(ngModel)]="user.username" />
+                        formControlName="username" />
                 </div>
                 <div class="mb-6">
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                     <div class="relative">
                         <input [type]="passwordFieldType()" id="password" name="password" ngModel required
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
-                            placeholder="Enter your password" [(ngModel)]="user.password"/>
+                            placeholder="Enter your password" formControlName="password"/>
                         <button type="button" (click)="togglePasswordVisibility()"
                             class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 hover:text-amber-600 focus:outline-none"
                             aria-label="Toggle password visibility">
