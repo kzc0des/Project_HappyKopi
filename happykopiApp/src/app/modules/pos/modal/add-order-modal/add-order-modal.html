@@ -7,9 +7,19 @@
     <div class="product-price">{{ getTotal() | currency : 'PHP' }}</div>
   </div>
 
+  <!-- FIX: Add [oqm] and [maxQuantity] inputs -->
   <app-order-quantity-modifier
+    [oqm]="{ Quantity: quantity }"
+    [maxQuantity]="maxQuantity"
     (quantityChange)="onQuantityChange($event)"
   ></app-order-quantity-modifier>
+
+  <!-- Optional: Show warning when stock is low -->
+  @if (maxQuantity < 10 && maxQuantity > 0) {
+  <div style="color: #ff6b00; font-size: 14px; text-align: center; margin-bottom: 8px">
+    Only {{ maxQuantity }} available
+  </div>
+  }
 
   <div class="size-container">
     @for (size of sizes; track size.SizeName) {

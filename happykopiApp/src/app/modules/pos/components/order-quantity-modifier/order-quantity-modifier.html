@@ -3,6 +3,12 @@
 
   <div class="quantity-value">{{ oqm.Quantity }}</div>
 
-  <div class="quantity-btn minus" (click)="decrease()">−</div>
-  <div class="quantity-btn plus" (click)="increase()">+</div>
+  <div class="quantity-btn minus" [class.disabled]="oqm.Quantity <= 1" (click)="decrease()">−</div>
+  <div
+    class="quantity-btn plus"
+    [class.disabled]="oqm.Quantity >= maxQuantity"
+    (click)="increase()"
+  >
+    +
+  </div>
 </div>
