@@ -16,7 +16,7 @@ import { TransactionDrinkListItem } from '../../components/transaction-drink-lis
 })
 export class TransactionIndividual implements OnInit {
   transaction?: TransactionDetailsDto;
-  paymentMethodTran: { paymentMethod: string } = { paymentMethod: '' }; 
+  paymentMethodTran: { paymentMethod: string } = { paymentMethod: '' };  // Initialize as an object
 
   constructor(
     private route: ActivatedRoute,
@@ -34,23 +34,38 @@ export class TransactionIndividual implements OnInit {
   }
 
   private loadTransaction(id: string): void {
-    this.transactionsService.getTransactionDetails(+id).subscribe({
-      next: (details: TransactionDetailsDto) => {
-        this.transaction = details;
+  this.transactionsService.getTransactionDetails(+id).subscribe({
+    next: (details: TransactionDetailsDto) => {
+      // Compute subtotal for each item
+      const itemsWithSubtotal = details.items.map(item => ({
+        ...item,
+        subtotal: item.price * item.quantity
+      }));
 
-        this.transactionsService.getTransactionHistoryToday().subscribe({
-          next: (list: TransactionListItemDto[]) => {
-            const match = list.find(t => t.orderId === details.orderId);
-            if (match) {
-              this.paymentMethodTran.paymentMethod = match.paymentMethod;
+      this.transaction = {
+        ...details,
+        items: itemsWithSubtotal
+      };
+
+      // Get payment method
+      this.transactionsService.getTransactionHistoryToday().subscribe({
+            next: (list: TransactionListItemDto[]) => {
+              const match = list.find(t => t.orderId === details.orderId);
+              if (match) {
+                // Normalize paymentMethod to string first, then map to 'cash' | 'gcash'
+                const payment = String(match.paymentMethod);
+                this.paymentMethodTran.paymentMethod = payment === '0' ? 'cash' : 'gcash';
+              }
+            },
+            error: (err) => {
+              console.error('Error loading transaction history:', err);
             }
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error loading transaction:', error);
-        this.router.navigate(['/transactions']);
-      }
-    });
-  }
+          });
+        },
+        error: (error) => {
+          console.error('Error loading transaction:', error);
+          this.router.navigate(['/transactions']);
+        }
+      });
+    }
 }

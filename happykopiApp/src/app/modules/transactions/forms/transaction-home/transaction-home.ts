@@ -76,11 +76,15 @@ export class TransactionHome implements OnInit {
     });
   }
 
-  getPaymentTypeFlag(paymentMethod: string): 'cash' | 'gcash' {
-    const normalized = paymentMethod.toLowerCase();
+  getPaymentTypeFlag(paymentMethod: string | number | null | undefined): 'cash' | 'gcash' {
+    if (paymentMethod === null || paymentMethod === undefined) return 'gcash';
+
+    const normalized = String(paymentMethod).toLowerCase();
+
     if (normalized === 'cash' || normalized === '0') return 'cash';
     return 'gcash';
   }
+
 
   constructor(private router: Router) {}
 

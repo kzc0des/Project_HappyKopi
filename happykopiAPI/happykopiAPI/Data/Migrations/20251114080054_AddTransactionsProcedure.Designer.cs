@@ -12,7 +12,7 @@ using happykopiAPI.Data;
 namespace happykopiAPI.Data.Migrations
 {
     [DbContext(typeof(HappyKopiDbContext))]
-    [Migration("20251113043425_AddTransactionsProcedure")]
+    [Migration("20251114080054_AddTransactionsProcedure")]
     partial class AddTransactionsProcedure
     {
         /// <inheritdoc />
@@ -276,15 +276,12 @@ namespace happykopiAPI.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePublicId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -323,14 +320,14 @@ namespace happykopiAPI.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Size")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int?>("SizeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("SizeId");
 
                     b.ToTable("ProductVariants");
                 });
@@ -689,7 +686,14 @@ namespace happykopiAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("happykopiAPI.Models.Modifier", "Size")
+                        .WithMany("ProductVariantsSized")
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Product");
+
+                    b.Navigation("Size");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.ProductVariantAddOn", b =>
@@ -787,6 +791,8 @@ namespace happykopiAPI.Data.Migrations
             modelBuilder.Entity("happykopiAPI.Models.Modifier", b =>
                 {
                     b.Navigation("OrderItemModifiers");
+
+                    b.Navigation("ProductVariantsSized");
                 });
 
             modelBuilder.Entity("happykopiAPI.Models.Order", b =>
