@@ -13,6 +13,8 @@ import {
   UnavailableProductModal,
   UnavailableProductModalData,
 } from '../../modal/unavailable-modal/unavailable-modal';
+import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
+import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
 
 @Component({
   selector: 'app-order',
@@ -68,18 +70,61 @@ export class Order implements OnInit {
       error: (err) => console.error(err),
     });
   }
+  allProductConfigs: Map<number, ProductConfigurationResultDto> = new Map();
 
   selectAllDrinks() {
     this.selectedCategory.set(this.allDrinksCategory);
 
     this.orderService.getProductsWithAvailability().subscribe({
-      next: ({ products, unavailableMap }) => {
-        this.allDrinks.set(products); // Store all drinks
-        this.drinks.set(products); // Display all drinks initially
+      next: async ({ products, unavailableMap }) => {
+        this.allDrinks.set(products);
+        this.drinks.set(products);
         this.unavailableMap.set(unavailableMap);
+
+        // Preload all product configs
+        for (const drink of products) {
+          this.orderService.getProductConfiguration(drink.id).subscribe({
+            next: (config) => this.allProductConfigs.set(drink.id, config),
+            error: (err) => console.error(err),
+          });
+        }
       },
       error: (err) => console.error(err),
     });
+  }
+
+  isProductEffectivelyAvailable(drinkId: number): boolean {
+    // Get the product configuration safely
+    const productConfig = this.allProductConfigs.get(drinkId);
+    if (!productConfig) return false; // If we can't find it, consider unavailable
+
+    // Get all orders from localStorage
+    const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+ 
+    const usedIngredients = new Map<number, number>();
+
+    existingOrders.forEach((order) => {
+      if (order.drinkID === undefined) return; 
+      const config = this.allProductConfigs.get(order.drinkID);
+      if (!config) return; 
+      config.ingredients.forEach((ing) => {
+        const totalUsed = ing.quantityNeeded * order.quantity;
+        const current = usedIngredients.get(ing.stockItemId) || 0;
+        usedIngredients.set(ing.stockItemId, current + totalUsed);
+      });
+    });
+ 
+    const variantIngredients = productConfig.ingredients; 
+    for (const ing of variantIngredients) {
+      const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
+      const remainingStock = ing.availableStock - alreadyUsed;
+
+      if (remainingStock < ing.quantityNeeded) { 
+        return false;
+      }
+    }
+
+    return true;  
   }
 
   selectCategory(category: CategoryWithProductCountDto) {
@@ -87,8 +132,8 @@ export class Order implements OnInit {
 
     this.orderService.getProductsWithAvailability(category.id).subscribe({
       next: ({ products, unavailableMap }) => {
-        this.allDrinks.set(products); // Store all drinks in category
-        this.drinks.set(products); // Display all drinks initially
+        this.allDrinks.set(products); 
+        this.drinks.set(products);  
         this.unavailableMap.set(unavailableMap);
       },
       error: (err) => console.error(err),
@@ -113,17 +158,27 @@ export class Order implements OnInit {
 
   onDrinkClicked(drink: ProductsWithCategoryDto): void {
     const unavailableInfo = this.unavailableMap().get(drink.id);
+    const effectivelyAvailable = this.isProductEffectivelyAvailable(drink.id);
 
-    if (unavailableInfo) {
+    if (unavailableInfo || !effectivelyAvailable) { 
       this.selectedUnavailableProduct.set({
         productName: drink.name,
         categoryName: drink.categoryName,
         price: drink.price,
         imageUrl: drink.imageUrl || '',
-        unavailableInfo: unavailableInfo,
+        unavailableInfo:
+          unavailableInfo ??
+          ({
+            productId: drink.id,
+            productName: drink.name,
+            categoryName: drink.categoryName,
+            price: drink.price,
+            imageUrl: drink.imageUrl || '',
+            reason: 'Insufficient stock to add this drink based on current basket.',
+          } as UnavailableProductDto),
       });
       this.showUnavailableModal.set(true);
-    } else {
+    } else { 
       this.selectedDrink.set({
         ProductId: drink.id,
         DrinkName: drink.name,

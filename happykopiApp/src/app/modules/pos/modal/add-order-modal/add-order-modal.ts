@@ -72,15 +72,6 @@ export class AddOrderModal implements OnInit {
   loadProductConfiguration() {
     this.orderService.getProductConfiguration(this.addOrderModal!.ProductId).subscribe({
       next: (config: any) => {
-        console.log('=== RAW API RESPONSE ===');
-        console.log('Config:', config);
-        console.log('Ingredients:', config.ingredients);
-
-        if (config.ingredients && config.ingredients.length > 0) {
-          console.log('First ingredient:', config.ingredients[0]);
-          console.log('Keys:', Object.keys(config.ingredients[0]));
-        }
-
         this.productConfig = config as ProductConfigurationResultDto;
 
         if (config.variants && config.variants.length > 0) {
@@ -92,7 +83,7 @@ export class AddOrderModal implements OnInit {
           this.selectedVariantId = config.variants[0].id;
 
           this.loadAddonsForVariant(this.selectedVariantId);
-          this.calculateMaxQuantity();
+          this.updateMaxQuantity();
         }
       },
       error: (err) => console.error('API Error:', err),
@@ -105,9 +96,7 @@ export class AddOrderModal implements OnInit {
     const variantAddons = this.productConfig.addOns.filter((a) => a.productVariantId === variantId);
 
     const defaultQuantities = new Map<number, number>();
-    variantAddons.forEach((va) => {
-      defaultQuantities.set(va.modifierId, va.defaultQuantity);
-    });
+    variantAddons.forEach((va) => defaultQuantities.set(va.modifierId, va.defaultQuantity));
 
     this.addons = this.productConfig.allAvailableAddons.map((addon) => {
       const defaultQty = defaultQuantities.get(addon.id) || 0;
@@ -119,61 +108,60 @@ export class AddOrderModal implements OnInit {
         modifierId: addon.id,
       };
     });
-
-    console.log('Loaded addons for variant:', variantId, this.addons);
   }
 
   selectSize(size: sizeButtonDto) {
     this.activeSize = size.SizeName;
-
     const variant = this.productConfig?.variants.find((v) => v.sizeName === size.SizeName);
     if (variant) {
       this.selectedVariantId = variant.id;
       this.loadAddonsForVariant(variant.id);
-      this.calculateMaxQuantity();
-
-      if (this.quantity > this.maxQuantity) {
-        this.quantity = this.maxQuantity;
-      }
+      this.updateMaxQuantity();
+      if (this.quantity > this.maxQuantity) this.quantity = this.maxQuantity;
     }
   }
 
-  calculateMaxQuantity() {
-    if (!this.productConfig) {
-      console.warn('No product config available');
-      return;
-    }
+  /** Compute the max quantity allowed for this drink based on all orders in cart */
+  calculateEffectiveMaxQuantity(): number {
+    if (!this.productConfig) return 0;
 
     const variantIngredients = this.productConfig.ingredients.filter(
       (ing) => ing.productVariantId === this.selectedVariantId
     );
 
-    console.log('=== CALCULATING MAX QUANTITY ===');
-    console.log('Variant ingredients:', variantIngredients);
+    if (variantIngredients.length === 0) return 999;
 
-    if (variantIngredients.length === 0) {
-      console.warn('No ingredients found for variant, setting max to 999');
-      this.maxQuantity = 999;
-      return;
-    }
+    // Track used ingredients in all existing orders
+    const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+    const usedIngredients = new Map<number, number>();
 
-    // Check if any ingredient is missing availableStock
-    const missingStock = variantIngredients.some(
-      (ing) => ing.availableStock === undefined || ing.availableStock === null
-    );
-
-    if (missingStock) {
-      console.error('ERROR: Some ingredients are missing availableStock data!');
-      console.error(
-        'Ingredients:',
-        variantIngredients.map((i) => ({
-          name: i.stockItemName,
-          id: i.stockItemId,
-          availableStock: i.availableStock,
-        }))
+    existingOrders.forEach((order) => {
+      const ingList = this.productConfig!.ingredients.filter(
+        (ing) => ing.productVariantId === order.productVariantId
       );
-      this.maxQuantity = 0; // Set to 0 to prevent orders when stock data is missing
-      alert('Unable to load stock information. Please refresh the page.');
+      ingList.forEach((ing) => {
+        const totalUsed = ing.quantityNeeded * order.quantity;
+        const current = usedIngredients.get(ing.stockItemId) || 0;
+        usedIngredients.set(ing.stockItemId, current + totalUsed);
+      });
+    });
+
+    // Compute max drinks per ingredient for this variant
+    const maxPerIngredient = variantIngredients.map((ing) => {
+      const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
+      return Math.floor((ing.availableStock - alreadyUsed) / ing.quantityNeeded);
+    });
+
+    return Math.max(0, Math.min(...maxPerIngredient));
+  }
+
+  /** Updates the maxQuantity and ingredientUsageMap */
+  updateMaxQuantity() {
+    const variantIngredients = this.productConfig?.ingredients.filter(
+      (ing) => ing.productVariantId === this.selectedVariantId
+    );
+    if (!variantIngredients || variantIngredients.length === 0) {
+      this.maxQuantity = 999;
       return;
     }
 
@@ -181,30 +169,21 @@ export class AddOrderModal implements OnInit {
     const usedIngredients = new Map<number, number>();
 
     existingOrders.forEach((order) => {
-      const orderIngredients = this.productConfig!.ingredients.filter(
+      const ingList = this.productConfig!.ingredients.filter(
         (ing) => ing.productVariantId === order.productVariantId
       );
-
-      orderIngredients.forEach((ing) => {
+      ingList.forEach((ing) => {
         const totalUsed = ing.quantityNeeded * order.quantity;
         const current = usedIngredients.get(ing.stockItemId) || 0;
         usedIngredients.set(ing.stockItemId, current + totalUsed);
       });
     });
 
-    // For each ingredient in current variant, calculate max possible quantity
     let minMaxQuantity = 999;
-
     variantIngredients.forEach((ing) => {
       const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
       const remainingStock = ing.availableStock - alreadyUsed;
       const maxForThisIngredient = Math.floor(remainingStock / ing.quantityNeeded);
-
-      console.log(`Ingredient: ${ing.stockItemName}`);
-      console.log(
-        `  Available: ${ing.availableStock}, Used: ${alreadyUsed}, Remaining: ${remainingStock}`
-      );
-      console.log(`  Needed per drink: ${ing.quantityNeeded}, Max drinks: ${maxForThisIngredient}`);
 
       this.ingredientUsageMap.set(ing.stockItemId, {
         stockItemId: ing.stockItemId,
@@ -214,25 +193,18 @@ export class AddOrderModal implements OnInit {
         usedInBasket: alreadyUsed,
       });
 
-      if (maxForThisIngredient < minMaxQuantity) {
-        minMaxQuantity = maxForThisIngredient;
-      }
+      if (maxForThisIngredient < minMaxQuantity) minMaxQuantity = maxForThisIngredient;
     });
 
     this.maxQuantity = Math.max(0, minMaxQuantity);
-    console.log(`FINAL Max quantity for this drink: ${this.maxQuantity}`);
-    console.log('================================');
   }
 
   onQuantityChange(newQuantity: number) {
+    this.updateMaxQuantity();
     if (newQuantity > this.maxQuantity) {
-      console.warn(`Cannot increase beyond ${this.maxQuantity} - insufficient stock`);
       this.quantity = this.maxQuantity;
       this.showStockLimitMessage();
-      return;
-    }
-
-    this.quantity = newQuantity;
+    } else this.quantity = newQuantity;
   }
 
   showStockLimitMessage() {
@@ -254,14 +226,8 @@ export class AddOrderModal implements OnInit {
 
   onAddonQuantityChange(addonName: string, newQuantity: number) {
     const addon = this.addons.find((a) => a.Name === addonName);
-    if (addon) {
-      if (newQuantity < addon.minQuantity) {
-        console.warn(`Cannot decrease ${addonName} below ${addon.minQuantity}`);
-        addon.Quantity = addon.minQuantity;
-        return;
-      }
-      addon.Quantity = newQuantity;
-    }
+    if (!addon) return;
+    addon.Quantity = Math.max(addon.minQuantity, newQuantity);
   }
 
   get sizePrice(): number {
@@ -273,13 +239,13 @@ export class AddOrderModal implements OnInit {
     const addonsTotal = this.addons
       .filter((a) => a.Quantity > 0)
       .reduce((sum, a) => sum + (a.Price ?? 0) * a.Quantity, 0);
-
     return (this.sizePrice + addonsTotal) * this.quantity;
   }
 
   addToOrder() {
+    this.updateMaxQuantity();
     if (this.quantity > this.maxQuantity) {
-      alert(`Cannot add more than ${this.maxQuantity} drinks`);
+      alert(`Cannot add ${this.quantity} drinks. Maximum allowed: ${this.maxQuantity}`);
       return;
     }
 
@@ -294,59 +260,30 @@ export class AddOrderModal implements OnInit {
 
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    // Try to find a matching order
-    const matchingOrder = existingOrders.find((order) => {
-      // Same drink & variant
-      if (
-        order.drinkID !== this.addOrderModal?.ProductId ||
-        order.productVariantId !== this.selectedVariantId
-      ) {
-        return false;
-      }
+    // ✅ NO MERGE LOGIC: just push
+    const orderItem: OrderItem = {
+      tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
+      drinkID: this.addOrderModal?.ProductId,
+      drinkName: this.addOrderModal?.DrinkName ?? '',
+      drinkCategory: this.addOrderModal?.DrinkCategory ?? '',
+      imageUrl: this.addOrderModal?.ImageUrl || '',
+      size: this.activeSize,
+      sizePrice: this.sizePrice,
+      quantity: this.quantity,
+      total: this.getTotal(),
+      addons: selectedAddons,
+      productVariantId: this.selectedVariantId,
+    };
+    existingOrders.push(orderItem);
 
-      // Same number of addons
-      if (order.addons.length !== selectedAddons.length) return false;
+    localStorage.setItem('lastOrderID', (orderItem.tempOrderID + 1).toString());
+    localStorage.setItem('orders', JSON.stringify(existingOrders));
 
-      // Compare addons by modifierId and quantity, ignoring order
-      const sortedExisting = [...order.addons].sort((a, b) => a.modifierId - b.modifierId);
-      const sortedNew = [...selectedAddons].sort((a, b) => a.modifierId - b.modifierId);
-
-      return sortedExisting.every(
-        (addon, idx) =>
-          addon.modifierId === sortedNew[idx].modifierId &&
-          addon.quantity === sortedNew[idx].quantity
-      );
-    });
-
-    if (matchingOrder) {
-      // Increment quantity of existing order
-      matchingOrder.quantity += this.quantity;
-      matchingOrder.total += this.getTotal();
-      matchingOrder.sizePrice = this.sizePrice; // optional, keep latest size price
-    } else {
-      // Create a new order item
-      const orderItem: OrderItem = {
-        tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
-        drinkID: this.addOrderModal?.ProductId,
-        drinkName: this.addOrderModal?.DrinkName ?? '',
-        drinkCategory: this.addOrderModal?.DrinkCategory ?? '',
-        imageUrl: this.addOrderModal?.ImageUrl || '',
-        size: this.activeSize,
-        sizePrice: this.sizePrice,
-        quantity: this.quantity,
-        total: this.getTotal(),
-        addons: selectedAddons,
-        productVariantId: this.selectedVariantId,
-      };
-
-      existingOrders.push(orderItem);
-
-      let lastID = orderItem.tempOrderID + 1;
-      localStorage.setItem('lastOrderID', lastID.toString());
-    }
-
-    localStorage.setItem('orders', JSON.stringify(existingOrders)); 
     window.dispatchEvent(new CustomEvent('ordersUpdated'));
+
+    // Refresh stock if needed
+    const event = new CustomEvent('refreshStock');
+    window.dispatchEvent(event);
 
     this.closeModal.emit();
   }

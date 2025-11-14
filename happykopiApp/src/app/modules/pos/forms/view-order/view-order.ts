@@ -58,16 +58,38 @@ export class ViewOrder implements OnInit {
   loadOrders() {
     const storedOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    this.orders = storedOrders.map((order) => ({
-      tempOrderID: order.tempOrderID,
-      Name: order.drinkName,
-      Size: order.size,
-      DrinkImage: order.imageUrl || '', // ✅ Load the image URL
-      Addons: order.addons.map((a) => ({ name: a.name, quantity: a.quantity })),
-      Subtotal: order.total,
-      DrinkQuantity: order.quantity,
-    }));
+    const mergedOrders: cartItemDto[] = [];
 
+    storedOrders.forEach((order) => {
+      const existingIndex = mergedOrders.findIndex(
+        (o) =>
+          o.Name === order.drinkName &&
+          this.areAddonsEqual(
+            o.Addons,
+            order.addons.map((a) => ({ name: a.name, quantity: a.quantity }))
+          )
+      );
+
+      const addonsMapped = order.addons.map((a) => ({ name: a.name, quantity: a.quantity }));
+
+      if (existingIndex >= 0) {
+        // merge qty
+        mergedOrders[existingIndex].DrinkQuantity += order.quantity;
+        mergedOrders[existingIndex].Subtotal += order.total;
+      } else {
+        mergedOrders.push({
+          tempOrderID: order.tempOrderID,
+          Name: order.drinkName,
+          Size: order.size,
+          DrinkImage: order.imageUrl || '',
+          Addons: addonsMapped,
+          Subtotal: order.total,
+          DrinkQuantity: order.quantity,
+        });
+      }
+    });
+
+    this.orders = mergedOrders;
     this.calculateTotal();
   }
 
@@ -78,6 +100,21 @@ export class ViewOrder implements OnInit {
   openEditModal(orderId: number) {
     this.selectedOrderId = orderId;
     this.showEditModal = true;
+  }
+
+  private areAddonsEqual(
+    a: { name: string; quantity: number }[],
+    b: { name: string; quantity: number }[]
+  ): boolean {
+    if (a.length !== b.length) return false;
+    // Sort both arrays by name to ensure order consistency
+    const sortedA = [...a].sort((x, y) => x.name.localeCompare(y.name));
+    const sortedB = [...b].sort((x, y) => x.name.localeCompare(y.name));
+
+    return sortedA.every(
+      (addon, index) =>
+        addon.name === sortedB[index].name && addon.quantity === sortedB[index].quantity
+    );
   }
 
   closeEditModal() {
@@ -159,7 +196,7 @@ export class ViewOrder implements OnInit {
         };
 
         localStorage.setItem('lastReceipt', JSON.stringify(receiptData));
-        
+
         this.router.navigate(['/app/orders/summary']);
 
         this.isProcessing = false;
