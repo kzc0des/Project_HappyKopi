@@ -125,41 +125,54 @@ export class AddOrderModal implements OnInit {
   calculateEffectiveMaxQuantity(): number {
     if (!this.productConfig) return 0;
 
+    // Get ALL ingredients for the selected variant (base + modifier ingredients)
     const variantIngredients = this.productConfig.ingredients.filter(
       (ing) => ing.productVariantId === this.selectedVariantId
     );
 
     if (variantIngredients.length === 0) return 999;
 
-    // Track used ingredients in all existing orders
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
     const usedIngredients = new Map<number, number>();
 
     existingOrders.forEach((order) => {
-      const ingList = this.productConfig!.ingredients.filter(
+      if (!order.drinkID) return;
+
+      // Get all ingredients for this order's variant
+      const orderIngredients = this.productConfig!.ingredients.filter(
         (ing) => ing.productVariantId === order.productVariantId
       );
-      ingList.forEach((ing) => {
+
+      orderIngredients.forEach((ing) => {
         const totalUsed = ing.quantityNeeded * order.quantity;
         const current = usedIngredients.get(ing.stockItemId) || 0;
         usedIngredients.set(ing.stockItemId, current + totalUsed);
       });
     });
 
-    // Compute max drinks per ingredient for this variant
+    // Compute max drinks per ingredient (checks BOTH base + modifier ingredients)
     const maxPerIngredient = variantIngredients.map((ing) => {
       const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
-      return Math.floor((ing.availableStock - alreadyUsed) / ing.quantityNeeded);
+      const remainingStock = ing.availableStock - alreadyUsed;
+      const maxDrinks = Math.floor(remainingStock / ing.quantityNeeded);
+
+      console.log(
+        `[${ing.isModifierIngredient ? 'MODIFIER' : 'BASE'}] ${ing.stockItemName}: ` +
+          `Available=${ing.availableStock}, Used=${alreadyUsed}, ` +
+          `Remaining=${remainingStock}, MaxDrinks=${maxDrinks}`
+      );
+
+      return maxDrinks;
     });
 
     return Math.max(0, Math.min(...maxPerIngredient));
   }
 
-  /** Updates the maxQuantity and ingredientUsageMap */
   updateMaxQuantity() {
     const variantIngredients = this.productConfig?.ingredients.filter(
       (ing) => ing.productVariantId === this.selectedVariantId
     );
+
     if (!variantIngredients || variantIngredients.length === 0) {
       this.maxQuantity = 999;
       return;
@@ -172,6 +185,7 @@ export class AddOrderModal implements OnInit {
       const ingList = this.productConfig!.ingredients.filter(
         (ing) => ing.productVariantId === order.productVariantId
       );
+
       ingList.forEach((ing) => {
         const totalUsed = ing.quantityNeeded * order.quantity;
         const current = usedIngredients.get(ing.stockItemId) || 0;
@@ -180,6 +194,7 @@ export class AddOrderModal implements OnInit {
     });
 
     let minMaxQuantity = 999;
+
     variantIngredients.forEach((ing) => {
       const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
       const remainingStock = ing.availableStock - alreadyUsed;
@@ -193,7 +208,9 @@ export class AddOrderModal implements OnInit {
         usedInBasket: alreadyUsed,
       });
 
-      if (maxForThisIngredient < minMaxQuantity) minMaxQuantity = maxForThisIngredient;
+      if (maxForThisIngredient < minMaxQuantity) {
+        minMaxQuantity = maxForThisIngredient;
+      }
     });
 
     this.maxQuantity = Math.max(0, minMaxQuantity);
@@ -260,7 +277,6 @@ export class AddOrderModal implements OnInit {
 
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    // ✅ NO MERGE LOGIC: just push
     const orderItem: OrderItem = {
       tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
       drinkID: this.addOrderModal?.ProductId,
@@ -281,7 +297,6 @@ export class AddOrderModal implements OnInit {
 
     window.dispatchEvent(new CustomEvent('ordersUpdated'));
 
-    // Refresh stock if needed
     const event = new CustomEvent('refreshStock');
     window.dispatchEvent(event);
 

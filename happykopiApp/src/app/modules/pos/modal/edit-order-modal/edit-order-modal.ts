@@ -149,6 +149,7 @@ export class EditOrderModal implements OnInit {
   calculateMaxQuantity() {
     if (!this.productConfig) return;
 
+    // Get ALL ingredients for selected variant (base + modifier)
     const variantIngredients = this.productConfig.ingredients.filter(
       (ing) => ing.productVariantId === this.selectedVariantId
     );
@@ -158,8 +159,7 @@ export class EditOrderModal implements OnInit {
       return;
     }
 
-    // Calculate how much of each ingredient is used in basket
-    // EXCLUDING the current order being edited
+    // Calculate used ingredients EXCLUDING current order being edited
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
     const usedIngredients = new Map<number, number>();
 
@@ -178,7 +178,7 @@ export class EditOrderModal implements OnInit {
       });
     });
 
-    // Calculate max quantity based on each ingredient
+    // Calculate max quantity based on EACH ingredient (base + modifier)
     let minMaxQuantity = 999;
 
     variantIngredients.forEach((ing) => {
@@ -186,8 +186,11 @@ export class EditOrderModal implements OnInit {
       const remainingStock = ing.availableStock - alreadyUsed;
       const maxForThisIngredient = Math.floor(remainingStock / ing.quantityNeeded);
 
-      console.log(`Ingredient: ${ing.stockItemName}`);
-      console.log(`  Available: ${ing.availableStock}, Used: ${alreadyUsed}, Remaining: ${remainingStock}`);
+      const ingredientType = ing.isModifierIngredient ? 'MODIFIER' : 'BASE';
+      console.log(`[${ingredientType}] ${ing.stockItemName}`);
+      console.log(
+        `  Available: ${ing.availableStock}, Used: ${alreadyUsed}, Remaining: ${remainingStock}`
+      );
       console.log(`  Needed per drink: ${ing.quantityNeeded}, Max drinks: ${maxForThisIngredient}`);
 
       this.ingredientUsageMap.set(ing.stockItemId, {
@@ -324,7 +327,7 @@ export class EditOrderModal implements OnInit {
 
       localStorage.setItem('orders', JSON.stringify(existingOrders));
       console.log('Order updated:', existingOrders[index]);
-      
+
       window.dispatchEvent(new CustomEvent('ordersUpdated'));
     }
 
@@ -336,7 +339,7 @@ export class EditOrderModal implements OnInit {
     existingOrders = existingOrders.filter((o) => o.tempOrderID !== this.orderId);
     localStorage.setItem('orders', JSON.stringify(existingOrders));
     console.log('Order deleted:', this.orderId);
-    
+
     window.dispatchEvent(new CustomEvent('ordersUpdated'));
     this.closeModal.emit();
   }
