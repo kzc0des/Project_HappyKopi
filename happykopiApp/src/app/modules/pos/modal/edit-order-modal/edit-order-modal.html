@@ -30,6 +30,7 @@
     <app-grande-active
       [sizeButton]="size"
       [isActive]="activeSize === size.SizeName"
+      [isDisabled]="!size.isAvailable"
       (selected)="selectSize(size)"
     ></app-grande-active>
     }

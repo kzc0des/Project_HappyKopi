@@ -176,10 +176,11 @@ export class Order implements OnInit {
   }
 
   onDrinkClicked(drink: ProductsWithCategoryDto): void {
-    const unavailableInfo = this.unavailableMap().get(drink.id);
     const effectivelyAvailable = this.isProductEffectivelyAvailable(drink.id);
 
-    if (unavailableInfo || !effectivelyAvailable) {
+    if (!effectivelyAvailable) {
+      // ALL variants are out of stock - show unavailable modal
+      const unavailableInfo = this.unavailableMap().get(drink.id);
       this.selectedUnavailableProduct.set({
         productName: drink.name,
         categoryName: drink.categoryName,
@@ -198,6 +199,7 @@ export class Order implements OnInit {
       });
       this.showUnavailableModal.set(true);
     } else {
+      // AT LEAST ONE variant is available - show add order modal
       this.selectedDrink.set({
         ProductId: drink.id,
         DrinkName: drink.name,
