@@ -6,6 +6,8 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { UserDto } from '../../../core/dtos/auth/user-dto';
 import { SidebarButton } from "../sidebar-button/sidebar-button";
+import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service'; // Import ConfirmationService
+import { LoadingService } from '../../../core/services/loading/loading.service'; // Import LoadingService
 
 @Component({
   selector: 'app-sidebar',
@@ -22,7 +24,13 @@ export class Sidebar implements OnDestroy{
 
   pages!:{page: string, route: string}[];
 
-  constructor(private sidebarService: SidebarService, private authService: AuthService, private router: Router) {
+  constructor(
+    private sidebarService: SidebarService,
+    private authService: AuthService,
+    private router: Router,
+    private confirmationService: ConfirmationService, // Inject ConfirmationService
+    private loadingService: LoadingService // Inject LoadingService
+  ) {
     this.isSidebarOpen$ = sidebarService.isSidebarOpen$;
     this.selectedPage = sidebarService.currentSelectedPage$;
     this.currentUser$ = authService.getCurrentUser$();
@@ -55,11 +63,24 @@ export class Sidebar implements OnDestroy{
     this.sidebarService.closeSidebar();
   }
 
-  logout() {
-    if (confirm("Are you sure you want to end your shift?")) {
-      this.authService.logout();
-      this.sidebarService.closeSidebar();
-      this.router.navigate(['/login']);
+  async logout() { // Make the method async to use await
+    const confirmed = await this.confirmationService.confirm(
+      'Confirm Sign Out',
+      'Are you sure you want to end your shift?',
+      'danger', // Using 'danger' type for a sign-out action
+      'Sign Out',
+      'Cancel'
+    );
+
+    if (confirmed) {
+      this.loadingService.show(); // Show loading spinner
+      try {
+        this.authService.logout();
+        this.sidebarService.closeSidebar();
+        await this.router.navigate(['/login']); // Use await for navigation
+      } finally {
+        this.loadingService.hide(); // Hide loading spinner regardless of success or failure
+      }
     }
   }
 
