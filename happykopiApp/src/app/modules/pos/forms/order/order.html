@@ -21,7 +21,7 @@
 
   <div class="bg-[#f0f0f0] w-full flex justify-center align-middle pt-[10px]">
     <app-search-drink
-      [allItems]="allDrinks()"
+      [allItems]="allDrinks()"  
       [searchProperties]="['name', 'categoryName']"
       [placeholder]="'Search drinks...'"
       (searchResults)="onSearchResults($event)"
@@ -34,7 +34,7 @@
     @for (drink of getUniqueDrinks(); track drink.id) {
     <app-order-card
       [orderCard]="drink"
-      [isUnavailable]="!isProductAvailable(drink.id)"
+      [isUnavailable]="!isProductEffectivelyAvailable(drink.id)"
       (cardClick)="onDrinkClicked(drink)"
     >
     </app-order-card>
