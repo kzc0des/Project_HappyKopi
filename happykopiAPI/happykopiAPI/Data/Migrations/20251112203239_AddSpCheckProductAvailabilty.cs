@@ -64,7 +64,7 @@ namespace happykopiAPI.Data.Migrations
                         pi.UnitOfMeasure,
                         ISNULL(SUM(
                             CASE 
-                                WHEN sib.ExpiryDate >= @CheckDate 
+                                WHEN (sib.ExpiryDate IS NULL OR sib.ExpiryDate >= @CheckDate)
                                      AND sib.DateUsed IS NULL 
                                      AND sib.StockQuantity > 0
                                 THEN sib.StockQuantity
@@ -72,7 +72,8 @@ namespace happykopiAPI.Data.Migrations
                             END
                         ), 0) AS AvailableStock,
                         COUNT(CASE 
-                            WHEN sib.ExpiryDate < @CheckDate 
+                            WHEN sib.ExpiryDate IS NOT NULL
+                                 AND sib.ExpiryDate < @CheckDate 
                                  AND sib.DateUsed IS NULL
                             THEN 1 
                         END) AS ExpiredBatchCount,

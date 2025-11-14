@@ -165,7 +165,7 @@ END;
             migrationBuilder.Sql(sp_CreateProductMain);
 
             var sp_CreateProductVariant = @"
-CREATE OR ALTER PROCEDURE sp_CreateProductVariant
+CREATE PROCEDURE sp_CreateProductVariant
     @ProductId INT,
     @SizeId INT,
     @Price DECIMAL(10, 2)

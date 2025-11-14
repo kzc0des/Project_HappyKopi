@@ -1,7 +1,6 @@
-// order-quick-view.component.ts
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router'; // ADD THIS
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { UndoRedoService } from '../../modal/services/undo-redo';
 
@@ -17,8 +16,12 @@ export interface oqvDto {
   templateUrl: './order-quick-view.html',
   styleUrl: './order-quick-view.css',
 })
-export class OrderQuickView implements OnInit, OnDestroy {
-  @Input() oqv!: oqvDto;
+export class OrderQuickView implements OnInit, OnDestroy { 
+  oqv: oqvDto = {
+    OrderNumber: 0,
+    OrderTotal: 0,
+    OrderQuantity: 0
+  };
 
   expanded = true;
   canUndo = false;
@@ -28,7 +31,7 @@ export class OrderQuickView implements OnInit, OnDestroy {
 
   constructor(
     private undoRedoService: UndoRedoService,
-    private router: Router // ADD THIS
+    private router: Router
   ) {}
 
   ngOnInit() {

@@ -6,6 +6,7 @@ import { TransactionIndividualCard } from "../../components/transaction-individu
 import { TransactionPaymentCard } from "../../components/transaction-payment-card/transaction-payment-card";
 import { TransactionListItemDto } from '../../../../core/dtos/transaction/transaction-list-item.dto';
 import { TransactionSummaryDto } from '../../../../core/dtos/transaction/transaction-summary.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transaction-home',
@@ -26,7 +27,6 @@ export class TransactionHome implements OnInit {
   cashTransactions: number = 0;
   gcashTotal: number = 0;
   gcashTransactions: number = 0;
-
   transactions: TransactionListItemDto[] = [];
   summary?: TransactionSummaryDto;
 
@@ -80,5 +80,11 @@ export class TransactionHome implements OnInit {
     const normalized = paymentMethod.toLowerCase();
     if (normalized === 'cash' || normalized === '0') return 'cash';
     return 'gcash';
+  }
+
+  constructor(private router: Router) {}
+
+  goToTransaction(id: number) {
+    this.router.navigate(['/transactions-individual', id]);
   }
 }
