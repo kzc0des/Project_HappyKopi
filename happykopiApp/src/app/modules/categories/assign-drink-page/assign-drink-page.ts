@@ -7,6 +7,7 @@ import { HeaderService } from '../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
 import { CategoryService } from '../services/category.service';
 import { LoadingService } from '../../../core/services/loading/loading.service';
+import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-assign-drink-page',
@@ -14,20 +15,21 @@ import { LoadingService } from '../../../core/services/loading/loading.service';
   templateUrl: './assign-drink-page.html',
   styleUrl: './assign-drink-page.css'
 })
-export class AssignDrinkPage implements OnInit, OnDestroy{
+export class AssignDrinkPage implements OnInit, OnDestroy {
   drinks: ProductWithCategoryNameDto[] = [];
   selectedDrinks: ProductWithCategoryNameDto[] = [];
   filteredDrinks: ProductWithCategoryNameDto[] = [];
   private categoryId!: number;
   private actionSubscription!: Subscription;
 
-  constructor (
+  constructor(
     private route: ActivatedRoute,
     private router: Router,
     private headerService: HeaderService,
     private categoryService: CategoryService,
-    private loadingService: LoadingService
-  ) {}
+    private loadingService: LoadingService,
+    private confirmationService: ConfirmationService
+  ) { }
 
   ngOnInit(): void {
     const datalist: ProductWithCategoryNameDto[] | null = this.route.snapshot.data['products'];
@@ -39,9 +41,19 @@ export class AssignDrinkPage implements OnInit, OnDestroy{
 
     this.categoryId = Number(this.route.snapshot.paramMap.get('categoryId'));
 
-    this.actionSubscription = this.headerService.action$.subscribe(action => {
+    this.actionSubscription = this.headerService.action$.subscribe(async action => {
       if (action === 'SAVE') {
-        this.saveAssignedDrinks();
+        const confirmedSave = await this.confirmationService.confirm(
+          'Confirm Save?',
+          `Are you sure you want to save these changes?`,
+          'primary',
+          'Add Item'
+        );
+        if (confirmedSave) {
+          this.saveAssignedDrinks();
+        }
+      } else if (action === 'BACK') {
+
       }
     });
   }
@@ -94,7 +106,8 @@ export class AssignDrinkPage implements OnInit, OnDestroy{
       next: () => {
         this.loadingService.hide();
         this.headerService.notifyItemAdded(true);
-        this.headerService.resetAction(); // I-reset muna ang action
+        this.headerService.resetAction();
+        this.router.navigate(['../'], { relativeTo: this.route, replaceUrl: true });
       },
       error: () => this.loadingService.hide()
     });
