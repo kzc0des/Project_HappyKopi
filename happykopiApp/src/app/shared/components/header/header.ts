@@ -234,6 +234,12 @@ export class Header implements OnInit, OnDestroy {
       this.showSaveButton = true;
     }
 
+    // Route: /app/category/:categoryId/create
+    else if (segments.includes('category') && segments.includes('create') && segments.length === 4) {
+      this.headerTitle = 'Create Drink';
+      this.showBackButton = true;
+    }
+
     /* orders routing */
     else if (segments.includes('orders') && segments.includes('cart') && segments.length === 3) {
       this.headerTitle = 'Your Cart';
