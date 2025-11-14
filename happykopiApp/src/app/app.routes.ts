@@ -272,6 +272,16 @@ export const routes: Routes = [
                         }
                     },
                     {
+                        path: ':categoryId/create',
+                        component: AddDrinkPage,
+                        resolve: {
+                            sizes: activeSizeResolver,
+                            categories: drinkCategoriesResolver,
+                            ingredients: powderAndLiquidsIngredientsResolver,
+                            addOns: activeAddonsResolver
+                        }
+                    },
+                    {
                         path: ':categoryId',
                         component: EditCategoryPage,
                         resolve: {

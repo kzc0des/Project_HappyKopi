@@ -33,8 +33,9 @@ export class EditCategoryPage implements OnInit {
   ) { }
 
   goToCreateDrink() {
-    this.router.navigate(['/create-drink-page'], {
-      state: { category: this.category }
+    this.router.navigate(['create'], {
+      state: { category: this.category },
+      relativeTo: this.route
     });
   }
 
