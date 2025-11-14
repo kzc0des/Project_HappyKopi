@@ -4,13 +4,12 @@ import {
   addonCardDto,
 } from '../../components/addon-card-active/addon-card-active';
 import { OrderQuantityModifier } from '../../components/order-quantity-modifier/order-quantity-modifier';
-import { GrandeActive, sizeButtonDto } from '../../components/grande-active/grande-active';
+import { GrandeActive } from '../../components/grande-active/grande-active';
 import { LongYellowButton } from '../../../../shared/components/long-yellow-button/long-yellow-button';
 import { CurrencyPipe } from '@angular/common';
 import { OrderService } from '../../services/order.service';
 import { Addon, OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
-import { UndoRedoService } from '../services/undo-redo';
 
 export interface addOrderModalDto {
   ProductId: number;
@@ -33,6 +32,13 @@ interface IngredientUsage {
   usedInBasket: number;
 }
 
+interface SizeWithAvailability {
+  SizeName: string;
+  SizeQuantity: number;
+  isAvailable: boolean;
+  maxQuantityForSize: number;
+}
+
 @Component({
   selector: 'app-add-order-modal',
   imports: [AddonCardActive, OrderQuantityModifier, GrandeActive, LongYellowButton, CurrencyPipe],
@@ -43,7 +49,7 @@ export class AddOrderModal implements OnInit {
   @Input() addOrderModal?: addOrderModalDto;
   @Output() closeModal = new EventEmitter<void>();
 
-  sizes: sizeButtonDto[] = [];
+  sizes: SizeWithAvailability[] = [];
   addons: AddonWithConfig[] = [];
   activeSize: string = '';
   selectedVariantId: number = 0;
@@ -53,7 +59,7 @@ export class AddOrderModal implements OnInit {
   productConfig?: ProductConfigurationResultDto;
   ingredientUsageMap: Map<number, IngredientUsage> = new Map();
 
-  constructor(private orderService: OrderService, private undoRedoService: UndoRedoService) {}
+  constructor(private orderService: OrderService) {}
 
   ngOnInit() {
     this.addOrderModal = {
@@ -75,12 +81,35 @@ export class AddOrderModal implements OnInit {
         this.productConfig = config as ProductConfigurationResultDto;
 
         if (config.variants && config.variants.length > 0) {
-          this.sizes = config.variants.map((v: any) => ({
-            SizeName: v.sizeName,
-            SizeQuantity: v.price,
-          }));
-          this.activeSize = this.sizes[0].SizeName;
-          this.selectedVariantId = config.variants[0].id;
+          // Check availability for each size/variant
+          this.sizes = config.variants.map((v: any) => {
+            const variantId = v.id;
+            const sizeAvailability = this.checkVariantAvailability(variantId);
+
+            return {
+              SizeName: v.sizeName,
+              SizeQuantity: v.price,
+              isAvailable: sizeAvailability.isAvailable,
+              maxQuantityForSize: sizeAvailability.maxQuantity,
+            };
+          });
+
+          // Select first AVAILABLE size
+          const firstAvailableSize = this.sizes.find((s) => s.isAvailable);
+          if (firstAvailableSize) {
+            this.activeSize = firstAvailableSize.SizeName;
+            const variant = config.variants.find(
+              (v: any) => v.sizeName === firstAvailableSize.SizeName
+            );
+            if (variant) {
+              this.selectedVariantId = variant.id;
+            }
+          } else {
+            // No sizes available - close modal
+            alert('This product is currently unavailable in all sizes.');
+            this.closeModal.emit();
+            return;
+          }
 
           this.loadAddonsForVariant(this.selectedVariantId);
           this.updateMaxQuantity();
@@ -88,6 +117,45 @@ export class AddOrderModal implements OnInit {
       },
       error: (err) => console.error('API Error:', err),
     });
+  }
+
+  checkVariantAvailability(variantId: number): { isAvailable: boolean; maxQuantity: number } {
+    if (!this.productConfig) return { isAvailable: false, maxQuantity: 0 };
+
+    const variantIngredients = this.productConfig.ingredients.filter(
+      (ing) => ing.productVariantId === variantId
+    );
+
+    if (variantIngredients.length === 0) return { isAvailable: true, maxQuantity: 999 };
+
+    // Calculate used ingredients in basket
+    const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
+    const usedIngredients = new Map<number, number>();
+
+    existingOrders.forEach((order) => {
+      if (!order.drinkID) return;
+      const orderIngredients = this.productConfig!.ingredients.filter(
+        (ing) => ing.productVariantId === order.productVariantId
+      );
+      orderIngredients.forEach((ing) => {
+        const totalUsed = ing.quantityNeeded * order.quantity;
+        const current = usedIngredients.get(ing.stockItemId) || 0;
+        usedIngredients.set(ing.stockItemId, current + totalUsed);
+      });
+    });
+
+    // Check if this variant has enough stock
+    const maxPerIngredient = variantIngredients.map((ing) => {
+      const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
+      const remainingStock = ing.availableStock - alreadyUsed;
+      return Math.floor(remainingStock / ing.quantityNeeded);
+    });
+
+    const maxQuantity = Math.max(0, Math.min(...maxPerIngredient));
+    return {
+      isAvailable: maxQuantity > 0,
+      maxQuantity: maxQuantity,
+    };
   }
 
   loadAddonsForVariant(variantId: number) {
@@ -110,7 +178,13 @@ export class AddOrderModal implements OnInit {
     });
   }
 
-  selectSize(size: sizeButtonDto) {
+  selectSize(size: SizeWithAvailability) {
+    // Prevent selecting unavailable sizes
+    if (!size.isAvailable) {
+      alert(`${size.SizeName} is currently unavailable due to insufficient stock.`);
+      return;
+    }
+
     this.activeSize = size.SizeName;
     const variant = this.productConfig?.variants.find((v) => v.sizeName === size.SizeName);
     if (variant) {
@@ -121,45 +195,11 @@ export class AddOrderModal implements OnInit {
     }
   }
 
-  /** Compute the max quantity allowed for this drink based on all orders in cart */
-  calculateEffectiveMaxQuantity(): number {
-    if (!this.productConfig) return 0;
-
-    const variantIngredients = this.productConfig.ingredients.filter(
-      (ing) => ing.productVariantId === this.selectedVariantId
-    );
-
-    if (variantIngredients.length === 0) return 999;
-
-    // Track used ingredients in all existing orders
-    const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
-    const usedIngredients = new Map<number, number>();
-
-    existingOrders.forEach((order) => {
-      const ingList = this.productConfig!.ingredients.filter(
-        (ing) => ing.productVariantId === order.productVariantId
-      );
-      ingList.forEach((ing) => {
-        const totalUsed = ing.quantityNeeded * order.quantity;
-        const current = usedIngredients.get(ing.stockItemId) || 0;
-        usedIngredients.set(ing.stockItemId, current + totalUsed);
-      });
-    });
-
-    // Compute max drinks per ingredient for this variant
-    const maxPerIngredient = variantIngredients.map((ing) => {
-      const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
-      return Math.floor((ing.availableStock - alreadyUsed) / ing.quantityNeeded);
-    });
-
-    return Math.max(0, Math.min(...maxPerIngredient));
-  }
-
-  /** Updates the maxQuantity and ingredientUsageMap */
   updateMaxQuantity() {
     const variantIngredients = this.productConfig?.ingredients.filter(
       (ing) => ing.productVariantId === this.selectedVariantId
     );
+
     if (!variantIngredients || variantIngredients.length === 0) {
       this.maxQuantity = 999;
       return;
@@ -172,6 +212,7 @@ export class AddOrderModal implements OnInit {
       const ingList = this.productConfig!.ingredients.filter(
         (ing) => ing.productVariantId === order.productVariantId
       );
+
       ingList.forEach((ing) => {
         const totalUsed = ing.quantityNeeded * order.quantity;
         const current = usedIngredients.get(ing.stockItemId) || 0;
@@ -180,6 +221,7 @@ export class AddOrderModal implements OnInit {
     });
 
     let minMaxQuantity = 999;
+
     variantIngredients.forEach((ing) => {
       const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
       const remainingStock = ing.availableStock - alreadyUsed;
@@ -193,7 +235,9 @@ export class AddOrderModal implements OnInit {
         usedInBasket: alreadyUsed,
       });
 
-      if (maxForThisIngredient < minMaxQuantity) minMaxQuantity = maxForThisIngredient;
+      if (maxForThisIngredient < minMaxQuantity) {
+        minMaxQuantity = maxForThisIngredient;
+      }
     });
 
     this.maxQuantity = Math.max(0, minMaxQuantity);
@@ -260,7 +304,6 @@ export class AddOrderModal implements OnInit {
 
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    // ✅ NO MERGE LOGIC: just push
     const orderItem: OrderItem = {
       tempOrderID: Number(localStorage.getItem('lastOrderID') || '0'),
       drinkID: this.addOrderModal?.ProductId,
@@ -281,7 +324,6 @@ export class AddOrderModal implements OnInit {
 
     window.dispatchEvent(new CustomEvent('ordersUpdated'));
 
-    // Refresh stock if needed
     const event = new CustomEvent('refreshStock');
     window.dispatchEvent(event);
 

@@ -25,6 +25,7 @@ export class ViewOrder implements OnInit {
   orders: cartItemDto[] = [];
   showEditModal = false;
   selectedOrderId: number | null = null;
+  selectedMergedOrder: cartItemDto | null = null;
   isProcessing = false;
 
   currentUser: UserDto | null = null;
@@ -40,6 +41,11 @@ export class ViewOrder implements OnInit {
   ngOnInit() {
     this.loadCurrentUser();
     this.loadOrders();
+
+    // Listen for orders updated event
+    window.addEventListener('ordersUpdated', () => {
+      this.loadOrders();
+    });
   }
 
   private loadCurrentUser() {
@@ -58,12 +64,19 @@ export class ViewOrder implements OnInit {
   loadOrders() {
     const storedOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
 
+    // FIXED: Clean the orders by removing addons with quantity 0
+    const cleanedOrders = storedOrders.map((order) => ({
+      ...order,
+      addons: order.addons.filter((addon) => addon.quantity > 0), // Remove zero quantity addons
+    }));
+
     const mergedOrders: cartItemDto[] = [];
 
-    storedOrders.forEach((order) => {
+    cleanedOrders.forEach((order) => {
       const existingIndex = mergedOrders.findIndex(
         (o) =>
           o.Name === order.drinkName &&
+          o.Size === order.size &&
           this.areAddonsEqual(
             o.Addons,
             order.addons.map((a) => ({ name: a.name, quantity: a.quantity }))
@@ -73,12 +86,12 @@ export class ViewOrder implements OnInit {
       const addonsMapped = order.addons.map((a) => ({ name: a.name, quantity: a.quantity }));
 
       if (existingIndex >= 0) {
-        // merge qty
+        // Merge quantities and subtotals
         mergedOrders[existingIndex].DrinkQuantity += order.quantity;
         mergedOrders[existingIndex].Subtotal += order.total;
       } else {
         mergedOrders.push({
-          tempOrderID: order.tempOrderID,
+          tempOrderID: order.tempOrderID, // Keep original ID
           Name: order.drinkName,
           Size: order.size,
           DrinkImage: order.imageUrl || '',
@@ -91,23 +104,33 @@ export class ViewOrder implements OnInit {
 
     this.orders = mergedOrders;
     this.calculateTotal();
+
+    // FIXED: Update localStorage with cleaned orders (optional)
+    localStorage.setItem('orders', JSON.stringify(cleanedOrders));
   }
 
   calculateTotal() {
     this.total = this.orders.reduce((sum, order) => sum + order.Subtotal, 0);
   }
 
-  openEditModal(orderId: number) {
-    this.selectedOrderId = orderId;
-    this.showEditModal = true;
+  openEditModal(mergedOrderId: number) {
+    // Find the merged order that's being edited
+    const mergedOrder = this.orders.find((order) => order.tempOrderID === mergedOrderId);
+
+    if (mergedOrder) {
+      this.selectedMergedOrder = mergedOrder;
+      this.selectedOrderId = mergedOrderId;
+      this.showEditModal = true;
+    }
   }
 
   private areAddonsEqual(
     a: { name: string; quantity: number }[],
     b: { name: string; quantity: number }[]
   ): boolean {
+    // Since we already filtered out zero quantity addons, we can do direct comparison
     if (a.length !== b.length) return false;
-    // Sort both arrays by name to ensure order consistency
+
     const sortedA = [...a].sort((x, y) => x.name.localeCompare(y.name));
     const sortedB = [...b].sort((x, y) => x.name.localeCompare(y.name));
 
@@ -120,6 +143,7 @@ export class ViewOrder implements OnInit {
   closeEditModal() {
     this.showEditModal = false;
     this.selectedOrderId = null;
+    this.selectedMergedOrder = null;
     this.loadOrders();
   }
 
@@ -206,42 +230,6 @@ export class ViewOrder implements OnInit {
         this.isProcessing = false;
       },
     });
-  }
-
-  private printReceipt(orderRequest: NewOrderRequestDto, storedOrders: OrderItem[]) {
-    const now = new Date();
-
-    console.log('\n═══════════════════════════════════════════');
-    console.log('           HAPPYKOPI RECEIPT               ');
-    console.log('═══════════════════════════════════════════');
-    console.log('BARISTA:', this.currentBaristaName || 'Unknown');
-    console.log('DATE:', now.toLocaleDateString('en-PH'));
-    console.log('TIME:', now.toLocaleTimeString('en-PH'));
-    console.log('PAYMENT:', orderRequest.paymentType);
-    if (orderRequest.referenceNumber) console.log('REF #:', orderRequest.referenceNumber);
-
-    storedOrders.forEach((order, i) => {
-      console.log(`\n${i + 1}. ${order.drinkName} (${order.size})`);
-      console.log(
-        `   Qty: ${order.quantity} x ₱${order.sizePrice} = ₱${(
-          order.sizePrice * order.quantity
-        ).toFixed(2)}`
-      );
-      if (order.addons.length > 0) {
-        order.addons.forEach((addon) => {
-          console.log(
-            `   + ${addon.name} x${addon.quantity} (₱${addon.price}) = ₱${(
-              addon.price * addon.quantity
-            ).toFixed(2)}`
-          );
-        });
-      }
-      console.log(`   TOTAL: ₱${order.total.toFixed(2)}`);
-    });
-
-    console.log('\n───────────────────────────────────────────');
-    console.log('TOTAL:', '₱' + orderRequest.totalAmount.toFixed(2));
-    console.log('═══════════════════════════════════════════\n');
   }
 
   clearOrders() {

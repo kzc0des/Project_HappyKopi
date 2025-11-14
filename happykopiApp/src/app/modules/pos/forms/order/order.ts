@@ -94,37 +94,56 @@ export class Order implements OnInit {
   }
 
   isProductEffectivelyAvailable(drinkId: number): boolean {
-    // Get the product configuration safely
     const productConfig = this.allProductConfigs.get(drinkId);
-    if (!productConfig) return false; // If we can't find it, consider unavailable
+    if (!productConfig) return false;
 
-    // Get all orders from localStorage
     const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
- 
     const usedIngredients = new Map<number, number>();
 
     existingOrders.forEach((order) => {
-      if (order.drinkID === undefined) return; 
+      if (order.drinkID === undefined) return;
       const config = this.allProductConfigs.get(order.drinkID);
-      if (!config) return; 
-      config.ingredients.forEach((ing) => {
+      if (!config) return;
+
+      // Get ingredients for this order's variant (includes both base + modifier ingredients)
+      const orderIngredients = config.ingredients.filter(
+        (ing) => ing.productVariantId === order.productVariantId
+      );
+
+      orderIngredients.forEach((ing) => {
         const totalUsed = ing.quantityNeeded * order.quantity;
         const current = usedIngredients.get(ing.stockItemId) || 0;
         usedIngredients.set(ing.stockItemId, current + totalUsed);
       });
     });
- 
-    const variantIngredients = productConfig.ingredients; 
-    for (const ing of variantIngredients) {
-      const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
-      const remainingStock = ing.availableStock - alreadyUsed;
 
-      if (remainingStock < ing.quantityNeeded) { 
-        return false;
+    // Check ALL ingredients for the product (base + modifier for each variant)
+    const allVariantIngredients = productConfig.ingredients;
+
+    // Group by variant and check if at least one variant is available
+    const variantIds = [...new Set(allVariantIngredients.map((ing) => ing.productVariantId))];
+
+    for (const variantId of variantIds) {
+      const variantIngredients = allVariantIngredients.filter(
+        (ing) => ing.productVariantId === variantId
+      );
+
+      let variantAvailable = true;
+      for (const ing of variantIngredients) {
+        const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
+        const remainingStock = ing.availableStock - alreadyUsed;
+
+        if (remainingStock < ing.quantityNeeded) {
+          variantAvailable = false;
+          break;
+        }
       }
+
+      // If at least one variant is available, product is available
+      if (variantAvailable) return true;
     }
 
-    return true;  
+    return false;
   }
 
   selectCategory(category: CategoryWithProductCountDto) {
@@ -132,8 +151,8 @@ export class Order implements OnInit {
 
     this.orderService.getProductsWithAvailability(category.id).subscribe({
       next: ({ products, unavailableMap }) => {
-        this.allDrinks.set(products); 
-        this.drinks.set(products);  
+        this.allDrinks.set(products);
+        this.drinks.set(products);
         this.unavailableMap.set(unavailableMap);
       },
       error: (err) => console.error(err),
@@ -157,10 +176,11 @@ export class Order implements OnInit {
   }
 
   onDrinkClicked(drink: ProductsWithCategoryDto): void {
-    const unavailableInfo = this.unavailableMap().get(drink.id);
     const effectivelyAvailable = this.isProductEffectivelyAvailable(drink.id);
 
-    if (unavailableInfo || !effectivelyAvailable) { 
+    if (!effectivelyAvailable) {
+      // ALL variants are out of stock - show unavailable modal
+      const unavailableInfo = this.unavailableMap().get(drink.id);
       this.selectedUnavailableProduct.set({
         productName: drink.name,
         categoryName: drink.categoryName,
@@ -178,7 +198,8 @@ export class Order implements OnInit {
           } as UnavailableProductDto),
       });
       this.showUnavailableModal.set(true);
-    } else { 
+    } else {
+      // AT LEAST ONE variant is available - show add order modal
       this.selectedDrink.set({
         ProductId: drink.id,
         DrinkName: drink.name,
