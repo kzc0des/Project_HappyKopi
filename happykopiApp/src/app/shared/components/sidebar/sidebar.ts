@@ -28,8 +28,8 @@ export class Sidebar implements OnDestroy{
     private sidebarService: SidebarService,
     private authService: AuthService,
     private router: Router,
-    private confirmationService: ConfirmationService, // Inject ConfirmationService
-    private loadingService: LoadingService // Inject LoadingService
+    private confirmationService: ConfirmationService, 
+    private loadingService: LoadingService 
   ) {
     this.isSidebarOpen$ = sidebarService.isSidebarOpen$;
     this.selectedPage = sidebarService.currentSelectedPage$;
@@ -63,23 +63,24 @@ export class Sidebar implements OnDestroy{
     this.sidebarService.closeSidebar();
   }
 
-  async logout() { // Make the method async to use await
+  async logout() { 
+    this.sidebarService.closeSidebar(); 
+
     const confirmed = await this.confirmationService.confirm(
       'Confirm Sign Out',
       'Are you sure you want to end your shift?',
-      'danger', // Using 'danger' type for a sign-out action
+      'danger', 
       'Sign Out',
       'Cancel'
     );
 
     if (confirmed) {
-      this.loadingService.show(); // Show loading spinner
+      this.loadingService.show(); 
       try {
         this.authService.logout();
-        this.sidebarService.closeSidebar();
-        await this.router.navigate(['/login']); // Use await for navigation
+        await this.router.navigate(['/login']); 
       } finally {
-        this.loadingService.hide(); // Hide loading spinner regardless of success or failure
+        this.loadingService.hide();
       }
     }
   }
