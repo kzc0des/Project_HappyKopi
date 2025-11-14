@@ -2,6 +2,6 @@ export interface TransactionListItemDto {
   orderId: string;
   baristaName: string;
   transactionDate: Date;
-  total: number;
+  totalAmount: number;
   paymentMethod: string;
 }

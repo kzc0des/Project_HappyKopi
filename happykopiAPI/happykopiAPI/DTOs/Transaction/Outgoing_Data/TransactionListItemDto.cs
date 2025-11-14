@@ -8,6 +8,6 @@ namespace happykopiAPI.DTOs.Transaction.Outgoing_Data
         public string BaristaName { get; set; }
         public DateTime TransactionDate { get; set; }
         public decimal TotalAmount { get; set; }
-        public PaymentType PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; }
     }
 }

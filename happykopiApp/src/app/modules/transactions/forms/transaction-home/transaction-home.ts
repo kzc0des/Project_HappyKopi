@@ -49,17 +49,19 @@ export class TransactionHome implements OnInit {
         ).length;
 
         this.cashTotal = this.transactions
-          .filter(t => this.getPaymentTypeFlag(t.paymentMethod) === 'cash')
-          .reduce((sum, t) => sum + t.total, 0);
+        .filter(t => this.getPaymentTypeFlag(t.paymentMethod) === 'cash')
+        .reduce((sum, t) => sum + (t.totalAmount ?? 0), 0);
 
         this.gcashTotal = this.transactions
           .filter(t => this.getPaymentTypeFlag(t.paymentMethod) === 'gcash')
-          .reduce((sum, t) => sum + t.total, 0);
+          .reduce((sum, t) => sum + (t.totalAmount ?? 0), 0);
 
         console.log("Cash transactions:", this.cashTransactions);
         console.log("G-Cash transactions:", this.gcashTransactions);
         console.log("Cash Total:", this.cashTotal);
         console.log("G-Cash Total:", this.gcashTotal);
+        console.log("Cash totals:", this.transactions.map(t => t.totalAmount));
+        console.log("CashTotal:", this.cashTotal);
       },
       error: (err) => console.error('Error loading transaction history:', err)
     });
@@ -84,7 +86,6 @@ export class TransactionHome implements OnInit {
     if (normalized === 'cash' || normalized === '0') return 'cash';
     return 'gcash';
   }
-
 
   constructor(private router: Router) {}
 

@@ -7,7 +7,7 @@ namespace happykopiAPI.DTOs.Transaction.Outgoing_Data
         public string OrderId { get; set; }
         public decimal Total { get; set; }
         public DateTime TransactionDate { get; set; }
-        public PaymentType PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; }
         public string BaristaName { get; set; }
         public List<TransactionItemDto> Items { get; set; }
     }

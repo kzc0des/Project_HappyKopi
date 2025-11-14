@@ -36,7 +36,6 @@ export class TransactionIndividual implements OnInit {
   private loadTransaction(id: string): void {
   this.transactionsService.getTransactionDetails(+id).subscribe({
     next: (details: TransactionDetailsDto) => {
-      // Compute subtotal for each item
       const itemsWithSubtotal = details.items.map(item => ({
         ...item,
         subtotal: item.price * item.quantity
@@ -47,12 +46,10 @@ export class TransactionIndividual implements OnInit {
         items: itemsWithSubtotal
       };
 
-      // Get payment method
       this.transactionsService.getTransactionHistoryToday().subscribe({
             next: (list: TransactionListItemDto[]) => {
               const match = list.find(t => t.orderId === details.orderId);
               if (match) {
-                // Normalize paymentMethod to string first, then map to 'cash' | 'gcash'
                 const payment = String(match.paymentMethod);
                 this.paymentMethodTran.paymentMethod = payment === '0' ? 'cash' : 'gcash';
               }

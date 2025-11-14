@@ -1,5 +1,6 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionListItemDto } from '../../../../core/dtos/transaction/transaction-list-item.dto';
 
 @Component({
@@ -13,8 +14,13 @@ export class TransactionPaymentCard {
   @Input() paymentMethod: 'cash' | 'gcash' = 'gcash';
   @Input() transactionPayment!: TransactionListItemDto;
 
-  @Output() cardClick = new EventEmitter<number>();
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute 
+  ) {}
+
   onClick() {
-    this.cardClick.emit(Number(this.transactionPayment.orderId));
+    const id = this.transactionPayment.orderId;
+    this.router.navigate(['/app/transactions', id]);
   }
 }
