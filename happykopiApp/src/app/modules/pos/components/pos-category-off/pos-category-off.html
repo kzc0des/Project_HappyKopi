@@ -1,18 +1,20 @@
-<div class="relative font-[Outfit] py-5 pr-16 pl-6 sm:p-5 xs:p-4">
+<div
+  class="relative font-[Outfit] py-5 pr-16 pl-6 sm:py-4 sm:pr-12 sm:pl-5 xs:py-3 xs:pr-10 xs:pl-4"
+>
   <!-- ACTIVE STATE -->
   @if (mode === 'active') {
   <!-- Card Background -->
   <div
-    class="absolute inset-0 bg-[#FFFBF2] border-2 border-[#F3B72C] rounded-[16px] sm:rounded-[12px] xs:rounded-[10px]"
+    class="absolute inset-0 bg-[#FFFBF2] border-2 border-[#F3B72C] rounded-[16px] sm:rounded-[12px] xs:rounded-[10px] transition-all duration-200"
   ></div>
 
   <!-- Icon -->
   <div
-    class="relative mb-4 sm:mb-2.5 xs:mb-2 w-[40px] h-[40px] sm:w-[40px] sm:h-[40px] xs:w-[35px] xs:h-[35px] bg-[#F3B72C] rounded-full flex justify-center items-center"
+    class="relative mb-4 sm:mb-3 xs:mb-2 w-[40px] h-[40px] sm:w-[36px] sm:h-[36px] xs:w-[32px] xs:h-[32px] bg-[#F3B72C] rounded-full flex justify-center items-center transition-all duration-200 flex-shrink-0"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-4 h-6 sm:w-3.5 sm:h-5 xs:w-3 xs:h-4"
+      class="w-4 h-6 sm:w-[14px] sm:h-[22px] xs:w-3 xs:h-5"
       fill="none"
       viewBox="0 0 18 26"
     >
@@ -37,12 +39,14 @@
   </div>
 
   <!-- Title -->
-  <div class="relative text-[#F3B72C] text-[18px] sm:text-[18px] xs:text-[16px] font-bold">
+  <div
+    class="relative text-[#F3B72C] text-[18px] sm:text-[16px] xs:text-[14px] font-bold leading-tight mb-1 truncate overflow-hidden"
+  >
     {{ categoryCard.name }}
   </div>
 
   <!-- Subtitle -->
-  <div class="relative text-[#777777] text-[14px] sm:text-[14px] xs:text-[12px] font-normal">
+  <div class="relative text-[#777777] text-[14px] sm:text-[13px] xs:text-[11px] font-normal">
     {{ categoryCard.productCount }} Drinks
   </div>
   }
@@ -51,16 +55,16 @@
   @else if (mode === 'inactive') {
   <!-- Card Background -->
   <div
-    class="absolute inset-0 bg-[#FAFAFA] rounded-[16px] sm:rounded-[12px] xs:rounded-[10px]"
+    class="absolute inset-0 bg-[#FAFAFA] rounded-[16px] sm:rounded-[12px] xs:rounded-[10px] transition-all duration-200"
   ></div>
 
   <!-- Icon -->
   <div
-    class="relative mb-4 sm:mb-2.5 xs:mb-2 w-[40px] h-[40px] sm:w-[40px] sm:h-[40px] xs:w-[35px] xs:h-[35px] bg-[#F0F0F0] rounded-full flex justify-center items-center"
+    class="relative mb-4 sm:mb-3 xs:mb-2 w-[40px] h-[40px] sm:w-[36px] sm:h-[36px] xs:w-[32px] xs:h-[32px] bg-[#F0F0F0] rounded-full flex justify-center items-center transition-all duration-200 flex-shrink-0"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-4 h-6 sm:w-3.5 sm:h-5 xs:w-3 xs:h-4"
+      class="w-4 h-6 sm:w-[14px] sm:h-[22px] xs:w-3 xs:h-5"
       fill="none"
       viewBox="0 0 18 26"
     >
@@ -87,12 +91,14 @@
   </div>
 
   <!-- Title -->
-  <div class="relative text-[#282828] text-[18px] sm:text-[18px] xs:text-[16px] font-bold">
+  <div
+    class="relative text-[#282828] text-[18px] sm:text-[16px] xs:text-[14px] font-bold leading-tight mb-1 truncate overflow-hidden"
+  >
     {{ categoryCard.name }}
   </div>
 
   <!-- Subtitle -->
-  <div class="relative text-[#777777] text-[14px] sm:text-[14px] xs:text-[12px] font-normal">
+  <div class="relative text-[#777777] text-[14px] sm:text-[13px] xs:text-[11px] font-normal">
     {{ categoryCard.productCount }} Drinks
   </div>
   }

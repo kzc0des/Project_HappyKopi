@@ -4,9 +4,16 @@ import { CategoryWithProductCountDto } from '../../../../core/dtos/order/categor
 @Component({
   selector: 'app-pos-category-off',
   templateUrl: './pos-category-off.html',
-  styleUrls: ['./pos-category-off.css']
+  styleUrls: ['./pos-category-off.css'],
 })
 export class PosCategoryOff {
   @Input() mode: 'active' | 'inactive' = 'inactive';
   @Input() categoryCard!: CategoryWithProductCountDto;
+
+  truncateName(name: string, maxLength: number = 25): string {
+    if (name.length <= maxLength) {
+      return name;
+    }
+    return name.substring(0, maxLength) + '...';
+  }
 }

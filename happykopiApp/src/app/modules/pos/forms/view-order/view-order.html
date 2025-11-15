@@ -30,7 +30,7 @@
 
     <!-- Buttons -->
     <div class="flex flex-col gap-3">
-      <app-long-yellow-button
+      <app-long-yellow-button 
         buttonSize="long"
         buttonTitle="Charge using Cash"
         (click)="chargeWithCash()"
@@ -38,6 +38,7 @@
       ></app-long-yellow-button>
 
       <app-long-yellow-button
+        buttonType="gcash"
         buttonSize="long"
         buttonTitle="Charge using G-Cash"
         (click)="chargeWithGCash()"
