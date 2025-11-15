@@ -67,6 +67,7 @@ export class CategoriesListPageEdit implements OnInit, OnDestroy {
   toggleView(): void {
     this.showInactive = !this.showInactive;
     this.headerService.setArchivedViewStatus(this.showInactive);
+    this.headerService.updateTitle(this.showInactive ? 'Archived Categories' : 'Categories');
     this.loadCategories();
   }
 }

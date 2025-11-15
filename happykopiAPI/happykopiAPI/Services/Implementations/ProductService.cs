@@ -281,6 +281,7 @@ namespace happykopiAPI.Services.Implementations
             using var connection = CreateConnection();
             var parameters = new { ProductId = productId };
             await connection.ExecuteAsync("sp_DeleteProduct", parameters, commandType: CommandType.StoredProcedure);
+            await _notificationService.NotifyProductsUpdatedAsync();
         }
 
         public async Task<bool> RestoreProductAsync(int productId)

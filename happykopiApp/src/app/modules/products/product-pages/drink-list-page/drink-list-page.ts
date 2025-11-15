@@ -84,8 +84,6 @@ export class DrinkListPage implements OnInit, OnDestroy {
       this.filteredDrinks = products; // Initialize filtered list
       if (categoryId && products.length > 0) {
         this.currentCategoryName = products[0].categoryName;
-      } else if (this.showInactive) {
-        this.currentCategoryName = 'Archived Drinks';
       } else {
         this.currentCategoryName = 'All Drinks';
       }
@@ -95,6 +93,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
   toggleView(): void {
     this.showInactive = !this.showInactive;
     this.headerService.setArchivedViewStatus(this.showInactive);
+    this.headerService.updateTitle(this.showInactive ? 'Archived Products' : 'Products');
     const categoryId = this.route.snapshot.queryParams['categoryId'];
     this.loadProducts(categoryId);
   }

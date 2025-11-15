@@ -26,6 +26,9 @@ export class HeaderService {
   private isArchivedViewStatusSource = new BehaviorSubject<boolean>(false);
   isArchivedViewStatus$ = this.isArchivedViewStatusSource.asObservable();
   // --- END: ADDED FOR ARCHIVE TOGGLE ---
+
+  private titleSource = new Subject<string>();
+  title$ = this.titleSource.asObservable();
   private changedInputs = new Set<string>();
 
   emitAction(action: HeaderAction): void {
@@ -73,4 +76,8 @@ export class HeaderService {
     this.isArchivedViewStatusSource.next(isArchived);
   }
   // --- END: ADDED FOR ARCHIVE TOGGLE ---
+
+  updateTitle(title: string) {
+    this.titleSource.next(title);
+  }
 }
