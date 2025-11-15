@@ -93,6 +93,19 @@ export class Header implements OnInit, OnDestroy {
       this.isArchivedView = status;
     });
 
+    this.headerActionSubscription = this.headerActionService.action$.subscribe(action => {
+      if (action === 'SHOW_RESTORE') {
+        this.showRestoreButton = true;
+        this.showEditButton = false; // Itago ang edit button kung restore ang option
+        this.showSaveButton = false;
+        this.showDeleteButton = false;
+      } else if (action === 'HIDE_RESTORE') {
+        this.showRestoreButton = false;
+      } else if (action === 'EDIT') {
+        this.showRestoreButton = false; // Itago ang restore kapag nag-edit
+      }
+    });
+
     console.log(`show back button state: ${this.showBackButton}`);
     console.log(`show isEditing state: ${this.isEditing}`);
   }
@@ -240,14 +253,9 @@ export class Header implements OnInit, OnDestroy {
 
     }
 
-    else if (segments.includes('category') && segments.length === 3) {
+    else if (segments.includes('category') && segments.length === 3 && !segments.includes('assign') && !segments.includes('create')) {
       this.showBackButton = true;
-      this.showSaveButton = true;
-      if (this.isArchivedView) {
-        this.showArchiveToggleButton = true;
-      } else {        
-        this.showDeleteButton = true;
-      }
+      this.showEditButton = true;
       this.onSelected = true;
     }
 

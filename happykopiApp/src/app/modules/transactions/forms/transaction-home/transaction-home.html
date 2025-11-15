@@ -1,7 +1,7 @@
 <div class="body">
   <div class="flex flex-1 gap-4 justify-between mt-8 mb-8 ml-2 mr-2 flex-wrap">
     <!-- Sales Card -->
-    <app-transaction-card
+    <app-transaction-card class="w-full"
       cardMode="sales"
       [transactionCard]="{
         Sales: summary?.totalSalesToday ?? 0,
@@ -10,7 +10,7 @@
     </app-transaction-card>
 
     <!-- Transactions Card -->
-    <app-transaction-card
+    <app-transaction-card class="w-full"
       cardMode="transactions"
       [transactionCard]="{
         Sales: summary?.totalSalesToday ?? 0,
