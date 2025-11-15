@@ -266,13 +266,6 @@ export class Header implements OnInit, OnDestroy {
     }
     
     else if (segments.includes('category') && segments.length === 3 && !segments.includes('assign') && !segments.includes('create')) {
-      // This must be before the broader product routes
-      this.showBackButton = true;
-      this.showEditButton = true;
-      this.onSelected = true;
-    }
-
-    else if (segments.includes('category') && segments.length === 3 && !segments.includes('assign') && !segments.includes('create')) {
       this.showBackButton = true;
       this.showEditButton = true;
       this.onSelected = true;
@@ -285,9 +278,15 @@ export class Header implements OnInit, OnDestroy {
       this.showSaveButton = true;
     }
 
-    // Route: /app/category/:categoryId/create
+    // Route: /app/category/:categoryId/assign
     else if (segments.includes('category') && segments.includes('create') && segments.length === 4) {
-      this.headerTitle = 'Create Drink';
+      this.headerTitle = `Create Drink`;
+      this.showBackButton = true;
+    }
+
+    // Route: /app/category/create
+    else if (segments.includes('category') && segments.includes('create') && segments.length === 3) {
+      this.headerTitle = 'Create Category';
       this.showBackButton = true;
     }
 
