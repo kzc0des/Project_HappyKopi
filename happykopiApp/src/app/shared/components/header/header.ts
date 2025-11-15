@@ -221,12 +221,6 @@ export class Header implements OnInit, OnDestroy {
       this.showBackButton = true;
     }
 
-    else if (segments.includes('products') && segments.includes('drink') && segments.length >= 4) {
-      this.showBackButton = true;
-      this.showEditButton = true;
-      this.onSelected = true;
-    }
-
     else if (segments.includes('products') && segments.includes('edit') && segments.length >= 5) {
       this.showBackButton = true;
       this.onSelected = true;
@@ -234,9 +228,15 @@ export class Header implements OnInit, OnDestroy {
       this.showDeleteButton = true;
     }
 
+    else if (segments.includes('products') && segments.includes('drink') && segments.length >= 4) {
+      this.showBackButton = true;
+      this.showEditButton = true;
+      this.onSelected = true;
+    }
 
     else if (segments.includes('products') && segments.length === 2) {
       this.headerTitle = 'Products';
+      this.showArchiveToggleButton = true;
       this.showAddButton = true;
     }
 
@@ -287,7 +287,6 @@ export class Header implements OnInit, OnDestroy {
     else if (segments.includes('orders') && segments.length === 2) {
       this.headerTitle = 'Order';
       this.showBackButton = false;
-
     }
   }
 
@@ -311,11 +310,6 @@ export class Header implements OnInit, OnDestroy {
   onEditItemClick(): void {
     this.showDeleteButton = false;
     this.headerActionService.emitAction('EDIT');
-
-    this.showDeleteButton = true;
-    this.showSaveButton = true;
-    this.showBackButton = true;
-    this.showEditButton = false;
   }
 
   onSaveItemClick(): void {

@@ -66,6 +66,14 @@ export class ProductsService {
     return this.apiService.get<ProductListItemDto[]>(url);
   }
 
+  getInactiveProducts(categoryId?: number): Observable<ProductListItemDto[]> {
+    let url = 'products/inactive';
+    if (categoryId) {
+      url += `?categoryId=${categoryId}`;
+    }
+    return this.apiService.get<ProductListItemDto[]>(url);
+  }
+
   getProductById(id: number): Observable<ProductDetailDto> {
     return this.apiService.get<ProductDetailDto>(`products/${id}`);
   }
@@ -89,5 +97,9 @@ export class ProductsService {
 
   deleteProduct(id: number): Observable<void> {
     return this.apiService.delete<void>(`products/${id}`);
+  }
+
+  restoreProduct(id: number): Observable<void> {
+    return this.apiService.put<void>(`products/${id}/restore`, {});
   }
 }

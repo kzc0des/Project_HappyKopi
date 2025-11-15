@@ -10,6 +10,9 @@ import { SelectedIngredientCard } from '../../components/selected-ingredient-car
 import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
 import { AvailabilityCard } from "../../../../shared/components/availability-card/availability-card";
 import { HeaderService } from '../../../../core/services/header/header.service';
+import { Subscription } from 'rxjs';
+import { ProductsService } from '../../services/products-service/products.service';
+import { ConfirmationService } from '../../../../core/services/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-drink-detail-page',
@@ -23,15 +26,20 @@ export class DrinkDetailPage implements OnInit {
   availableSizes: ModifierDto[] = [];
   selectedSizeId: number | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+  private subscriptions = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
     private headerService: HeaderService,
-    private router: Router
+    private router: Router,
+    private productsService: ProductsService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
     this.productPayload = this.route.snapshot.data['drink'];
+    this.headerService.resetAction();
+
     this.displayVariants = this.productPayload.variants.filter(variant => 
       (variant.recipe && variant.recipe.length > 0) || (variant.addOns && variant.addOns.length > 0)
     );
@@ -49,17 +57,49 @@ export class DrinkDetailPage implements OnInit {
 
     this.imagePreview = this.productPayload.imageUrl;
 
-    this.headerService.action$.subscribe(action => {
-      if(action === "EDIT"){
-        this.router.navigate(['edit'], {
-          relativeTo: this.route
-        });
-      }else if(action === "BACK") {
-        this.router.navigate(['../../'], {
-          relativeTo: this.route
-        });
-      }
-    });
+    if (!this.productPayload.isActive) {
+      this.headerService.emitAction('SHOW_RESTORE');
+    }
+
+    this.subscriptions.add(
+      this.headerService.action$.subscribe(async action => {
+        if (action === "EDIT") {
+          this.router.navigate(['edit'], {
+            relativeTo: this.route
+          });
+        } else if (action === "BACK") {
+          this.router.navigate(['/app/products'], {replaceUrl: true});
+        } else if (action === 'RESTORE') {
+          const confirmed = await this.confirmationService.confirm(
+            'Restore Product?',
+            `This will make the product active again.`,
+            'primary', 'Restore', 'Cancel'
+          );
+          if (confirmed) {
+            this.restoreProduct();
+          }
+        }
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    this.headerService.emitAction('HIDE_RESTORE');
+  }
+
+  restoreProduct(): void {
+    this.subscriptions.add(
+      this.productsService.restoreProduct(this.productPayload.id).subscribe({
+        next: () => {
+          console.log('Product restored successfully');
+          this.router.navigate(['/app/products']);
+        },
+        error: (err) => {
+          console.error('Failed to restore product', err);
+        }
+      })
+    );
   }
 
   get currentVariant(): ProductVariantDetailDto | undefined {
