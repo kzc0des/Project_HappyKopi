@@ -40,7 +40,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Listen for real-time updates
     this.subscriptions.add(
-      this.productService.transactionUpdated$.subscribe(() => {
+      this.productService.productUpdated$.subscribe(() => {
         const categoryId = this.route.snapshot.queryParams['categoryId'];
         this.loadProducts(categoryId);
       })

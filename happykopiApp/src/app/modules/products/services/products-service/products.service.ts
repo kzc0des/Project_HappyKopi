@@ -12,8 +12,8 @@ import { SignalRService } from '../../../../core/services/signalR/signal-r.servi
   providedIn: 'root'
 })
 export class ProductsService {
-    private transactionUpdateSubject = new Subject<void>();
-    public transactionUpdated$ = this.transactionUpdateSubject.asObservable();
+    private productUpdateSubject = new Subject<void>();
+    public productUpdated$ = this.productUpdateSubject.asObservable();
 
   constructor(
     private apiService: ApiService,
@@ -21,7 +21,7 @@ export class ProductsService {
   ) {
     this.signalRService.startConnection();
     this.signalRService.on('ReceiveProductUpdate', () => {
-      this.transactionUpdateSubject.next();
+      this.productUpdateSubject.next();
     });
    }
 
