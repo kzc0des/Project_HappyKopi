@@ -33,22 +33,22 @@
   </div>
 
   <!-- Text Info -->
-  <div class="flex-1 flex flex-col gap-2">
+  <div class="flex-1 flex flex-col gap-2 min-w-0 overflow-hidden">
     <!-- Name & Quantity -->
-    <div class="flex items-baseline gap-2">
-      <span class="text-[#282828] font-bold text-[16px]">{{ cartItem.Name }}</span>
-      <span class="text-[#777] text-[14px]">×{{ cartItem.DrinkQuantity }}</span>
+    <div class="flex items-baseline gap-2 min-w-0">
+      <span class="text-[#282828] font-bold text-[16px] truncate">{{ cartItem.Name }}</span>
+      <span class="text-[#777] text-[14px] flex-shrink-0">×{{ cartItem.DrinkQuantity }}</span>
     </div>
 
     <!-- Size -->
-    <div class="text-[14px] font-semibold text-[#D59400]">
+    <div class="text-[14px] font-semibold text-[#D59400] truncate">
       {{ cartItem.Size }}
     </div>
 
     <!-- Addons -->
     @if (cartItem.Addons && cartItem.Addons.length > 0) {
-    <div class="flex flex-col gap-1">
-      <div class="text-[#777] text-[14px]" *ngFor="let addon of cartItem.Addons">
+    <div class="flex flex-col gap-1 min-w-0">
+      <div class="text-[#777] text-[14px] truncate" *ngFor="let addon of cartItem.Addons">
         + {{ addon.name }} ×{{ addon.quantity }}
       </div>
     </div>
@@ -56,7 +56,7 @@
   </div>
 
   <!-- Price & Edit -->
-  <div class="flex flex-col items-end gap-4">
+  <div class="flex flex-col items-end gap-4 flex-shrink-0">
     <!-- Price -->
     <div class="text-[20px] font-bold text-[#282828] whitespace-nowrap">
       {{ cartItem.Subtotal | currency : 'PHP' }}
@@ -65,7 +65,7 @@
     <!-- Edit Button -->
     <button
       (click)="editOrder()"
-      class="bg-[#FAFAFA] rounded-xl outline outline-2 outline-[#f3b72c] text-[#f3b72c] font-semibold text-[18px] px-6 py-3 cursor-pointer transition-all duration-200 hover:bg-[#fff9e6] hover:outline-[#e5a820] active:scale-95 whitespace-nowrap"
+      class="bg-[#FAFAFA] rounded-xl outline-2 outline-[#f3b72c] text-[#f3b72c] font-semibold text-[18px] px-6 py-3 cursor-pointer transition-all duration-200 hover:bg-[#fff9e6] hover:outline-[#e5a820] active:scale-95 whitespace-nowrap"
     >
       Edit
     </button>
