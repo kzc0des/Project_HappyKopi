@@ -153,7 +153,7 @@ namespace happykopiAPI.Services.Implementations
                     }
                 }
 
-                await _notificationService.NotifyTransactionUpdatedAsync();
+                await _notificationService.NotifyProductsUpdatedAsync();
                 await transaction.CommitAsync();
 
                 return newProductId;
