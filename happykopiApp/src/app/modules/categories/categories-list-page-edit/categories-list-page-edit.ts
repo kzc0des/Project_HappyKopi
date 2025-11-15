@@ -14,6 +14,7 @@ import { CategoryService } from '../services/category.service';
 })
 export class CategoriesListPageEdit implements OnInit, OnDestroy {
   categories !: CategoryWithProductCountDto[];
+  showInactive = false;
   private subscriptions = new Subscription();
 
   constructor(
@@ -24,7 +25,7 @@ export class CategoriesListPageEdit implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loadCategoriesFromResolver();
+    this.loadCategories();
     this.headerService.notifyItemAdded(false);
 
     this.subscriptions.add(
@@ -40,20 +41,32 @@ export class CategoriesListPageEdit implements OnInit, OnDestroy {
         this.loadCategories();
       })
     );
+
+    this.subscriptions.add(
+      this.headerService.toggleArchivedView$.subscribe(() => {
+        this.toggleView();
+      })
+    );
+
+    this.headerService.setArchivedViewStatus(this.showInactive);
   }
 
   ngOnDestroy(): void {
+    this.headerService.setArchivedViewStatus(false); // Reset on leave
     this.subscriptions.unsubscribe();
   }
 
   loadCategories() {
-    this.categoryService.getCategories().subscribe(data => {
-      this.categories = data;
-    });
+    const categoriesObservable = this.showInactive
+      ? this.categoryService.getInactiveCategories()
+      : this.categoryService.getCategories();
+
+    this.subscriptions.add(categoriesObservable.subscribe(data => this.categories = data));
   }
 
-  private loadCategoriesFromResolver(): void {
-    this.categories = this.route.snapshot.data['categorylist'];
-    console.log('Categories loaded from resolver:', this.categories);
+  toggleView(): void {
+    this.showInactive = !this.showInactive;
+    this.headerService.setArchivedViewStatus(this.showInactive);
+    this.loadCategories();
   }
 }

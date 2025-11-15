@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-export type HeaderAction = 'ADD' | 'DELETE' | 'EDIT' | 'SAVE' | 'CANCEL' | 'BACK';
+export type HeaderAction = 'ADD' | 'DELETE' | 'EDIT' | 'SAVE' | 'CANCEL' | 'BACK' | 'RESTORE' | 'SHOW_RESTORE' | 'HIDE_RESTORE';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,13 @@ export class HeaderService {
   private isAdded = new BehaviorSubject<boolean>(false);
   public isItemAdded$ = this.isAdded.asObservable();
 
+  // --- START: ADDED FOR ARCHIVE TOGGLE ---
+  private toggleArchivedViewSource = new Subject<void>();
+  toggleArchivedView$ = this.toggleArchivedViewSource.asObservable();
+
+  private isArchivedViewStatusSource = new BehaviorSubject<boolean>(false);
+  isArchivedViewStatus$ = this.isArchivedViewStatusSource.asObservable();
+  // --- END: ADDED FOR ARCHIVE TOGGLE ---
   private changedInputs = new Set<string>();
 
   emitAction(action: HeaderAction): void {
@@ -56,4 +63,14 @@ export class HeaderService {
     this.isValueChange.next(false);
     // console.log("Change state has been reset.");
   }
+
+  // --- START: ADDED FOR ARCHIVE TOGGLE ---
+  emitToggleArchivedView() {
+    this.toggleArchivedViewSource.next();
+  }
+
+  setArchivedViewStatus(isArchived: boolean) {
+    this.isArchivedViewStatusSource.next(isArchived);
+  }
+  // --- END: ADDED FOR ARCHIVE TOGGLE ---
 }

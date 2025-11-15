@@ -50,9 +50,11 @@ export class EditCategoryPage implements OnInit {
     this.revertVersion = this.category.name;
     console.log(`Revert Version: ${this.revertVersion}`);
     
-    // **CRITICAL FIX**: I-reset ang action bago mag-subscribe.
-    // Tinitiyak nito na hindi mapoproseso ang 'SAVE' action mula sa `assign-drink-page`.
     this.headerService.resetAction();
+
+    if (!this.category.isActive) {
+      this.headerService.emitAction('SHOW_RESTORE');
+    }
 
     this.actionSubscription = this.headerService.action$.subscribe(async action => {
       if (action === 'DELETE') {
@@ -81,8 +83,27 @@ export class EditCategoryPage implements OnInit {
       else if (action === 'BACK') {
         this.router.navigate(['/app/category'], { relativeTo: this.route, replaceUrl: true });
       }
+      else if (action === 'RESTORE') {
+        const confirmedRestore = await this.confirmationService.confirm(
+          'Restore Category?',
+          `This will make the category active again.`,
+          'primary',
+          'Restore',
+          'Cancel',
+        );
+        if (confirmedRestore) {
+          this.restoreCategory();
+        }
+      }
     })
 
+  }
+
+  ngOnDestroy(): void {
+    if (this.actionSubscription) {
+      this.actionSubscription.unsubscribe();
+    }
+    this.headerService.emitAction('HIDE_RESTORE'); // Itago ang restore button pag-alis sa page
   }
 
   deleteCategory() {
@@ -96,6 +117,19 @@ export class EditCategoryPage implements OnInit {
         console.error(`Delete failed ${err}`);
       }
     })
+  }
+
+  restoreCategory() {
+    this.categoryService.restoreCategory(this.category.id).subscribe({
+      next: () => {
+        console.log(`Restore successful.`);
+        // Mag-navigate pabalik sa edit list, kung saan makikita na ang restored item sa active list.
+        this.router.navigate(['/app/category/edit']);
+      },
+      error: err => {
+        console.error(`Restore failed ${err}`);
+      }
+    });
   }
 
   updateCategory() {

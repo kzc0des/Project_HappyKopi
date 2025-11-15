@@ -87,6 +87,22 @@ namespace happykopiAPI.Services.Implementations
                 commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<bool> RestoreCategoryAsync(int id)
+        {
+            using var connection = CreateConnection();
+            var parameters = new { CategoryId = id };
+            var rowsAffected = await connection.ExecuteAsync(
+                "dbo.sp_RestoreCategory",
+                parameters,
+                commandType: CommandType.StoredProcedure);
+
+            if (rowsAffected > 0)
+            {
+                await _notificationService.NotifyCategoryUpdatedAsync();
+            }
+            return rowsAffected > 0;
+        }
+
         public async Task UpdateCategoryAsync(int id, CategoryForCreateUpdateDto categoryDto)
         {
             using var connection = CreateConnection();

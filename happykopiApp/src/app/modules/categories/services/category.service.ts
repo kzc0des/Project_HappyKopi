@@ -60,6 +60,11 @@ export class CategoryService {
     return this.apiService.delete<void>(path);
   }
 
+  restoreCategory(id: number): Observable<void> {
+    const path = `${this.controllerPath}/${id}/restore`;
+    return this.apiService.put<void>(path, {});
+  }
+
   assignProductsToCategory(categoryId: number, productIds: number[]): Observable<void> {
     const path = `${this.controllerPath}/${categoryId}/assign-products`;
     const payload: AssignProductsToCategoryDto = { productIds };

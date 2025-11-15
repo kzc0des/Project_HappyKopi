@@ -115,6 +115,18 @@ namespace happykopiAPI.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}/restore")]
+        public async Task<IActionResult> RestoreCategory(int id)
+        {
+            var result = await _categoryService.RestoreCategoryAsync(id);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { message = "Category restored successfully." });
+        }
+
         [HttpPut("{categoryId}/assign-products")]
         public async Task<IActionResult> AssignProductsToCategory(int categoryId, [FromBody] AssignProductsDto assignProductsDto)
         {
