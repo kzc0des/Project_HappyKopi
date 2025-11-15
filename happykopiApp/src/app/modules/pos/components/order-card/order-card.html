@@ -1,12 +1,12 @@
 <div
-  class="relative w-[130px] h-[210px] /* mobile */ sm:w-[150px] sm:h-[230px] /* tablet */ md:w-[157px] md:h-[242px] /* desktop */ bg-[#fafafa] overflow-hidden rounded-[20px] sm:rounded-[22px] md:rounded-[24px] font-[Outfit] cursor-pointer transition-all duration-300"
+  class="relative bg-[#fafafa] overflow-hidden rounded-[20px] sm:rounded-[22px] md:rounded-[24px] font-[Outfit] cursor-pointer transition-all duration-300 p-2 sm:p-2.5 md:p-3 flex flex-col"
   [class.opacity-60]="isUnavailable"
   [class.cursor-not-allowed]="isUnavailable"
   (click)="onClick()"
 >
-  <!-- UPPER BOX -->
+  <!-- UPPER BOX - Image Container -->
   <div
-    class="absolute left-[8px] top-[6px] /* mobile */ sm:left-[10px] sm:top-[7px] /* tablet */ md:left-[12px] md:top-[8px] /* desktop */ w-[115px] h-[130px] /* mobile */ sm:w-[125px] sm:h-[145px] /* tablet */ md:w-[133px] md:h-[154px] /* desktop */ bg-[#f0f0f0] rounded-[20px] sm:rounded-[22px] md:rounded-[24px] flex justify-center items-center overflow-hidden relative"
+    class="w-full aspect-[115/130] bg-[#f0f0f0] rounded-[20px] sm:rounded-[22px] md:rounded-[24px] flex justify-center items-center overflow-hidden relative mb-3"
   >
     @if (drinkImage) {
     <img
@@ -20,7 +20,32 @@
     } @else {
     <div class="text-[#777] text-[14px] font-medium flex justify-center items-center">
       <!-- Placeholder Icon -->
-      <!-- (same as before) -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-4 h-6 sm:w-3.5 sm:h-5 xs:w-3 xs:h-4"
+        fill="none"
+        viewBox="0 0 18 26"
+      >
+        <path d="M1 8.35693H17" stroke="#777777" stroke-width="2" stroke-linecap="round" />
+        <path
+          d="M3.37314 9.58122C3.32588 8.91968 3.84988 8.35693 4.51314 8.35693H13.4869C14.1501 8.35693 14.6741 8.91968 14.6269 9.58122L13.6473 23.2955C13.6045 23.8936 13.1069 24.3569 12.5073 24.3569H5.49268C4.89314 24.3569 4.39548 23.8936 4.35274 23.2955L3.37314 9.58122Z"
+          fill="#F0F0F0"
+          stroke="#777777"
+          stroke-width="2"
+        />
+        <path
+          d="M9 4.92857V2.64286C9 2.01167 9.51166 1.5 10.1429 1.5H11.8571"
+          stroke="#777777"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <path
+          d="M3.69799 5.88368C3.78982 5.3326 4.26662 4.92871 4.82531 4.92871H13.1747C13.7334 4.92871 14.2102 5.3326 14.302 5.88368L14.7143 8.35728H3.28571L3.69799 5.88368Z"
+          fill="#F0F0F0"
+          stroke="#777777"
+          stroke-width="2"
+        />
+      </svg>
     </div>
     } @if (isUnavailable) {
     <div
@@ -30,17 +55,17 @@
   </div>
 
   <!-- LOWER CONTENT -->
-  <div
-    class="absolute left-[16px] top-[150px] /* mobile */ sm:left-[18px] sm:top-[165px] /* tablet */ md:left-[21px] md:top-[180px] /* desktop */ flex flex-col justify-start items-start gap-[1px] w-[110px] sm:w-[125px] md:w-[136px]"
-  >
+  <div class="flex flex-col justify-start items-start gap-[1px] px-2">
     <div
-      class="text-[14px] sm:text-[15px] md:text-[16px] font-bold text-[#282828] truncate"
+      class="text-[14px] sm:text-[15px] md:text-[16px] font-bold text-[#282828] truncate w-full"
       [class.text-[#999]]="isUnavailable"
     >
       {{ orderCard.name }}
     </div>
 
-    <div class="text-[14px] sm:text-[15px] md:text-[16px] font-normal text-[#919191] truncate">
+    <div
+      class="text-[14px] sm:text-[15px] md:text-[16px] font-normal text-[#919191] truncate w-full"
+    >
       {{ orderCard.categoryName }}
     </div>
   </div>
