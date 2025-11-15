@@ -1,6 +1,4 @@
-<div
-  class="relative w-[216px] h-[153px] sm:w-[180px] sm:h-[130px] xs:w-[160px] xs:h-[115px] font-[Outfit]"
->
+<div class="relative font-[Outfit] py-5 pr-16 pl-6 sm:p-5 xs:p-4">
   <!-- ACTIVE STATE -->
   @if (mode === 'active') {
   <!-- Card Background -->
@@ -10,7 +8,7 @@
 
   <!-- Icon -->
   <div
-    class="absolute left-[21px] top-[17px] sm:left-[16px] sm:top-[14px] xs:left-[12px] xs:top-[12px] w-[49px] h-[49px] sm:w-[40px] sm:h-[40px] xs:w-[35px] xs:h-[35px] bg-[#F3B72C] rounded-full flex justify-center items-center"
+    class="relative mb-4 sm:mb-2.5 xs:mb-2 w-[40px] h-[40px] sm:w-[40px] sm:h-[40px] xs:w-[35px] xs:h-[35px] bg-[#F3B72C] rounded-full flex justify-center items-center"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -39,16 +37,12 @@
   </div>
 
   <!-- Title -->
-  <div
-    class="absolute left-[25px] top-[81px] sm:left-[20px] sm:top-[70px] xs:left-[16px] xs:top-[60px] text-[#F3B72C] text-[20px] sm:text-[18px] xs:text-[16px] font-bold"
-  >
+  <div class="relative text-[#F3B72C] text-[18px] sm:text-[18px] xs:text-[16px] font-bold">
     {{ categoryCard.name }}
   </div>
 
   <!-- Subtitle -->
-  <div
-    class="absolute left-[25px] top-[112px] sm:left-[20px] sm:top-[98px] xs:left-[16px] xs:top-[85px] text-[#777777] text-[16px] sm:text-[14px] xs:text-[12px] font-normal"
-  >
+  <div class="relative text-[#777777] text-[14px] sm:text-[14px] xs:text-[12px] font-normal">
     {{ categoryCard.productCount }} Drinks
   </div>
   }
@@ -62,7 +56,7 @@
 
   <!-- Icon -->
   <div
-    class="absolute left-[21px] top-[17px] sm:left-[16px] sm:top-[14px] xs:left-[12px] xs:top-[12px] w-[49px] h-[49px] sm:w-[40px] sm:h-[40px] xs:w-[35px] xs:h-[35px] bg-[#F0F0F0] rounded-full flex justify-center items-center"
+    class="relative mb-4 sm:mb-2.5 xs:mb-2 w-[40px] h-[40px] sm:w-[40px] sm:h-[40px] xs:w-[35px] xs:h-[35px] bg-[#F0F0F0] rounded-full flex justify-center items-center"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -93,16 +87,12 @@
   </div>
 
   <!-- Title -->
-  <div
-    class="absolute left-[25px] top-[81px] sm:left-[20px] sm:top-[70px] xs:left-[16px] xs:top-[60px] text-[#282828] text-[20px] sm:text-[18px] xs:text-[16px] font-bold"
-  >
+  <div class="relative text-[#282828] text-[18px] sm:text-[18px] xs:text-[16px] font-bold">
     {{ categoryCard.name }}
   </div>
 
   <!-- Subtitle -->
-  <div
-    class="absolute left-[25px] top-[112px] sm:left-[20px] sm:top-[98px] xs:left-[16px] xs:top-[85px] text-[#777777] text-[16px] sm:text-[14px] xs:text-[12px] font-normal"
-  >
+  <div class="relative text-[#777777] text-[14px] sm:text-[14px] xs:text-[12px] font-normal">
     {{ categoryCard.productCount }} Drinks
   </div>
   }
