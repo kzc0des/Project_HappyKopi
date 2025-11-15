@@ -1,10 +1,9 @@
-<div class="w-full sm:w-[418px] h-[54px] relative mb-5 flex items-center justify-between">
-  <!-- Background -->
-  <div class="absolute inset-0 bg-[#FAFAFA] rounded-full outline outline-2 outline-[#D9D9D9]"></div>
-
+<div
+  class="w-full sm:w-[418px] relative mb-5 flex items-center justify-between bg-[#FAFAFA] rounded-full outline outline-2 outline-[#D9D9D9] py-1 px-1"
+>
   <!-- Minus Button -->
   <div
-    class="w-[49px] h-[49px] bg-[#F3B72C] rounded-full flex items-center justify-center text-[28px] text-[#765302] cursor-pointer transition absolute left-1 top-1"
+    class="bg-[#F3B72C] rounded-full flex items-center justify-center text-[28px] text-[#765302] cursor-pointer transition p-3"
     [class.opacity-50]="oqm.Quantity <= 1"
     [class.cursor-not-allowed]="oqm.Quantity <= 1"
     [class.pointer-events-none]="oqm.Quantity <= 1"
@@ -14,15 +13,13 @@
   </div>
 
   <!-- Quantity Value -->
-  <div
-    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[#282828] text-[20px] font-semibold select-none"
-  >
+  <div class="flex-1 text-center text-[#282828] text-[20px] font-semibold select-none">
     {{ oqm.Quantity }}
   </div>
 
   <!-- Plus Button -->
   <div
-    class="w-[49px] h-[49px] bg-[#F3B72C] rounded-full flex items-center justify-center text-[28px] text-[#765302] cursor-pointer transition absolute right-1 top-1"
+    class="bg-[#F3B72C] rounded-full flex items-center justify-center text-[28px] text-[#765302] cursor-pointer transition p-3"
     [class.opacity-50]="oqm.Quantity >= maxQuantity"
     [class.cursor-not-allowed]="oqm.Quantity >= maxQuantity"
     [class.pointer-events-none]="oqm.Quantity >= maxQuantity"
