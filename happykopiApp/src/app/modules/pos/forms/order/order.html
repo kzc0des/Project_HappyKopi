@@ -1,29 +1,30 @@
-<div class="flex flex-col items-center w-full bg-[#fafafa] px-2 pb-2 box-border min-h-screen">
-  <!-- Quick View Centered -->
-  <app-order-quick-view class="w-full px-2 sm:px-4 my-8"></app-order-quick-view>
+<div class="flex flex-col items-center w-full bg-[#fafafa] min-h-screen"> 
+    <app-order-quick-view class="w-full"></app-order-quick-view> 
 
   <!-- Categories -->
-  <div
-    class="flex overflow-x-auto gap-4 w-full max-w-[1200px] px-4 py-5 bg-[#f0f0f0] box-border no-scrollbar"
-  >
-    <app-pos-category-off
-      [categoryCard]="allDrinksCategory"
-      [mode]="selectedCategory()?.id === -1 ? 'active' : 'inactive'"
-      (click)="onAllDrinksClick()"
-    ></app-pos-category-off>
+  <div class="w-full bg-[#f0f0f0] py-5">
+    <div class="w-full max-w-[1200px] mx-auto px-4">
+      <div class="flex overflow-x-auto gap-4 no-scrollbar">
+        <app-pos-category-off
+          [categoryCard]="allDrinksCategory"
+          [mode]="selectedCategory()?.id === -1 ? 'active' : 'inactive'"
+          (click)="onAllDrinksClick()"
+        ></app-pos-category-off>
 
-    @for(category of categories(); track category.id) {
-    <app-pos-category-off
-      [categoryCard]="category"
-      [mode]="selectedCategory()?.id === category.id ? 'active' : 'inactive'"
-      (click)="onCategoryClick(category)"
-    ></app-pos-category-off>
-    }
+        @for(category of categories(); track category.id) {
+        <app-pos-category-off
+          [categoryCard]="category"
+          [mode]="selectedCategory()?.id === category.id ? 'active' : 'inactive'"
+          (click)="onCategoryClick(category)"
+        ></app-pos-category-off>
+        }
+      </div>
+    </div>
   </div>
 
   <!-- Search Bar Centered -->
-  <div class="w-full bg-[#f0f0f0] py-2 flex justify-center">
-    <div class="w-full max-w-[480px]">
+  <div class="w-full bg-[#f0f0f0]">
+    <div class="w-full max-w-[480px] mx-auto px-4">
       <app-search-drink
         class="w-full"
         [allItems]="allDrinks()"
@@ -34,11 +35,11 @@
     </div>
   </div>
 
-  <!-- Drinks Table - 3 COLUMNS MINIMUM -->
-  <div class="w-full flex justify-center px-2 py-5">
-    <div class="w-full max-w-[1200px]">
+  <!-- Drinks Grid -->
+  <div class="w-full flex-1 py-6">
+    <div class="w-full max-w-[1200px] mx-auto px-4">
       @if(drinks().length > 0) {
-      <div class="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 justify-items-center">
+      <div class="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8">
         @for(drink of getUniqueDrinks(); track drink.id) {
         <app-order-card
           class="w-full"
@@ -50,19 +51,13 @@
       </div>
       } @else {
       <!-- Empty State -->
-      <div
-        class="flex flex-col items-center justify-start w-full text-center min-h-[calc(100vh-300px)] pt-20 pb-10"
-      >
-        <h3 class="font-[Outfit] font-bold text-[#282828] text-[20px] sm:text-xl mb-3">
-          Uh-oh, no drinks found!
-        </h3>
-        <p class="font-[Outfit] font-normal text-[#919191] text-base sm:text-sm max-w-xs">
+      <div class="flex flex-col items-center justify-center w-full text-center py-20">
+        <h3 class="font-[Outfit] font-bold text-[#282828] text-xl mb-3">Uh-oh, no drinks found!</h3>
+        <p class="font-[Outfit] font-normal text-[#919191] text-sm max-w-xs">
           Try searching for something else or check another category.
         </p>
       </div>
       }
-      <!-- Bottom spacer to keep white background -->
-      <div class="h-32 sm:h-40 md:h-48 lg:h-56"></div>
     </div>
   </div>
 
@@ -70,7 +65,7 @@
   @if(showModal()) {
   <div class="fixed inset-0 bg-black/50 z-[999]" (click)="closeModal()"></div>
   <div
-    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] w-[90%] max-w-[600px] p-4 sm:p-6 rounded-lg box-border"
+    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] w-[90%] max-w-[600px]"
   >
     <app-add-order-modal
       [addOrderModal]="selectedDrink()"
@@ -80,7 +75,7 @@
   } @if(showUnavailableModal()) {
   <div class="fixed inset-0 bg-black/50 z-[999]" (click)="onCloseUnavailableModal()"></div>
   <div
-    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] w-[90%] max-w-[600px] p-4 sm:p-6 rounded-lg box-border"
+    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] w-[90%] max-w-[600px]"
   >
     <app-unavailable-product-modal
       [modalData]="selectedUnavailableProduct()!"
