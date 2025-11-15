@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { CategoryWithProductCountDto } from '../../../core/dtos/category/category-with-product-count-dto';
 import { ApiService } from '../../../core/services/api/api.service';
 import { CategoryForCreateUpdateDto } from '../../../core/dtos/category/category-for-create-update-dto';
 import { ProductWithCategoryNameDto } from '../../../core/dtos/category/product-with-category-name-dto';
 import { AssignProductsToCategoryDto } from '../../../core/dtos/category/assign-products-to-category-dto';
+import { SignalRService } from '../../../core/services/signalR/signal-r.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,27 @@ import { AssignProductsToCategoryDto } from '../../../core/dtos/category/assign-
 export class CategoryService {
   private readonly controllerPath = 'Categories';
 
-  constructor(private readonly apiService: ApiService) { }
+  private categoryUpdateSubject = new Subject<void>();
+  public categoryUpdated$ = this.categoryUpdateSubject.asObservable();
+
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly signalRService: SignalRService
+  ) {
+    this.signalRService.startConnection();
+    this.signalRService.on('ReceiveCategoryUpdate', () => {
+      console.log('Category update received');
+      this.categoryUpdateSubject.next();
+    });
+   }
 
   getCategories(): Observable<CategoryWithProductCountDto[]> {
     return this.apiService.get<CategoryWithProductCountDto[]>(this.controllerPath);
+  }
+
+  getInactiveCategories(): Observable<CategoryWithProductCountDto[]> {
+    const path = `${this.controllerPath}/inactive`;
+    return this.apiService.get<CategoryWithProductCountDto[]>(path);
   }
 
   getCategoryWithProducts(id: number): Observable<ProductWithCategoryNameDto[]> {
@@ -40,6 +58,11 @@ export class CategoryService {
   deleteCategory(id: number): Observable<void> {
     const path = `${this.controllerPath}/${id}`;
     return this.apiService.delete<void>(path);
+  }
+
+  restoreCategory(id: number): Observable<void> {
+    const path = `${this.controllerPath}/${id}/restore`;
+    return this.apiService.put<void>(path, {});
   }
 
   assignProductsToCategory(categoryId: number, productIds: number[]): Observable<void> {

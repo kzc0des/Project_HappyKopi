@@ -31,6 +31,13 @@ namespace happykopiAPI.Controllers
             return Ok(categories);
         }
 
+        [HttpGet("inactive")]
+        public async Task<IActionResult> GetInactiveCategories()
+        {
+            var categories = await _categoryService.GetInactiveCategoriesWithProductCountAsync();
+            return Ok(categories);
+        }
+
         [HttpGet("assign/{categoryId}")]
         public async Task<IActionResult> GetCategoriesWithProducts(int categoryId)
         {
@@ -106,6 +113,18 @@ namespace happykopiAPI.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPut("{id}/restore")]
+        public async Task<IActionResult> RestoreCategory(int id)
+        {
+            var result = await _categoryService.RestoreCategoryAsync(id);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { message = "Category restored successfully." });
         }
 
         [HttpPut("{categoryId}/assign-products")]

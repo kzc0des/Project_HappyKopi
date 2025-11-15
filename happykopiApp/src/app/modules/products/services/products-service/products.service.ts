@@ -1,18 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ProductCreateDto } from '../../../../core/dtos/product/product-create-dto';
 import { ApiService } from '../../../../core/services/api/api.service';
 import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
 import { StockItemDto } from '../../../../core/dtos/product/dropdowns/stock-item-dto';
 import { CategoryDto } from '../../../../core/dtos/product/dropdowns/category-dto';
 import { ProductListItemDto, ProductDetailDto, ProductUpdateDto } from '../../../../core/dtos/product/product.model';
+import { SignalRService } from '../../../../core/services/signalR/signal-r.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
+    private productUpdateSubject = new Subject<void>();
+    public productUpdated$ = this.productUpdateSubject.asObservable();
 
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private apiService: ApiService,
+    private signalRService: SignalRService
+  ) {
+    this.signalRService.startConnection();
+    this.signalRService.on('ReceiveProductUpdate', () => {
+      this.productUpdateSubject.next();
+    });
+   }
 
   getActiveSizes(): Observable<ModifierDto[]> {
     return this.apiService.get<ModifierDto[]>('products/sizes');

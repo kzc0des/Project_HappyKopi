@@ -1,5 +1,5 @@
 // features/order/pages/order/order.ts
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { CategoryWithProductCountDto } from '../../../../core/dtos/order/category-with-product-count.dto';
 import { PosCategoryOff } from '../../components/pos-category-off/pos-category-off';
@@ -15,6 +15,9 @@ import {
 } from '../../modal/unavailable-modal/unavailable-modal';
 import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
 import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
+import { ProductsService } from '../../../products/services/products-service/products.service';
+import { CategoryService } from '../../../categories/services/category.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-order',
@@ -29,7 +32,9 @@ import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
   templateUrl: './order.html',
   styleUrls: ['./order.css'],
 })
-export class Order implements OnInit {
+export class Order implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
+
   // for category
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategory = signal<CategoryWithProductCountDto | null>(null);
@@ -53,10 +58,30 @@ export class Order implements OnInit {
   selectedDrink = signal<addOrderModalDto | undefined>(undefined);
   selectedUnavailableProduct = signal<UnavailableProductModalData | undefined>(undefined);
 
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private orderService: OrderService,
+    private productsService: ProductsService,
+    private categoryService: CategoryService
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
+
+    // Listen for real-time product updates
+    this.subscriptions.add(
+      this.productsService.productUpdated$.subscribe(() => {
+        console.log('Product update received in POS. Reloading categories and products.');
+        this.loadCategories();
+      })
+    );
+
+    // Listen for real-time category updates
+    this.subscriptions.add(
+      this.categoryService.categoryUpdated$.subscribe(() => {
+        console.log('Category update received in POS. Reloading categories.');
+        this.loadCategories();
+      })
+    );
   }
 
   loadCategories() {
@@ -232,5 +257,9 @@ export class Order implements OnInit {
       seen.add(drink.id);
       return true;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

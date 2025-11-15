@@ -15,9 +15,11 @@ namespace happykopiAPI.Services.Implementations
     public class ProductService : IProductService
     {
         private readonly IConfiguration _configuration;
-        public ProductService(IConfiguration configuration)
+        private readonly INotificationService _notificationService;
+        public ProductService(IConfiguration configuration, INotificationService notificationService)
         {
             _configuration = configuration;
+            _notificationService = notificationService;
         }
         private IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("LocalDB"));
         public async Task<IEnumerable<ModifierDto>> GetActiveSizesAsync()
@@ -151,6 +153,7 @@ namespace happykopiAPI.Services.Implementations
                     }
                 }
 
+                await _notificationService.NotifyProductsUpdatedAsync();
                 await transaction.CommitAsync();
 
                 return newProductId;

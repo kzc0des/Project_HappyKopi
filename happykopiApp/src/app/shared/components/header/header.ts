@@ -19,9 +19,14 @@ export class Header implements OnInit, OnDestroy {
   showBackButton = false;
   showMenuButton = true;
 
+  // for archive view toggle
+  showArchiveToggleButton = false;
+  isArchivedView = false;
+
   // under editing state
   isEditing = false;
   showSaveButton = false;
+  showRestoreButton = false;
   showDeleteButton = false;
 
   // for labels
@@ -43,7 +48,9 @@ export class Header implements OnInit, OnDestroy {
   // detection for deletion
   private isDeleteItemSubscription!: Subscription;
 
+  private archiveViewStatusSubscription!: Subscription;
   private isAddedItemSubscription!: Subscription;
+  private headerActionSubscription!: Subscription;
 
   currentPageSelected: Observable<string>;
 
@@ -82,6 +89,10 @@ export class Header implements OnInit, OnDestroy {
       this.isItemAdded = added;
     });
 
+    this.archiveViewStatusSubscription = this.headerActionService.isArchivedViewStatus$.subscribe(status => {
+      this.isArchivedView = status;
+    });
+
     console.log(`show back button state: ${this.showBackButton}`);
     console.log(`show isEditing state: ${this.isEditing}`);
   }
@@ -92,7 +103,9 @@ export class Header implements OnInit, OnDestroy {
     this.showBackButton = false;
     this.showSaveButton = false;
     this.showDeleteButton = false;
+    this.showRestoreButton = false;
     this.showMenuButton = true;
+    this.showArchiveToggleButton = false;
     this.onSelected = false;
     this.headerTitle = null;
     this.headerActionService.resetValueChangedState();
@@ -221,13 +234,20 @@ export class Header implements OnInit, OnDestroy {
     /* category routing */
 
     else if (segments.includes('category') && segments.length === 2) {
+      this.headerTitle = "Categories"
+      this.showArchiveToggleButton = true;
       this.showAddButton = true;
+
     }
 
     else if (segments.includes('category') && segments.length === 3) {
       this.showBackButton = true;
       this.showSaveButton = true;
-      this.showDeleteButton = true;
+      if (this.isArchivedView) {
+        this.showArchiveToggleButton = true;
+      } else {        
+        this.showDeleteButton = true;
+      }
       this.onSelected = true;
     }
 
@@ -271,6 +291,15 @@ export class Header implements OnInit, OnDestroy {
 
   }
 
+  onToggleArchiveClick(): void {
+    this.headerActionService.emitToggleArchivedView();
+    this.headerTitle = this.isArchivedView ? 'Archived Categories' : 'Categories';
+  }
+
+  onRestoreItemClick(): void {
+    this.headerActionService.emitAction('RESTORE');
+  }
+
   onEditItemClick(): void {
     this.showDeleteButton = false;
     this.headerActionService.emitAction('EDIT');
@@ -309,6 +338,14 @@ export class Header implements OnInit, OnDestroy {
 
     if (this.valueChangeSubscription) {
       this.valueChangeSubscription.unsubscribe();
+    }
+
+    if (this.archiveViewStatusSubscription) {
+      this.archiveViewStatusSubscription.unsubscribe();
+    }
+
+    if (this.headerActionSubscription) {
+      this.headerActionSubscription.unsubscribe();
     }
   }
 

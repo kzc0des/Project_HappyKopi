@@ -38,6 +38,14 @@ export class DrinkListPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Listen for real-time updates
+    this.subscriptions.add(
+      this.productService.productUpdated$.subscribe(() => {
+        const categoryId = this.route.snapshot.queryParams['categoryId'];
+        this.loadProducts(categoryId);
+      })
+    );
+
     this.drinks = this.route.snapshot.data['productslist'];
     console.log(this.drinks);
 
@@ -76,9 +84,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.actionSubscription) {
-      this.actionSubscription.unsubscribe();
-    }
+    this.subscriptions.unsubscribe();
   }
 
   goToDrink(drinkId: number) {

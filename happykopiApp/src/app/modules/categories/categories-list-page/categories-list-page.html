@@ -1,11 +1,13 @@
-<!-- <app-category-list-card
-    [items]="categories"
-    labelKey="name"
-    subLabelKey="count"
-    subLabelSuffix="Drinks"
-    (itemClick)="goToCategory($event)">
-    </app-category-list-card> -->
-
-@for(item of categories; track $index) {
-<app-category-list-card [itemTitle]="item.name" [itemValue]="item.count" itemUnit="Drinks"></app-category-list-card>
-}
+<div class="page-container">
+    <h2 class="page-title">Categories</h2>
+    
+    @for(item of categories; track item.id) {
+        <app-category-list-card 
+            [itemTitle]="item.name" 
+            [itemValue]="item.productCount" 
+            itemUnit="Drinks">
+        </app-category-list-card>
+    } @empty {
+        <p class="empty-message">No categories to display.</p>
+    }
+</div>

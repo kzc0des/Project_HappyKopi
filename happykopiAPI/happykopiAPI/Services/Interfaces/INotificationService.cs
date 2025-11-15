@@ -10,5 +10,14 @@
         /// Notifies all connected clients that a new transaction has been made.
         /// </summary>
         Task NotifyTransactionUpdatedAsync();
+        /// <summary>
+        /// Notifies all connected clients that a new product has been made.
+        /// </summary>
+        Task NotifyProductsUpdatedAsync();
+
+        /// <summary>
+        /// Notifies all connected clients that a new product has been made.
+        /// </summary>
+        Task NotifyCategoryUpdatedAsync();
     }
 }
