@@ -1,5 +1,6 @@
 <div class="body">
-  <div class="cards">
+  <div class="flex flex-1 gap-4 justify-between mt-8 mb-8 ml-2 mr-2 flex-wrap">
+    <!-- Sales Card -->
     <app-transaction-card
       cardMode="sales"
       [transactionCard]="{
@@ -8,6 +9,7 @@
       }">
     </app-transaction-card>
 
+    <!-- Transactions Card -->
     <app-transaction-card
       cardMode="transactions"
       [transactionCard]="{
