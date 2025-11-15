@@ -93,18 +93,6 @@ export class Header implements OnInit, OnDestroy {
       this.isArchivedView = status;
     });
 
-    // this.headerActionSubscription = this.headerActionService.action$.subscribe(action => {
-    //   this.resetHeaderState();
-    //   if (action === 'SHOW_RESTORE') {
-    //     this.showRestoreButton = true;
-    //   } else if (action === 'HIDE_RESTORE') {
-    //     this.showRestoreButton = false;
-    //   } else if (action === 'EDIT') {
-    //     this.showRestoreButton = false; // Itago ang restore kapag nag-edit
-    //   }
-
-    // });
-
     console.log(`show back button state: ${this.showBackButton}`);
     console.log(`show isEditing state: ${this.isEditing}`);
   }

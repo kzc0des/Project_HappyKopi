@@ -47,6 +47,7 @@ export class EditCategoryPage implements OnInit {
 
   ngOnInit() {
     this.category = this.route.snapshot.data['categoryDetail'];
+    console.log(this.category);
     this.revertVersion = this.category.name;
     console.log(`Revert Version: ${this.revertVersion}`);
     
@@ -54,6 +55,7 @@ export class EditCategoryPage implements OnInit {
 
     if (!this.category.isActive) {
       this.headerService.emitAction('SHOW_RESTORE');
+      console.log(`Show Restore Button: ${this.category.isActive}`);
     }
 
     this.actionSubscription = this.headerService.action$.subscribe(async action => {
@@ -93,6 +95,7 @@ export class EditCategoryPage implements OnInit {
         );
         if (confirmedRestore) {
           this.restoreCategory();
+          this.router.navigate(['/app/category'])
         }
       }
     })
