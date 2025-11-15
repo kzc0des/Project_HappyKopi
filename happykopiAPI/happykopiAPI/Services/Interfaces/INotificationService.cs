@@ -14,5 +14,10 @@
         /// Notifies all connected clients that a new product has been made.
         /// </summary>
         Task NotifyProductsUpdatedAsync();
+
+        /// <summary>
+        /// Notifies all connected clients that a new product has been made.
+        /// </summary>
+        Task NotifyCategoryUpdatedAsync();
     }
 }

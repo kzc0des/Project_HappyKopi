@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CategoryListCard } from '../../products/components/category-list-card/category-list-card';
+import { CategoryService } from '../services/category.service';
+import { CategoryWithProductCountDto } from '../../../core/dtos/category/category-with-product-count-dto';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-categories-list-page',
@@ -10,14 +13,29 @@ import { CategoryListCard } from '../../products/components/category-list-card/c
   templateUrl: './categories-list-page.html',
   styleUrl: './categories-list-page.css'
 })
-export class CategoriesListPage {
-  constructor(private router: Router) {}
+export class CategoriesListPage implements OnInit, OnDestroy {
+  categories: CategoryWithProductCountDto[] = [];
+  private subscriptions = new Subscription();
 
-  categories = [
-    { name: 'All Drinks', count: 33 },
-    { name: 'Milk Tea', count: 9 },
-    { name: 'Fruit Tea', count: 6 },
-    { name: 'Hot Kopi', count: 9 },
-    { name: 'Iced Kopi', count: 9 },
-  ];
+  constructor(
+    private router: Router,
+    private categoryService: CategoryService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadCategories();
+    this.subscriptions.add(
+      this.categoryService.categoryUpdated$.subscribe(() => {
+        this.loadCategories();
+      })
+    );
+  }
+
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe(data => this.categories = data);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 }

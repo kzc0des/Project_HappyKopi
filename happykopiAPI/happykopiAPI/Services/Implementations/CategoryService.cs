@@ -14,10 +14,12 @@ namespace happykopiAPI.Services.Implementations
     public class CategoryService : ICategoryService
     {
         private readonly IConfiguration _configuration;
+        private readonly INotificationService _notificationService;
 
-        public CategoryService(IConfiguration configuration)
+        public CategoryService(IConfiguration configuration, INotificationService notificationService)
         {
             _configuration = configuration;
+            _notificationService = notificationService;
         }
 
         private IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("LocalDB"));
@@ -32,6 +34,7 @@ namespace happykopiAPI.Services.Implementations
                 parameters,
                 commandType: CommandType.StoredProcedure);
 
+            await _notificationService.NotifyCategoryUpdatedAsync();
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)
@@ -43,7 +46,9 @@ namespace happykopiAPI.Services.Implementations
                 parameters,
                 commandType: CommandType.StoredProcedure);
 
+            await _notificationService.NotifyCategoryUpdatedAsync();
             return rowsAffected > 0;
+
         }
 
         public async Task<IEnumerable<CategoryWithProductCountDto>> GetCategoriesWithProductCountAsync()
@@ -88,6 +93,7 @@ namespace happykopiAPI.Services.Implementations
                 parameters,
                 commandType: CommandType.StoredProcedure);
 
+            await _notificationService.NotifyCategoryUpdatedAsync();
         }
 
         public async Task AssignProductsToCategoryAsync(int categoryId, List<int> productIds)
@@ -111,6 +117,8 @@ namespace happykopiAPI.Services.Implementations
                 "dbo.sp_AssignProductsToCategory", 
                 parameters, 
                 commandType: CommandType.StoredProcedure);
+
+            await _notificationService.NotifyCategoryUpdatedAsync();
         }
     }
 }

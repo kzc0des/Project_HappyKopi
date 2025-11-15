@@ -16,6 +16,7 @@ import {
 import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
 import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { ProductsService } from '../../../products/services/products-service/products.service';
+import { CategoryService } from '../../../categories/services/category.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -59,7 +60,8 @@ export class Order implements OnInit, OnDestroy {
 
   constructor(
     private orderService: OrderService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +71,14 @@ export class Order implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
         console.log('Product update received in POS. Reloading categories and products.');
+        this.loadCategories();
+      })
+    );
+
+    // Listen for real-time category updates
+    this.subscriptions.add(
+      this.categoryService.categoryUpdated$.subscribe(() => {
+        console.log('Category update received in POS. Reloading categories.');
         this.loadCategories();
       })
     );

@@ -30,5 +30,10 @@ namespace happykopiAPI.Services.Implementations
         {
             await _hubContext.Clients.All.SendAsync("ReceiveProductUpdate");
         }
+
+        public async Task NotifyCategoryUpdatedAsync()
+        {
+            await _hubContext.Clients.All.SendAsync("ReceiveCategoryUpdate");
+        }
     }
 }
