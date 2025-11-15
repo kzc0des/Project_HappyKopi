@@ -1,6 +1,19 @@
 @if (buttonSize == "modal") {
 <div
-  class="w-5/5 h-[77px] rounded-[12px] bg-yellow-400 shadow-md flex justify-center items-center font-outfit"
+  class="w-full rounded-[12px] bg-yellow-400 shadow-md flex justify-center items-center font-outfit py-6 px-4"
+>
+  <div class="button-icon mr-2">
+    @if (buttonType == "cash") {
+    <!-- icon goes here -->
+    }
+  </div>
+  <div class="text-[20px] font-bold text-[#765302]">
+    {{ buttonTitle }}
+  </div>
+</div>
+} @if (buttonSize == "long") {
+<div
+  class="w-[85%] rounded-[12px] bg-yellow-400 shadow-md flex justify-center items-center font-outfit py-6 px-4"
 >
   <div class="button-icon mr-2">
     @if (buttonType == "cash") {
@@ -12,18 +25,3 @@
   </div>
 </div>
 }
-
-@if (buttonSize == "long") {
-<div
-  class="w-[85%] h-[77px] rounded-[12px] bg-yellow-400 shadow-md flex justify-center items-center font-outfit"
->
-  <div class="button-icon mr-2">
-    @if (buttonType == "cash") {
-    <!-- icon goes here -->
-    }
-  </div>
-  <div class="text-[20px] font-bold text-[#765302]">
-    {{ buttonTitle }}
-  </div>
-</div>
-} 
