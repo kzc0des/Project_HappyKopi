@@ -1,37 +1,33 @@
-<div
-  class="relative w-[150px] h-[170px] /* mobile */ md:w-[167px] md:h-[182px] /* desktop */ font-[Outfit]"
->
+<div class="relative w-[150px] md:w-[167px] m-1 font-[Outfit]">
   <!-- BACK CARD -->
   <div
-    class="absolute inset-0 left-[1.5px] w-[146px] h-[168px] /* mobile */ md:w-[163px] md:h-[180px] /* desktop */ bg-[#FAFAFA] rounded-3xl shadow-[0px_1.5px_5px_rgba(0,0,0,0.25)]"
+    class="bg-[#FAFAFA] rounded-3xl shadow-[0px_1.5px_5px_rgba(0,0,0,0.25)] pt-3 pb-12 px-2 md:pt-3.5 md:pb-14 md:px-2.5 min-h-[155px] md:min-h-[180px]"
   ></div>
 
   <!-- COUNTER BOX -->
-  <div
-    class="absolute left-[2px] top-[116px] /* mobile */ w-[146px] h-[50px] /* mobile */ md:top-[126px] md:w-[163px] md:h-[54px]"
-  >
+  <div class="absolute left-0.5 bottom-0 w-[146px] md:w-[163px] p-5.5 md:h-[54px]">
     <div
-      class="absolute inset-0 bg-[#FAFAFA] rounded-full outline outline-2 outline-[#D9D9D9]"
+      class="absolute inset-0 bg-[#FAFAFA] rounded-full outline-2 outline-[#D9D9D9]"
     ></div>
-
-    <!-- QUANTITY NUMBER -->
-    <div
-      class="absolute text-center text-[#282828] text-[18px] /* mobile */ md:text-[20px] font-semibold left-[64px] top-[11px] /* mobile */ md:left-[76px] md:top-[12px]"
-    >
-      {{ addonCard.Quantity }}
-    </div>
 
     <!-- MINUS BUTTON -->
     <div
-      class="absolute left-[2px] top-[1.5px] /* mobile */ md:left-[3px] md:top-[2px] w-[44px] h-[44px] /* mobile */ md:w-[49px] md:h-[49px] bg-[#F3B72C] rounded-full flex justify-center items-center text-[26px] md:text-[28px] text-[#765302] cursor-pointer select-none"
+      class="absolute left-1 top-0.5 md:left-0.5 md:top-0.5 bg-[#F3B72C] rounded-full flex justify-center items-center text-[26px] md:text-[28px] text-[#765302] cursor-pointer select-none p-2.5 md:p-3"
       (click)="decrease()"
     >
       −
     </div>
 
+    <!-- QUANTITY NUMBER -->
+    <div
+      class="absolute text-center text-[#282828] text-[18px] md:text-[20px] font-semibold left-[64px] top-[11px] md:left-[76px] md:top-[12px]"
+    >
+      {{ addonCard.Quantity }}
+    </div>
+
     <!-- PLUS BUTTON -->
     <div
-      class="absolute left-[98px] top-[1.5px] /* mobile */ md:left-[111px] md:top-[2px] w-[44px] h-[44px] /* mobile */ md:w-[49px] md:h-[49px] bg-[#F3B72C] rounded-full flex justify-center items-center text-[26px] md:text-[28px] text-[#765302] cursor-pointer select-none"
+      class="absolute right-1 top-0.5 md:right-0.5 md:top-0.5 bg-[#F3B72C] rounded-full flex justify-center items-center text-[26px] md:text-[28px] text-[#765302] cursor-pointer select-none p-2.5 md:p-3"
       (click)="increase()"
     >
       +
@@ -39,10 +35,9 @@
 
     <!-- ADDON ICON -->
     <div
-      class="absolute left-[14px] -top-[90px] /* mobile */ md:left-[16px] md:-top-[109px] w-[35px] h-[35px] /* mobile */ md:w-[40px] md:h-[40px] rounded-full flex justify-center items-center transition-all duration-300"
+      class="absolute left-[14px] -top-[90px] md:left-[16px] md:-top-[109px] rounded-full flex justify-center items-center transition-all duration-300 p-2 md:p-2.5"
       [ngStyle]="{ 'background-color': isZero ? '#F0F0F0' : '#F3B72C' }"
     >
-      <!-- your SVG unchanged -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="19"
@@ -53,7 +48,7 @@
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
-          d="M9.4082 15.1208C14.8504 15.1628..."
+          d="M9.4082 15.1208C14.8504 15.1628 17.571 15.1838 18.0703 14.6214C18.2119 14.4604 18.3241 14.2736 18.4006 14.0707C18.7324 13.1809 17.9596 11.6917 16.4137 8.71335L15.9481 7.8125C15.8264 7.57396 15.7656 7.4547 15.7243 7.32793C15.6878 7.21349 15.6644 7.09543 15.6545 6.97581C15.6435 6.84286 15.6587 6.70797 15.6891 6.4382L15.7599 5.80011C15.9221 4.39009 16.0032 3.68508 15.7437 3.12556C15.6636 2.95783 15.5593 2.80253 15.4341 2.66451C15.0003 2.18066 14.3097 1.95755 12.9284 1.51132C12.6577 1.42623 12.5223 1.38368 12.3945 1.36564C12.2793 1.34941 12.1625 1.34624 12.0462 1.35617C11.9164 1.367 11.7882 1.40617 11.5316 1.48452L10.9214 1.66703C10.6556 1.74792 10.5227 1.78836 10.3904 1.80471C10.2717 1.81944 10.1517 1.82067 10.0326 1.80836C9.89963 1.79483 9.76813 1.75807 9.50513 1.68455L8.90716 1.52571C8.64417 1.45219 8.51267 1.41543 8.3797 1.4019C8.26059 1.38959 8.14063 1.39082 8.02188 1.40555C7.88958 1.4219 7.75672 1.46234 7.49099 1.54324L6.88074 1.72575C6.62407 1.8041 6.49573 1.84327 6.36594 1.8541C6.24966 1.86403 6.13277 1.86086 6.01755 1.84463C5.88975 1.82659 5.75438 1.78404 5.48363 1.69895C4.10233 1.25272 3.41168 1.02961 2.97784 1.51346C2.85265 1.64148 2.74837 1.78678 2.66828 1.95451C2.40877 2.51403 2.48987 3.21904 2.65206 4.62906L2.72287 5.26715C2.75324 5.53692 2.76843 5.67181 2.75751 5.80476C2.74755 5.92438 2.72414 6.04244 2.68763 6.15688C2.64633 6.28365 2.58554 6.40289 2.46397 6.64143L1.99836 7.5423C0.452493 10.5206 -0.320404 12.0098 0.011446 12.8996C0.0879509 13.1025 0.200099 13.2893 0.341758 13.4503C0.841067 14.0127 3.56172 13.9917 9.00304 13.9497L9.00712 13.9497C9.13998 13.9487 9.27641 13.9477 9.4082 13.9467V15.1208Z"
           [attr.stroke]="isZero ? '#777777' : '#FAFAFA'"
           stroke-width="2"
           stroke-linejoin="round"
@@ -64,7 +59,7 @@
 
   <!-- ADDON NAME -->
   <div
-    class="absolute left-[14px] top-[68px] /* mobile */ w-[115px] md:left-[17px] md:top-[79px] md:w-[123px] flex pl-2 text-[#282828] text-[14px] md:text-[16px] font-semibold text-center"
+    class="absolute left-[14px] top-[68px] w-[115px] md:left-[17px] md:top-[79px] md:w-[123px] flex pl-2 text-[#282828] text-[14px] md:text-[16px] font-semibold text-center"
   >
     {{ addonCard.Name }}
   </div>
