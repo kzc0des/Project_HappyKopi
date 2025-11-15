@@ -7,24 +7,29 @@ import { HeaderService } from '../../../core/services/header/header.service';
 import { Subscription } from 'rxjs';
 import { ConfirmationService } from '../../../core/services/confirmation/confirmation.service';
 import { Location } from '@angular/common';
+import { YellowButton } from "../../../shared/components/yellow-button/yellow-button";
+import { LoadingService } from '../../../core/services/loading/loading.service';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
   selector: 'app-category-add',
-  imports: [Itemcard, FormsModule],
+  imports: [Itemcard, FormsModule, YellowButton],
   templateUrl: './category-add.html',
   styleUrl: './category-add.css',
 })
-export class CategoryAdd implements OnInit{
+export class CategoryAdd implements OnInit {
 
   categoryDetail !: CategoryForCreateUpdateDto;
   actionSubscription !: Subscription;
 
-  constructor (
+  constructor(
     private categoryService: CategoryService,
     private headerService: HeaderService,
     private confirmationService: ConfirmationService,
-    private location: Location
-  ) {}
+    private location: Location,
+    private loadingService: LoadingService,
+    private alertService: AlertService
+  ) { }
 
   ngOnInit(): void {
     this.categoryDetail = {
@@ -32,7 +37,7 @@ export class CategoryAdd implements OnInit{
     }
 
     this.actionSubscription = this.headerService.action$.subscribe(async action => {
-      if(action === 'SAVE'){
+      if (action === 'SAVE') {
         const confirmation = await this.confirmationService.confirm(
           "Add Category",
           "Make sure that the detail is correct and complete.",
@@ -40,32 +45,45 @@ export class CategoryAdd implements OnInit{
           "Add Category",
           "Cancel"
         )
-        if(confirmation){
+        if (confirmation) {
           this.saveNewItem();
         }
       }
     })
   }
 
-  private saveNewItem(): void {
+  async saveNewItem() {
+    const confirmation = await this.confirmationService.confirm(
+      "Add Category",
+      "Make sure that the detail is correct and complete.",
+      "primary",
+      "Add Category",
+      "Cancel"
+    )
+
+    if (!confirmation) {
+      return;
+    }
+
     if (!this.categoryDetail.name) {
       alert('Please fill out the required field.');
       return;
     }
 
-
+    this.loadingService.show();
     this.categoryService.createCategory(this.categoryDetail).subscribe({
       next: (response) => {
-        console.log('Item created successfully!', response);
+        this.loadingService.hide();
+        this.alertService.showSuccess("Category Added Successfully", "Success");
         this.location.back();
       },
       error: (err) => {
         if (err.status === 409) {
-          alert(`Error: ${err.error.message}`);
+          this.alertService.showError("Category Already Exists", "Error");
         } else {
-          alert('An unexpected error occurred. Please try again.');
+          this.alertService.showError("Failed to add category", "Error");
         }
-        console.error('Failed to create item:', err);
+        this.loadingService.hide();
       }
     });
   }

@@ -9,7 +9,7 @@
   </div>
   } @else {
   <!-- Cart Items -->
-  <div class="flex flex-col bg-[#f0f0f0] overflow-y-auto pb-5 no-scrollbar">
+  <div class="flex flex-col bg-[#f0f0f0] pb-5 no-scrollbar">
     <app-cart-item
       *ngFor="let order of orders; let last = last"
       [cartItem]="order"

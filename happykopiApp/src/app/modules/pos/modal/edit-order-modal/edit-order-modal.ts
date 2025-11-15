@@ -5,12 +5,12 @@ import {
 } from '../../components/addon-card-active/addon-card-active';
 import { OrderQuantityModifier } from '../../components/order-quantity-modifier/order-quantity-modifier';
 import { GrandeActive } from '../../components/grande-active/grande-active';
-import { LongYellowButton } from '../../../../shared/components/long-yellow-button/long-yellow-button';
 import { RedButton } from '../../../../shared/components/red-button/red-button';
 import { CurrencyPipe } from '@angular/common';
 import { OrderService } from '../../services/order.service';
 import { Addon, OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { ProductConfigurationResultDto } from '../../../../core/dtos/order/product-configuration-result.dto';
+import { YellowButton } from '../../../../shared/components/yellow-button/yellow-button';
 
 interface AddonWithConfig extends addonCardDto {
   minQuantity: number;
@@ -38,9 +38,9 @@ interface SizeWithAvailability {
     AddonCardActive,
     OrderQuantityModifier,
     GrandeActive,
-    LongYellowButton,
     RedButton,
     CurrencyPipe,
+    YellowButton
   ],
   templateUrl: './edit-order-modal.html',
   styleUrl: './edit-order-modal.css',

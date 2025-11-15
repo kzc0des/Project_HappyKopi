@@ -1,5 +1,5 @@
-<button (click)="notifyClickButton()" class="button">
-  <div class="">
+<button (click)="notifyClickButton()" class="w-full">
+  <div class="flex items-center justify-center gap-3 bg-[#ea3232] p-5 rounded-lg">
     @if(itemTitle === "delete"){
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
       <path
@@ -11,6 +11,6 @@
       />
     </svg>
     }
+    <div class="text-white">{{ buttonTitle }}</div>
   </div>
-  <div class="button-title">{{ buttonTitle }}</div>
 </button>
