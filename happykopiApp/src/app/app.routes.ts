@@ -48,7 +48,6 @@ import { OrderQuantityModifier } from './modules/pos/components/order-quantity-m
 import { PaymentMethodCash } from './modules/pos/components/payment-method-cash/payment-method-cash';
 import { LongYellowButton } from './shared/components/long-yellow-button/long-yellow-button';
 import { CategoriesListPageEdit } from './modules/categories/categories-list-page-edit/categories-list-page-edit';
-import { CreateDrinkPage } from './modules/categories/create-drink-page/create-drink-page';
 import { AssignDrinkPage } from './modules/categories/assign-drink-page/assign-drink-page';
 import { EditCategoryPage } from './modules/categories/edit-category-page/edit-category-page';
 import { categoriesListWithCountResolver } from './modules/categories/resolver/categorieswithcount/categories-list-with-count-resolver';
