@@ -1,4 +1,4 @@
-﻿using Dapper;
+﻿﻿using Dapper;
 ﻿using Dapper;
 using happykopiAPI.DTOs.Product.Dropdown_Data;
 using happykopiAPI.DTOs.Product.Incoming_Data;
@@ -175,6 +175,16 @@ namespace happykopiAPI.Services.Implementations
                 commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<ProductListItemDto>> GetInactiveProductsAsync(int? categoryId)
+        {
+            using var connection = CreateConnection();
+            var parameters = new { CategoryId = categoryId };
+            return await connection.QueryAsync<ProductListItemDto>(
+                "sp_GetInactiveProducts",
+                parameters,
+                commandType: CommandType.StoredProcedure);
+        }
+
         public async Task<ProductDetailDto> GetProductDetailByIdAsync(int productId)
         {
             using var connection = CreateConnection();
@@ -271,6 +281,21 @@ namespace happykopiAPI.Services.Implementations
             using var connection = CreateConnection();
             var parameters = new { ProductId = productId };
             await connection.ExecuteAsync("sp_DeleteProduct", parameters, commandType: CommandType.StoredProcedure);
+            await _notificationService.NotifyProductsUpdatedAsync();
+        }
+
+        public async Task<bool> RestoreProductAsync(int productId)
+        {
+            using var connection = CreateConnection();
+            var parameters = new { ProductId = productId };
+            var rowsAffected = await connection.ExecuteAsync("sp_RestoreProduct", parameters, commandType: CommandType.StoredProcedure);
+
+            if (rowsAffected > 0)
+            {
+                await _notificationService.NotifyProductsUpdatedAsync();
+            }
+
+            return rowsAffected > 0;
         }
     }
 }

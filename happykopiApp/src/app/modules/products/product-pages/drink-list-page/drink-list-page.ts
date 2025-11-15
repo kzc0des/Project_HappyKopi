@@ -28,6 +28,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
   drinks: ProductListItemDto[] = [];
   filteredDrinks: ProductListItemDto[] = [];
   allDrinks: ProductListItemDto[] = [];
+  showInactive = false;
   currentCategoryName: string = 'All Drinks';
 
   constructor(
@@ -38,6 +39,8 @@ export class DrinkListPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.headerService.setArchivedViewStatus(this.showInactive);
+
     // Listen for real-time updates
     this.subscriptions.add(
       this.productService.productUpdated$.subscribe(() => {
@@ -46,7 +49,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
       })
     );
 
-    this.drinks = this.route.snapshot.data['productslist'];
+    // this.drinks = this.route.snapshot.data['productslist']; // We will load dynamically now
     console.log(this.drinks);
 
     this.subscriptions.add(
@@ -63,10 +66,20 @@ export class DrinkListPage implements OnInit, OnDestroy {
         }
       })
     );
+
+    this.subscriptions.add(
+      this.headerService.toggleArchivedView$.subscribe(() => {
+        this.toggleView();
+      })
+    );
   }
 
   loadProducts(categoryId?: number): void {
-    this.productService.getActiveProducts(categoryId).subscribe(products => {
+    const productsObservable = this.showInactive
+      ? this.productService.getInactiveProducts(categoryId)
+      : this.productService.getActiveProducts(categoryId);
+
+    productsObservable.subscribe(products => {
       this.drinks = products;
       this.filteredDrinks = products; // Initialize filtered list
       if (categoryId && products.length > 0) {
@@ -77,6 +90,14 @@ export class DrinkListPage implements OnInit, OnDestroy {
     });
   }
 
+  toggleView(): void {
+    this.showInactive = !this.showInactive;
+    this.headerService.setArchivedViewStatus(this.showInactive);
+    this.headerService.updateTitle(this.showInactive ? 'Archived Products' : 'Products');
+    const categoryId = this.route.snapshot.queryParams['categoryId'];
+    this.loadProducts(categoryId);
+  }
+
   onSearch(searchTerm: string): void {
     this.filteredDrinks = this.drinks.filter(drink =>
       drink.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -84,6 +105,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.headerService.setArchivedViewStatus(false); // Reset on leave
     this.subscriptions.unsubscribe();
   }
 

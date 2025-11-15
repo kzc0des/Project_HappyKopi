@@ -51,6 +51,7 @@ export class Header implements OnInit, OnDestroy {
   private archiveViewStatusSubscription!: Subscription;
   private isAddedItemSubscription!: Subscription;
   private headerActionSubscription!: Subscription;
+  private titleSubscription!: Subscription;
 
   currentPageSelected: Observable<string>;
 
@@ -91,6 +92,23 @@ export class Header implements OnInit, OnDestroy {
 
     this.archiveViewStatusSubscription = this.headerActionService.isArchivedViewStatus$.subscribe(status => {
       this.isArchivedView = status;
+    });
+
+    this.headerActionSubscription = this.headerActionService.action$.subscribe(action => {
+      if (action === 'SHOW_RESTORE') {
+        this.showRestoreButton = true;
+        this.showEditButton = false; // Itago ang edit button kung restore ang option
+        this.showSaveButton = false;
+        this.showDeleteButton = false;
+      } else if (action === 'HIDE_RESTORE') {
+        this.showRestoreButton = false;
+      } else if (action === 'EDIT') {
+        this.showRestoreButton = false; // Itago ang restore kapag nag-edit
+      }
+    });
+
+    this.titleSubscription = this.headerActionService.title$.subscribe(title => {
+      this.headerTitle = title;
     });
 
     console.log(`show back button state: ${this.showBackButton}`);
@@ -208,12 +226,6 @@ export class Header implements OnInit, OnDestroy {
       this.showBackButton = true;
     }
 
-    else if (segments.includes('products') && segments.includes('drink') && segments.length >= 4) {
-      this.showBackButton = true;
-      this.showEditButton = true;
-      this.onSelected = true;
-    }
-
     else if (segments.includes('products') && segments.includes('edit') && segments.length >= 5) {
       this.showBackButton = true;
       this.onSelected = true;
@@ -221,9 +233,15 @@ export class Header implements OnInit, OnDestroy {
       this.showDeleteButton = true;
     }
 
+    else if (segments.includes('products') && segments.includes('drink') && segments.length >= 4) {
+      this.showBackButton = true;
+      this.showEditButton = true;
+      this.onSelected = true;
+    }
 
     else if (segments.includes('products') && segments.length === 2) {
       this.headerTitle = 'Products';
+      this.showArchiveToggleButton = true;
       this.showAddButton = true;
     }
 
@@ -233,21 +251,30 @@ export class Header implements OnInit, OnDestroy {
 
     /* category routing */
 
+    else if (segments.includes('category') && segments.includes('edit') && segments.length === 4) {
+      this.showBackButton = true;
+      this.onSelected = true;
+      this.showSaveButton = true;
+      this.showDeleteButton = true;
+    }
+
     else if (segments.includes('category') && segments.length === 2) {
       this.headerTitle = "Categories"
       this.showArchiveToggleButton = true;
       this.showAddButton = true;
 
     }
-
-    else if (segments.includes('category') && segments.length === 3) {
+    
+    else if (segments.includes('category') && segments.length === 3 && !segments.includes('assign') && !segments.includes('create')) {
+      // This must be before the broader product routes
       this.showBackButton = true;
-      this.showSaveButton = true;
-      if (this.isArchivedView) {
-        this.showArchiveToggleButton = true;
-      } else {        
-        this.showDeleteButton = true;
-      }
+      this.showEditButton = true;
+      this.onSelected = true;
+    }
+
+    else if (segments.includes('category') && segments.length === 3 && !segments.includes('assign') && !segments.includes('create')) {
+      this.showBackButton = true;
+      this.showEditButton = true;
       this.onSelected = true;
     }
 
@@ -279,7 +306,6 @@ export class Header implements OnInit, OnDestroy {
     else if (segments.includes('orders') && segments.length === 2) {
       this.headerTitle = 'Order';
       this.showBackButton = false;
-
     }
   }
 
@@ -293,7 +319,6 @@ export class Header implements OnInit, OnDestroy {
 
   onToggleArchiveClick(): void {
     this.headerActionService.emitToggleArchivedView();
-    this.headerTitle = this.isArchivedView ? 'Archived Categories' : 'Categories';
   }
 
   onRestoreItemClick(): void {
@@ -303,10 +328,8 @@ export class Header implements OnInit, OnDestroy {
   onEditItemClick(): void {
     this.showDeleteButton = false;
     this.headerActionService.emitAction('EDIT');
-
-    this.showDeleteButton = true;
     this.showSaveButton = true;
-    this.showBackButton = true;
+    this.showDeleteButton = true;
     this.showEditButton = false;
   }
 
@@ -346,6 +369,10 @@ export class Header implements OnInit, OnDestroy {
 
     if (this.headerActionSubscription) {
       this.headerActionSubscription.unsubscribe();
+    }
+
+    if (this.titleSubscription) {
+      this.titleSubscription.unsubscribe();
     }
   }
 

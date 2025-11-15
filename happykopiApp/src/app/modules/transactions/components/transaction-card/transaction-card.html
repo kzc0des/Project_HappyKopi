@@ -1,4 +1,4 @@
-<div class="font-outfit justify-between items-center pt-9 pb-9 pl-4 pr-22 rounded-[12px] bg-[#FAFAFA] w-full">
+<div class="font-outfit justify-between items-center p-5 rounded-[12px] bg-[#FAFAFA]">
   <div class="mb-[26px]">
     <div class="h-[49px] w-[49px] rounded-full bg-[#f3b72c] flex items-center justify-center">
       @if (cardMode == 'sales') {
@@ -20,14 +20,14 @@
     </div>
   </div>
 
-  <div class="texts">
+  <div class="flex flex-col gap-2 w-full">
     @if (cardMode == 'sales') {
       <div class="text-[28px] font-bold text-[#282828]">
         {{ transactionCard?.Sales | currency : 'PHP' }}
       </div>
       <div class="text-[16px] text-[#777777]">Sales today</div>
     } @else if (cardMode == 'transactions') {
-      <div class="text-[28px] font-bold text-[#282828]">
+      <div class="text-[28px] font-bold text-[#282828] truncate w-full">
         {{ transactionCard?.Transactions }}
       </div>
       <div class="text-[16px] text-[#777777]">Transactions today</div>

@@ -1,4 +1,4 @@
-﻿using happykopiAPI.Data;
+﻿﻿using happykopiAPI.Data;
 using happykopiAPI.DTOs.Product.Incoming_Data;
 using happykopiAPI.DTOs.Product.Outgoing_Data;
 using happykopiAPI.Models;
@@ -134,6 +134,13 @@ namespace happykopiAPI.Controllers
             return Ok(products);
         }
 
+        [HttpGet("inactive")]
+        public async Task<IActionResult> GetInactiveProducts([FromQuery] int? categoryId)
+        {
+            var products = await _productService.GetInactiveProductsAsync(categoryId);
+            return Ok(products);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductDetail(int id)
         {
@@ -215,6 +222,18 @@ namespace happykopiAPI.Controllers
         {
             await _productService.DeleteProductAsync(id);
             return NoContent();
+        }
+
+        [HttpPut("{id}/restore")]
+        public async Task<IActionResult> RestoreProduct(int id)
+        {
+            var result = await _productService.RestoreProductAsync(id);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { message = "Product restored successfully." });
         }
     }
 }

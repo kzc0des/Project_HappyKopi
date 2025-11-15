@@ -95,7 +95,6 @@ export class EditCategoryPage implements OnInit {
         );
         if (confirmedRestore) {
           this.restoreCategory();
-          this.router.navigate(['/app/category'])
         }
       }
     })
@@ -127,7 +126,7 @@ export class EditCategoryPage implements OnInit {
       next: () => {
         console.log(`Restore successful.`);
         // Mag-navigate pabalik sa edit list, kung saan makikita na ang restored item sa active list.
-        this.router.navigate(['/app/category/edit']);
+        this.router.navigate(['/app/category']);
       },
       error: err => {
         console.error(`Restore failed ${err}`);
