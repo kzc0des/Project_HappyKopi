@@ -110,6 +110,13 @@ export class AdminDashboard implements OnInit {
     this.loadChart(period);
   }
 
+  // ✅ Added function (no other changes made)
+  getPeriodLabel(): string {
+    if (this.selectedPeriod === 'today') return 'Today';
+    if (this.selectedPeriod === 'this-week') return 'This Week';
+    return 'This Month';
+  }
+
   toggleDropdown(): void { this.isDropdownOpen = !this.isDropdownOpen; }
   openSignOutModal(): void { this.isSignOutModalOpen = true; this.isDropdownOpen = false; }
   closeSignOutModal(): void { this.isSignOutModalOpen = false; }

@@ -47,6 +47,7 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  color: white;
 }
 
 .dropdown-btn:hover .arrow-icon {

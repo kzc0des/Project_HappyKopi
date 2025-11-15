@@ -5,7 +5,7 @@
   </head>
   <body class="body">
     <nav class="navbar">
-      <h1 class="nav-text">HappyKopi Dashboard</h1>
+      <h1 class="nav-text">HappyKopi Dashboard - {{ getPeriodLabel() }}</h1>
 
       <div class="dropdown-container date-filter">
         <button class="dropdown-btn" (click)="toggleDropdown()">
@@ -34,15 +34,6 @@
           <button class="dropdown-item" (click)="changePeriod('this-month')">This Month</button>
           <hr class="dropdown-divider" />
           <button class="dropdown-item signout" (click)="openSignOutModal()">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M6 14H3C2.73478 14 2.48043 13.8946 2.29289 13.7071C2.10536 13.5196 2 13.2652 2 13V3C2 2.73478 2.10536 2.48043 2.29289 2.29289C2.48043 2.10536 2.73478 2 3 2H6M11 11L14 8M14 8L11 5M14 8H6"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
             Sign Out
           </button>
         </div>
@@ -113,13 +104,6 @@
             <h3 class="sales-text">Transaction History</h3>
 
             <ng-container *ngIf="transactionHistory.length > 0; else noTransactions">
-              <!-- <app-trans-history *ngFor="let transaction of transactionHistory"
-              [orderNumber]="transaction.orderNumber"
-              [orderTime]="formatOrderTime(transaction.transactionDate)"
-              [baristaName]="transaction.baristaName"
-              
-              [totalPayment]="transaction.total">
-            </app-trans-history> -->
               <app-trans-history
                 *ngFor="let transaction of transactionHistory"
                 [orderNumber]="transaction.orderNumber"
