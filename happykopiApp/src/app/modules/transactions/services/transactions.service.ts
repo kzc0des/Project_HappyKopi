@@ -19,6 +19,7 @@ export class TransactionsService {
   constructor(
     private readonly apiService: ApiService,
     private readonly signalRService: SignalRService) {
+    this.signalRService.startConnection();
     this.signalRService.on('ReceiveTransactionUpdate', () => {
       this.transactionUpdateSubject.next();
     });
