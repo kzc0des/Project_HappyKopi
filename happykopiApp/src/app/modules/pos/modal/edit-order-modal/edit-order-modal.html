@@ -1,6 +1,5 @@
 <div
-  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[465px] max-w-[95%] max-h-[90vh] overflow-y-auto bg-white rounded-2xl flex flex-col shadow-lg font-outfit"
->
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[465px] max-w-[95%] max-h-[90vh] overflow-y-auto bg-white rounded-2xl flex flex-col shadow-lg font-outfit">
   <!-- Header -->
   <div class="flex justify-between items-start p-6 pb-4 text-[#282828]">
     <div>
@@ -16,54 +15,41 @@
   <!-- Content Wrapper -->
   <div class="px-6 pb-6 flex flex-col gap-6">
     <!-- Quantity -->
-    <app-order-quantity-modifier
-      [oqm]="{ Quantity: quantity }"
-      [maxQuantity]="maxQuantity"
-      (quantityChange)="onQuantityChange($event)"
-    ></app-order-quantity-modifier>
+    <app-order-quantity-modifier [oqm]="{ Quantity: quantity }" [maxQuantity]="maxQuantity"
+      (quantityChange)="onQuantityChange($event)"></app-order-quantity-modifier>
 
-    @if (maxQuantity < 10 && maxQuantity > 0) {
-    <div class="text-[#ff6b00] text-sm text-center -mt-3">Only {{ maxQuantity }} available</div>
-    }
+    @if (maxQuantity < 10 && maxQuantity> 0) {
+      <div class="text-[#ff6b00] text-sm text-center -mt-3">Only {{ maxQuantity }} available</div>
+      }
 
-    <!-- Sizes -->
-    <div class="flex flex-col gap-3">
-      <h4 class="text-[18px] font-semibold text-[#282828]">Size</h4>
-      <div class="flex gap-3 overflow-x-auto scrollbar-hide">
-        @for (size of sizes; track size.SizeName) {
-        <app-grande-active
-          [sizeButton]="size"
-          [isActive]="activeSize === size.SizeName"
-          [isDisabled]="!size.isAvailable"
-          (selected)="selectSize(size)"
-        ></app-grande-active>
-        }
+      <!-- Sizes -->
+      <div class="flex flex-col gap-3">
+        <h4 class="text-[18px] font-semibold text-[#282828]">Size</h4>
+        <div class="flex gap-3 overflow-x-auto scrollbar-hide">
+          @for (size of sizes; track size.SizeName) {
+          <app-grande-active [sizeButton]="size" [isActive]="activeSize === size.SizeName"
+            [isDisabled]="!size.isAvailable" (selected)="selectSize(size)"></app-grande-active>
+          }
+        </div>
       </div>
-    </div>
 
-    <!-- Addons -->
-    <div class="flex flex-col gap-3">
-      <h4 class="text-[18px] font-semibold text-[#282828]">Add-ons</h4>
-      <div class="flex gap-4 overflow-x-auto scrollbar-hide">
-        @for (addon of addons; track addon.Name) {
-        <app-addon-card-active
-          [addonCard]="addon"
-          (quantityChange)="onAddonQuantityChange(addon.Name, $event)"
-        ></app-addon-card-active>
-        }
+      <!-- Addons -->
+      <div class="flex flex-col gap-3">
+        <h4 class="text-[18px] font-semibold text-[#282828]">Add-ons</h4>
+        <div class="flex gap-4 overflow-x-auto scrollbar-hide">
+          @for (addon of addons; track addon.Name) {
+          <app-addon-card-active [addonCard]="addon"
+            (quantityChange)="onAddonQuantityChange(addon.Name, $event)"></app-addon-card-active>
+          }
+        </div>
       </div>
-    </div>
 
-    <!-- Bottom Buttons -->
-    <div class="flex gap-4">
-      <app-red-button buttonTitle="Delete" (isClick)="delete()" class="flex-1"></app-red-button>
+      <!-- Bottom Buttons -->
+      <div class="flex gap-4 w-full">
+        <app-red-button class="flex-1" buttonTitle="Delete" itemTitle="delete" (isClick)="delete()"></app-red-button>
 
-      <app-long-yellow-button
-        buttonSize="modal"
-        buttonTitle="Save"
-        class="flex-1"
-        (click)="saveChanges()"
-      ></app-long-yellow-button>
-    </div>
+        <app-yellow-button buttonTitle="Save" itemTitle="transaction" class="flex-1"
+          (click)="saveChanges()"></app-yellow-button>
+      </div>
   </div>
 </div>

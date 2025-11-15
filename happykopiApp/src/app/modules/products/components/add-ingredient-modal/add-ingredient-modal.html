@@ -27,8 +27,8 @@ p-7 shadow-md rounded-lg">
     </app-yellow-button>
     }@else {
     <div class="w-full flex gap-2">
-        <app-red-button class="w-full py-4" buttonTitle="Delete" itemTitle="delete" (isClick)="onDelete()"></app-red-button>
-        <app-yellow-button class="w-full py-4" buttonTitle="Save" itemTitle="ingredient" [isDisabled]="!hasChanges" (isClick)="onSave()"></app-yellow-button>
+        <app-red-button class="py-4 flex-1" buttonTitle="Delete" itemTitle="delete" (isClick)="onDelete()"></app-red-button>
+        <app-yellow-button class="py-4 flex-1" buttonTitle="Save" itemTitle="ingredient" [isDisabled]="!hasChanges" (isClick)="onSave()"></app-yellow-button>
     </div>
     }
 </div>
