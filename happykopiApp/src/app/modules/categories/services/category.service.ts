@@ -31,6 +31,11 @@ export class CategoryService {
     return this.apiService.get<CategoryWithProductCountDto[]>(this.controllerPath);
   }
 
+  getInactiveCategories(): Observable<CategoryWithProductCountDto[]> {
+    const path = `${this.controllerPath}/inactive`;
+    return this.apiService.get<CategoryWithProductCountDto[]>(path);
+  }
+
   getCategoryWithProducts(id: number): Observable<ProductWithCategoryNameDto[]> {
     const path = `${this.controllerPath}/assign/${id}`;
     return this.apiService.get<ProductWithCategoryNameDto[]>(path);

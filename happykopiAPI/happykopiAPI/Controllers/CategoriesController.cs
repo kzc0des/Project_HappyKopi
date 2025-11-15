@@ -31,6 +31,13 @@ namespace happykopiAPI.Controllers
             return Ok(categories);
         }
 
+        [HttpGet("inactive")]
+        public async Task<IActionResult> GetInactiveCategories()
+        {
+            var categories = await _categoryService.GetInactiveCategoriesWithProductCountAsync();
+            return Ok(categories);
+        }
+
         [HttpGet("assign/{categoryId}")]
         public async Task<IActionResult> GetCategoriesWithProducts(int categoryId)
         {

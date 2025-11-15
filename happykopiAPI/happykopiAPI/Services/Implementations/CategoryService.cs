@@ -59,6 +59,14 @@ namespace happykopiAPI.Services.Implementations
                 commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<CategoryWithProductCountDto>> GetInactiveCategoriesWithProductCountAsync()
+        {
+            using var connection = CreateConnection();
+            return await connection.QueryAsync<CategoryWithProductCountDto>(
+                "dbo.sp_GetInactiveCategoriesWithProductCount",
+                commandType: CommandType.StoredProcedure);
+        }
+
         public async Task<IEnumerable<ProductWithCategoryNameDto>> GetActiveProductsByCategoryIdAsync(int categoryId)
         {
             using var connection = CreateConnection();
