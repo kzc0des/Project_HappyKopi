@@ -1,35 +1,26 @@
 <div class="relative w-full mx-auto font-[Outfit]">
-  <!-- Toggle Arrow -->
-  <div
-    (click)="toggleCard()"
-    class="absolute -top-8 sm:-top-10 left-1/2 -translate-x-1/2 px-8 py-3 flex justify-center items-center bg-[#fafafa] rounded-t-[30px] shadow-[0_-10px_16px_rgba(0,0,0,0.10)] cursor-pointer z-10"
-  >
-    <svg
-      [class.rotate-180]="expanded"
-      xmlns="http://www.w3.org/2000/svg"
-      width="28"
-      height="10"
-      viewBox="0 0 28 10"
-      fill="none"
-      class="transition-transform duration-300"
-    >
-      <path
-        d="M1.5 1.50049L14 8.50049L26.5 1.50049"
-        stroke="#777777"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  </div>
-
-  <!-- Card Wrapper -->
+  <!-- Card Wrapper with Integrated Arrow -->
   <div class="relative">
     <!-- Expanded Card -->
     <div *ngIf="expanded" class="flex relative">
+      <!-- Back Shadow Layer (for arrow shadow only) -->
       <div
-        class="w-full bg-[#fafafa] shadow-[0_4px_16px_rgba(0,0,0,0.25)] rounded-[32px] p-6 sm:p-5 flex flex-col gap-4 sm:gap-3"
-      >
+        class="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 bg-[#fafafa] rounded-t-[20px] shadow-[0_-4px_8px_rgba(0,0,0,0.10)] z-0">
+      </div>
+
+      <!-- Body Card (with shadow) -->
+      <div
+        class="w-full bg-[#fafafa] shadow-[0_4px_16px_rgba(0,0,0,0.25)] rounded-[32px] p-6 sm:p-5 flex flex-col gap-4 sm:gap-3 relative z-[1]">
+        <!-- Arrow Div (NO shadow, top layer) -->
+        <div (click)="toggleCard()"
+          class="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 flex justify-center items-center bg-[#fafafa] rounded-t-[20px] cursor-pointer z-[2]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 10" fill="none"
+            class="transition-transform duration-300">
+            <path d="M1.5 1.5L14 8.5L26.5 1.5" stroke="#777777" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </div>
+
         <!-- Order Header -->
         <div class="flex justify-between items-center w-full">
           <div class="flex flex-col">
@@ -43,23 +34,12 @@
         <div class="w-full flex justify-center items-center">
           <div
             class="w-full bg-[#f3b72c] rounded-xl flex justify-center items-center gap-2 sm:gap-2.5 shadow-md cursor-pointer transition-all duration-200 hover:bg-[#f5c347] hover:-translate-y-[2px] hover:shadow-md active:translate-y-0 py-6 sm:py-5 px-4"
-            (click)="viewDrinks()"
-          >
+            (click)="viewDrinks()">
             <div class="mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="25"
-                viewBox="0 0 20 25"
-                fill="none"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" viewBox="0 0 20 25" fill="none">
                 <path
                   d="M12.241 7.7446H5.4964M14.4892 12.241H5.4964M11.1169 16.7374H5.4964M1 1V23.482L3.2482 22.3579L5.4964 23.482L7.7446 22.3579L9.9928 23.482L12.241 22.3579L14.4892 23.482L16.7374 22.3579L18.9856 23.482V1L16.7374 2.1241L14.4892 1L12.241 2.1241L9.9928 1L7.7446 2.1241L5.4964 1L3.2482 2.1241L1 1Z"
-                  stroke="#765302"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+                  stroke="#765302" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </div>
 
@@ -71,25 +51,30 @@
 
     <!-- Collapsed Card -->
     <div *ngIf="!expanded" class="flex relative">
+      <!-- Back Shadow Layer (for arrow shadow only) -->
       <div
-        class="w-full bg-[#fafafa] shadow-[0_4px_16px_rgba(0,0,0,0.25)] rounded-[32px] py-5 sm:py-4 px-7 sm:px-5 flex items-center justify-center"
-      >
+        class="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 bg-[#fafafa] rounded-t-[20px] shadow-[0_-4px_8px_rgba(0,0,0,0.10)] z-0">
+      </div>
+
+      <!-- Body Card (with shadow) -->
+      <div
+        class="w-full bg-[#fafafa] shadow-[0_4px_16px_rgba(0,0,0,0.25)] rounded-[32px] py-5 sm:py-4 px-7 sm:px-5 flex items-center justify-center relative z-[1]">
+        <!-- Arrow Div (NO shadow, top layer) -->
+        <div (click)="toggleCard()"
+          class="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 flex justify-center items-center bg-[#fafafa] rounded-t-[20px] cursor-pointer z-[2]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="10" viewBox="0 0 28 10" fill="none"
+            class="transition-transform duration-300">
+            <path d="M1.5 8.5L14 1.5L26.5 8.5" stroke="#777777" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </div>
+
         <div class="w-full flex justify-between items-center cursor-pointer">
           <div class="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="25"
-              viewBox="0 0 20 25"
-              fill="none"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" viewBox="0 0 20 25" fill="none">
               <path
                 d="M12.241 7.7446H5.4964M14.4892 12.241H5.4964M11.1169 16.7374H5.4964M1 1V23.482L3.2482 22.3579L5.4964 23.482L7.7446 22.3579L9.9928 23.482L12.241 22.3579L14.4892 23.482L16.7374 22.3579L18.9856 23.482V1L16.7374 2.1241L14.4892 1L12.241 2.1241L9.9928 1L7.7446 2.1241L5.4964 1L3.2482 2.1241L1 1Z"
-                stroke="#282828"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+                stroke="#282828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             <div class="text-[18px] font-semibold sm:text-[16px]">Current Order</div>
           </div>
@@ -100,4 +85,4 @@
       </div>
     </div>
   </div>
-</div>
+</div>s
