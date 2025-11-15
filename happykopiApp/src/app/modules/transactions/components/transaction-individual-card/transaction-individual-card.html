@@ -1,6 +1,6 @@
-<div class="relative w-[540px] h-[116px] bg-[#FAFAFA] font-outfit">
+<div class="flex w-screen px-10 py-8 justify-between bg-[#FAFAFA] font-outfit">
   <!-- Icon -->
-  <div class="absolute left-[30px] top-[31px] w-[55px] h-[55px] bg-[#F3B72C] rounded-[12px] flex items-center justify-center">
+  <div class="p-3 bg-[#F3B72C] rounded-[12px] flex items-center justify-center">
     @if (cardMode === 'cash') {
       <svg xmlns="http://www.w3.org/2000/svg" width="26" height="17" viewBox="0 0 26 17" fill="none">
         <path d="M1 1H24.5V15.1H1V1Z" stroke="#F0F0F0" stroke-width="2" stroke-linejoin="round"/>
@@ -12,24 +12,24 @@
     }
   </div>
 
-  <!-- Card Label -->
-  @if (cardMode === 'cash') {
-    <div class="absolute left-[116px] top-[25px] text-[#909090] text-[16px] font-normal">
-      Cash Transactions
-    </div>
-  } @else if (cardMode === 'gcash') {
-    <div class="absolute left-[116px] top-[25px] text-[#909090] text-[16px] font-normal">
-      G-Cash Transactions
-    </div>
-  }
+  <div class="flex flex-col flex-1 justify-center ml-4">
+      @if (cardMode === 'cash') {
+        <div class="text-[#909090] text-[16px] font-normal">
+          Cash Transactions
+        </div>
+      } @else if (cardMode === 'gcash') {
+        <div class="text-[#909090] text-[16px] font-normal">
+          G-Cash Transactions
+        </div>
+      }
 
-  <!-- Total Transactions -->
-  <div class="absolute left-[116px] top-[62px] text-[#282828] text-[20px] font-semibold flex flex-col justify-center">
-    {{ transactionCard?.TotalTransactions }}
+        <div class="text-[#282828] text-[20px] font-semibold flex flex-col justify-center">
+          {{ transactionCard?.TotalTransactions }}
+        </div>
   </div>
 
   <!-- Total Amount -->
-  <div class="absolute right-[30px] top-[43px] text-[#282828] text-[20px] font-semibold flex flex-col justify-center text-right">
+  <div class=" text-[#282828] text-[20px] font-semibold flex flex-col justify-center text-right">
     {{ transactionCard?.TotalAmount | currency: 'PHP' }}
   </div>
 </div>
