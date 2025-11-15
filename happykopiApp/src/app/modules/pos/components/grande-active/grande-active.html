@@ -1,5 +1,5 @@
 <div
-  class="w-full sm:w-[180px] md:w-[200px] h-[60px] sm:h-[68px] md:h-[73px] rounded-xl inline-flex justify-center items-center gap-3 px-4 py-3 transition-all duration-200"
+  class="w-full sm:w-auto rounded-xl inline-flex justify-center items-center gap-3 px-4 py-5 transition-all duration-200"
   [ngClass]="
     isDisabled
       ? 'bg-[#f1f1f1] cursor-not-allowed'
@@ -10,7 +10,7 @@
   (click)="handleClick()"
 >
   <!-- Cup Icon -->
-  <div class="flex items-center justify-center">
+  <div class="flex items-center justify-center flex-shrink-0">
     @if (sizeButton.SizeQuantity >= 21) {
     <!-- Tall Cup SVG -->
     <svg
@@ -79,7 +79,7 @@
 
   <!-- Size Text -->
   <div
-    class="flex items-center gap-1 text-[14px] sm:text-[16px]"
+    class="flex items-center gap-1 text-[14px] sm:text-[16px] whitespace-nowrap"
     [ngClass]="isDisabled ? 'text-[#c6c6c6]' : isActive ? 'text-[#f3b72c]' : 'text-[#282828]'"
   >
     <span>{{ sizeButton.SizeName }}</span>
