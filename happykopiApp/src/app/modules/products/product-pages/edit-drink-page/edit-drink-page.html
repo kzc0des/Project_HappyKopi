@@ -38,8 +38,7 @@
             name="productCategory" #productCategory="ngModel" [options]="categoryOptions" required>
         </app-dropdown-button>
 
-        <app-toggle-button class="w-full" itemTitle="Available?"
-            [(ngModel)]="productPayload.isAvailable"></app-toggle-button>
+        <app-toggle-button class="w-full" itemTitle="Available?" [(ngModel)]="productPayload.isAvailable"></app-toggle-button>
 
         <app-itemcard [isEditing]="true" class="w-full" itemTitle="Price" type="number" [ngModel]="currentPrice"
             name="basePrice" #basePrice="ngModel"> </app-itemcard>

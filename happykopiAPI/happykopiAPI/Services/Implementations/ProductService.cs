@@ -213,14 +213,12 @@ namespace happykopiAPI.Services.Implementations
 
         public async Task UpdateProductAsync(int productId, ProductUpdateDto productDto)
         {
-            var connectionString = _configuration.GetConnectionString("LocalDB");
-            await using var connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-
-            await using var transaction = await connection.BeginTransactionAsync();
+            using var connection = CreateConnection();
 
             try
             {
+                // The DTO contains variant information, but we will only use the main product details for the update.
+                // The variants will be preserved in the database as per the new requirement.
                 var productParams = new
                 {
                     ProductId = productId,
@@ -233,44 +231,18 @@ namespace happykopiAPI.Services.Implementations
                     productDto.IsActive
                 };
 
+                // Execute the stored procedure to update only the product's main attributes.
                 await connection.ExecuteAsync(
                     "sp_UpdateProductMain",
                     productParams,
-                    transaction: transaction,
                     commandType: CommandType.StoredProcedure
                 );
 
-                foreach (var variant in productDto.Variants)
-                {
-                    var variantParams = new
-                    {
-                        ProductId = productId,
-                        variant.SizeId,
-                        variant.Price
-                    };
-                    int newVariantId = await connection.QuerySingleAsync<int>(
-                        "sp_CreateProductVariant",
-                        variantParams,
-                        transaction: transaction,
-                        commandType: CommandType.StoredProcedure
-                    );
-
-                    foreach (var ingredient in variant.Recipe)
-                    {
-                        await connection.ExecuteAsync("sp_CreateVariantIngredient", new { ProductVariantId = newVariantId, ingredient.StockItemId, ingredient.QuantityNeeded }, transaction: transaction, commandType: CommandType.StoredProcedure);
-                    }
-
-                    foreach (var addOn in variant.AddOns)
-                    {
-                        await connection.ExecuteAsync("sp_CreateVariantAddOn", new { ProductVariantId = newVariantId, addOn.ModifierId, addOn.DefaultQuantity }, transaction: transaction, commandType: CommandType.StoredProcedure);
-                    }
-                }
-
-                await transaction.CommitAsync();
+                // Notify clients that product data has changed.
+                await _notificationService.NotifyProductsUpdatedAsync();
             }
             catch (Exception)
             {
-                await transaction.RollbackAsync();
                 throw;
             }
         }

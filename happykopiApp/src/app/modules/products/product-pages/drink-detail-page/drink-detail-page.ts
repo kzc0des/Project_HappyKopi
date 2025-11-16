@@ -40,16 +40,21 @@ export class DrinkDetailPage implements OnInit {
     this.productPayload = this.route.snapshot.data['drink'];
     this.headerService.resetAction();
 
-    this.displayVariants = this.productPayload.variants.filter(variant => 
-      (variant.recipe && variant.recipe.length > 0) || (variant.addOns && variant.addOns.length > 0)
-    );
+    this.displayVariants = this.productPayload.variants;
 
-    this.availableSizes = this.displayVariants.map(variant => ({
-      id: variant.id,
-      name: variant.size,
-      price: variant.price,
-      ozAmount: variant.ozAmount
-    }));
+    // Group variants by sizeId to avoid duplicates in the UI
+    const uniqueSizesMap = new Map<number, ModifierDto>();
+    this.displayVariants.forEach(variant => {
+      if (!uniqueSizesMap.has(variant.sizeId)) {
+        uniqueSizesMap.set(variant.sizeId, {
+          id: variant.sizeId, // Use sizeId for selection logic
+          name: variant.size,
+          price: variant.price,
+          ozAmount: variant.ozAmount
+        });
+      }
+    });
+    this.availableSizes = Array.from(uniqueSizesMap.values());
 
     if (this.availableSizes.length > 0) {
       this.selectedSizeId = this.availableSizes[0].id;
@@ -106,7 +111,7 @@ export class DrinkDetailPage implements OnInit {
     if (this.selectedSizeId === null) {
       return undefined;
     }
-    return this.displayVariants.find(v => v.id === this.selectedSizeId);
+    return this.displayVariants.find(v => v.sizeId === this.selectedSizeId);
   }
 
   get currentPrice(): number {
