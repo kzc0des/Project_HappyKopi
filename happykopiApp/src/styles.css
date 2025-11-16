@@ -8,6 +8,9 @@
     --color-hapikopi-bg: #f9fafb;
     --color-hapikopi-cardbackground: #fafafa;
     --color-hapikopi-grayborder: #909090;
+
+    --color-hapikopi-success-green: #10B981;
+    --color-hapikopi-error-red: #EF4444;
 }
 
 html,

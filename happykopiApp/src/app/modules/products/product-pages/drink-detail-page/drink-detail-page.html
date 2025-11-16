@@ -36,7 +36,7 @@
         <app-itemcard [showIcon]="true" class="w-full" itemTitle="Category" [(ngModel)]="productPayload.categoryName"
             name="productCategory"> </app-itemcard>
 
-        <app-availability-card class="w-full">
+        <app-availability-card class="w-full" [isAvailable]="productPayload.isAvailable">
         </app-availability-card>
 
         <app-itemcard [showIcon]="true" class="w-full" itemTitle="Price" type="number" [ngModel]="currentPrice"

@@ -10,8 +10,8 @@
     flex flex-col w-full gap-2
     rounded-2xl">
         <p class="text-gray-500">{{title}}</p>
-        <h1 class="font-semibold text-lg text-hapikopi-dark">
-            {{ isAvailable? 'Available' : 'Not Available'}}
+        <h1 class="font-bold text-lg" [ngClass]="isAvailable ? 'text-hapikopi-success-green' : 'text-hapikopi-error-red'">
+            {{availabilityLabel()}}
         </h1>
     </div>
 </div>
