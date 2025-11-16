@@ -95,8 +95,6 @@ export class EditDrinkPage implements OnInit {
           "Cancel"
         );
         if (confirm) this.updateProduct();
-
-
       } else if (action === "DELETE") {
         const confirm = await this.confirmationService.confirm(
           "Delete Product?",
@@ -106,8 +104,6 @@ export class EditDrinkPage implements OnInit {
           "Cancel"
         );
         if (confirm) this.deleteProduct();
-
-
       }
     })
   }
@@ -298,6 +294,7 @@ export class EditDrinkPage implements OnInit {
     this.productsService.updateProduct(this.productPayload.id, updatePayload).subscribe({
       next: () => {
         this.loadingService.hide();
+        this.headerService.notifyItemAdded(true);
         this.router.navigate(['../'], { relativeTo: this.route });
       },
       error: (err) => this.loadingService.hide()

@@ -40,6 +40,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.headerService.setArchivedViewStatus(this.showInactive);
+    this.headerService.notifyItemAdded(false);
 
     // Listen for real-time updates
     this.subscriptions.add(

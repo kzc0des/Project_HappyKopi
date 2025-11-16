@@ -1,11 +1,28 @@
-<div class="card p-6 rounded-0 shadow-sm flex items-center gap-6 cursor-pointer justify-between w-full bg-white" [routerLink]="categoryId !== 0 ? [categoryId] : null">
-    <div class="flex flex-col gap-2 items-start">
-        <p class="text-hapikopi-dark font-bold">{{ itemTitle }}</p>
-        <p class="text-gray-500">{{ itemValue }} {{ itemUnit }}</p>
+<div class="card p-6 rounded-0 shadow-sm flex items-center gap-6 cursor-pointer justify-between w-full bg-white"
+    [routerLink]="categoryId !== 0 ? [categoryId] : null">
+    <div class="p-3 bg-hapikopi-yellow rounded-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 18 25" fill="none">
+            <path d="M1 7.85742H17" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" />
+            <path
+                d="M3.37308 9.08171C3.32582 8.42016 3.84982 7.85742 4.51308 7.85742H13.4868C14.1501 7.85742 14.6741 8.42016 14.6268 9.08171L13.6472 22.796C13.6045 23.3941 13.1068 23.8574 12.5073 23.8574H5.49262C4.89308 23.8574 4.39542 23.3941 4.35268 22.796L3.37308 9.08171Z"
+                stroke="#FAFAFA" stroke-width="2" />
+            <path d="M9 4.42857V2.14286C9 1.51167 9.51166 1 10.1429 1H11.8571" stroke="#FAFAFA" stroke-width="2"
+                stroke-linecap="round" />
+            <path
+                d="M3.69793 5.38368C3.78976 4.8326 4.26656 4.42871 4.82524 4.42871H13.1746C13.7333 4.42871 14.2101 4.8326 14.3019 5.38368L14.7142 7.85728H3.28564L3.69793 5.38368Z"
+                stroke="#FAFAFA" stroke-width="2" />
+        </svg>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path fill="#333" fill-rule="evenodd"
-            d="M8.512 4.43a.75.75 0 0 1 1.057.082l6 7a.75.75 0 0 1 0 .976l-6 7a.75.75 0 0 1-1.138-.976L14.012 12L8.431 5.488a.75.75 0 0 1 .08-1.057"
-            clip-rule="evenodd" />
-    </svg>
+    <div class="flex-1 flex justify-between items-center">
+        <div class="flex flex-col gap-2 items-start">
+            <p class="text-hapikopi-dark font-bold">{{ itemTitle }}</p>
+            <p class="text-gray-500">{{ itemValue }} {{ itemUnit }}</p>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="#333" fill-rule="evenodd"
+                d="M8.512 4.43a.75.75 0 0 1 1.057.082l6 7a.75.75 0 0 1 0 .976l-6 7a.75.75 0 0 1-1.138-.976L14.012 12L8.431 5.488a.75.75 0 0 1 .08-1.057"
+                clip-rule="evenodd" />
+        </svg>
+    </div>
+
 </div>
