@@ -54,8 +54,10 @@ export class DrinkListPage implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.route.queryParams.subscribe(params => {
-        const categoryId = params['categoryId'];
-        this.loadProducts(categoryId);
+        // Gamitin ang state mula sa service para sa consistency
+        const categoryId = params['categoryId'] !== undefined ? +params['categoryId'] || null : null;
+        this.productService.setSelectedCategoryId(categoryId);
+        this.loadProducts(categoryId); // I-load ang products base sa URL
       })
     );
 
@@ -74,7 +76,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
     );
   }
 
-  loadProducts(categoryId?: number): void {
+  loadProducts(categoryId: number | null): void {
     const productsObservable = this.showInactive
       ? this.productService.getInactiveProducts(categoryId)
       : this.productService.getActiveProducts(categoryId);

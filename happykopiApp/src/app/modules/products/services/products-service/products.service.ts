@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ProductCreateDto } from '../../../../core/dtos/product/product-create-dto';
 import { ApiService } from '../../../../core/services/api/api.service';
 import { ModifierDto } from '../../../../core/dtos/product/dropdowns/modifier-dto';
@@ -12,8 +12,15 @@ import { SignalRService } from '../../../../core/services/signalR/signal-r.servi
   providedIn: 'root'
 })
 export class ProductsService {
-    private productUpdateSubject = new Subject<void>();
-    public productUpdated$ = this.productUpdateSubject.asObservable();
+  private productUpdateSubject = new Subject<void>();
+  public productUpdated$ = this.productUpdateSubject.asObservable();
+
+  private selectedCategoryIdSource = new BehaviorSubject<number | null>(null);
+  selectedCategoryId$ = this.selectedCategoryIdSource.asObservable();
+
+  setSelectedCategoryId(id: number | null): void {
+    this.selectedCategoryIdSource.next(id);
+  }
 
   constructor(
     private apiService: ApiService,
@@ -23,7 +30,7 @@ export class ProductsService {
     this.signalRService.on('ReceiveProductUpdate', () => {
       this.productUpdateSubject.next();
     });
-   }
+  }
 
   getActiveSizes(): Observable<ModifierDto[]> {
     return this.apiService.get<ModifierDto[]>('products/sizes');
@@ -58,7 +65,7 @@ export class ProductsService {
     return this.apiService.post<{ productId: number }>('products', formData);
   }
 
-  getActiveProducts(categoryId?: number): Observable<ProductListItemDto[]> {
+  getActiveProducts(categoryId?: number | null): Observable<ProductListItemDto[]> {
     let url = 'products';
     if (categoryId) {
       url += `?categoryId=${categoryId}`;
@@ -66,7 +73,7 @@ export class ProductsService {
     return this.apiService.get<ProductListItemDto[]>(url);
   }
 
-  getInactiveProducts(categoryId?: number): Observable<ProductListItemDto[]> {
+  getInactiveProducts(categoryId?: number | null): Observable<ProductListItemDto[]> {
     let url = 'products/inactive';
     if (categoryId) {
       url += `?categoryId=${categoryId}`;

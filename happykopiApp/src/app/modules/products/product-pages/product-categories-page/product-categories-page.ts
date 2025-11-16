@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../../../categories/services/category.service';
 import { Subscription } from 'rxjs';
+import { ProductsService } from '../../services/products-service/products.service';
 
 export interface CategoryWithProductCountWithIdDto extends CategoryWithProductCountDto {
   id: number;
@@ -21,10 +22,13 @@ export class ProductCategoriesPage implements OnInit, OnDestroy {
   totalDrinksCount = 0;
   private subscriptions = new Subscription();
 
+  selectedCategoryId: number | null = null;
+
   constructor(
     private route: ActivatedRoute, 
     private router: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private productsService: ProductsService // Inject the service
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +38,22 @@ export class ProductCategoriesPage implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.categoryService.categoryUpdated$.subscribe(() => {
         this.loadCategories();
+      })
+    );
+
+    this.subscriptions.add(
+      this.route.queryParams.subscribe(params => {
+        // I-update lang ang service kung may specific na categoryId sa URL.
+        // Kung walang categoryId, huwag i-override ang existing state sa service.
+        if (params['categoryId'] !== undefined) {
+          this.productsService.setSelectedCategoryId(+params['categoryId'] || null);
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      this.productsService.selectedCategoryId$.subscribe(id => {
+        this.selectedCategoryId = id;
       })
     );
   }
@@ -48,11 +68,16 @@ export class ProductCategoriesPage implements OnInit, OnDestroy {
   onCategoryClick(categoryId: number) {
     this.router.navigate(['/app/products'], {
       queryParams: { categoryId: categoryId },
+      queryParamsHandling: 'merge'
     });
+    this.productsService.setSelectedCategoryId(categoryId); // Update the service state
   }
 
   onAllDrinksClick() {
-    this.router.navigate(['/app/products']);
+    this.router.navigate(['/app/products'], {
+      queryParams: { categoryId: null } 
+    });
+    this.productsService.setSelectedCategoryId(null); // Update the service state
   }
 
   ngOnDestroy(): void {

@@ -8,9 +8,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './category-list-card.css'
 })
 export class CategoryListCard {
-  @Input() categoryId: number = 0;
+  @Input() categoryId: number | null = null;
+  @Input() selectedCategoryId: number | null = null;
   @Input() itemTitle !: string;
   @Input() itemValue: number | undefined;
   @Input() itemUnit !: string;
   @Output() itemClick = new EventEmitter<any>();
+
+  get isSelected(): boolean {
+    return this.categoryId === this.selectedCategoryId;
+  }
 }

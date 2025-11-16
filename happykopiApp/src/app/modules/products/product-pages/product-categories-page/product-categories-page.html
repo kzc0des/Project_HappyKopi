@@ -1,10 +1,12 @@
-<div class="flex flex-col">
+<div class="flex flex-col px-5 bg-white py-4 gap-3">
     
   <app-category-list-card
+    [categoryId]="null"
     itemTitle="All Drinks"
     itemUnit="Drinks"
     [itemValue]="totalDrinksCount"
-    (itemClick)="onAllDrinksClick()">
+    (itemClick)="onAllDrinksClick()"
+    [selectedCategoryId]="selectedCategoryId">
   </app-category-list-card>
 
     @for(item of categories; track $index){
@@ -13,6 +15,7 @@
         [itemTitle]="item.name"
         itemUnit="Drinks"
         [itemValue]="item.productCount"
-        (itemClick)="onCategoryClick(item.id)"></app-category-list-card>
+        (itemClick)="onCategoryClick(item.id)"
+        [selectedCategoryId]="selectedCategoryId"></app-category-list-card>
     }
 </div>
