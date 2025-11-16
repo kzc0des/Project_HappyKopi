@@ -18,11 +18,13 @@ import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { ProductsService } from '../../../products/services/products-service/products.service';
 import { CategoryService } from '../../../categories/services/category.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { CategoryCard } from '../../components/category-card/category-card';
 
 @Component({
   selector: 'app-order',
   imports: [
-    PosCategoryOff,
+    CategoryCard,
     OrderCard,
     SearchDrink,
     OrderQuickView,
@@ -42,16 +44,20 @@ export class Order implements OnInit, OnDestroy {
   // for searching
   allDrinks = signal<ProductsWithCategoryDto[]>([]);
   drinks = signal<ProductsWithCategoryDto[]>([]);
+  filteredDrinks = signal<ProductsWithCategoryDto[]>([]);
+
+  // for add order modal
+
 
   // for unavailable drinks
   unavailableMap = signal<Map<number, UnavailableProductDto>>(new Map());
 
   // for default na allDrinks
-  allDrinksCategory: CategoryWithProductCountDto = {
-    id: -1,
-    name: 'All Drinks',
-    productCount: 0,
-  };
+  // allDrinksCategory: CategoryWithProductCountDto = {
+  //   id: -1,
+  //   name: 'All Drinks',
+  //   productCount: 0,
+  // };
 
   showModal = signal(false);
   showUnavailableModal = signal(false);
@@ -61,42 +67,44 @@ export class Order implements OnInit, OnDestroy {
   constructor(
     private orderService: OrderService,
     private productsService: ProductsService,
-    private categoryService: CategoryService
-  ) {}
+    private categoryService: CategoryService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.loadData();
 
     this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
         console.log('Product update received in POS. Reloading categories and products.');
-        this.loadCategories();
+        this.loadData();
       })
     );
 
     this.subscriptions.add(
       this.categoryService.categoryUpdated$.subscribe(() => {
         console.log('Category update received in POS. Reloading categories.');
-        this.loadCategories();
+        this.loadData();
       })
     );
   }
 
-  loadCategories() {
-    this.orderService.getCategories().subscribe({
-      next: (data) => {
-        this.categories.set(data);
-        const totalProducts = data.reduce((sum, category) => sum + category.productCount, 0);
-        this.allDrinksCategory.productCount = totalProducts;
-        this.selectAllDrinks();
-      },
-      error: (err) => console.error(err),
-    });
+  loadData() {
+    const categories = this.route.snapshot.data['categories'];
+    const products = this.route.snapshot.data['products'];
+
+    if (categories) {
+      this.categories.set(categories);
+    }
+
+    if (products) {
+      this.drinks.set(products);
+    }
   }
+
   allProductConfigs: Map<number, ProductConfigurationResultDto> = new Map();
 
   selectAllDrinks() {
-    this.selectedCategory.set(this.allDrinksCategory);
 
     this.orderService.getProductsWithAvailability().subscribe({
       next: async ({ products, unavailableMap }) => {
@@ -196,42 +204,6 @@ export class Order implements OnInit, OnDestroy {
 
   closeModal() {
     this.showModal.set(false);
-  }
-
-  onDrinkClicked(drink: ProductsWithCategoryDto): void {
-    const effectivelyAvailable = this.isProductEffectivelyAvailable(drink.id);
-
-    if (!effectivelyAvailable) {
-      // ALL variants are out of stock - show unavailable modal
-      const unavailableInfo = this.unavailableMap().get(drink.id);
-      this.selectedUnavailableProduct.set({
-        productName: drink.name,
-        categoryName: drink.categoryName,
-        price: drink.price,
-        imageUrl: drink.imageUrl || '',
-        unavailableInfo:
-          unavailableInfo ??
-          ({
-            productId: drink.id,
-            productName: drink.name,
-            categoryName: drink.categoryName,
-            price: drink.price,
-            imageUrl: drink.imageUrl || '',
-            reason: 'Insufficient stock to add this drink based on current basket.',
-          } as UnavailableProductDto),
-      });
-      this.showUnavailableModal.set(true);
-    } else {
-      // AT LEAST ONE variant is available - show add order modal
-      this.selectedDrink.set({
-        ProductId: drink.id,
-        DrinkName: drink.name,
-        DrinkCategory: drink.categoryName,
-        BasePrice: drink.price,
-        ImageUrl: drink.imageUrl || '',
-      });
-      this.showModal.set(true);
-    }
   }
 
   onCloseModal() {

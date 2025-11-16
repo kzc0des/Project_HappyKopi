@@ -30,7 +30,11 @@ export class OrderService {
   constructor(private api: ApiService) {}
 
   getCategories(): Observable<CategoryWithProductCountDto[]> {
-    return this.api.get<CategoryWithProductCountDto[]>(this.endpoint);
+    return this.api.get<CategoryWithProductCountDto[]>(`${this.endpoint}/categories`);
+  }
+
+  getAllProducts(): Observable<ProductsWithCategoryDto[]> {
+    return this.api.get<ProductsWithCategoryDto[]>(`${this.endpoint}/products`);
   }
 
   getProductsByCategory(categoryId: number): Observable<ProductsWithCategoryDto[]> {

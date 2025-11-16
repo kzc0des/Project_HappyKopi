@@ -41,7 +41,6 @@ import { activeSizeResolver } from './modules/products/resolver/adddrinkresolver
 import { activeAddonsResolver } from './modules/products/resolver/adddrinkresolvers/active-addons-resolver';
 import { drinkCategoriesResolver } from './modules/products/resolver/adddrinkresolvers/drink-categories-resolver';
 import { powderAndLiquidsIngredientsResolver } from './modules/products/resolver/adddrinkresolvers/powder-and-liquids-ingredients-resolver';
-import { CategoriesResolver } from './modules/pos/resolver/categories/categories-resolver';
 import { productDetailResolver } from './modules/products/resolver/productdetail/product-detail-resolver';
 import { InventoryBatchAdd } from './modules/inventory/inventory-batch-add/inventory-batch-add';
 import { transactionsResolver } from './modules/transactions/resolvers/transactions-resolver';
@@ -50,6 +49,8 @@ import { ProductCategoriesPage } from './modules/products/product-pages/product-
 import { RegisterBarista } from './modules/auth/register-barista/register-barista';
 import { ModifierLink } from './modules/modifiers/modifier-link/modifier-link';
 import { transactionIndivResolverResolver } from './modules/transactions/resolvers/transaction-indiv-resolver-resolver';
+import { categorySummaryResolver } from './modules/pos/resolver/categorysummary/category-summary-resolver';
+import { productSummaryResolver } from './modules/pos/resolver/productsummary/product-summary-resolver';
 
 export const routes: Routes = [
     {
@@ -274,7 +275,8 @@ export const routes: Routes = [
                         path: '',
                         component: Order,
                         resolve: {
-                            categories: CategoriesResolver
+                            categories: categorySummaryResolver,
+                            products: productSummaryResolver
                         }
                     },
                     {

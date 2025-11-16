@@ -2,11 +2,10 @@
     <app-order-quick-view class="w-full"></app-order-quick-view> 
 
   <!-- Categories -->
-  <div class="w-full bg-[#f0f0f0] py-5">
+  <!-- <div class="w-full bg-[#f0f0f0] py-5">
     <div class="w-full max-w-[1200px] mx-auto px-4">
       <div class="flex overflow-x-auto gap-4 no-scrollbar">
         <app-pos-category-off
-          [categoryCard]="allDrinksCategory"
           [mode]="selectedCategory()?.id === -1 ? 'active' : 'inactive'"
           (click)="onAllDrinksClick()"
         ></app-pos-category-off>
@@ -20,6 +19,16 @@
         }
       </div>
     </div>
+  </div> -->
+
+  <div class="
+  flex items-center gap-2 py-4 px-6 
+  w-full overflow-x-auto">
+    <app-category-card itemTitle="All Drinks"></app-category-card>
+
+    @for(category of categories(); track $index) {
+      <app-category-card [itemTitle]="category.name" [itemValue]="category.productCount"></app-category-card>
+    }
   </div>
 
   <!-- Search Bar Centered -->
@@ -45,7 +54,6 @@
           class="w-full"
           [orderCard]="drink"
           [isUnavailable]="!isProductEffectivelyAvailable(drink.id)"
-          (cardClick)="onDrinkClicked(drink)"
         ></app-order-card>
         }
       </div>

@@ -1,0 +1,29 @@
+<div class="
+flex flex-col items-start py-2 px-4 gap-4
+w-[50vw] bg-white
+rounded-2xl" (click)="onClick()">
+    <div class="
+    flex justify-center items-center p-3 
+    rounded-[50%]"
+    [ngClass]="">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 18 26">
+            <path d="M1 8.35693H17" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" />
+            <path
+                d="M3.37316 9.58122C3.3259 8.91968 3.8499 8.35693 4.51316 8.35693H13.4869C14.1501 8.35693 14.6741 8.91968 14.6269 9.58122L13.6473 23.2955C13.6045 23.8936 13.1069 24.3569 12.5073 24.3569H5.4927C4.89316 24.3569 4.3955 23.8936 4.35276 23.2955L3.37316 9.58122Z"
+                stroke="#FAFAFA" stroke-width="2" />
+            <path d="M9 4.92857V2.64286C9 2.01167 9.51166 1.5 10.1429 1.5H11.8571" stroke="#FAFAFA" stroke-width="2"
+                stroke-linecap="round" />
+            <path
+                d="M3.69801 5.88368C3.78984 5.3326 4.26663 4.92871 4.82532 4.92871H13.1747C13.7334 4.92871 14.2102 5.3326 14.302 5.88368L14.7143 8.35728H3.28572L3.69801 5.88368Z"
+                stroke="#FAFAFA" stroke-width="2" />
+        </svg>
+    </div>
+    <div class="flex flex-col gap-1">
+        <p class="text-hapikopi-dark font-bold">
+            {{ itemTitle }}
+        </p>
+        <p class="text-hapikopi-grayborder">
+            {{ itemValue }}
+        </p>
+    </div>
+</div>
