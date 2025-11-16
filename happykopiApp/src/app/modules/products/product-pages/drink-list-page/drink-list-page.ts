@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryButtonField } from '../../components/category-button-field/category-button-field';
 import { ProductListCard } from '../../components/product-list-card/product-list-card';
 import { HeaderService } from '../../../../core/services/header/header.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ProductListItemDto } from '../../../../core/dtos/product/product.model';
 import { ProductSearchBar } from "../../components/product-search-bar/product-search-bar";
 import { ProductsService } from '../../services/products-service/products.service';
@@ -42,7 +42,11 @@ export class DrinkListPage implements OnInit, OnDestroy {
     this.headerService.setArchivedViewStatus(this.showInactive);
     this.headerService.notifyItemAdded(false);
 
-    // Listen for real-time updates
+    /// <summary>
+    /// subscription to the product service to tell the
+    /// drink-list page that there's an update
+    /// happened
+    /// </summary>
     this.subscriptions.add(
       this.productService.productUpdated$.subscribe(() => {
         const categoryId = this.route.snapshot.queryParams['categoryId'];
@@ -50,15 +54,16 @@ export class DrinkListPage implements OnInit, OnDestroy {
       })
     );
 
-    // this.drinks = this.route.snapshot.data['productslist']; // We will load dynamically now
-    // console.log(this.filteredDrinks);
-
+    /// <summary>
+    /// subscription to the routes to check if there are any
+    /// query parameters in the url and if it has
+    /// the loadproducts function will do the filtering
+    /// </summary>
     this.subscriptions.add(
       this.route.queryParams.subscribe(params => {
-        // Gamitin ang state mula sa service para sa consistency
         const categoryId = params['categoryId'] !== undefined ? +params['categoryId'] || null : null;
         this.productService.setSelectedCategoryId(categoryId);
-        this.loadProducts(categoryId); // I-load ang products base sa URL
+        this.loadProducts(categoryId);
       })
     );
 
@@ -78,13 +83,23 @@ export class DrinkListPage implements OnInit, OnDestroy {
   }
 
   loadProducts(categoryId: number | null): void {
-    const productsObservable = this.showInactive
+    /// <summary>
+    /// This will serve as the actual stream of data
+    /// that is being fetched from the database
+    /// therefore it fetches observable data
+    /// </summary>
+    const productsObservable : Observable<ProductListItemDto[]> = this.showInactive
       ? this.productService.getInactiveProducts(categoryId)
       : this.productService.getActiveProducts(categoryId);
 
+    /// <summary>
+    /// The 'products' in this arrow function are the data
+    /// that is being fetched from the stream, and by using subscribe
+    /// you are accessing that stream
+    /// </summary>
     productsObservable.subscribe(products => {
       this.drinks = products;
-      this.filteredDrinks = products; // Initialize filtered list
+      this.filteredDrinks = products;
       if (categoryId && products.length > 0) {
         this.currentCategoryName = products[0].categoryName;
       } else {
@@ -102,20 +117,33 @@ export class DrinkListPage implements OnInit, OnDestroy {
   }
 
   onSearch(searchTerm: string): void {
-    this.filteredDrinks = this.drinks.filter(drink =>
-      drink.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    this.filteredDrinks = this.drinks
+      .filter(drink =>
+        drink.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
   }
 
   ngOnDestroy(): void {
-    this.headerService.setArchivedViewStatus(false); // Reset on leave
+    this.headerService.setArchivedViewStatus(false);
     this.subscriptions.unsubscribe();
   }
 
+  /**
+   * @param drinkId 
+   * @description navigate to drink-detail-page
+   */
   goToDrink(drinkId: number) {
-    this.router.navigate(['drink', drinkId], { relativeTo: this.route });
+    this.router.navigate(['drink', drinkId], { 
+      relativeTo: this.route 
+    });
   }
 
+  /**
+   * @param originalUrl 
+   * @param width 
+   * @param height 
+   * @returns returns cropped and optimized img before uploading in cloud
+   */
   transformImageUrl(originalUrl: string | null | undefined, width = 64, height = 64): string {
     if (!originalUrl) {
       return 'assets/images/default-kopi.png'; 
@@ -123,18 +151,18 @@ export class DrinkListPage implements OnInit, OnDestroy {
 
     const uploadIndex = originalUrl.indexOf('/upload/');
     if (uploadIndex === -1) {
-      return originalUrl; // Hindi ito Cloudinary URL
+      return originalUrl;
     }
 
     const baseUrl = originalUrl.substring(0, uploadIndex);
     const versionAndPath = originalUrl.substring(uploadIndex + 8);
 
-    /*
-     * w_64, h_64:  (Width/Height) 
-     * c_fill:      (Crop) 
-     * g_auto:      (Gravity) SMART CROP. 
-     * f_auto:      (Format) Auto-select (WebP, etc.)
-     * q_auto:      (Quality) Auto-quality
+    /** 
+     * @param w_64, h_64:  (Width/Height) 
+     * @param c_fill:      (Crop) 
+     * @param g_auto:      (Gravity) SMART CROP. 
+     * @param f_auto:      (Format) Auto-select (WebP, etc.)
+     * @param q_auto:      (Quality) Auto-quality
      */
     const transformations = `/upload/w_${width},h_${height},c_fill,g_auto,f_auto,q_auto/`;
 

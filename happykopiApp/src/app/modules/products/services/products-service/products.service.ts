@@ -12,12 +12,30 @@ import { SignalRService } from '../../../../core/services/signalR/signal-r.servi
   providedIn: 'root'
 })
 export class ProductsService {
+  /**
+   * @description This will be the variable that will catch everytime 
+     SignalRService notification fires
+   */
   private productUpdateSubject = new Subject<void>();
+
+  /**
+   * @description This will be the variable that will access by the other 
+   * components to see if there are changes on productUpdateSubject
+ */
   public productUpdated$ = this.productUpdateSubject.asObservable();
 
   private selectedCategoryIdSource = new BehaviorSubject<number | null>(null);
+  /**
+ * @description This will be the variable that will access by the other 
+ * components to see if there are changes on selectedCategoryIdSource
+*/
   selectedCategoryId$ = this.selectedCategoryIdSource.asObservable();
 
+  /**
+   * 
+   * @param id 
+   * @returns updates the selectedCategoryIdSource
+   */
   setSelectedCategoryId(id: number | null): void {
     this.selectedCategoryIdSource.next(id);
   }

@@ -35,22 +35,21 @@ export class ProductCategoriesPage implements OnInit, OnDestroy {
     this.categories = this.route.snapshot.data['categorylist'];
     this.totalDrinksCount = this.categories.reduce((sum, category) => sum + category.productCount, 0);
 
+    /// <summary>
+    /// subscription to the category service to tell the
+    /// drink-list page that there's an update
+    /// happened
+    /// </summary>
     this.subscriptions.add(
       this.categoryService.categoryUpdated$.subscribe(() => {
         this.loadCategories();
       })
     );
 
-    this.subscriptions.add(
-      this.route.queryParams.subscribe(params => {
-        // I-update lang ang service kung may specific na categoryId sa URL.
-        // Kung walang categoryId, huwag i-override ang existing state sa service.
-        if (params['categoryId'] !== undefined) {
-          this.productsService.setSelectedCategoryId(+params['categoryId'] || null);
-        }
-      })
-    );
-
+    /// <summary>
+    /// This will be the one that gets the notification if ever
+    /// the selectedCategoryIdSource is updated
+    /// </summary>
     this.subscriptions.add(
       this.productsService.selectedCategoryId$.subscribe(id => {
         this.selectedCategoryId = id;
@@ -66,18 +65,22 @@ export class ProductCategoriesPage implements OnInit, OnDestroy {
   }
 
   onCategoryClick(categoryId: number) {
+    /// <summary>
+    /// The queryParams are the ones in the address bar that has '?'
+    /// its purpose is for filtering
+    /// </summary>
     this.router.navigate(['/app/products'], {
       queryParams: { categoryId: categoryId },
       queryParamsHandling: 'merge'
     });
-    this.productsService.setSelectedCategoryId(categoryId); // Update the service state
+    this.productsService.setSelectedCategoryId(categoryId);
   }
 
   onAllDrinksClick() {
     this.router.navigate(['/app/products'], {
       queryParams: { categoryId: null } 
     });
-    this.productsService.setSelectedCategoryId(null); // Update the service state
+    this.productsService.setSelectedCategoryId(null);
   }
 
   ngOnDestroy(): void {

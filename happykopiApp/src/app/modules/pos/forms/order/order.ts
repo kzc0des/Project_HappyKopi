@@ -67,7 +67,6 @@ export class Order implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadCategories();
 
-    // Listen for real-time product updates
     this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
         console.log('Product update received in POS. Reloading categories and products.');
@@ -75,7 +74,6 @@ export class Order implements OnInit, OnDestroy {
       })
     );
 
-    // Listen for real-time category updates
     this.subscriptions.add(
       this.categoryService.categoryUpdated$.subscribe(() => {
         console.log('Category update received in POS. Reloading categories.');
