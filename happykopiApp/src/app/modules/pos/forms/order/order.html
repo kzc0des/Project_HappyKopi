@@ -24,7 +24,7 @@
   <div class="
   flex items-center gap-2 py-4 px-6 
   w-full overflow-x-auto">
-    <app-category-card itemTitle="All Drinks"></app-category-card>
+    <app-category-card itemTitle="All Drinks" [itemValue]="totalProducts"></app-category-card>
 
     @for(category of categories(); track $index) {
       <app-category-card [itemTitle]="category.name" [itemValue]="category.productCount"></app-category-card>

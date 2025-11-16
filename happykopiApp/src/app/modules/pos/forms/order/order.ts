@@ -17,8 +17,8 @@ import { ProductConfigurationResultDto } from '../../../../core/dtos/order/produ
 import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { ProductsService } from '../../../products/services/products-service/products.service';
 import { CategoryService } from '../../../categories/services/category.service';
-import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryCard } from '../../components/category-card/category-card';
 
 @Component({
@@ -46,6 +46,9 @@ export class Order implements OnInit, OnDestroy {
   drinks = signal<ProductsWithCategoryDto[]>([]);
   filteredDrinks = signal<ProductsWithCategoryDto[]>([]);
 
+  // new var
+  totalProducts = 0;
+
   // for add order modal
 
 
@@ -68,11 +71,14 @@ export class Order implements OnInit, OnDestroy {
     private orderService: OrderService,
     private productsService: ProductsService,
     private categoryService: CategoryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.loadData();
+    this.totalProducts = this.categories()
+      .reduce((sum, category) => sum + category.productCount, 0);
 
     this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
@@ -100,6 +106,14 @@ export class Order implements OnInit, OnDestroy {
     if (products) {
       this.drinks.set(products);
     }
+  }
+
+  onCategoryClick(categoryId: number): void {
+    this.router.navigate(['/app/products'], {
+      queryParams: { categoryId: categoryId },
+      queryParamsHandling: 'merge'
+    });
+    this.productsService.setSelectedCategoryId(categoryId);
   }
 
   allProductConfigs: Map<number, ProductConfigurationResultDto> = new Map();
@@ -192,10 +206,6 @@ export class Order implements OnInit, OnDestroy {
 
   onAllDrinksClick() {
     this.selectAllDrinks();
-  }
-
-  onCategoryClick(category: CategoryWithProductCountDto) {
-    this.selectCategory(category);
   }
 
   onSearchResults(filteredDrinks: ProductsWithCategoryDto[]) {
