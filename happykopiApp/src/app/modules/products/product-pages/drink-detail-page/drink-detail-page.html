@@ -6,9 +6,9 @@
     w-full flex-1">
 
         <label for="drink-image-upload" class="relative flex items-center justify-center max-w-xs 
-                      rounded-2xl bg-[#fafafa] border-2 border-dashed border-gray-300
+                      rounded-2xl bg-[#fafafa] 
                       cursor-pointer transition-colors hover:bg-gray-100"
-            [ngClass]="imagePreview ? 'p-2 border-0' : 'px-12 py-20'">
+            [ngClass]="imagePreview ? 'border-0' : 'px-12 py-20 border-2 border-dashed border-gray-300'">
 
             @if (!imagePreview) {
             <div id="svg-placeholder" class="
