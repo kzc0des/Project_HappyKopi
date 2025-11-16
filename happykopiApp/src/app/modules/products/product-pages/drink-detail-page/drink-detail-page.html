@@ -28,11 +28,13 @@
         <app-itemcard [showIcon]="true" class="w-full" itemTitle="Drink Name" [(ngModel)]="productPayload.name"
             name="productName" required></app-itemcard>
 
+        @if(productPayload.description){
         <app-itemcard [showIcon]="true" class="w-full" itemTitle="Description" [(ngModel)]="productPayload.description"
             name="productDescription"> </app-itemcard>
+        }
 
         <app-itemcard [showIcon]="true" class="w-full" itemTitle="Category" [(ngModel)]="productPayload.categoryName"
-            name="productDescription"> </app-itemcard>
+            name="productCategory"> </app-itemcard>
 
         <app-availability-card class="w-full">
         </app-availability-card>
@@ -61,25 +63,25 @@
             </h3>
 
             @if(currentVariant) {
-                @if(currentVariant.recipe && currentVariant.recipe.length > 0) {
-                    @for(ingredient of currentVariant.recipe; track $index) {
-                        <app-selected-ingredient-card [ingredient]="ingredient"></app-selected-ingredient-card>
-                    }
-                } @else {
-                    <p class="text-sm text-gray-500 italic">No ingredients for this variant.</p>
-                }
+            @if(currentVariant.recipe && currentVariant.recipe.length > 0) {
+            @for(ingredient of currentVariant.recipe; track $index) {
+            <app-selected-ingredient-card [ingredient]="ingredient"></app-selected-ingredient-card>
+            }
+            } @else {
+            <p class="text-sm text-gray-500 italic">No ingredients for this variant.</p>
+            }
             }
 
             <h3 class="text-lg font-semibold text-hapikopi-dark w-full mt-4">Add-ons for {{ currentVariant?.size }}</h3>
 
             @if(currentVariant) {
-                @if(currentVariant.addOns && currentVariant.addOns.length > 0) {
-                    @for(addOn of currentVariant.addOns; track $index) {
-                        <app-selected-addon-card [addon]="addOn"></app-selected-addon-card>
-                    }
-                } @else {
-                    <p class="text-sm text-gray-500 italic">No add-ons for this variant.</p>
-                }
+            @if(currentVariant.addOns && currentVariant.addOns.length > 0) {
+            @for(addOn of currentVariant.addOns; track $index) {
+            <app-selected-addon-card [addon]="addOn"></app-selected-addon-card>
+            }
+            } @else {
+            <p class="text-sm text-gray-500 italic">No add-ons for this variant.</p>
+            }
             }
         </div>
     </div>

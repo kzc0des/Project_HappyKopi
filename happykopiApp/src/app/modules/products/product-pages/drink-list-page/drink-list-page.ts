@@ -50,7 +50,7 @@ export class DrinkListPage implements OnInit, OnDestroy {
     );
 
     // this.drinks = this.route.snapshot.data['productslist']; // We will load dynamically now
-    console.log(this.drinks);
+    // console.log(this.filteredDrinks);
 
     this.subscriptions.add(
       this.route.queryParams.subscribe(params => {

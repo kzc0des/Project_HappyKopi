@@ -119,8 +119,7 @@ export class EditDrinkPage implements OnInit {
     this.availableSizes = this.route.snapshot.data['sizes'] || [];
     this.productPayload = this.route.snapshot.data['drink'] || [];
 
-
-    console.log(`Payload: ${JSON.stringify(this.productPayload)}`);
+    // console.log(`Payload: ${JSON.stringify(this.productPayload)}`);
     // console.log(`Sizes: ${JSON.stringify(this.availableSizes)}`);
     this.categoryOptions = categoriesData.map(category => ({
       value: category.id,
@@ -153,8 +152,8 @@ export class EditDrinkPage implements OnInit {
 
   currentVariant = computed(() => {
     const sizeId = this.selectedSizeId();
-    console.log(`Selected Size ID: ${sizeId}`);
-    console.log(`Variant Id: ${this.productPayload.variants[0].sizeId}`);
+    // console.log(`Selected Size ID: ${sizeId}`);
+    // console.log(`Variant Id: ${this.productPayload.variants[0].sizeId}`);
     if (sizeId === null) return undefined;
     return this.productPayload.variants.find(v => v.sizeId === sizeId);
   });

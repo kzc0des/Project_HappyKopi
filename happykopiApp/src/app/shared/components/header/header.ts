@@ -111,8 +111,8 @@ export class Header implements OnInit, OnDestroy {
       this.headerTitle = title;
     });
 
-    console.log(`show back button state: ${this.showBackButton}`);
-    console.log(`show isEditing state: ${this.isEditing}`);
+    // console.log(`show back button state: ${this.showBackButton}`);
+    // console.log(`show isEditing state: ${this.isEditing}`);
   }
 
   private resetHeaderState(): void {
