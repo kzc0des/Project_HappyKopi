@@ -4,7 +4,6 @@
   [class.cursor-not-allowed]="isUnavailable"
   (click)="onClick()"
 >
-  <!-- UPPER BOX - Image Container -->
   <div
     class="w-full aspect-[115/130] bg-[#f0f0f0] rounded-[20px] sm:rounded-[22px] md:rounded-[24px] flex justify-center items-center overflow-hidden relative mb-3"
   >
@@ -19,7 +18,6 @@
     />
     } @else {
     <div class="text-[#777] text-[14px] font-medium flex justify-center items-center">
-      <!-- Placeholder Icon -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="w-4 h-6 sm:w-3.5 sm:h-5 xs:w-3 xs:h-4"
@@ -54,19 +52,18 @@
     }
   </div>
 
-  <!-- LOWER CONTENT -->
   <div class="flex flex-col justify-start items-start gap-[1px] px-2">
-    <div
+    <p
       class="text-[14px] sm:text-[15px] md:text-[16px] font-bold text-[#282828] truncate w-full"
       [class.text-[#999]]="isUnavailable"
     >
-      {{ orderCard.name }}
-    </div>
+      {{ orderPayload.name }}
+    </p>
 
-    <div
+    <p
       class="text-[14px] sm:text-[15px] md:text-[16px] font-normal text-[#919191] truncate w-full"
     >
-      {{ orderCard.categoryName }}
-    </div>
+      {{ orderPayload.categoryName }}
+    </p>
   </div>
 </div>

@@ -9,15 +9,15 @@ import { ProductsWithCategoryDto } from '../../../../core/dtos/order/products-wi
   styleUrl: './order-card.css',
 })
 export class OrderCard {
-  @Input() orderCard!: ProductsWithCategoryDto;
+  @Input() orderPayload!: ProductsWithCategoryDto;
   @Input() isUnavailable: boolean = false;
-  @Output() cardClick = new EventEmitter<ProductsWithCategoryDto>();
+  @Output() cardClick = new EventEmitter<number>();
 
   get drinkImage(): string | null {
-    return this.orderCard.imageUrl || null;
+    return this.orderPayload.imageUrl || null;
   }
 
   onClick(): void {
-    this.cardClick.emit(this.orderCard);
+    this.cardClick.emit(this.orderPayload.id);
   }
 }

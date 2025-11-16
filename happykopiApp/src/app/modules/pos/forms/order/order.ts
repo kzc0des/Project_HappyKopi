@@ -17,7 +17,7 @@ import { ProductConfigurationResultDto } from '../../../../core/dtos/order/produ
 import { OrderItem } from '../../../../core/dtos/order/order-item.dto';
 import { ProductsService } from '../../../products/services/products-service/products.service';
 import { CategoryService } from '../../../categories/services/category.service';
-import { Observable, Subscription } from 'rxjs';
+import { filter, Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryCard } from '../../components/category-card/category-card';
 
@@ -39,10 +39,9 @@ export class Order implements OnInit, OnDestroy {
 
   // for category
   categories = signal<CategoryWithProductCountDto[]>([]);
-  selectedCategory = signal<CategoryWithProductCountDto | null>(null);
+  selectedCategoryId = signal<number | null>(null);
 
   // for searching
-  allDrinks = signal<ProductsWithCategoryDto[]>([]);
   drinks = signal<ProductsWithCategoryDto[]>([]);
   filteredDrinks = signal<ProductsWithCategoryDto[]>([]);
 
@@ -80,6 +79,7 @@ export class Order implements OnInit, OnDestroy {
     this.totalProducts = this.categories()
       .reduce((sum, category) => sum + category.productCount, 0);
 
+    console.log(this.filteredDrinks());
     this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
         console.log('Product update received in POS. Reloading categories and products.');
@@ -93,6 +93,12 @@ export class Order implements OnInit, OnDestroy {
         this.loadData();
       })
     );
+
+    this.subscriptions.add(
+      this.productsService.selectedCategoryId$.subscribe(id => {
+        this.selectedCategoryId.set(id);
+      })
+    )
   }
 
   loadData() {
@@ -104,6 +110,7 @@ export class Order implements OnInit, OnDestroy {
     }
 
     if (products) {
+      this.filteredDrinks.set(products);
       this.drinks.set(products);
     }
   }
@@ -114,98 +121,6 @@ export class Order implements OnInit, OnDestroy {
       queryParamsHandling: 'merge'
     });
     this.productsService.setSelectedCategoryId(categoryId);
-  }
-
-  allProductConfigs: Map<number, ProductConfigurationResultDto> = new Map();
-
-  selectAllDrinks() {
-
-    this.orderService.getProductsWithAvailability().subscribe({
-      next: async ({ products, unavailableMap }) => {
-        this.allDrinks.set(products);
-        this.drinks.set(products);
-        this.unavailableMap.set(unavailableMap);
-
-        // Preload all product configs
-        for (const drink of products) {
-          this.orderService.getProductConfiguration(drink.id).subscribe({
-            next: (config) => this.allProductConfigs.set(drink.id, config),
-            error: (err) => console.error(err),
-          });
-        }
-      },
-      error: (err) => console.error(err),
-    });
-  }
-
-  isProductEffectivelyAvailable(drinkId: number): boolean {
-    const productConfig = this.allProductConfigs.get(drinkId);
-    if (!productConfig) return false;
-
-    const existingOrders: OrderItem[] = JSON.parse(localStorage.getItem('orders') || '[]');
-    const usedIngredients = new Map<number, number>();
-
-    existingOrders.forEach((order) => {
-      if (order.drinkID === undefined) return;
-      const config = this.allProductConfigs.get(order.drinkID);
-      if (!config) return;
-
-      // Get ingredients for this order's variant (includes both base + modifier ingredients)
-      const orderIngredients = config.ingredients.filter(
-        (ing) => ing.productVariantId === order.productVariantId
-      );
-
-      orderIngredients.forEach((ing) => {
-        const totalUsed = ing.quantityNeeded * order.quantity;
-        const current = usedIngredients.get(ing.stockItemId) || 0;
-        usedIngredients.set(ing.stockItemId, current + totalUsed);
-      });
-    });
-
-    // Check ALL ingredients for the product (base + modifier for each variant)
-    const allVariantIngredients = productConfig.ingredients;
-
-    // Group by variant and check if at least one variant is available
-    const variantIds = [...new Set(allVariantIngredients.map((ing) => ing.productVariantId))];
-
-    for (const variantId of variantIds) {
-      const variantIngredients = allVariantIngredients.filter(
-        (ing) => ing.productVariantId === variantId
-      );
-
-      let variantAvailable = true;
-      for (const ing of variantIngredients) {
-        const alreadyUsed = usedIngredients.get(ing.stockItemId) || 0;
-        const remainingStock = ing.availableStock - alreadyUsed;
-
-        if (remainingStock < ing.quantityNeeded) {
-          variantAvailable = false;
-          break;
-        }
-      }
-
-      // If at least one variant is available, product is available
-      if (variantAvailable) return true;
-    }
-
-    return false;
-  }
-
-  selectCategory(category: CategoryWithProductCountDto) {
-    this.selectedCategory.set(category);
-
-    this.orderService.getProductsWithAvailability(category.id).subscribe({
-      next: ({ products, unavailableMap }) => {
-        this.allDrinks.set(products);
-        this.drinks.set(products);
-        this.unavailableMap.set(unavailableMap);
-      },
-      error: (err) => console.error(err),
-    });
-  }
-
-  onAllDrinksClick() {
-    this.selectAllDrinks();
   }
 
   onSearchResults(filteredDrinks: ProductsWithCategoryDto[]) {

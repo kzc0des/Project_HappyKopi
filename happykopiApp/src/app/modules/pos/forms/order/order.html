@@ -1,5 +1,5 @@
-<div class="flex flex-col items-center w-full bg-[#fafafa] min-h-screen"> 
-    <app-order-quick-view class="w-full"></app-order-quick-view> 
+<div class="flex flex-col items-center w-full bg-[#fafafa] min-h-screen">
+  <app-order-quick-view class="w-full"></app-order-quick-view>
 
   <!-- Categories -->
   <!-- <div class="w-full bg-[#f0f0f0] py-5">
@@ -27,20 +27,15 @@
     <app-category-card itemTitle="All Drinks" [itemValue]="totalProducts"></app-category-card>
 
     @for(category of categories(); track $index) {
-      <app-category-card [itemTitle]="category.name" [itemValue]="category.productCount"></app-category-card>
+    <app-category-card [itemTitle]="category.name" [itemValue]="category.productCount"></app-category-card>
     }
   </div>
 
   <!-- Search Bar Centered -->
   <div class="w-full bg-[#f0f0f0]">
     <div class="w-full max-w-[480px] mx-auto px-4">
-      <app-search-drink
-        class="w-full"
-        [allItems]="allDrinks()"
-        [searchProperties]="['name', 'categoryName']"
-        [placeholder]="'Search drinks...'"
-        (searchResults)="onSearchResults($event)"
-      ></app-search-drink>
+      <app-search-drink class="w-full" [searchProperties]="['name', 'categoryName']"
+        [placeholder]="'Search drinks...'"></app-search-drink>
     </div>
   </div>
 
@@ -48,13 +43,9 @@
   <div class="w-full flex-1 py-6">
     <div class="w-full max-w-[1200px] mx-auto px-4">
       @if(drinks().length > 0) {
-      <div class="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-        @for(drink of getUniqueDrinks(); track drink.id) {
-        <app-order-card
-          class="w-full"
-          [orderCard]="drink"
-          [isUnavailable]="!isProductEffectivelyAvailable(drink.id)"
-        ></app-order-card>
+      <div class="grid grid-cols-2">
+        @for(drink of filteredDrinks(); track $index) {
+        <app-order-card [orderPayload]="drink"></app-order-card>
         }
       </div>
       } @else {
@@ -72,23 +63,14 @@
   <!-- Modals -->
   @if(showModal()) {
   <div class="fixed inset-0 bg-black/50 z-[999]" (click)="closeModal()"></div>
-  <div
-    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] w-[90%] max-w-[600px]"
-  >
-    <app-add-order-modal
-      [addOrderModal]="selectedDrink()"
-      (closeModal)="onCloseModal()"
-    ></app-add-order-modal>
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] w-[90%] max-w-[600px]">
+    <app-add-order-modal [addOrderModal]="selectedDrink()" (closeModal)="onCloseModal()"></app-add-order-modal>
   </div>
   } @if(showUnavailableModal()) {
   <div class="fixed inset-0 bg-black/50 z-[999]" (click)="onCloseUnavailableModal()"></div>
-  <div
-    class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] w-[90%] max-w-[600px]"
-  >
-    <app-unavailable-product-modal
-      [modalData]="selectedUnavailableProduct()!"
-      (closeModal)="onCloseUnavailableModal()"
-    ></app-unavailable-product-modal>
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] w-[90%] max-w-[600px]">
+    <app-unavailable-product-modal [modalData]="selectedUnavailableProduct()!"
+      (closeModal)="onCloseUnavailableModal()"></app-unavailable-product-modal>
   </div>
   }
 </div>
