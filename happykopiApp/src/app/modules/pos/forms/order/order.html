@@ -27,13 +27,15 @@
     <app-category-card 
     itemTitle="All Drinks" 
     [itemValue]="totalProducts"
-    (click)="onAllDrinksClick()"></app-category-card>
+    (click)="onAllDrinksClick()"
+    [selectedCategoryId]="selectedCategoryId()"></app-category-card>
 
     @for(category of categories(); track $index) {
     <app-category-card 
     [itemTitle]="category.name" 
     [itemValue]="category.productCount" 
-    (click)="onCategoryClick(category.id)"></app-category-card>
+    (click)="onCategoryClick(category.id)"
+    [selectedCategoryId]="selectedCategoryId()"></app-category-card>
     }
   </div>
 

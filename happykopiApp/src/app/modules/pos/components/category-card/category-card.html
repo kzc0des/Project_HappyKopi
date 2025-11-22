@@ -1,11 +1,21 @@
 <div class="
-flex flex-col justify-center items-start py-2 px-4 gap-4
-w-[50vw] h-[20dvh] bg-white
-rounded-2xl" (click)="onClick()">
+flex flex-col justify-center items-start 
+w-[50vw] h-[20dvh]
+rounded-2xl py-2 px-4 gap-4"
+[ngClass]="{
+    'border-yellow-500 bg-yellow-100 ring-2 ring-yellow-500': isSelected,
+    'bg-white text-hapikopi-dark hover:bg-gray-50': !isSelected
+}"
+(click)="onClick()">
+
     <div class="
     flex justify-center items-center p-3 
-    rounded-[50%] bg-hapikopi-yellow"
-    [ngClass]="">
+    rounded-[50%]"
+    [ngClass]="{
+    'bg-hapikopi-yellow ring-2 ring-yellow-500': isSelected,
+    'bg-gray-200 text-hapikopi-dark': !isSelected
+    }">
+
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 18 26">
             <path d="M1 8.35693H17" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" />
             <path
@@ -19,10 +29,10 @@ rounded-2xl" (click)="onClick()">
         </svg>
     </div>
     <div class="flex flex-col gap-1">
-        <p class="text-hapikopi-dark font-bold">
+        <p class="font-bold" [ngClass]="isSelected ? 'text-hapikopi-yellow' : 'text-hapikopi-dark'">
             {{ itemTitle }}
         </p>
-        <p class="text-hapikopi-grayborder">
+        <p [ngClass]="isSelected ? 'text-gray-600' : 'text-hapikopi-grayborder'">
             {{ itemValue }}
         </p>
     </div>

@@ -92,7 +92,7 @@ export class Order implements OnInit, OnDestroy {
       this.productsService.selectedCategoryId$.subscribe(id => {
         this.selectedCategoryId.set(id);
       })
-    )
+    );
   }
 
   loadData() {
@@ -123,8 +123,7 @@ export class Order implements OnInit, OnDestroy {
       queryParams: { categoryId: null },
       queryParamsHandling: 'merge',
       relativeTo: this.route
-    }
-    );
+    });
     this.productsService.setSelectedCategoryId(null);
   }
 
