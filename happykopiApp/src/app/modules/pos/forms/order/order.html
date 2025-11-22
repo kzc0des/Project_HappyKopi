@@ -23,8 +23,9 @@
 
   <div class="
   flex items-center gap-2 py-4 px-6 
-  w-full overflow-x-auto">
+  w-full overflow-x-auto flex-nowrap">
     <app-category-card 
+    class="flex-shrink-0"
     itemTitle="All Drinks" 
     [itemValue]="totalProducts"
     (click)="onAllDrinksClick()"
@@ -33,6 +34,7 @@
 
     @for(category of categories(); track $index) {
     <app-category-card 
+    class="flex-shrink-0"
     [itemTitle]="category.name" 
     [itemValue]="category.productCount"
     [categoryId]="category.id" 
@@ -50,10 +52,10 @@
   </div>
 
   <!-- Drinks Grid -->
-  <div class="w-full flex-1 py-6">
-    <div class="w-full max-w-[1200px] mx-auto px-4">
+  <div class="w-full flex-1 mb-25">
+    <div class="w-full max-w-[1200px] mx-auto px-4 bg-white">
       @if(drinks().length > 0) {
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-3">
         @for(drink of filteredDrinks(); track $index) {
         <app-order-card [orderPayload]="drink"></app-order-card>
         }

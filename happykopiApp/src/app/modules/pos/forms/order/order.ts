@@ -61,8 +61,7 @@ export class Order implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loadData(this.route.snapshot.queryParams['categoryId'] ? +this.route.snapshot.queryParams['categoryId'] : null);
-    console.log(this.filteredDrinks());
+    // this.loadData(this.route.snapshot.queryParams['categoryId'] ? +this.route.snapshot.queryParams['categoryId'] : null);
 
     this.subscriptions.add(
       this.route.queryParams.subscribe(params => {
