@@ -28,6 +28,7 @@
     itemTitle="All Drinks" 
     [itemValue]="totalProducts"
     (click)="onAllDrinksClick()"
+    [categoryId]="null"
     [selectedCategoryId]="selectedCategoryId()"></app-category-card>
 
     @for(category of categories(); track $index) {
