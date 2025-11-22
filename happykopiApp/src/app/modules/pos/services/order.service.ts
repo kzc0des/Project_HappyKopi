@@ -25,42 +25,46 @@ export interface ProductsWithAvailabilityResult {
   providedIn: 'root',
 })
 export class OrderService {
-  private readonly endpoint = 'order';
+  private readonly controller = 'order';
 
   constructor(private api: ApiService) {}
 
   getCategories(): Observable<CategoryWithProductCountDto[]> {
-    return this.api.get<CategoryWithProductCountDto[]>(`${this.endpoint}/categories`);
+    return this.api.get<CategoryWithProductCountDto[]>(`${this.controller}/categories`);
   }
 
-  getAllProducts(): Observable<ProductsWithCategoryDto[]> {
-    return this.api.get<ProductsWithCategoryDto[]>(`${this.endpoint}/products`);
+  getAllProducts(categoryId: number | null): Observable<ProductsWithCategoryDto[]> {
+    let url = `${this.controller}/products`;
+    if (categoryId) {
+      url += `?categoryId=${categoryId}`;
+    }
+    return this.api.get<ProductsWithCategoryDto[]>(url);
   }
 
   getProductsByCategory(categoryId: number): Observable<ProductsWithCategoryDto[]> {
-    return this.api.get<ProductsWithCategoryDto[]>(`${this.endpoint}/category/${categoryId}`);
+    return this.api.get<ProductsWithCategoryDto[]>(`${this.controller}/category/${categoryId}`);
   }
 
   getModifiersByType(type: ModifierType): Observable<OrderModifierSummaryDto[]> {
     const params = new HttpParams().set('modifierType', type.toString());
-    return this.api.get<OrderModifierSummaryDto[]>(`${this.endpoint}/modifiers`, params);
+    return this.api.get<OrderModifierSummaryDto[]>(`${this.controller}/modifiers`, params);
   }
 
   getProductConfiguration(productId: number): Observable<ProductConfigurationResultDto> {
     return this.api.get<ProductConfigurationResultDto>(
-      `${this.endpoint}/configuration/${productId}`
+      `${this.controller}/configuration/${productId}`
     );
   }
 
   getModifiersByIds(modifierIds: number[]): Observable<OrderModifierSummaryDto[]> {
     return this.api.post<OrderModifierSummaryDto[]>(
-      `${this.endpoint}/modifiers/by-ids`,
+      `${this.controller}/modifiers/by-ids`,
       modifierIds
     );
   }
 
   createOrder(orderRequest: NewOrderRequestDto): Observable<NewOrderResponseDto> {
-    return this.api.post<NewOrderResponseDto>(this.endpoint, orderRequest);
+    return this.api.post<NewOrderResponseDto>(this.controller, orderRequest);
   }
 
   // NEW: Get products with availability info
@@ -70,7 +74,7 @@ export class OrderService {
       : undefined;
 
     return this.api
-      .get<ProductAvailabilityResponseDto>(`${this.endpoint}/availability`, params)
+      .get<ProductAvailabilityResponseDto>(`${this.controller}/availability`, params)
       .pipe(
         map((response) => {
           // Map available products

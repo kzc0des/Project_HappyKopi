@@ -21,7 +21,7 @@ namespace happykopiAPI.Services.Interfaces
         /// </summary>
         /// 
         Task<IEnumerable<CategoryWithProductCountDto>> GetCategoriesWithProductCountAsync();
-        Task<IEnumerable<ProductsWithCategoryDto>> GetAllProducts();
+        Task<IEnumerable<ProductsWithCategoryDto>> GetAllProducts(int? categoryId);
 
     }
 }

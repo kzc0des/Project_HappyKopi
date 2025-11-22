@@ -75,6 +75,12 @@ export class Order implements OnInit, OnDestroy {
     console.log(this.filteredDrinks());
 
     this.subscriptions.add(
+      this.route.queryParams.subscribe(params => {
+        const categoryId = params['categoryId'] ? +params['categoryId'] : null;
+        this.productsService.setSelectedCategoryId(categoryId);
+      }));
+
+    this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
         console.log('Product update received in POS. Reloading categories and products.');
         this.loadData();

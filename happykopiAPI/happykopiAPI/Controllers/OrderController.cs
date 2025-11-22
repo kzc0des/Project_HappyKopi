@@ -65,9 +65,9 @@ namespace happykopiAPI.Controllers
         }
 
         [HttpGet("products")]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts([FromQuery] int? categoryId)
         {
-            var orders = await _orderService.GetAllProducts();
+            var orders = await _orderService.GetAllProducts(categoryId);
             return Ok(orders);
         }
 
