@@ -33,7 +33,8 @@
     @for(category of categories(); track $index) {
     <app-category-card 
     [itemTitle]="category.name" 
-    [itemValue]="category.productCount" 
+    [itemValue]="category.productCount"
+    [categoryId]="category.id" 
     (click)="onCategoryClick(category.id)"
     [selectedCategoryId]="selectedCategoryId()"></app-category-card>
     }
