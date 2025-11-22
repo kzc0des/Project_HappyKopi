@@ -80,6 +80,7 @@ export class Order implements OnInit, OnDestroy {
       .reduce((sum, category) => sum + category.productCount, 0);
 
     console.log(this.filteredDrinks());
+    
     this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
         console.log('Product update received in POS. Reloading categories and products.');
