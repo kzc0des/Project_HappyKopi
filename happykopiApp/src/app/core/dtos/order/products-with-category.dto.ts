@@ -1,4 +1,4 @@
-  export interface ProductsWithCategoryDto {
+  export interface  ProductsWithCategoryDto {
     id: number;
     name: string;
     // description?: string;
