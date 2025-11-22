@@ -6,7 +6,8 @@ import { OrderService } from '../../services/order.service';
 
 export const productSummaryResolver: ResolveFn<ProductsWithCategoryDto[]> = (route, state) : Observable<ProductsWithCategoryDto[]> => {
   const orderService = inject(OrderService);
-  return orderService.getAllProducts().pipe(
+  const categoryId = route.queryParams['categoryId'];
+  return orderService.getAllProducts(categoryId).pipe(
     catchError((err) => {
       console.error(err);
       return [];

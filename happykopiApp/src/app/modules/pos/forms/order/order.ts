@@ -37,29 +37,15 @@ import { CategoryCard } from '../../components/category-card/category-card';
 export class Order implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
-  // for category
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategoryId = signal<number | null>(null);
 
-  // for searching
   drinks = signal<ProductsWithCategoryDto[]>([]);
   filteredDrinks = signal<ProductsWithCategoryDto[]>([]);
 
-  // new var
   totalProducts = 0;
 
-  // for add order modal
-
-
-  // for unavailable drinks
   unavailableMap = signal<Map<number, UnavailableProductDto>>(new Map());
-
-  // for default na allDrinks
-  // allDrinksCategory: CategoryWithProductCountDto = {
-  //   id: -1,
-  //   name: 'All Drinks',
-  //   productCount: 0,
-  // };
 
   showModal = signal(false);
   showUnavailableModal = signal(false);
@@ -75,22 +61,26 @@ export class Order implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loadData();
-    this.totalProducts = this.categories()
-      .reduce((sum, category) => sum + category.productCount, 0);
+    // this.loadData(this.route.snapshot.queryParams['categoryId'] ? +this.route.snapshot.queryParams['categoryId'] : null);
 
-    console.log(this.filteredDrinks());
+    this.subscriptions.add(
+      this.route.queryParams.subscribe(params => {
+        const categoryId = params['categoryId'] ? +params['categoryId'] : null;
+        this.loadData(categoryId);
+        this.productsService.setSelectedCategoryId(categoryId);
+      }));
+
     this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
-        console.log('Product update received in POS. Reloading categories and products.');
-        this.loadData();
+        const categoryId = this.route.snapshot.queryParams['categoryId'];
+        this.loadData(categoryId);
       })
     );
 
     this.subscriptions.add(
       this.categoryService.categoryUpdated$.subscribe(() => {
-        console.log('Category update received in POS. Reloading categories.');
-        this.loadData();
+        const categoryId = this.route.snapshot.queryParams['categoryId'];
+        this.loadData(categoryId);
       })
     );
 
@@ -98,30 +88,43 @@ export class Order implements OnInit, OnDestroy {
       this.productsService.selectedCategoryId$.subscribe(id => {
         this.selectedCategoryId.set(id);
       })
-    )
+    );
   }
 
-  loadData() {
+  loadData(categoryId: number | null) {
     const categories = this.route.snapshot.data['categories'];
-    const products = this.route.snapshot.data['products'];
+    const products: Observable<ProductsWithCategoryDto[]> = this.orderService.getAllProducts(categoryId);
 
     if (categories) {
       this.categories.set(categories);
     }
 
-    if (products) {
-      this.filteredDrinks.set(products);
+    products.subscribe(products => {
       this.drinks.set(products);
-    }
+      this.filteredDrinks.set(products);
+    });
+
+    this.totalProducts = this.categories().reduce((sum, category) => sum + category.productCount, 0);
   }
 
   onCategoryClick(categoryId: number): void {
-    this.router.navigate(['/app/products'], {
+    this.router.navigate([], {
       queryParams: { categoryId: categoryId },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
+      relativeTo: this.route
     });
     this.productsService.setSelectedCategoryId(categoryId);
   }
+
+  onAllDrinksClick(): void {
+    this.router.navigate([], {
+      queryParams: { categoryId: null },
+      queryParamsHandling: 'merge',
+      relativeTo: this.route
+    });
+    this.productsService.setSelectedCategoryId(null);
+  }
+
 
   onSearchResults(filteredDrinks: ProductsWithCategoryDto[]) {
     this.drinks.set(filteredDrinks);

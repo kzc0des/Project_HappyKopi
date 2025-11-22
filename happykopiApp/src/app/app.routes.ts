@@ -275,8 +275,7 @@ export const routes: Routes = [
                         path: '',
                         component: Order,
                         resolve: {
-                            categories: categorySummaryResolver,
-                            products: productSummaryResolver
+                            categories: categorySummaryResolver
                         }
                     },
                     {

@@ -53,13 +53,6 @@
   width: 0;
 }
 
-app-search-drink {
-  display: block;
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 1200px;
-}
-
 .drinks-table {
   background-color: #fafafa;
   width: 100%;
