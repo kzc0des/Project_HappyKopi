@@ -37,21 +37,14 @@ import { CategoryCard } from '../../components/category-card/category-card';
 export class Order implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
-  // for category
   categories = signal<CategoryWithProductCountDto[]>([]);
   selectedCategoryId = signal<number | null>(null);
 
-  // for searching
   drinks = signal<ProductsWithCategoryDto[]>([]);
   filteredDrinks = signal<ProductsWithCategoryDto[]>([]);
 
-  // new var
   totalProducts = 0;
 
-  // for add order modal
-
-
-  // for unavailable drinks
   unavailableMap = signal<Map<number, UnavailableProductDto>>(new Map());
 
   // for default na allDrinks
@@ -80,7 +73,7 @@ export class Order implements OnInit, OnDestroy {
       .reduce((sum, category) => sum + category.productCount, 0);
 
     console.log(this.filteredDrinks());
-    
+
     this.subscriptions.add(
       this.productsService.productUpdated$.subscribe(() => {
         console.log('Product update received in POS. Reloading categories and products.');
@@ -117,12 +110,24 @@ export class Order implements OnInit, OnDestroy {
   }
 
   onCategoryClick(categoryId: number): void {
-    this.router.navigate(['/app/products'], {
+    this.router.navigate([], {
       queryParams: { categoryId: categoryId },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
+      relativeTo: this.route
     });
     this.productsService.setSelectedCategoryId(categoryId);
   }
+
+  onAllDrinksClick(): void {
+    this.router.navigate([], {
+      queryParams: { categoryId: null },
+      queryParamsHandling: 'merge',
+      relativeTo: this.route
+    }
+    );
+    this.productsService.setSelectedCategoryId(null);
+  }
+
 
   onSearchResults(filteredDrinks: ProductsWithCategoryDto[]) {
     this.drinks.set(filteredDrinks);
