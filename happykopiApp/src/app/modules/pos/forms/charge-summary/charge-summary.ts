@@ -10,8 +10,6 @@ import { ReceiptData, ReceiptModal } from '../../modal/receipt-modal/receipt-mod
 @Component({
   selector: 'app-charge-summary',
   imports: [
-    Header,
-    YellowButton,
     ChargeCashSummaryCard,
     LongYellowButton,
     ReceiptModal,

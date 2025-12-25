@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-batch-organizer-card',
-  imports: [RouterLink],
   templateUrl: './batch-organizer-card.html',
   styleUrl: './batch-organizer-card.css'
 })

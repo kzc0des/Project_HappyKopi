@@ -6,7 +6,7 @@ import { LongYellowButton } from "../../../../shared/components/long-yellow-butt
 
 @Component({
   selector: 'app-charge',
-  imports: [Header, YellowButton, TextBoxPrice, LongYellowButton],
+  imports: [LongYellowButton],
   templateUrl: './charge.html',
   styleUrl: './charge.css'
 })
