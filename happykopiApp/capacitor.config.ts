@@ -6,7 +6,11 @@ const config: CapacitorConfig = {
   webDir: 'dist/happykopiApp/browser',
   server: {
     // url: "http://192.168.1.20:4200",
-    cleartext: true
+    cleartext: true,
+    androidScheme: 'http'
+  },
+  android: {
+    allowMixedContent: true
   }
 };
 
